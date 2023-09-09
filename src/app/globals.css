@@ -2,26 +2,103 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+@layer components {
+	.sidebar-icon {
+		@apply relative flex items-center justify-center
+		h-12 w-12 mt-2 mb-2 mx-auto shadow-lg
+		bg-white text-green-500
+		hover:bg-green-600 hover:text-white
+		dark:bg-gray-800 dark:text-green-500
+		dark:hover:bg-green-600 dark:hover:text-gray-800
+		rounded-3xl hover:rounded-xl
+		transition-all duration-200 ease-linear
+		cursor-pointer;
+	}
+
+	.sidebar-icon-active {
+		@apply relative flex items-center justify-center
+		h-12 w-12 mt-2 mb-2 mx-auto shadow-lg
+		bg-green-600 text-white
+		dark:bg-green-600 dark:text-gray-800
+		rounded-xl
+		transition-all duration-200 ease-linear
+		cursor-pointer;
+	}
+
+	.sidebar-tooltip {
+		@apply absolute w-auto p-3 m-2 min-w-max left-14
+		rounded-md shadow-md
+		text-gray-900 bg-gray-100
+		dark:text-gray-400 dark:bg-gray-900
+		text-sm font-bold
+		transition-all duration-100 scale-0 origin-left;
+	}
+
+	.auth-mask {
+		@apply flex justify-center items-center h-screen w-screen
+		text-3xl font-mono
+		text-gray-600 dark:text-gray-500
+		bg-gray-400 dark:bg-gray-700
+		z-20;
+	}
+
+	.input-wrapper-text {
+		@apply flex flex-col gap-2 w-full;
+	}
+
+	.input {
+		@apply px-3 py-2
+		caret-gray-600
+		rounded-2xl 
+		outline-none;
+	}
+
+	.scrollbar::-webkit-scrollbar {
+		@apply w-2;
+	}
+
+	.scrollbar::-webkit-scrollbar-track {
+		@apply rounded-lg
+		bg-slate-200
+		dark:bg-gray-700;
+	}
+
+	.scrollbar::-webkit-scrollbar-thumb {
+		@apply rounded-lg
+		bg-slate-300
+		dark:bg-gray-600;
+	}
+
+	.scrollbar::-webkit-scrollbar-thumb:hover {
+		@apply bg-slate-400 
+		dark:bg-gray-500;
+	}
+
+	.scrollbar-hide::-webkit-scrollbar {
+		@apply hidden;
+	}
+}
+
+/* :root {
+	--foreground-rgb: 0, 0, 0;
+	--background-start-rgb: 214, 219, 220;
+	--background-end-rgb: 255, 255, 255;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+	:root {
+		--foreground-rgb: 255, 255, 255;
+		--background-start-rgb: 0, 0, 0;
+		--background-end-rgb: 0, 0, 0;
+	}
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
+	color: rgb(var(--foreground-rgb));
+	background: linear-gradient(
+			to bottom,
+			transparent,
+			rgb(var(--background-end-rgb))
+		)
+		rgb(var(--background-start-rgb));
+} */
