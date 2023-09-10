@@ -1,11 +1,11 @@
 import React from "react";
 import { Sidebar, SubSidebar } from "../sidebar";
 import { Content } from "../content";
-import { useRouter } from "next/router";
 import { AnimatePresence, motion } from "framer-motion";
+import { usePathname } from "next/navigation";
 
 export const Layout = (props: any) => {
-	const router = useRouter();
+	const pathname = usePathname();
 	const { heading, children } = props;
 	return (
 		<div
@@ -17,7 +17,7 @@ export const Layout = (props: any) => {
 			<Content heading={heading}>
 				<AnimatePresence mode="wait">
 					<motion.div
-						key={router.pathname}
+						key={pathname}
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}

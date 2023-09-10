@@ -1,3 +1,5 @@
+"use client";
+
 import { useAuthStore } from "@/stores/auth";
 import { downloadAvatar } from "@/utilities/api/api";
 import React, { useEffect, useState } from "react";

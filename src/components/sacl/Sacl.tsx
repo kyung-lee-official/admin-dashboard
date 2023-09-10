@@ -1,7 +1,8 @@
+"use client";
+
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useContext, useEffect, useState } from "react";
 import { RegularRoutes, SaclContext, SaclRoutes } from ".";
-import { useRouter } from "next/router";
 import { Layout } from "../layout";
 import { useSidebarStore } from "@/stores/sidebar";
 import { useQuery } from "react-query";
@@ -14,6 +15,7 @@ import {
 } from "@/utilities/api/api";
 import { useAuthStore } from "@/stores/auth";
 import ms from "ms";
+import { usePathname } from "next/navigation";
 
 /**
  * SACL (Seed and Auth Checking Layer) UI
@@ -21,7 +23,7 @@ import ms from "ms";
  * @returns
  */
 export const Sacl = (props: any) => {
-	const router = useRouter();
+	const pathname = usePathname();
 	const { children } = props;
 	const saclRoutes = ["/", "/signin", "/signup", "/seed"];
 	const { setSaclStatus } = useContext(SaclContext);
@@ -34,7 +36,7 @@ export const Sacl = (props: any) => {
 		(state) => state.setTencentCosTempCredential
 	);
 	const selectedSubMenu = useSidebarStore((state) => state.selectedSubMenu);
-	const enableRefetch: boolean = !saclRoutes.includes(router.pathname);
+	const enableRefetch: boolean = !saclRoutes.includes(pathname);
 	const refetchIntervalMs = enableRefetch && 10000;
 
 	const refreshAccessTokenQuery = useQuery<any, AxiosError>({
@@ -137,7 +139,7 @@ export const Sacl = (props: any) => {
 	/* Pages are separated into SACL pages and regular pages to support page-switching animations. */
 	return (
 		<AnimatePresence mode="wait">
-			{saclRoutes.includes(router.pathname) ? (
+			{saclRoutes.includes(pathname) ? (
 				<motion.div
 					className="auth-mask"
 					key={"saclPages"}

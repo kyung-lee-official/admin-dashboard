@@ -5,7 +5,7 @@ import { NetworkError } from "./NetworkError";
 import { CheckingSignedIn } from "./CheckingSignedIn";
 import { Unauthorized } from "./Unauthorized";
 import { SaclContext } from ".";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 const SaclComponentWrapper = () => {
 	const { saclStatus } = useContext(SaclContext);

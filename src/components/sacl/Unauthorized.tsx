@@ -1,6 +1,8 @@
+"use client";
+
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 export function Unauthorized() {
 	const router = useRouter();

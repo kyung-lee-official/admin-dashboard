@@ -1,9 +1,9 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 import React from "react";
 
 export const SaclRoutes = (props: any) => {
-	const router = useRouter();
+	const pathname = usePathname();
 	const { children } = props;
 	return (
 		<AnimatePresence mode="wait">
@@ -11,7 +11,7 @@ export const SaclRoutes = (props: any) => {
 				initial={{ opacity: 0 }}
 				animate={{ opacity: 1 }}
 				exit={{ opacity: 0 }}
-				key={router.pathname}
+				key={pathname}
 			>
 				{children}
 			</motion.div>

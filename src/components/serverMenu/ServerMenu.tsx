@@ -1,3 +1,5 @@
+"use client";
+
 import React, { forwardRef, useEffect, useRef, useState } from "react";
 import { ChevronDownOutline, SettingsIcon } from "../icons";
 import { AnimatePresence, motion } from "framer-motion";

@@ -1,3 +1,5 @@
+"use client";
+
 import { useAuthStore } from "@/stores/auth";
 import { freezeUserById } from "@/utilities/api/api";
 import { queryClient } from "@/utilities/react-query/react-query";

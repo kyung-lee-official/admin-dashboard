@@ -1,7 +1,9 @@
+"use client";
+
 import { Button, CopyIcon, SettingsHeading, VerifiedIcon } from "@/components";
 import { queryClient } from "@/utilities/react-query/react-query";
 import { useAuthStore } from "@/stores/auth";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { sendVerificationEmail } from "@/utilities/api/api";
 import { useMutation } from "react-query";
 import { AxiosError } from "axios";

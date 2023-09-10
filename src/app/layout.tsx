@@ -5,6 +5,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { useEffect } from "react";
+import AppWrapper from "@/components/appWrapper/AppWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -31,7 +32,9 @@ export default function RootLayout({
 
 	return (
 		<html lang="en">
-			<body className={inter.className}>{children}</body>
+			<body className={inter.className}>
+				<AppWrapper>{children}</AppWrapper>
+			</body>
 		</html>
 	);
 }
