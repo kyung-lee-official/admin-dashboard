@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import { SettingsHeading, SettingsSubHeading } from "../../ContentRegion";
 import { SettingsChangedIndicator, Skeleton, Toggle } from "@/components";

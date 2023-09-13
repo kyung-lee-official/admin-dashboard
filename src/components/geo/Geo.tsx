@@ -1,3 +1,5 @@
+"use client";
+
 import { scale } from "@/utilities/math/math";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";

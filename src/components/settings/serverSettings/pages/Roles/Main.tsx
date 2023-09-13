@@ -1,3 +1,5 @@
+"use client";
+
 import { CrownIcon, DeleteIcon, EditIcon, UserIcon } from "@/components/icons";
 import { SettingsHeading } from "@/components/settings/ContentRegion";
 import { Skeleton } from "@/components/skeleton";

@@ -1,3 +1,5 @@
+"use client";
+
 import { uniq } from "@/utilities/data/data";
 import React from "react";
 

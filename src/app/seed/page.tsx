@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, GoogleIcon, SaclContext } from "@/components";
 import { CheckingSeeded } from "@/components/sacl/CheckingSeeded";
 import { CheckingSignedIn } from "@/components/sacl/CheckingSignedIn";
@@ -7,7 +9,7 @@ import { queryClient } from "@/utilities/react-query/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence, motion } from "framer-motion";
 import Lottie from "lottie-react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import React, { useContext } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useMutation } from "react-query";

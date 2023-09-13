@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -5,8 +7,8 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { AxiosError } from "axios";
 import { resetPassword } from "@/utilities/api/api";
-import { useRouter } from "next/router";
 import { motion } from "framer-motion";
+import { useSearchParams } from "next/navigation";
 
 interface IFormInput {
 	password: string;
@@ -31,10 +33,10 @@ const schema = z
 	});
 
 const Index = () => {
-	const router = useRouter();
-	const searchParams = new URLSearchParams(
-		router.asPath.substring(router.asPath.indexOf("?"))
-	);
+	const searchParams = useSearchParams();
+	// const searchParams = new URLSearchParams(
+	// 	router.asPath.substring(router.asPath.indexOf("?"))
+	// );
 	const resetPasswordToken = searchParams.get("token");
 
 	const { register, handleSubmit, formState } = useForm<IFormInput>({
@@ -166,7 +168,7 @@ const Index = () => {
 									? "bg-blue-500 hover:bg-blue-600"
 									: mutation.isLoading
 									? "bg-blue-400 cursor-wait"
-									: "bg-gray-500 cursor-not-allowed"
+									: "bg-gray-400 cursor-not-allowed"
 							}
 							rounded`}
 							disabled={!formState.isValid || mutation.isLoading}

@@ -1,3 +1,5 @@
+"use client";
+
 import { SearchOutlineIcon } from "@/components/icons";
 import { CheckboxList } from "@/components/input";
 import { useAuthStore } from "@/stores/auth";

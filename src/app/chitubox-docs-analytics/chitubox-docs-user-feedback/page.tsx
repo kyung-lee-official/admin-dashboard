@@ -1,16 +1,18 @@
+"use client";
+
 import { Button, DatePicker, DateRangePicker, Layout } from "@/components";
 import { getChituboxManualFeedbacks, getIsSeeded } from "@/utilities/api/api";
 import { MenuKey, useSidebarStore } from "@/stores/sidebar";
 import dayjs from "dayjs";
-import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useAuthStore } from "@/stores/auth";
 import { Geo } from "@/components/geo/Geo";
 import { useQuery } from "react-query";
 import { AxiosError } from "axios";
+import { usePathname } from "next/navigation";
 
 const Index = () => {
-	const router = useRouter();
+	const pathname = usePathname();
 	const setSelectedMenu = useSidebarStore((state) => state.setSelectedMenu);
 	const setSelectedSubMenu = useSidebarStore(
 		(state) => state.setSelectedSubMenu
@@ -52,7 +54,7 @@ const Index = () => {
 
 	useEffect(() => {
 		setSelectedMenu(MenuKey.CHITUBOX_DOCS_ANALYTICS);
-		setSelectedSubMenu(MenuKey.CHITUBOX_DOCS_ANALYTICS, router.pathname);
+		setSelectedSubMenu(MenuKey.CHITUBOX_DOCS_ANALYTICS, pathname);
 	}, [setSelectedMenu, setSelectedSubMenu]);
 
 	return (

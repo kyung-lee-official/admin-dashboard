@@ -1,3 +1,5 @@
+"use client";
+
 import { SettingsHeading } from "@/components";
 import React from "react";
 

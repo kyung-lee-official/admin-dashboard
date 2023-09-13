@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { changePassword } from "@/utilities/api/api";
 import { zodResolver } from "@hookform/resolvers/zod";

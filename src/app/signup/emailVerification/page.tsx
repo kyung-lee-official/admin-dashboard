@@ -1,16 +1,16 @@
+"use client";
+
 import { Button } from "@/components";
 import { verifyEmail } from "@/utilities/api/api";
 import { AxiosError } from "axios";
 import { AnimatePresence, motion } from "framer-motion";
-import { useRouter } from "next/router";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 
 const Index = () => {
 	const router = useRouter();
-	const searchParams = new URLSearchParams(
-		router.asPath.substring(router.asPath.indexOf("?"))
-	);
+	const searchParams = useSearchParams();
 	const verificationToken = searchParams.get("token");
 	if (!verificationToken) {
 		setTimeout(() => {

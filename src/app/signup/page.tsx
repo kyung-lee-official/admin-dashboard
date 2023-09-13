@@ -1,5 +1,7 @@
+"use client";
+
 import { AnimatePresence, motion } from "framer-motion";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import React, { useContext } from "react";
 import { Button, SaclContext } from "@/components";
 import { CheckingSeeded } from "@/components/sacl/CheckingSeeded";

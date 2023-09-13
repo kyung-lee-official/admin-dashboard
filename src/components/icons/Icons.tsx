@@ -1,3 +1,5 @@
+"use client";
+
 import { MenuKey, useSidebarStore } from "@/stores/sidebar";
 import classNames from "classnames";
 import Link from "next/link";

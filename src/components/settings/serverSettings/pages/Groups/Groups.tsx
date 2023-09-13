@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import { useAuthStore } from "@/stores/auth";
 import { useQuery } from "react-query";

@@ -58,7 +58,7 @@ export const Panel = () => {
 		<div
 			className="flex-none flex justify-between items-center h-[52px] p-2
 			text-lg
-			bg-gray-400 shadow-lg
+			bg-gray-300/40 shadow-lg
 			dark:bg-gray-900"
 		>
 			<div className="flex justify-start items-center gap-2">

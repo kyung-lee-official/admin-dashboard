@@ -1,18 +1,18 @@
+"use client";
+
 import { Loading } from "@/components/sacl/Loading";
 import { useAuthStore } from "@/stores/auth";
 import { getIsSignedIn } from "@/utilities/api/api";
 import { AxiosError } from "axios";
 import Lottie from "lottie-react";
-import { useRouter } from "next/router";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import lottieFiles from "@/components/lottie-animations/animation_congratulations.json";
 
 const Index = () => {
 	const router = useRouter();
-	const searchParams = new URLSearchParams(
-		router.asPath.substring(router.asPath.indexOf("?"))
-	);
+	const searchParams = useSearchParams();
 	const accessToken = searchParams.get("accessToken");
 	const isNewUser = searchParams.get("isNewUser") === "true" ? true : false;
 	const isSeedUser = searchParams.get("isSeedUser") === "true" ? true : false;

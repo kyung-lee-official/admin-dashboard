@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Sidebar, SubSidebar } from "../sidebar";
 import { Content } from "../content";

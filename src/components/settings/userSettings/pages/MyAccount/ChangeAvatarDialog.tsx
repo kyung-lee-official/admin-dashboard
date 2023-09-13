@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useRef, useState } from "react";
 import COS from "cos-js-sdk-v5";
 import { add, multiply } from "mathjs";

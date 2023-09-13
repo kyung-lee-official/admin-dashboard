@@ -1,3 +1,5 @@
+"use client";
+
 import { ArrowBackIcon, PlusIcon } from "@/components/icons";
 import { SettingsHeading } from "@/components/settings/ContentRegion";
 import { createGroup } from "@/utilities/api/api";

@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import { getRoles } from "@/utilities/api/api";
 import { useAuthStore } from "@/stores/auth";

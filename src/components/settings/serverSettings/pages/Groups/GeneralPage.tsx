@@ -1,3 +1,5 @@
+"use client";
+
 import { SettingsChangedIndicator } from "@/components/settings/SettingsChangedIndicator";
 import { useAuthStore } from "@/stores/auth";
 import { updateGroupById } from "@/utilities/api/api";

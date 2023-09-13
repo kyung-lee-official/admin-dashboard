@@ -1,3 +1,5 @@
+"use client";
+
 import { CloseIcon } from "..";
 
 export const SettingsHeading = (props: any) => {

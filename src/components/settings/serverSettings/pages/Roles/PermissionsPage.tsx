@@ -1,3 +1,5 @@
+"use client";
+
 import { SettingsChangedIndicator, Toggle } from "@/components";
 import { updateRoleById } from "@/utilities/api/api";
 import { queryClient } from "@/utilities/react-query/react-query";

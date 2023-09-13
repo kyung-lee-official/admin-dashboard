@@ -1,3 +1,5 @@
+"use client";
+
 import { CircleCheckIcon } from "@/components/icons";
 import { Theme, useThemeStore } from "@/stores/theme";
 import { SettingsHeading, SettingsSubHeading } from "@/components";

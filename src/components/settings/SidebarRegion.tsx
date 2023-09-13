@@ -1,3 +1,5 @@
+"use client";
+
 const SidebarSection = (props: any) => {
 	const {
 		heading,
@@ -16,7 +18,7 @@ const SidebarSection = (props: any) => {
 					<div
 						key={i}
 						className={`px-2 py-1 rounded-md cursor-pointer
-						${activePath === item.path && "bg-gray-400"} font-normal text-lg w-full`}
+						${activePath === item.path && "bg-gray-300"} font-normal text-lg w-full`}
 						onClick={() => {
 							setActivePath(item.path);
 						}}

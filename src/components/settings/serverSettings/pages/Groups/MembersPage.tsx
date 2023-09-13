@@ -1,3 +1,5 @@
+"use client";
+
 import { Avatar } from "@/components/avatar";
 import { CircleWithCrossIcon, SearchOutlineIcon } from "@/components/icons";
 import { useAuthStore } from "@/stores/auth";

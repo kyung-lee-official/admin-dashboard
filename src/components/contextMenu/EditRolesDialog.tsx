@@ -97,8 +97,8 @@ export const EditRolesDialog = (props: {
 			>
 				<h1 className="text-lg">Edit Roles</h1>
 				<div className="font-normal">
-					You're editing the roles of <strong>{user.nickname}</strong>{" "}
-					({user.email})
+					You&apos;re editing the roles of{" "}
+					<strong>{user.nickname}</strong> ({user.email})
 				</div>
 				<div className="flex w-full font-normal">
 					<input

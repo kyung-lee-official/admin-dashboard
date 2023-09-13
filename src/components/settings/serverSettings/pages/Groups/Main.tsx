@@ -1,3 +1,5 @@
+"use client";
+
 import { DeleteIcon, EditIcon, UserIcon } from "@/components/icons";
 import { SettingsHeading } from "@/components/settings/ContentRegion";
 import { Skeleton } from "@/components/skeleton";
@@ -105,10 +107,11 @@ export const Main = (props: any) => {
 				resources under the groups they are in.
 				{showSeeMore ? (
 					<div>
-						For example, Both Alice and Bob has role "Product
-						Manager" but Alice is in group "A" and Bob is in group
-						"B", Alice can only access products under group "A" and
-						Bob can only access products under group "B".
+						For example, Both Alice and Bob has role &quot;Product
+						Manager&quot; but Alice is in group &quot;A&quot; and
+						Bob is in group &quot;B&quot;, Alice can only access
+						products under group &quot;A&quot; and Bob can only
+						access products under group &quot;B&quot;.
 					</div>
 				) : (
 					<div

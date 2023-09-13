@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -5,7 +7,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import { AxiosError } from "axios";
 import { forgetPassword } from "@/utilities/api/api";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 
 interface IFormInput {
 	email: string;
@@ -46,7 +48,7 @@ const Index = () => {
 				</div>
 			) : (
 				<div
-					className="flex flex-col items-center w-96 px-10 py-6 gap-6
+					className="flex flex-col items-center w-[450px] px-10 py-6 gap-6
 					text-3xl text-gray-600
 					bg-gray-200
 					rounded-3xl shadow-lg"
@@ -117,7 +119,7 @@ const Index = () => {
 									? "bg-blue-500 hover:bg-blue-600"
 									: mutation.isLoading
 									? "bg-blue-400 cursor-wait"
-									: "bg-gray-500 cursor-not-allowed"
+									: "bg-gray-400 cursor-not-allowed"
 							}
 							rounded`}
 							disabled={!formState.isValid || mutation.isLoading}

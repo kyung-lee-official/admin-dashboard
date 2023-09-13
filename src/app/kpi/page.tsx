@@ -1,11 +1,11 @@
 "use client";
 
 import { MenuKey, useSidebarStore } from "@/stores/sidebar";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 import React, { useEffect } from "react";
 
 const Index = () => {
-	const router = useRouter();
+	const pathname = usePathname();
 	const setSelectedMenu = useSidebarStore((state) => state.setSelectedMenu);
 	const setSelectedSubMenu = useSidebarStore(
 		(state) => state.setSelectedSubMenu
@@ -13,7 +13,7 @@ const Index = () => {
 
 	useEffect(() => {
 		setSelectedMenu(MenuKey.KPI);
-		setSelectedSubMenu(MenuKey.KPI, router.pathname);
+		setSelectedSubMenu(MenuKey.KPI, pathname);
 	}, [setSelectedMenu, setSelectedSubMenu]);
 	return (
 		<div

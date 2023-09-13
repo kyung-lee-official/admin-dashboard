@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useRef, useState } from "react";
 import { SettingsHeading } from "../../ContentRegion";
 import { useAuthStore } from "@/stores/auth";

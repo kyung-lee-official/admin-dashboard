@@ -1,3 +1,5 @@
+"use client";
+
 import { useAuthStore } from "@/stores/auth";
 import { editUserGroups, getGroups } from "@/utilities/api/api";
 import { queryClient } from "@/utilities/react-query/react-query";
@@ -95,7 +97,7 @@ export const EditGroupsDialog = (props: {
 			>
 				<h1 className="text-lg">Edit Groups</h1>
 				<div className="font-normal">
-					You're editing the groups of{" "}
+					You&apos;re editing the groups of{" "}
 					<strong>{user.nickname}</strong> ({user.email})
 				</div>
 				<div className="flex w-full font-normal">
