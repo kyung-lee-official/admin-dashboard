@@ -43,18 +43,20 @@ export const Sacl = (props: any) => {
 		queryKey: ["refreshAccessToken"],
 		queryFn: async () => {
 			if (accessToken) {
-				const tokenPayload = window.atob(accessToken.split(".")[1]);
-				const { exp } = JSON.parse(tokenPayload);
-				const expirationTime = exp * 1000;
-				const now = Date.now();
-				if (expirationTime - now > 0) {
-					/* Token is not expired yet. */
-					const timeLeft = expirationTime - now;
-					if (timeLeft < ms("2h")) {
-						/* Token is about to expire. */
-						const res = await refreshAccessToken(accessToken);
-						setAccessToken(res.accessToken);
-						return res.accessToken;
+				if (accessToken.split(".")[1]) {
+					const tokenPayload = window.atob(accessToken.split(".")[1]);
+					const { exp } = JSON.parse(tokenPayload);
+					const expirationTime = exp * 1000;
+					const now = Date.now();
+					if (expirationTime - now > 0) {
+						/* Token is not expired yet. */
+						const timeLeft = expirationTime - now;
+						if (timeLeft < ms("2h")) {
+							/* Token is about to expire. */
+							const res = await refreshAccessToken(accessToken);
+							setAccessToken(res.accessToken);
+							return res.accessToken;
+						}
 					}
 				}
 			}
