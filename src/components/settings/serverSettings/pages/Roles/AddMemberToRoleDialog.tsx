@@ -8,7 +8,7 @@ import { uniq } from "@/utilities/data/data";
 import { queryClient } from "@/utilities/react-query/react-query";
 import { AxiosError } from "axios";
 import React, { useEffect, useRef, useState } from "react";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const AddMemberToRoleDialog = (props: {
 	activeRole: any;

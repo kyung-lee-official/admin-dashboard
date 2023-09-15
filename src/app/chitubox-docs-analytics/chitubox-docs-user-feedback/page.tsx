@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { useAuthStore } from "@/stores/auth";
 import { Geo } from "@/components/geo/Geo";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { usePathname } from "next/navigation";
 
@@ -52,6 +52,10 @@ const Index = () => {
 		}
 	};
 
+	const onQuery = () => {
+		feedbacksQuery.refetch();
+	};
+
 	useEffect(() => {
 		setSelectedMenu(MenuKey.CHITUBOX_DOCS_ANALYTICS);
 		setSelectedSubMenu(MenuKey.CHITUBOX_DOCS_ANALYTICS, pathname);
@@ -77,7 +81,7 @@ const Index = () => {
 				<Button
 					disabled={isEndBeforeStart}
 					isLoading={feedbacksQuery.isFetching}
-					onClick={feedbacksQuery.refetch}
+					onClick={onQuery}
 				>
 					Query
 				</Button>

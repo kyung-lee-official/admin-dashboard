@@ -6,7 +6,7 @@ import { add, multiply } from "mathjs";
 import { useAnimate } from "framer-motion";
 import { queryClient } from "@/utilities/react-query/react-query";
 import { uploadMyAvatar } from "@/utilities/api/api";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 
 export const ChangeAvatarDialog = (props: {
 	avatarInputRef: any;

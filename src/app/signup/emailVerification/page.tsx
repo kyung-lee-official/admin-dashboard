@@ -6,7 +6,7 @@ import { AxiosError } from "axios";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 const Index = () => {
 	const router = useRouter();

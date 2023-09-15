@@ -10,7 +10,7 @@ import { CheckingSignedIn } from "@/components/sacl/CheckingSignedIn";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { getIsSignUpAvailable, signUp } from "@/utilities/api/api";
 import { AxiosError } from "axios";
 
@@ -54,7 +54,7 @@ const SignUp = () => {
 	});
 
 	const mutation = useMutation<any, AxiosError, Data>({
-		mutationKey: "signUp",
+		mutationKey: ["signUp"],
 		mutationFn: (data: Data) => {
 			return signUp(data);
 		},
@@ -367,7 +367,7 @@ const Index = () => {
 	}
 
 	const isSignUpAvailableQuery = useQuery<any, AxiosError>({
-		queryKey: "isSignUpAvailable",
+		queryKey: ["isSignUpAvailable"],
 		queryFn: getIsSignUpAvailable,
 		retry: false,
 		refetchOnWindowFocus: false,

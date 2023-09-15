@@ -5,7 +5,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { RegularRoutes, SaclContext, SaclRoutes } from ".";
 import { Layout } from "../layout";
 import { useSidebarStore } from "@/stores/sidebar";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import {
 	getIsSeeded,
@@ -56,9 +56,19 @@ export const Sacl = (props: any) => {
 							const res = await refreshAccessToken(accessToken);
 							setAccessToken(res.accessToken);
 							return res.accessToken;
+						} else {
+							/* Ample time left. */
+							return null;
 						}
+					} else {
+						/* Token is expired. */
+						return null;
 					}
+				} else {
+					return null;
 				}
+			} else {
+				return null;
 			}
 		},
 		refetchInterval: refetchIntervalMs,

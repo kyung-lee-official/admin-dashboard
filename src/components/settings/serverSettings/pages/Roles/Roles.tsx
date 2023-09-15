@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { getRoles } from "@/utilities/api/api";
 import { useAuthStore } from "@/stores/auth";
 import { AxiosError } from "axios";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Edit } from "./Edit";
 import { Main } from "./Main";
 

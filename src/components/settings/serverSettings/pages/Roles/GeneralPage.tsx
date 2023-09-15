@@ -6,7 +6,7 @@ import { queryClient } from "@/utilities/react-query/react-query";
 import { useAuthStore } from "@/stores/auth";
 import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
-import { useMutation } from "react-query";
+import { useMutation } from "@tanstack/react-query";
 
 export const GeneralPage = (props: any) => {
 	const { rolesQuery, activeRoleId } = props;

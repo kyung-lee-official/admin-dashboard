@@ -4,11 +4,11 @@ import React, { useEffect } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useMutation } from "react-query";
 import { AxiosError } from "axios";
 import { resetPassword } from "@/utilities/api/api";
 import { motion } from "framer-motion";
 import { useSearchParams } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
 
 interface IFormInput {
 	password: string;
@@ -45,7 +45,7 @@ const Index = () => {
 	});
 
 	const mutation = useMutation<any, AxiosError<any>, IFormInput>({
-		mutationKey: "resetPassword",
+		mutationKey: ["resetPassword"],
 		mutationFn: (data: IFormInput) => {
 			return resetPassword({
 				password: data.password,

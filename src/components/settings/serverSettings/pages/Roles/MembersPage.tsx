@@ -6,8 +6,8 @@ import { useAuthStore } from "@/stores/auth";
 import { updateRoleById } from "@/utilities/api/api";
 import { queryClient } from "@/utilities/react-query/react-query";
 import { useRef, useState } from "react";
-import { useMutation } from "react-query";
 import { AddMemberToRoleDialog } from "./AddMemberToRoleDialog";
+import { useMutation } from "@tanstack/react-query";
 
 export const MembersPage = (props: any) => {
 	const { rolesQuery, activeRoleId } = props;

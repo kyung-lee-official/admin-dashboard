@@ -4,10 +4,10 @@ import React from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useMutation } from "react-query";
 import { AxiosError } from "axios";
 import { forgetPassword } from "@/utilities/api/api";
 import { motion } from "framer-motion";
+import { useMutation } from "@tanstack/react-query";
 
 interface IFormInput {
 	email: string;
@@ -24,7 +24,7 @@ const Index = () => {
 	});
 
 	const mutation = useMutation<any, AxiosError, IFormInput>({
-		mutationKey: "forgetPassword",
+		mutationKey: ["forgetPassword"],
 		mutationFn: (data: IFormInput) => {
 			return forgetPassword(data);
 		},

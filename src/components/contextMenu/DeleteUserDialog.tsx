@@ -3,9 +3,9 @@
 import { useAuthStore } from "@/stores/auth";
 import { deleteUserById } from "@/utilities/api/api";
 import { queryClient } from "@/utilities/react-query/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import React, { useEffect, useRef } from "react";
-import { useMutation } from "react-query";
 
 export const DeleteUserDialog = (props: {
 	user: any;

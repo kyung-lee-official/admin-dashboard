@@ -3,12 +3,12 @@
 import React, { useEffect, useState } from "react";
 import { SettingsHeading, SettingsSubHeading } from "../../ContentRegion";
 import { SettingsChangedIndicator, Skeleton, Toggle } from "@/components";
-import { useMutation, useQuery } from "react-query";
 import { AxiosError } from "axios";
 import { getServerSettings, updateServerSettings } from "@/utilities/api/api";
 import { useAuthStore } from "@/stores/auth";
 import { AnimatePresence } from "framer-motion";
 import { queryClient } from "@/utilities/react-query/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 export const Server = (props: any) => {
 	const { accessToken } = useAuthStore();

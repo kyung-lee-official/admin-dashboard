@@ -6,8 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { AxiosError } from "axios";
 import { motion } from "framer-motion";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useMutation } from "react-query";
 import { z } from "zod";
+import { useMutation } from "@tanstack/react-query";
 
 interface IFormInput {
 	oldPassword: string;
@@ -46,7 +46,7 @@ export const ChangePasswordDialog = (props: any) => {
 	});
 
 	const mutation = useMutation<any, AxiosError, IFormInput>({
-		mutationKey: "changePassword",
+		mutationKey: ["changePassword"],
 		mutationFn: (data: IFormInput) => {
 			return changePassword(userId, data, accessToken);
 		},

@@ -5,9 +5,9 @@ import { SettingsHeading } from "@/components/settings/ContentRegion";
 import { Skeleton } from "@/components/skeleton";
 import { createRole, deleteRoleById } from "@/utilities/api/api";
 import { queryClient } from "@/utilities/react-query/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useAnimate } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { useMutation } from "react-query";
 
 const Divider = () => {
 	return <div className="w-full h-[1px] my-4 bg-slate-200" />;

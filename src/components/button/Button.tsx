@@ -15,7 +15,7 @@ type BaseButtonProps = {
 	disabled?: boolean;
 	children?: any;
 	isLoading?: boolean;
-	onClick?: () => void;
+	onClick?: () => any;
 };
 
 type NativeButtonProps = BaseButtonProps &

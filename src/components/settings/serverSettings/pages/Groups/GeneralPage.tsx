@@ -4,9 +4,9 @@ import { SettingsChangedIndicator } from "@/components/settings/SettingsChangedI
 import { useAuthStore } from "@/stores/auth";
 import { updateGroupById } from "@/utilities/api/api";
 import { queryClient } from "@/utilities/react-query/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { AnimatePresence } from "framer-motion";
 import React, { useEffect, useState } from "react";
-import { useMutation } from "react-query";
 
 export const GeneralPage = (props: any) => {
 	const { groupsQuery, activeGroupId } = props;

@@ -5,9 +5,9 @@ import { SettingsHeading } from "@/components/settings/ContentRegion";
 import { createGroup } from "@/utilities/api/api";
 import { queryClient } from "@/utilities/react-query/react-query";
 import React, { useState } from "react";
-import { useMutation } from "react-query";
 import { GeneralPage } from "./GeneralPage";
 import { MembersPage } from "./MembersPage";
+import { useMutation } from "@tanstack/react-query";
 
 export const Edit = (props: any) => {
 	const {

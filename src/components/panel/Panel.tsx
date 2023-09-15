@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { SettingsIcon } from "..";
 import { Settings, SettingsMask } from "../settings";
 import { AnimatePresence } from "framer-motion";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useAuthStore } from "@/stores/auth";
 import { downloadAvatar, getMyInfo } from "@/utilities/api/api";

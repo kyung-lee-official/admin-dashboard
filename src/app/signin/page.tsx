@@ -11,9 +11,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import React, { useContext, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useMutation } from "react-query";
 import { z } from "zod";
 import { AxiosError } from "axios";
+import { useMutation } from "@tanstack/react-query";
 
 interface IFormInput {
 	email: string;
@@ -35,7 +35,7 @@ const SignIn = () => {
 	});
 
 	const mutation = useMutation<any, AxiosError, IFormInput>({
-		mutationKey: "signIn",
+		mutationKey: ["signIn"],
 		mutationFn: (data: IFormInput) => {
 			return signIn(data);
 		},

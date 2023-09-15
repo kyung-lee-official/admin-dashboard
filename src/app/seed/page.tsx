@@ -12,9 +12,9 @@ import Lottie from "lottie-react";
 import { useRouter } from "next/navigation";
 import React, { useContext } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useMutation } from "react-query";
 import { z } from "zod";
 import lottieFiles from "@/components/lottie-animations/animation_congratulations.json";
+import { useMutation } from "@tanstack/react-query";
 
 interface IFormInput {
 	email: string;

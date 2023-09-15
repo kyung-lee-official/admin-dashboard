@@ -7,7 +7,7 @@ import { AxiosError } from "axios";
 import Lottie from "lottie-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import lottieFiles from "@/components/lottie-animations/animation_congratulations.json";
 
 const Index = () => {

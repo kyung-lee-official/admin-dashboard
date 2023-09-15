@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { SettingsHeading } from "../../ContentRegion";
 import { useAuthStore } from "@/stores/auth";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { getUsers } from "@/utilities/api/api";
 import { Skeleton } from "@/components/skeleton";
