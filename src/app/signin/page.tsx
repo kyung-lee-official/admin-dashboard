@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, GoogleIcon, SaclContext } from "@/components";
+import { Button, GoogleIcon } from "@/components";
 import { CheckingSeeded } from "@/components/sacl/CheckingSeeded";
 import { CheckingSignedIn } from "@/components/sacl/CheckingSignedIn";
 import { NetworkError } from "@/components/sacl/NetworkError";
@@ -9,7 +9,7 @@ import { useAuthStore } from "@/stores/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { AxiosError } from "axios";
@@ -191,95 +191,15 @@ const SignIn = () => {
 	);
 };
 
-const SaclComponentWrapper = () => {
-	const { saclStatus } = useContext(SaclContext);
-
-	switch (saclStatus) {
-		case "isSeededQuery.isLoading":
-			return (
-				<motion.div
-					initial={{ opacity: 1 }}
-					animate={{ opacity: 1 }}
-					exit={{ opacity: 0 }}
-				>
-					<CheckingSeeded />
-				</motion.div>
-			);
-			break;
-		case "isSeededQuery.isError":
-			return (
-				<motion.div
-					initial={{ opacity: 0, y: -20 }}
-					animate={{ opacity: 1, y: 0 }}
-					exit={{ opacity: 0, y: 20 }}
-				>
-					<NetworkError />
-				</motion.div>
-			);
-			break;
-		case "isSignedInQuery.isLoading":
-			return (
-				<motion.div
-					initial={{ opacity: 1 }}
-					animate={{ opacity: 1 }}
-					exit={{ opacity: 0 }}
-				>
-					<CheckingSignedIn />
-				</motion.div>
-			);
-			break;
-		case "isSignedInQuery.isError":
-			return (
-				<motion.div
-					initial={{ opacity: 0, y: -20 }}
-					animate={{ opacity: 1, y: 0 }}
-					exit={{ opacity: 0, y: 20 }}
-				>
-					<NetworkError />
-				</motion.div>
-			);
-			break;
-		default:
-			return (
-				<motion.div
-					initial={{ opacity: 1, y: -20 }}
-					animate={{ opacity: 1, y: 0 }}
-					exit={{ opacity: 0, y: 20 }}
-				>
-					{null}
-				</motion.div>
-			);
-			break;
-	}
-};
-
 const Index = () => {
-	const router = useRouter();
-	const { saclStatus } = useContext(SaclContext);
-
-	if (saclStatus === "isSeededQuery.notSeeded") {
-		router.push("/seed");
-	}
-
-	if (saclStatus === "isSignedInQuery.isSuccess") {
-		router.push("/home");
-	}
-
 	return (
-		<AnimatePresence mode="wait">
-			{saclStatus === "isSignedInQuery.unauthorized" ? (
-				<motion.div
-					key={saclStatus}
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					exit={{ opacity: 0 }}
-				>
-					<SignIn />
-				</motion.div>
-			) : (
-				<SaclComponentWrapper key={saclStatus} />
-			)}
-		</AnimatePresence>
+		<motion.div
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			exit={{ opacity: 0 }}
+		>
+			<SignIn />
+		</motion.div>
 	);
 };
 

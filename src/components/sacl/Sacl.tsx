@@ -1,8 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import React, { useContext, useEffect, useState } from "react";
-import { RegularRoutes, SaclContext, SaclRoutes } from ".";
+import React, { useEffect, useState } from "react";
 import { Layout } from "../layout";
 import { useSidebarStore } from "@/stores/sidebar";
 import { useQuery } from "@tanstack/react-query";
@@ -15,7 +14,8 @@ import {
 } from "@/utilities/api/api";
 import { useAuthStore } from "@/stores/auth";
 import ms from "ms";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { Loading } from "./Loading";
 
 /**
  * SACL (Seed and Auth Checking Layer) UI
@@ -25,8 +25,9 @@ import { usePathname } from "next/navigation";
 export const Sacl = (props: any) => {
 	const pathname = usePathname();
 	const { children } = props;
+	const router = useRouter();
 	const saclRoutes = ["/", "/signin", "/signup", "/seed"];
-	const { setSaclStatus } = useContext(SaclContext);
+	const [showChildren, setShowChildren] = useState(false);
 	const accessToken = useAuthStore((state) => state.accessToken);
 	const setAccessToken = useAuthStore((state) => state.setAccessToken);
 	const tencentCosTempCredential = useAuthStore(
@@ -38,6 +39,27 @@ export const Sacl = (props: any) => {
 	const selectedSubMenu = useSidebarStore((state) => state.selectedSubMenu);
 	const enableRefetch: boolean = !saclRoutes.includes(pathname);
 	const refetchIntervalMs = enableRefetch && 10000;
+
+	const tencentCosTempCredentialQuery = useQuery<any, AxiosError>({
+		queryKey: ["tencentCosTempCredential"],
+		queryFn: async () => {
+			const tempCredential = await getTencentCosTempCredential(
+				accessToken
+			);
+			return tempCredential;
+		},
+		retry: false,
+		refetchOnWindowFocus: false,
+		enabled:
+			tencentCosTempCredential === null ||
+			tencentCosTempCredential?.expiredTime * 1000 - Date.now() < 0,
+	});
+
+	useEffect(() => {
+		if (tencentCosTempCredentialQuery.isSuccess) {
+			setTencentCosTempCredential(tencentCosTempCredentialQuery.data);
+		}
+	}, [tencentCosTempCredentialQuery]);
 
 	const refreshAccessTokenQuery = useQuery<any, AxiosError>({
 		queryKey: ["refreshAccessToken"],
@@ -91,88 +113,105 @@ export const Sacl = (props: any) => {
 		refetchOnWindowFocus: false,
 		enabled: isSeededQuery.data?.isSeeded,
 		refetchInterval: refetchIntervalMs,
+		onSuccess: (data) => {},
 	});
 
 	useEffect(() => {
-		if (isSeededQuery.isLoading) {
-			setSaclStatus("isSeededQuery.isLoading");
-		} else if (isSeededQuery.isError) {
-			setSaclStatus("isSeededQuery.isError");
-		} else {
-			if (isSeededQuery.isSuccess) {
-				if (isSeededQuery.data.isSeeded) {
-					if (isSignedInQuery.isLoading) {
-						setSaclStatus("isSignedInQuery.isLoading");
-					} else if (isSignedInQuery.isError) {
-						if (isSignedInQuery.error?.response?.status === 401) {
+		if (isSeededQuery.isSuccess) {
+			/* Response received */
+			if (isSeededQuery.data?.isSeeded) {
+				/* Seeded */
+				if (isSignedInQuery.isLoading) {
+					/* Loading */
+				} else if (isSignedInQuery.isError) {
+					/* Error */
+					if (isSignedInQuery.error.response?.status === 401) {
+						/* Unauthorized */
+						if (pathname !== "/signin") {
 							const timer = setTimeout(() => {
-								setSaclStatus("isSignedInQuery.unauthorized");
-							}, 500);
+								router.push("/signin");
+							}, 1500);
 							return () => clearTimeout(timer);
 						} else {
-							setSaclStatus("isSignedInQuery.isError");
+							setShowChildren(true);
 						}
 					} else {
-						if (isSignedInQuery.isSuccess) {
-							setSaclStatus("isSignedInQuery.isSuccess");
-						}
+						/* Network Error */
 					}
 				} else {
+					/* Signed In */
+					if (saclRoutes.includes(pathname)) {
+						router.push("/home");
+					} else {
+						setShowChildren(true);
+					}
+				}
+			} else {
+				/* Not Seededs */
+				if (pathname !== "/seed") {
 					const timer = setTimeout(() => {
-						setSaclStatus("isSeededQuery.notSeeded");
+						router.push("/seed");
 					}, 1500);
 					return () => clearTimeout(timer);
+				} else {
+					setShowChildren(true);
 				}
 			}
+		} else {
+			/* Loading or no response received */
 		}
-	}, [isSeededQuery, isSignedInQuery]);
+	}, [isSeededQuery.status, isSignedInQuery.status, pathname]);
 
-	const tencentCosTempCredentialQuery = useQuery<any, AxiosError>({
-		queryKey: ["tencentCosTempCredential"],
-		queryFn: async () => {
-			const tempCredential = await getTencentCosTempCredential(
-				accessToken
-			);
-			return tempCredential;
-		},
-		retry: false,
-		refetchOnWindowFocus: false,
-		enabled:
-			tencentCosTempCredential === null ||
-			tencentCosTempCredential?.expiredTime * 1000 - Date.now() < 0,
-	});
-
-	useEffect(() => {
-		if (tencentCosTempCredentialQuery.isSuccess) {
-			setTencentCosTempCredential(tencentCosTempCredentialQuery.data);
+	if (isSeededQuery.isError) {
+		if (isSeededQuery.error instanceof AxiosError) {
+			if (isSeededQuery.error.code === "ERR_NETWORK") {
+				return <div>Network Error</div>;
+			}
+		} else {
+			return <div>Unknown Error</div>;
 		}
-	}, [tencentCosTempCredentialQuery]);
+	}
 
-	/* Pages are separated into SACL pages and regular pages to support page-switching animations. */
+	if (isSignedInQuery.isError) {
+		if (isSignedInQuery.error instanceof AxiosError) {
+			if (isSignedInQuery.error.code === "ERR_NETWORK") {
+				return <div>Network Error</div>;
+			} else {
+			}
+		} else {
+			return <div>Unknown Error</div>;
+		}
+	}
+
+	/**
+	 * Pages are separated into SACL pages and regular pages to support page-switching animations.
+	 */
 	return (
 		<AnimatePresence mode="wait">
-			{saclRoutes.includes(pathname) ? (
-				<motion.div
-					className="auth-mask"
-					key={"saclPages"}
-					initial={{ opacity: 1 }}
-					animate={{ opacity: 1 }}
-					exit={{ opacity: 0 }}
-				>
-					<SaclRoutes>{children}</SaclRoutes>
-				</motion.div>
-			) : (
+			{showChildren ? (
 				<motion.div
 					key={"regularPages"}
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 					exit={{ opacity: 0 }}
 				>
-					<RegularRoutes>
+					{saclRoutes.includes(pathname) ? (
+						<div className="auth-mask">{children}</div>
+					) : (
 						<Layout heading={selectedSubMenu?.title}>
 							{children}
 						</Layout>
-					</RegularRoutes>
+					)}
+				</motion.div>
+			) : (
+				<motion.div
+					key={"sacl"}
+					className="auth-mask"
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					exit={{ opacity: 0 }}
+				>
+					<Loading hint="Loading" />
 				</motion.div>
 			)}
 		</AnimatePresence>

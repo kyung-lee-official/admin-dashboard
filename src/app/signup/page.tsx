@@ -2,8 +2,8 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import React, { useContext } from "react";
-import { Button, SaclContext } from "@/components";
+import React from "react";
+import { Button } from "@/components";
 import { CheckingSeeded } from "@/components/sacl/CheckingSeeded";
 import { NetworkError } from "@/components/sacl/NetworkError";
 import { CheckingSignedIn } from "@/components/sacl/CheckingSignedIn";
@@ -292,80 +292,7 @@ const SignUpNotAvailable = () => {
 	);
 };
 
-const SaclComponentWrapper = () => {
-	const { saclStatus } = useContext(SaclContext);
-
-	switch (saclStatus) {
-		case "isSeededQuery.isLoading":
-			return (
-				<motion.div
-					initial={{ opacity: 1 }}
-					animate={{ opacity: 1 }}
-					exit={{ opacity: 0 }}
-				>
-					<CheckingSeeded />
-				</motion.div>
-			);
-			break;
-		case "isSeededQuery.isError":
-			return (
-				<motion.div
-					initial={{ opacity: 0, y: -20 }}
-					animate={{ opacity: 1, y: 0 }}
-					exit={{ opacity: 0, y: 20 }}
-				>
-					<NetworkError />
-				</motion.div>
-			);
-			break;
-		case "isSignedInQuery.isLoading":
-			return (
-				<motion.div
-					initial={{ opacity: 1 }}
-					animate={{ opacity: 1 }}
-					exit={{ opacity: 0 }}
-				>
-					<CheckingSignedIn />
-				</motion.div>
-			);
-			break;
-		case "isSignedInQuery.isError":
-			return (
-				<motion.div
-					initial={{ opacity: 0, y: -20 }}
-					animate={{ opacity: 1, y: 0 }}
-					exit={{ opacity: 0, y: 20 }}
-				>
-					<NetworkError />
-				</motion.div>
-			);
-			break;
-		default:
-			return (
-				<motion.div
-					initial={{ opacity: 1, y: -20 }}
-					animate={{ opacity: 1, y: 0 }}
-					exit={{ opacity: 0, y: 20 }}
-				>
-					{null}
-				</motion.div>
-			);
-			break;
-	}
-};
-
 const Index = () => {
-	const router = useRouter();
-	const { saclStatus } = useContext(SaclContext);
-
-	if (saclStatus === "isSeededQuery.notSeeded") {
-		router.push("/seed");
-	}
-
-	if (saclStatus === "isSignedInQuery.isSuccess") {
-		router.push("/home");
-	}
-
 	const isSignUpAvailableQuery = useQuery<any, AxiosError>({
 		queryKey: ["isSignUpAvailable"],
 		queryFn: getIsSignUpAvailable,
@@ -373,37 +300,35 @@ const Index = () => {
 		refetchOnWindowFocus: false,
 	});
 
-	return (
-		<AnimatePresence mode="wait">
-			{saclStatus === "isSignedInQuery.unauthorized" ? (
-				isSignUpAvailableQuery.isLoading ? (
-					<div>Loading...</div>
-				) : isSignUpAvailableQuery.isError ? (
-					<NetworkError />
-				) : isSignUpAvailableQuery.data.isSignUpAvailable ? (
-					<motion.div
-						key={saclStatus}
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						exit={{ opacity: 0 }}
-					>
-						<SignUp />
-					</motion.div>
-				) : (
-					<motion.div
-						key={"signUpNotAvailable"}
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						exit={{ opacity: 0 }}
-					>
-						<SignUpNotAvailable />
-					</motion.div>
-				)
-			) : (
-				<SaclComponentWrapper key={saclStatus} />
-			)}
-		</AnimatePresence>
-	);
+	if (isSignUpAvailableQuery.isLoading) {
+		return <div>Loading...</div>;
+	}
+
+	if (isSignUpAvailableQuery.isError) {
+		return <NetworkError />;
+	}
+
+	if (isSignUpAvailableQuery.data.isSignUpAvailable) {
+		return (
+			<motion.div
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1 }}
+				exit={{ opacity: 0 }}
+			>
+				<SignUp />
+			</motion.div>
+		);
+	} else {
+		return (
+			<motion.div
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1 }}
+				exit={{ opacity: 0 }}
+			>
+				<SignUpNotAvailable />
+			</motion.div>
+		);
+	}
 };
 
 export default Index;
