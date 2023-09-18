@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { changePassword } from "@/utilities/api/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AxiosError } from "axios";
@@ -38,8 +38,23 @@ const schema = z
 		path: ["confirmNewPassword"],
 	});
 
-export const ChangePasswordDialog = (props: any) => {
-	const { dialogRef, userId, accessToken } = props;
+type ChangePasswordDialogProps = {
+	userId: string;
+	accessToken: string | null | undefined;
+	showChangePasswordDialog: boolean;
+	setShowChangePasswordDialog: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export const ChangePasswordDialog = (props: ChangePasswordDialogProps) => {
+	const {
+		userId,
+		accessToken,
+		showChangePasswordDialog,
+		setShowChangePasswordDialog,
+	} = props;
+
+	const changePasswordDialogRef = useRef<HTMLDialogElement | null>(null);
+
 	const { register, handleSubmit, formState } = useForm<IFormInput>({
 		mode: "onChange",
 		resolver: zodResolver(schema),
@@ -56,11 +71,27 @@ export const ChangePasswordDialog = (props: any) => {
 		mutation.mutate(data);
 	};
 
+	useEffect(() => {
+		if (showChangePasswordDialog) {
+			changePasswordDialogRef.current!.showModal();
+		}
+	}, []);
+
+	useEffect(() => {
+		if (showChangePasswordDialog) {
+			changePasswordDialogRef.current!.showModal();
+		} else {
+			changePasswordDialogRef.current!.close();
+		}
+	}, [showChangePasswordDialog]);
+
 	return (
-		<dialog
-			ref={dialogRef}
+		<motion.dialog
+			ref={changePasswordDialogRef}
+			initial={{ opacity: 0, scale: 0.9 }}
+			animate={{ opacity: 1, scale: 1 }}
 			className="w-[440px]
-				bg-gray-300
+				bg-gray-200
 				shadow-lg rounded-md backdrop-blur-sm
 				backdrop:bg-black/50 backdrop:[backdrop-filter:blur(2px)]"
 		>
@@ -71,17 +102,14 @@ export const ChangePasswordDialog = (props: any) => {
 					<button
 						className="w-24 p-2 bg-gray-300 hover:bg-gray-400 rounded"
 						onClick={() => {
-							mutation.reset();
-							if (dialogRef.current) {
-								dialogRef.current.close();
-							}
+							setShowChangePasswordDialog(false);
 						}}
 					>
 						Close
 					</button>
 				</div>
 			) : (
-				<div className="flex flex-col gap-6">
+				<div className="flex flex-col gap-6 p-6">
 					<div className="flex justify-center font-bold">
 						Update your password
 					</div>
@@ -220,9 +248,7 @@ export const ChangePasswordDialog = (props: any) => {
 							rounded"
 							onClick={() => {
 								mutation.reset();
-								if (dialogRef.current) {
-									dialogRef.current.close();
-								}
+								setShowChangePasswordDialog(false);
 							}}
 						>
 							Cancel
@@ -247,6 +273,6 @@ export const ChangePasswordDialog = (props: any) => {
 					</div>
 				</div>
 			)}
-		</dialog>
+		</motion.dialog>
 	);
 };

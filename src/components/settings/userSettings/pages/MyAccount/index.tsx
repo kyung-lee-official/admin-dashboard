@@ -272,8 +272,14 @@ export const MyAccount = () => {
 	const setTencentCosTempCredential = useAuthStore(
 		(state) => state.setTencentCosTempCredential
 	);
+
+	const [showChangePasswordDialog, setShowChangePasswordDialog] =
+		useState<boolean>(false);
+
 	const myInfo = queryClient.getQueryData<any>(["myInfo", accessToken]);
+
 	const changePasswordDialogRef = useRef<HTMLDialogElement | null>(null);
+
 	return (
 		<div className="flex flex-col gap-6">
 			<SettingsHeading>My Account</SettingsHeading>
@@ -283,19 +289,18 @@ export const MyAccount = () => {
 			<div>
 				<Button
 					onClick={() => {
-						if (changePasswordDialogRef.current) {
-							changePasswordDialogRef.current.showModal();
-						}
+						setShowChangePasswordDialog(true);
 					}}
 				>
 					Change Password
 				</Button>
 			</div>
-			{myInfo && (
+			{showChangePasswordDialog && (
 				<ChangePasswordDialog
-					dialogRef={changePasswordDialogRef}
 					userId={myInfo.id}
 					accessToken={accessToken}
+					showChangePasswordDialog={showChangePasswordDialog}
+					setShowChangePasswordDialog={setShowChangePasswordDialog}
 				/>
 			)}
 			<Divider />
