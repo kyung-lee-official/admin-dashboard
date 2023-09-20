@@ -198,7 +198,7 @@ export const Main = (props: any) => {
 						ref={deleteDialogRef}
 						className="w-[440px]
 						bg-gray-400
-						shadow-lg rounded-md backdrop:bg-black/70 backdrop:[backdrop-filter:blur(2px)]"
+						shadow-lg rounded-md backdrop:bg-black/90 backdrop:[backdrop-filter:blur(2px)]"
 					>
 						<div
 							className="flex flex-col justify-center items-center gap-8

@@ -18,7 +18,7 @@ export const CheckboxList = (props: {
 	return (
 		<ul
 			className="flex flex-col justify-start items-start w-full h-44 gap-1 p-4
-			bg-gray-200 rounded scrollbar
+			bg-gray-100 rounded scrollbar
 			overflow-y-scroll"
 		>
 			{availableOptions?.map((availableOption: any) => {
@@ -53,7 +53,7 @@ const CheckboxItem = (props: {
 	return (
 		<li
 			className="flex justify-between items-center gap-2 w-full px-2 py-1
-			hover:bg-gray-300 rounded cursor-pointer select-none"
+			hover:bg-gray-200 rounded cursor-pointer select-none"
 			onClick={() => {
 				if (checked) {
 					setNewSelectedOptions(

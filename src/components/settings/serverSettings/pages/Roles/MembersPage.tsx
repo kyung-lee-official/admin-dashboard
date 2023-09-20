@@ -5,7 +5,7 @@ import { CircleWithCrossIcon, SearchOutlineIcon } from "@/components/icons";
 import { useAuthStore } from "@/stores/auth";
 import { updateRoleById } from "@/utilities/api/api";
 import { queryClient } from "@/utilities/react-query/react-query";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AddMemberToRoleDialog } from "./AddMemberToRoleDialog";
 import { useMutation } from "@tanstack/react-query";
 
@@ -13,6 +13,8 @@ export const MembersPage = (props: any) => {
 	const { rolesQuery, activeRoleId } = props;
 	const accessToken = useAuthStore((state) => state.accessToken);
 	const [showAddMemberDialog, setShowAddMemberDialog] =
+		useState<boolean>(false);
+	const [showDeleteMemberDialog, setShowDeleteMemberDialog] =
 		useState<boolean>(false);
 
 	const activeRole = rolesQuery.data.find((role: any) => {
@@ -39,9 +41,19 @@ export const MembersPage = (props: any) => {
 			queryClient.invalidateQueries({
 				queryKey: ["getRoles", accessToken],
 			});
-			removeMemberFromRoleDialogRef.current!.close();
+			setShowDeleteMemberDialog(false);
 		},
 	});
+
+	useEffect(() => {
+		if (removeMemberFromRoleDialogRef.current) {
+			if (showDeleteMemberDialog) {
+				removeMemberFromRoleDialogRef.current.showModal();
+			} else {
+				removeMemberFromRoleDialogRef.current.close();
+			}
+		}
+	}, [showDeleteMemberDialog]);
 
 	return (
 		<div className="flex flex-col gap-4 py-2">
@@ -51,14 +63,14 @@ export const MembersPage = (props: any) => {
 						className="w-full h-8 px-2
 						text-gray-600 dark:text-gray-400
 						font-medium
-						bg-gray-300
+						bg-gray-200
 						rounded-l outline-none
 						placeholder-gray-500 dark:placeholder-gray-400"
 						placeholder="Search Members"
 					/>
 					<div
 						className="flex justify-center items-center w-10
-						bg-gray-300
+						bg-gray-200
 						rounded-r"
 					>
 						<SearchOutlineIcon size={24} />
@@ -103,63 +115,78 @@ export const MembersPage = (props: any) => {
 						<div
 							className="text-gray-400 hover:text-gray-500 cursor-pointer"
 							onClick={() => {
-								removeMemberFromRoleDialogRef.current!.showModal();
+								setShowDeleteMemberDialog(true);
 							}}
 						>
 							<CircleWithCrossIcon size={20} />
 						</div>
-						<dialog
-							ref={removeMemberFromRoleDialogRef}
-							className="w-[440px]
-							bg-gray-400
-							shadow-lg rounded-md backdrop:bg-black/70 backdrop:[backdrop-filter:blur(2px)]"
-						>
-							<div
-								className="flex flex-col justify-center items-center gap-8
-								text-gray-600"
-							>
-								<h1 className="text-lg">Remove Member</h1>
-								<div className="font-normal">
-									Remove <strong>{user.nickname}</strong> (
-									{user.email}) from role{" "}
-									<strong>{activeRole.name}</strong>?
-								</div>
-								<div className="flex gap-6">
-									<button
-										className={
-											removeUserMutation.isLoading
-												? `flex justify-center items-center w-20 h-8
-												text-gray-600
-												bg-gray-400 hover:bg-gray-300 rounded outline-none cursor-wait`
-												: `flex justify-center items-center w-20 h-8
-												text-gray-600
-												bg-gray-200 hover:bg-gray-300 rounded outline-none`
-										}
-										onClick={() => {
-											removeMemberFromRoleDialogRef.current!.close();
-										}}
+						{showDeleteMemberDialog && (
+							<dialog
+								ref={removeMemberFromRoleDialogRef}
+								className="w-[440px]
+								bg-gray-200
+								shadow-lg rounded-md backdrop:bg-black/90 backdrop:[backdrop-filter:blur(2px)]"
+								onCancel={(
+									e: React.SyntheticEvent<
+										HTMLDialogElement,
+										Event
 									>
-										Cancel
-									</button>
-									<button
-										className={
-											removeUserMutation.isLoading
-												? `flex justify-center items-center w-20 h-8
+								) => {
+									e.preventDefault();
+									setShowDeleteMemberDialog(false);
+								}}
+							>
+								<div
+									className="flex flex-col justify-center items-center p-6 gap-8
+									text-gray-600"
+								>
+									<h1 className="text-lg">Remove Member</h1>
+									<div className="font-normal">
+										Remove <strong>{user.nickname}</strong>{" "}
+										({user.email}) from role{" "}
+										<strong>{activeRole.name}</strong>?
+									</div>
+									<div className="flex gap-6">
+										<button
+											className={
+												removeUserMutation.isLoading
+													? `flex justify-center items-center w-20 h-8
+												text-gray-700/60
+												bg-gray-300/60 rounded outline-none cursor-wait`
+													: `flex justify-center items-center w-20 h-8
+												text-gray-700
+												bg-gray-300 hover:bg-gray-400 rounded outline-none`
+											}
+											onClick={() => {
+												setShowDeleteMemberDialog(
+													false
+												);
+											}}
+										>
+											Cancel
+										</button>
+										<button
+											className={
+												removeUserMutation.isLoading
+													? `flex justify-center items-center w-20 h-8
 												text-gray-100
-												bg-red-500/50 rounded cursor-wait`
-												: `flex justify-center items-center w-20 h-8
+												bg-red-500/60 rounded cursor-wait`
+													: `flex justify-center items-center w-20 h-8
 												text-gray-100
 												bg-red-500 hover:bg-red-600 rounded`
-										}
-										onClick={() => {
-											removeUserMutation.mutate(user.id);
-										}}
-									>
-										Remove
-									</button>
+											}
+											onClick={() => {
+												removeUserMutation.mutate(
+													user.id
+												);
+											}}
+										>
+											Remove
+										</button>
+									</div>
 								</div>
-							</div>
-						</dialog>
+							</dialog>
+						)}
 					</div>
 				);
 			})}

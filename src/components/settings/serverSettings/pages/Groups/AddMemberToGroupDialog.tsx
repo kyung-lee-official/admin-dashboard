@@ -1,31 +1,30 @@
 "use client";
 
-import { SearchOutlineIcon } from "@/components/icons";
-import { CheckboxList } from "@/components/input";
+import { CheckboxList, SearchOutlineIcon } from "@/components";
 import { useAuthStore } from "@/stores/auth";
-import { getUsers, updateRoleById } from "@/utilities/api/api";
+import { getUsers, updateGroupById } from "@/utilities/api/api";
 import { uniq } from "@/utilities/data/data";
 import { queryClient } from "@/utilities/react-query/react-query";
-import { AxiosError } from "axios";
-import React, { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { useEffect, useRef, useState } from "react";
 
-export const AddMemberToRoleDialog = (props: {
-	activeRole: any;
+const AddMemberToGroupDialog = (props: {
+	activeGroup: any;
 	showAddMemberDialog: boolean;
 	setShowAddMemberDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-	const { activeRole, showAddMemberDialog, setShowAddMemberDialog } = props;
+	const { activeGroup, showAddMemberDialog, setShowAddMemberDialog } = props;
 	const accessToken = useAuthStore((state) => state.accessToken);
-	const [originalRoleMembers, setOriginalRoleMembers] = useState<unknown[]>(
+	const [originalGroupMembers, setOriginalGroupMembers] = useState<unknown[]>(
 		[]
 	);
-	const [newlySelectedRoleMembers, setNewlySelectedRoleMembers] = useState<
+	const [newlySelectedGroupMembers, setNewlySelectedGroupMembers] = useState<
 		unknown[]
 	>([]);
 	const [searchResults, setSearchResults] = useState<any[]>([]);
 
-	const addMemberToRoleDialogRef = useRef<HTMLDialogElement | null>(null);
+	const addMemberToGroupDialogRef = useRef<HTMLDialogElement | null>(null);
 
 	const usersQuery = useQuery<any, AxiosError>({
 		queryKey: ["getUsers", accessToken],
@@ -39,52 +38,52 @@ export const AddMemberToRoleDialog = (props: {
 
 	const addMembersMutation = useMutation({
 		mutationFn: async ({
-			newRoleMemberIds,
+			newGroupMemberIds,
 		}: {
-			newRoleMemberIds: string[];
+			newGroupMemberIds: string[];
 		}) => {
-			return updateRoleById(
-				{ userIds: newRoleMemberIds },
-				activeRole.id,
+			return updateGroupById(
+				{ userIds: newGroupMemberIds },
+				activeGroup.id,
 				accessToken
 			);
 		},
 		onSuccess: (data) => {
 			setShowAddMemberDialog(false);
 			queryClient.invalidateQueries({
-				queryKey: ["getRoles", accessToken],
+				queryKey: ["getGroups", accessToken],
 			});
 		},
 	});
 
 	useEffect(() => {
 		if (usersQuery.data) {
-			setOriginalRoleMembers(activeRole.users);
+			setOriginalGroupMembers(activeGroup.users);
 			const selectableUsers = usersQuery.data.filter((user: any) => {
-				const originalRoleUserIds = activeRole.users.map(
+				const originalGroupUserIds = activeGroup.users.map(
 					(user: any) => user.id
 				);
-				return !originalRoleUserIds.includes(user.id);
+				return !originalGroupUserIds.includes(user.id);
 			});
 			setSearchResults(selectableUsers);
 		}
-	}, [usersQuery.data, activeRole]);
+	}, [usersQuery.data, activeGroup]);
 
 	useEffect(() => {
 		if (showAddMemberDialog) {
-			addMemberToRoleDialogRef.current!.showModal();
+			addMemberToGroupDialogRef.current!.showModal();
 		} else {
-			addMemberToRoleDialogRef.current!.close();
+			addMemberToGroupDialogRef.current!.close();
 		}
 	}, [showAddMemberDialog]);
 
 	const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-		if (activeRole) {
+		if (activeGroup) {
 			const selectableUsers = usersQuery.data.filter((user: any) => {
-				const originalRoleUserIds = activeRole.users.map(
+				const originalGroupUserIds = activeGroup.users.map(
 					(user: any) => user.id
 				);
-				return !originalRoleUserIds.includes(user.id);
+				return !originalGroupUserIds.includes(user.id);
 			});
 			const results = selectableUsers.filter((user: any) =>
 				user.nickname
@@ -97,7 +96,7 @@ export const AddMemberToRoleDialog = (props: {
 
 	return (
 		<dialog
-			ref={addMemberToRoleDialogRef}
+			ref={addMemberToGroupDialogRef}
 			className="w-[440px]
 			bg-gray-200
 			shadow-lg rounded-md backdrop:bg-black/90 backdrop:[backdrop-filter:blur(2px)]"
@@ -111,7 +110,7 @@ export const AddMemberToRoleDialog = (props: {
 				text-gray-600"
 			>
 				<h1 className="text-lg">Add Members</h1>
-				<div className="font-semibold">{activeRole.name}</div>
+				<div className="font-semibold">{activeGroup.name}</div>
 				<div className="flex w-full font-normal">
 					<input
 						type="text"
@@ -131,8 +130,8 @@ export const AddMemberToRoleDialog = (props: {
 				</div>
 				<CheckboxList
 					availableOptions={searchResults}
-					newSelectedOptions={newlySelectedRoleMembers}
-					setNewSelectedOptions={setNewlySelectedRoleMembers}
+					newSelectedOptions={newlySelectedGroupMembers}
+					setNewSelectedOptions={setNewlySelectedGroupMembers}
 					itemKey="nickname"
 				/>
 				<div className="flex gap-6">
@@ -163,20 +162,22 @@ export const AddMemberToRoleDialog = (props: {
 							bg-blue-500 hover:bg-blue-600 rounded`
 						}
 						onClick={() => {
-							const originalRoleMemberIds =
-								originalRoleMembers.map((user: any) => user.id);
-							const newlySelectedRoleMemberIds: string[] =
-								newlySelectedRoleMembers.map(
+							const originalGroupMemberIds =
+								originalGroupMembers.map(
+									(user: any) => user.id
+								);
+							const newlySelectedGroupMemberIds: string[] =
+								newlySelectedGroupMembers.map(
 									(user: any) => user.id
 								);
 
-							const newRoleMemberIds: string[] = uniq(
-								originalRoleMemberIds.concat(
-									newlySelectedRoleMemberIds
+							const newGroupMemberIds: string[] = uniq(
+								originalGroupMemberIds.concat(
+									newlySelectedGroupMemberIds
 								)
 							);
 							addMembersMutation.mutate({
-								newRoleMemberIds: newRoleMemberIds,
+								newGroupMemberIds: newGroupMemberIds,
 							});
 						}}
 					>
@@ -187,3 +188,5 @@ export const AddMemberToRoleDialog = (props: {
 		</dialog>
 	);
 };
+
+export default AddMemberToGroupDialog;

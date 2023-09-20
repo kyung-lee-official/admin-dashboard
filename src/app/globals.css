@@ -59,18 +59,18 @@
 
 	.scrollbar::-webkit-scrollbar-track {
 		@apply rounded-lg
-		bg-slate-200
+		bg-slate-300
 		dark:bg-gray-700;
 	}
 
 	.scrollbar::-webkit-scrollbar-thumb {
 		@apply rounded-lg
-		bg-slate-300
+		bg-slate-400
 		dark:bg-gray-600;
 	}
 
 	.scrollbar::-webkit-scrollbar-thumb:hover {
-		@apply bg-slate-400 
+		@apply bg-slate-500 
 		dark:bg-gray-500;
 	}
 
