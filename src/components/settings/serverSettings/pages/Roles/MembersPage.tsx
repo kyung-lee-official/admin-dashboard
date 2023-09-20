@@ -2,58 +2,66 @@
 
 import { Avatar } from "@/components/avatar";
 import { CircleWithCrossIcon, SearchOutlineIcon } from "@/components/icons";
-import { useAuthStore } from "@/stores/auth";
-import { updateRoleById } from "@/utilities/api/api";
-import { queryClient } from "@/utilities/react-query/react-query";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { AddMemberToRoleDialog } from "./AddMemberToRoleDialog";
-import { useMutation } from "@tanstack/react-query";
+import { DeleteMemberFromRoleDialog } from "./DeleteMemberFromRoleDialog";
 
-export const MembersPage = (props: any) => {
-	const { rolesQuery, activeRoleId } = props;
-	const accessToken = useAuthStore((state) => state.accessToken);
-	const [showAddMemberDialog, setShowAddMemberDialog] =
-		useState<boolean>(false);
+const MemberRow = (props: {
+	user: any;
+	activeRole: any;
+	activeRoleId: number;
+}) => {
+	const { user, activeRole, activeRoleId } = props;
 	const [showDeleteMemberDialog, setShowDeleteMemberDialog] =
 		useState<boolean>(false);
 
-	const activeRole = rolesQuery.data.find((role: any) => {
+	return (
+		<div
+			key={user.id}
+			className="flex justify-between items-center h-[40px] px-2 py-1
+			hover:bg-gray-100 dark:hover:bg-gray-800 rounded"
+		>
+			<div className="flex items-center gap-4">
+				<Avatar
+					user={user}
+					className="w-6 h-6 rounded-full bg-sky-400"
+				/>
+				<div className="flex gap-2">
+					<div className="text-sm">{user.nickname}</div>
+					<div className="text-gray-500 text-sm font-normal">
+						{user.email}
+					</div>
+				</div>
+			</div>
+			<div
+				className="text-gray-400 hover:text-gray-500 cursor-pointer"
+				onClick={() => {
+					setShowDeleteMemberDialog(true);
+				}}
+			>
+				<CircleWithCrossIcon size={20} />
+			</div>
+			{showDeleteMemberDialog && (
+				<DeleteMemberFromRoleDialog
+					activeRole={activeRole}
+					activeRoleId={activeRoleId}
+					user={user}
+					showDeleteMemberDialog={showDeleteMemberDialog}
+					setShowDeleteMemberDialog={setShowDeleteMemberDialog}
+				/>
+			)}
+		</div>
+	);
+};
+
+export const MembersPage = (props: any) => {
+	const { rolesQuery, activeRoleId } = props;
+	const [showAddMemberDialog, setShowAddMemberDialog] =
+		useState<boolean>(false);
+
+	const activeRole = rolesQuery.data?.find((role: any) => {
 		return role.id === activeRoleId;
 	});
-
-	const removeMemberFromRoleDialogRef = useRef<HTMLDialogElement | null>(
-		null
-	);
-
-	const removeUserMutation = useMutation({
-		mutationFn: async (toBeRemovedUserId: string) => {
-			const newUsers = activeRole.users.filter((user: any) => {
-				return user.id !== toBeRemovedUserId;
-			});
-			const newUserIds = newUsers.map((user: any) => user.id);
-			return updateRoleById(
-				{ userIds: newUserIds },
-				activeRoleId,
-				accessToken
-			);
-		},
-		onSuccess: (data) => {
-			queryClient.invalidateQueries({
-				queryKey: ["getRoles", accessToken],
-			});
-			setShowDeleteMemberDialog(false);
-		},
-	});
-
-	useEffect(() => {
-		if (removeMemberFromRoleDialogRef.current) {
-			if (showDeleteMemberDialog) {
-				removeMemberFromRoleDialogRef.current.showModal();
-			} else {
-				removeMemberFromRoleDialogRef.current.close();
-			}
-		}
-	}, [showDeleteMemberDialog]);
 
 	return (
 		<div className="flex flex-col gap-4 py-2">
@@ -95,99 +103,12 @@ export const MembersPage = (props: any) => {
 			)}
 			{activeRole.users.map((user: any) => {
 				return (
-					<div
+					<MemberRow
 						key={user.id}
-						className="flex justify-between items-center h-[40px] px-2 py-1
-						hover:bg-gray-100 dark:hover:bg-gray-800 rounded"
-					>
-						<div className="flex items-center gap-4">
-							<Avatar
-								user={user}
-								className="w-6 h-6 rounded-full bg-sky-400"
-							/>
-							<div className="flex gap-2">
-								<div className="text-sm">{user.nickname}</div>
-								<div className="text-gray-500 text-sm font-normal">
-									{user.email}
-								</div>
-							</div>
-						</div>
-						<div
-							className="text-gray-400 hover:text-gray-500 cursor-pointer"
-							onClick={() => {
-								setShowDeleteMemberDialog(true);
-							}}
-						>
-							<CircleWithCrossIcon size={20} />
-						</div>
-						{showDeleteMemberDialog && (
-							<dialog
-								ref={removeMemberFromRoleDialogRef}
-								className="w-[440px]
-								bg-gray-200
-								shadow-lg rounded-md backdrop:bg-black/90 backdrop:[backdrop-filter:blur(2px)]"
-								onCancel={(
-									e: React.SyntheticEvent<
-										HTMLDialogElement,
-										Event
-									>
-								) => {
-									e.preventDefault();
-									setShowDeleteMemberDialog(false);
-								}}
-							>
-								<div
-									className="flex flex-col justify-center items-center p-6 gap-8
-									text-gray-600"
-								>
-									<h1 className="text-lg">Remove Member</h1>
-									<div className="font-normal">
-										Remove <strong>{user.nickname}</strong>{" "}
-										({user.email}) from role{" "}
-										<strong>{activeRole.name}</strong>?
-									</div>
-									<div className="flex gap-6">
-										<button
-											className={
-												removeUserMutation.isLoading
-													? `flex justify-center items-center w-20 h-8
-												text-gray-700/60
-												bg-gray-300/60 rounded outline-none cursor-wait`
-													: `flex justify-center items-center w-20 h-8
-												text-gray-700
-												bg-gray-300 hover:bg-gray-400 rounded outline-none`
-											}
-											onClick={() => {
-												setShowDeleteMemberDialog(
-													false
-												);
-											}}
-										>
-											Cancel
-										</button>
-										<button
-											className={
-												removeUserMutation.isLoading
-													? `flex justify-center items-center w-20 h-8
-												text-gray-100
-												bg-red-500/60 rounded cursor-wait`
-													: `flex justify-center items-center w-20 h-8
-												text-gray-100
-												bg-red-500 hover:bg-red-600 rounded`
-											}
-											onClick={() => {
-												removeUserMutation.mutate(
-													user.id
-												);
-											}}
-										>
-											Remove
-										</button>
-									</div>
-								</div>
-							</dialog>
-						)}
-					</div>
+						user={user}
+						activeRole={activeRole}
+						activeRoleId={activeRoleId}
+					/>
 				);
 			})}
 		</div>
