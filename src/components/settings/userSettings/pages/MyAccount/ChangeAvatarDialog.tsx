@@ -253,7 +253,7 @@ export const ChangeAvatarDialog = (props: {
 			<dialog
 				ref={dialogRef}
 				className="w-[600px] p-4
-				bg-gray-400
+				bg-gray-200
 				shadow-lg rounded-md
 				backdrop:bg-black/80 backdrop:[backdrop-filter:blur(2px)]"
 				onClose={() => {
@@ -386,9 +386,10 @@ export const ChangeAvatarDialog = (props: {
 						<button
 							className={
 								updateAvatarMutation.isLoading
-									? "bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md opacity-50 cursor-wait"
+									? "bg-blue-500/60 text-white px-4 py-2 rounded-md cursor-wait"
 									: "bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
 							}
+							disabled={updateAvatarMutation.isLoading}
 							onClick={() => {
 								setImageTranslation([0, 0]);
 								setScale(1);
@@ -400,8 +401,12 @@ export const ChangeAvatarDialog = (props: {
 							<button
 								className={
 									updateAvatarMutation.isLoading
-										? "bg-white/30 hover:bg-white/20 px-4 py-2 rounded-md opacity-50 cursor-wait"
-										: "bg-white/30 hover:bg-white/20 px-4 py-2 rounded-md"
+										? `flex justify-center items-center w-20
+									text-gray-700/60
+									bg-gray-300/60 rounded-md outline-none cursor-wait`
+										: `flex justify-center items-center w-20
+									text-gray-700
+									bg-gray-300 hover:bg-gray-400 rounded-md outline-none`
 								}
 								onClick={() => {
 									if (dialogRef.current) {
@@ -414,9 +419,10 @@ export const ChangeAvatarDialog = (props: {
 							<button
 								className={
 									updateAvatarMutation.isLoading
-										? "bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md opacity-50 cursor-wait"
+										? "bg-blue-500/60 text-white px-4 py-2 rounded-md cursor-wait"
 										: "bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
 								}
+								disabled={updateAvatarMutation.isLoading}
 								onClick={() => {
 									updateAvatarMutation.mutate();
 								}}
