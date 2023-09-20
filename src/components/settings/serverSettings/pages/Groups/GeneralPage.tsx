@@ -68,20 +68,15 @@ export const GeneralPage = (props: any) => {
 			<input
 				type="text"
 				value={newGroupName}
-				className={`w-full h-9 px-2
-		${
-			(activeGroup.name === "admin" || activeGroup.name === "common") &&
-			"text-gray-500"
-		}
-		bg-gray-200 rounded
-		placeholder-gray-500 focus:outline-none ${
-			(activeGroup.name === "admin" || activeGroup.name === "common") &&
-			"cursor-not-allowed"
-		}`}
-				readOnly={
-					activeGroup.name === "admin" ||
-					activeGroup.name === "common"
+				className={
+					activeGroup.name === "everyone"
+						? `w-full h-9 px-2
+					text-gray-500
+					bg-gray-200 rounded placeholder-gray-500 focus:outline-none cursor-not-allowed`
+						: `w-full h-9 px-2
+					bg-gray-200 rounded placeholder-gray-500 focus:outline-none`
 				}
+				readOnly={activeGroup.name === "everyone"}
 				onChange={onNameChanged}
 			/>
 			<AnimatePresence>

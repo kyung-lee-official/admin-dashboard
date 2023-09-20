@@ -33,14 +33,19 @@ const MemberRow = (props: {
 					</div>
 				</div>
 			</div>
-			<div
-				className="text-gray-400 hover:text-gray-500 cursor-pointer"
+			<button
+				className={
+					activeRole.name === "admin"
+						? `text-gray-200 cursor-not-allowed`
+						: `text-gray-400 hover:text-gray-500 cursor-pointer`
+				}
+				disabled={activeRole.name === "admin"}
 				onClick={() => {
 					setShowDeleteMemberDialog(true);
 				}}
 			>
 				<CircleWithCrossIcon size={20} />
-			</div>
+			</button>
 			{showDeleteMemberDialog && (
 				<DeleteMemberFromRoleDialog
 					activeRole={activeRole}
@@ -83,36 +88,38 @@ export const MembersPage = (props: any) => {
 
 	return (
 		<div className="flex flex-col gap-4 py-2">
-			<div className="flex justify-between items-center gap-4">
-				<div className="flex-1 flex">
-					<input
-						className="w-full h-8 px-2
+			{activeRole?.name !== "admin" && (
+				<div className="flex justify-between items-center gap-4">
+					<div className="flex-1 flex">
+						<input
+							className="w-full h-8 px-2
 						text-gray-600 dark:text-gray-400
 						font-medium
 						bg-gray-200
 						rounded-l outline-none
 						placeholder-gray-500 dark:placeholder-gray-400"
-						placeholder="Search Members"
-						onChange={onSearch}
-					/>
-					<div
-						className="flex justify-center items-center w-10
+							placeholder="Search Members"
+							onChange={onSearch}
+						/>
+						<div
+							className="flex justify-center items-center w-10
 						bg-gray-200
 						rounded-r"
-					>
-						<SearchOutlineIcon size={24} />
+						>
+							<SearchOutlineIcon size={24} />
+						</div>
 					</div>
+					<button
+						className="w-28 h-8 bg-blue-500 rounded text-white font-semibold
+						hover:bg-blue-600 transition-all duration-300"
+						onClick={() => {
+							setShowAddMemberDialog(true);
+						}}
+					>
+						Add Members
+					</button>
 				</div>
-				<button
-					className="w-28 h-8 bg-blue-500 rounded text-white font-semibold
-					hover:bg-blue-600 transition-all duration-300"
-					onClick={() => {
-						setShowAddMemberDialog(true);
-					}}
-				>
-					Add Members
-				</button>
-			</div>
+			)}
 			{showAddMemberDialog && (
 				<AddMemberToRoleDialog
 					activeRole={activeRole}

@@ -33,14 +33,19 @@ const MemberRow = (props: {
 					</div>
 				</div>
 			</div>
-			<div
-				className="text-gray-400 hover:text-gray-500 cursor-pointer"
+			<button
+				className={
+					activeGroup.name === "everyone"
+						? `text-gray-200 cursor-not-allowed`
+						: `text-gray-400 hover:text-gray-500 cursor-pointer`
+				}
+				disabled={activeGroup.name === "everyone"}
 				onClick={() => {
 					setShowDeleteMemberDialog(true);
 				}}
 			>
 				<CircleWithCrossIcon size={20} />
-			</div>
+			</button>
 			{showDeleteMemberDialog && (
 				<DeleteMemberFromGroupDialog
 					activeGroup={activeGroup}
@@ -103,15 +108,17 @@ export const MembersPage = (props: any) => {
 						<SearchOutlineIcon size={24} />
 					</div>
 				</div>
-				<button
-					className="w-28 h-8 bg-blue-500 rounded text-white font-semibold
-					hover:bg-blue-600 transition-all duration-300"
-					onClick={() => {
-						setShowAddMemberDialog(true);
-					}}
-				>
-					Add Members
-				</button>
+				{activeGroup.name !== "everyone" && (
+					<button
+						className="w-28 h-8 bg-blue-500 rounded text-white font-semibold
+						hover:bg-blue-600 transition-all duration-300"
+						onClick={() => {
+							setShowAddMemberDialog(true);
+						}}
+					>
+						Add Members
+					</button>
+				)}
 			</div>
 			{showAddMemberDialog && (
 				<AddMemberToGroupDialog

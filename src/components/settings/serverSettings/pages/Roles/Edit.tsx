@@ -52,8 +52,9 @@ const EditSidebar = (props: any) => {
 					text-gray-600
 					text-xl font-normal"
 				>
-					<div
+					<button
 						className="flex justify-center items-center gap-2 
+						hover:text-gray-800
 						cursor-pointer"
 						onClick={() => {
 							setPage("main");
@@ -63,16 +64,17 @@ const EditSidebar = (props: any) => {
 							<ArrowBackIcon size={24} />
 						</div>
 						<div>BACK</div>
-					</div>
-					<div
+					</button>
+					<button
 						className="flex justify-center items-center
+						hover:text-gray-800
 						cursor-pointer"
 						onClick={() => {
 							createRoleMutation.mutate();
 						}}
 					>
 						<PlusIcon size={24} />
-					</div>
+					</button>
 				</div>
 				{rolesQuery.isSuccess && (
 					<div className="flex flex-col gap-4 mt-4">

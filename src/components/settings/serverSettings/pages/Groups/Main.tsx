@@ -171,22 +171,30 @@ export const Main = (props: any) => {
 								}
 								col3={
 									<div className="flex justify-center items-center gap-2">
-										<div
+										<button
 											className="flex justify-center items-center w-8 h-8
 											bg-gray-200 hover:bg-gray-300
-											rounded-full cursor-pointer"
+											rounded-full"
 											onClick={() => {
 												setActiveGroupId(group.id);
 												setPage("edit");
 											}}
 										>
 											<EditIcon size={20} />
-										</div>
-										<div
-											className="flex justify-center items-center w-8 h-8
-											hover:text-gray-200
-											bg-gray-200 hover:bg-red-500
-											rounded-full cursor-pointer"
+										</button>
+										<button
+											className={
+												group.name === "everyone"
+													? `flex justify-center items-center w-8 h-8
+												text-gray-400
+												bg-gray-200
+												rounded-full cursor-not-allowed`
+													: `flex justify-center items-center w-8 h-8
+												hover:text-gray-200
+												bg-gray-200 hover:bg-red-500
+												rounded-full`
+											}
+											disabled={group.name === "everyone"}
 											onClick={() => {
 												setGroupToDelete(group);
 												deleteDialogRef.current!.showModal();
@@ -197,7 +205,7 @@ export const Main = (props: any) => {
 											}}
 										>
 											<DeleteIcon size={20} />
-										</div>
+										</button>
 									</div>
 								}
 							/>
