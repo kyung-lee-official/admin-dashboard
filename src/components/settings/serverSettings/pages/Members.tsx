@@ -232,14 +232,14 @@ export const Members = () => {
 					<div className="flex">
 						<input
 							type="text"
-							className="bg-gray-400 px-2
+							className="bg-gray-200 px-2
 							rounded-l placeholder-gray-500 outline-none"
 							placeholder="Search"
 							onChange={onSearch}
 						/>
 						<div
 							className="flex justify-center items-center w-6 
-							bg-gray-400 rounded-r"
+							bg-gray-200 rounded-r"
 						>
 							<SearchOutlineIcon size={18} />
 						</div>

@@ -82,7 +82,7 @@ const EditSidebar = (props: any) => {
 									key={role.id}
 									className={`flex items-center h-[40px] px-4
 									text-base font-normal
-									${activeRoleId === role.id && "bg-gray-300"} hover:bg-gray-300
+									${activeRoleId === role.id && "bg-gray-200"} hover:bg-gray-100
 									rounded cursor-pointer`}
 									onClick={() => {
 										setActiveRoleId(role.id);

@@ -22,7 +22,7 @@ const Row = (props: any) => {
 					{col1 === "everyone" ? (
 						<div
 							className="flex justify-start items-center w-fit px-1
-							text-gray-500 bg-gray-300 rounded-md"
+							text-gray-500 bg-gray-200 rounded-md"
 						>
 							everyone
 						</div>

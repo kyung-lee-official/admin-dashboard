@@ -55,7 +55,7 @@ export const TransferOwnershipDialog = (props: {
 			initial={{ opacity: 0, scale: 0.9 }}
 			animate={{ opacity: 1, scale: 1 }}
 			className="w-[440px]
-			bg-gray-400
+			bg-gray-200
 			shadow-lg rounded-md backdrop:bg-black/90 backdrop:[backdrop-filter:blur(2px)]"
 			onCancel={(e: React.SyntheticEvent<HTMLDialogElement, Event>) => {
 				e.preventDefault();
@@ -63,7 +63,7 @@ export const TransferOwnershipDialog = (props: {
 			}}
 		>
 			<div
-				className="flex flex-col justify-center items-center gap-8
+				className="flex flex-col justify-center items-center p-6 gap-8
 				text-gray-600"
 			>
 				<h1 className="text-lg">Transfer Ownership</h1>
@@ -77,11 +77,11 @@ export const TransferOwnershipDialog = (props: {
 						className={
 							transferOwnershipMutation.isLoading
 								? `flex justify-center items-center w-20 h-8
-								text-gray-600
-								bg-gray-400 hover:bg-gray-300 rounded outline-none cursor-wait`
+							text-gray-700/60
+							bg-gray-300/60 rounded outline-none cursor-wait`
 								: `flex justify-center items-center w-20 h-8
-								text-gray-600
-								bg-gray-200 hover:bg-gray-300 rounded outline-none`
+							text-gray-700
+							bg-gray-300 hover:bg-gray-400 rounded outline-none`
 						}
 						onClick={() => {
 							setShowTransferOwnershipDialog(false);
@@ -92,12 +92,12 @@ export const TransferOwnershipDialog = (props: {
 					<button
 						className={
 							transferOwnershipMutation.isLoading
-								? `flex justify-center items-center w-fit h-8 px-2
-								text-gray-100
-								bg-red-500/50 rounded cursor-wait`
-								: `flex justify-center items-center w-fit h-8 px-2
-								text-gray-100
-								bg-red-500 hover:bg-red-600 rounded`
+								? `flex justify-center items-center w-20 h-8
+							text-gray-100
+							bg-red-500/60 rounded cursor-wait`
+								: `flex justify-center items-center w-40 h-8
+							text-gray-100
+							bg-red-500 hover:bg-red-600 rounded`
 						}
 						onClick={() => {
 							transferOwnershipMutation.mutate(user.id);

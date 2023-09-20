@@ -84,7 +84,7 @@ export const EditRolesDialog = (props: {
 			initial={{ opacity: 0, scale: 0.9 }}
 			animate={{ opacity: 1, scale: 1 }}
 			className="w-[440px]
-			bg-gray-400
+			bg-gray-200
 			shadow-lg rounded-md backdrop:bg-black/90 backdrop:[backdrop-filter:blur(2px)]"
 			onCancel={(e: React.SyntheticEvent<HTMLDialogElement, Event>) => {
 				e.preventDefault();
@@ -92,7 +92,7 @@ export const EditRolesDialog = (props: {
 			}}
 		>
 			<div
-				className="flex flex-col justify-center items-center gap-6 p-4
+				className="flex flex-col justify-center items-center p-6 gap-6
 				text-gray-600"
 			>
 				<h1 className="text-lg">Edit Roles</h1>
@@ -104,14 +104,14 @@ export const EditRolesDialog = (props: {
 					<input
 						type="text"
 						className="w-full h-10 px-4
-						bg-gray-200
+						bg-gray-100
 						rounded-l placeholder-gray-500 outline-none"
 						placeholder="Search roles"
 						onChange={onSearch}
 					/>
 					<div
 						className="flex justify-center items-center w-12
-						bg-gray-200 rounded-r"
+						bg-gray-100 rounded-r"
 					>
 						<SearchOutlineIcon size={28} />
 					</div>
@@ -127,11 +127,11 @@ export const EditRolesDialog = (props: {
 						className={
 							editRolesMutation.isLoading
 								? `flex justify-center items-center w-20 h-8
-								text-gray-600
-								bg-gray-400 rounded outline-none cursor-wait`
+							text-gray-700/60
+							bg-gray-300/60 rounded outline-none cursor-wait`
 								: `flex justify-center items-center w-20 h-8
-								text-gray-600
-								bg-gray-200 hover:bg-gray-300 rounded outline-none`
+							text-gray-700
+							bg-gray-300 hover:bg-gray-400 rounded outline-none`
 						}
 						onClick={() => {
 							setShowEditRolesDialog(false);
@@ -142,12 +142,12 @@ export const EditRolesDialog = (props: {
 					<button
 						className={
 							editRolesMutation.isLoading
-								? `flex justify-center items-center w-20 h-8 px-4 py-2
-								text-gray-100
-								bg-blue-500/50 rounded cursor-wait`
-								: `flex justify-center items-center w-20 h-8 px-4 py-2
-								text-gray-100
-								bg-blue-500 hover:bg-blue-600 rounded`
+								? `flex justify-center items-center w-20 h-8
+							text-gray-100
+							bg-blue-500/60 rounded cursor-wait`
+								: `flex justify-center items-center w-20 h-8
+							text-gray-100
+							bg-blue-500 hover:bg-blue-600 rounded`
 						}
 						onClick={() => {
 							const newUserRoleIds = newUserRoles.map(

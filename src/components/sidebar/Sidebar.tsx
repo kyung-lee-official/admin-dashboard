@@ -11,7 +11,6 @@ import {
 } from "..";
 import { MenuKey, SubMenuItem, useSidebarStore } from "@/stores/sidebar";
 import Link from "next/link";
-import classNames from "classnames";
 import { Panel } from "../panel/Panel";
 
 const Divider = () => {
@@ -90,17 +89,6 @@ export const SubSidebar = () => {
 export const SubSidebarTitle = (props: SubMenuItem) => {
 	const { title, link } = props;
 	const selectedSubMenu = useSidebarStore((state) => state.selectedSubMenu);
-	let activity;
-	if (selectedSubMenu?.link === link) {
-		activity = classNames(
-			"text-gray-700 bg-gray-300 dark:text-gray-300 dark:bg-gray-600"
-		);
-	} else {
-		activity = classNames(
-			`text-gray-500 bg-gray-200 hover:text-gray-600 hover:bg-gray-300/60
-			dark:text-gray-500 dark:bg-gray-800 dark:hover:text-gray-400 dark:hover:bg-gray-700`
-		);
-	}
 
 	if (link === "/home") {
 		return (
@@ -122,7 +110,12 @@ export const SubSidebarTitle = (props: SubMenuItem) => {
 				href={link}
 				className={`
 				p-3 m-2 rounded-md
-				${activity}
+				${
+					selectedSubMenu?.link === link
+						? "text-gray-700 bg-gray-300 dark:text-gray-300 dark:bg-gray-600"
+						: `text-gray-500 bg-gray-200 hover:text-gray-600 hover:bg-gray-300/60
+						dark:text-gray-500 dark:bg-gray-800 dark:hover:text-gray-400 dark:hover:bg-gray-700`
+				}
 				font-bold text-sm overflow-hidden whitespace-nowrap text-ellipsis
 				transition-all duration-100 ease-linear
 				cursor-pointer`}

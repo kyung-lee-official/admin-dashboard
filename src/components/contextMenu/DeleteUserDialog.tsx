@@ -49,7 +49,7 @@ export const DeleteUserDialog = (props: {
 			initial={{ opacity: 0, scale: 0.9 }}
 			animate={{ opacity: 1, scale: 1 }}
 			className="w-[440px]
-			bg-gray-400
+			bg-gray-200
 			shadow-lg rounded-md backdrop:bg-black/90 backdrop:[backdrop-filter:blur(2px)]"
 			onCancel={(e: React.SyntheticEvent<HTMLDialogElement, Event>) => {
 				e.preventDefault();
@@ -57,7 +57,7 @@ export const DeleteUserDialog = (props: {
 			}}
 		>
 			<div
-				className="flex flex-col justify-center items-center gap-8
+				className="flex flex-col justify-center items-center p-6 gap-8
 				text-gray-600"
 			>
 				<h1 className="text-lg">Delete User</h1>
@@ -74,11 +74,11 @@ export const DeleteUserDialog = (props: {
 						className={
 							deleteUserMutation.isLoading
 								? `flex justify-center items-center w-20 h-8
-								text-gray-600
-								bg-gray-400 hover:bg-gray-300 rounded outline-none cursor-wait`
+							text-gray-700/60
+							bg-gray-300/60 rounded outline-none cursor-wait`
 								: `flex justify-center items-center w-20 h-8
-								text-gray-600
-								bg-gray-200 hover:bg-gray-300 rounded outline-none`
+							text-gray-700
+							bg-gray-300 hover:bg-gray-400 rounded outline-none`
 						}
 						onClick={() => {
 							setShowDeleteUserDialog(false);
@@ -90,11 +90,11 @@ export const DeleteUserDialog = (props: {
 						className={
 							deleteUserMutation.isLoading
 								? `flex justify-center items-center w-20 h-8
-								text-gray-100
-								bg-red-500/50 rounded cursor-wait`
+							text-gray-100
+							bg-red-500/60 rounded cursor-wait`
 								: `flex justify-center items-center w-20 h-8
-								text-gray-100
-								bg-red-500 hover:bg-red-600 rounded`
+							text-gray-100
+							bg-red-500 hover:bg-red-600 rounded`
 						}
 						onClick={() => {
 							deleteUserMutation.mutate(user.id);

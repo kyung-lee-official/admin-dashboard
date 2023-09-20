@@ -30,7 +30,7 @@ const Row = (props: any) => {
 					) : col1 === "common" ? (
 						<div
 							className="flex justify-start items-center w-fit px-1
-							text-gray-500 bg-gray-300 rounded-md"
+							text-gray-500 bg-gray-200 rounded-md"
 						>
 							common
 						</div>
@@ -164,7 +164,7 @@ export const Main = (props: any) => {
 									<div className="flex justify-center items-center gap-2">
 										<div
 											className="flex justify-center items-center w-8 h-8
-											bg-gray-300 hover:bg-gray-400
+											bg-gray-200 hover:bg-gray-300
 											rounded-full cursor-pointer"
 											onClick={() => {
 												setActiveRoleId(role.id);
@@ -176,7 +176,7 @@ export const Main = (props: any) => {
 										<div
 											className="flex justify-center items-center w-8 h-8
 											hover:text-gray-200
-											bg-gray-300 hover:bg-red-500
+											bg-gray-200 hover:bg-red-500
 											rounded-full cursor-pointer"
 											onClick={() => {
 												setRoleToDelete(role);

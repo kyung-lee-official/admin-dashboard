@@ -17,8 +17,10 @@ const SidebarSection = (props: any) => {
 				return (
 					<div
 						key={i}
-						className={`px-2 py-1 rounded-md cursor-pointer
-						${activePath === item.path && "bg-gray-300"} font-normal text-lg w-full`}
+						className={`w-full px-2 py-1
+						font-normal text-lg
+						${activePath === item.path && "bg-gray-300"} hover:bg-gray-200
+						rounded-md cursor-pointer`}
 						onClick={() => {
 							setActivePath(item.path);
 						}}
@@ -44,7 +46,7 @@ export const SidebarRegion = (props: any) => {
 			className="flex-[4_0_220px] flex flex-col items-end min-h-screen
 			px-6 pt-12
 			text-gray-500
-			bg-gray-100 
+			bg-gray-100
 			font-bold font-mono text-lg"
 		>
 			<div className="w-44">
