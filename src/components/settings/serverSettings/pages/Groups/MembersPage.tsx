@@ -60,7 +60,7 @@ export const MembersPage = (props: any) => {
 		useState<boolean>(false);
 	const [searchResults, setSearchResults] = useState<any[]>([]);
 
-	const activeGroup = groupsQuery.data.find((group: any) => {
+	const activeGroup = groupsQuery.data?.find((group: any) => {
 		return group.id === activeGroupId;
 	});
 
