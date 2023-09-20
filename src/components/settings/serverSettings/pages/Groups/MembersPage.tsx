@@ -2,7 +2,7 @@
 
 import { Avatar } from "@/components/avatar";
 import { CircleWithCrossIcon, SearchOutlineIcon } from "@/components/icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddMemberToGroupDialog from "./AddMemberToGroupDialog";
 import { DeleteMemberFromGroupDialog } from "./DeleteMemberFromGroupDialog";
 
@@ -58,10 +58,28 @@ export const MembersPage = (props: any) => {
 	const { groupsQuery, activeGroupId } = props;
 	const [showAddMemberDialog, setShowAddMemberDialog] =
 		useState<boolean>(false);
+	const [searchResults, setSearchResults] = useState<any[]>([]);
 
 	const activeGroup = groupsQuery.data.find((group: any) => {
 		return group.id === activeGroupId;
 	});
+
+	useEffect(() => {
+		if (activeGroup) {
+			setSearchResults(activeGroup.users);
+		}
+	}, [activeGroup]);
+
+	const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+		if (activeGroup) {
+			const results = activeGroup.users.filter((user: any) =>
+				user.nickname
+					.toLowerCase()
+					.includes(e.target.value.toLowerCase())
+			);
+			setSearchResults(results);
+		}
+	};
 
 	return (
 		<div className="flex flex-col gap-4 py-2">
@@ -75,6 +93,7 @@ export const MembersPage = (props: any) => {
 						rounded-l outline-none
 						placeholder-gray-500 dark:placeholder-gray-400"
 						placeholder="Search Members"
+						onChange={onSearch}
 					/>
 					<div
 						className="flex justify-center items-center w-10
@@ -101,7 +120,7 @@ export const MembersPage = (props: any) => {
 					setShowAddMemberDialog={setShowAddMemberDialog}
 				/>
 			)}
-			{activeGroup.users.map((user: any) => {
+			{searchResults.map((user: any) => {
 				return (
 					<MemberRow
 						key={user.id}

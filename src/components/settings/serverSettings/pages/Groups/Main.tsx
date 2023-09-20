@@ -18,7 +18,7 @@ const Row = (props: any) => {
 	return (
 		<div>
 			<div className="flex justify-between items-center gap-4">
-				<div className="min-w-[5rem]">
+				<div className="w-32">
 					{col1 === "everyone" ? (
 						<div
 							className="flex justify-start items-center w-fit px-1
@@ -173,7 +173,7 @@ export const Main = (props: any) => {
 									<div className="flex justify-center items-center gap-2">
 										<div
 											className="flex justify-center items-center w-8 h-8
-											bg-gray-300 hover:bg-gray-400
+											bg-gray-200 hover:bg-gray-300
 											rounded-full cursor-pointer"
 											onClick={() => {
 												setActiveGroupId(group.id);
@@ -185,7 +185,7 @@ export const Main = (props: any) => {
 										<div
 											className="flex justify-center items-center w-8 h-8
 											hover:text-gray-200
-											bg-gray-300 hover:bg-red-500
+											bg-gray-200 hover:bg-red-500
 											rounded-full cursor-pointer"
 											onClick={() => {
 												setGroupToDelete(group);
@@ -206,11 +206,11 @@ export const Main = (props: any) => {
 					<dialog
 						ref={deleteDialogRef}
 						className="w-[440px]
-						bg-gray-400
-						shadow-lg rounded-md backdrop:bg-black/90 backdrop:[backdrop-filter:blur(2px)]"
+						bg-gray-200
+						shadow-lg rounded-md backdrop:bg-black/80 backdrop:[backdrop-filter:blur(2px)]"
 					>
 						<div
-							className="flex flex-col justify-center items-center gap-8
+							className="flex flex-col justify-center items-center p-6 gap-8
 							text-gray-600"
 						>
 							<h1 className="text-lg">Delete Group</h1>
@@ -224,11 +224,11 @@ export const Main = (props: any) => {
 									className={
 										deleteGroupMutation.isLoading
 											? `flex justify-center items-center w-20 h-8
-											text-gray-600
-											bg-gray-400 hover:bg-gray-300 rounded outline-none cursor-wait`
+										text-gray-700/60
+										bg-gray-300/60 rounded outline-none cursor-wait`
 											: `flex justify-center items-center w-20 h-8
-											text-gray-600
-											bg-gray-200 hover:bg-gray-300 rounded outline-none`
+										text-gray-700
+										bg-gray-300 hover:bg-gray-400 rounded outline-none`
 									}
 									onClick={() => {
 										deleteDialogRef.current!.close();
@@ -244,11 +244,11 @@ export const Main = (props: any) => {
 									className={
 										deleteGroupMutation.isLoading
 											? `flex justify-center items-center w-20 h-8
-											text-gray-100
-											bg-red-500/50 rounded cursor-wait`
+										text-gray-100
+										bg-red-500/60 rounded cursor-wait`
 											: `flex justify-center items-center w-20 h-8
-											text-gray-100
-											bg-red-500 hover:bg-red-600 rounded`
+										text-gray-100
+										bg-red-500 hover:bg-red-600 rounded`
 									}
 									onClick={() => {
 										deleteGroupMutation.mutate(

@@ -2,7 +2,7 @@
 
 import { Avatar } from "@/components/avatar";
 import { CircleWithCrossIcon, SearchOutlineIcon } from "@/components/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AddMemberToRoleDialog } from "./AddMemberToRoleDialog";
 import { DeleteMemberFromRoleDialog } from "./DeleteMemberFromRoleDialog";
 
@@ -58,10 +58,28 @@ export const MembersPage = (props: any) => {
 	const { rolesQuery, activeRoleId } = props;
 	const [showAddMemberDialog, setShowAddMemberDialog] =
 		useState<boolean>(false);
+	const [searchResults, setSearchResults] = useState<any[]>([]);
 
 	const activeRole = rolesQuery.data?.find((role: any) => {
 		return role.id === activeRoleId;
 	});
+
+	useEffect(() => {
+		if (activeRole) {
+			setSearchResults(activeRole.users);
+		}
+	}, [activeRole]);
+
+	const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+		if (activeRole) {
+			const results = activeRole.users.filter((user: any) =>
+				user.nickname
+					.toLowerCase()
+					.includes(e.target.value.toLowerCase())
+			);
+			setSearchResults(results);
+		}
+	};
 
 	return (
 		<div className="flex flex-col gap-4 py-2">
@@ -75,6 +93,7 @@ export const MembersPage = (props: any) => {
 						rounded-l outline-none
 						placeholder-gray-500 dark:placeholder-gray-400"
 						placeholder="Search Members"
+						onChange={onSearch}
 					/>
 					<div
 						className="flex justify-center items-center w-10
@@ -101,7 +120,7 @@ export const MembersPage = (props: any) => {
 					setShowAddMemberDialog={setShowAddMemberDialog}
 				/>
 			)}
-			{activeRole.users.map((user: any) => {
+			{searchResults.map((user: any) => {
 				return (
 					<MemberRow
 						key={user.id}

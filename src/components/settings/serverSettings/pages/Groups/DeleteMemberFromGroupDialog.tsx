@@ -62,7 +62,7 @@ export const DeleteMemberFromGroupDialog = (props: {
 			ref={deleteMemberFromGroupDialogRef}
 			className="w-[440px]
 			bg-gray-200
-			shadow-lg rounded-md backdrop:bg-black/90 backdrop:[backdrop-filter:blur(2px)]"
+			shadow-lg rounded-md backdrop:bg-black/80 backdrop:[backdrop-filter:blur(2px)]"
 			onCancel={(e: React.SyntheticEvent<HTMLDialogElement, Event>) => {
 				e.preventDefault();
 				setShowDeleteMemberDialog(false);

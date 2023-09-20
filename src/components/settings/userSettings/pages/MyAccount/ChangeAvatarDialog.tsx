@@ -255,7 +255,7 @@ export const ChangeAvatarDialog = (props: {
 				className="w-[600px] p-4
 				bg-gray-400
 				shadow-lg rounded-md
-				backdrop:bg-black/90 backdrop:[backdrop-filter:blur(2px)]"
+				backdrop:bg-black/80 backdrop:[backdrop-filter:blur(2px)]"
 				onClose={() => {
 					setScale(1);
 					if (dialogRef.current) {
