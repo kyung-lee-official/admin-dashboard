@@ -71,17 +71,17 @@ export const GeneralPage = (props: any) => {
 				className={`w-full h-9 px-2
 				${
 					(activeRole.name === "admin" ||
-						activeRole.name === "common") &&
+						activeRole.name === "default") &&
 					"text-gray-500"
 				}
 				bg-gray-200 rounded
 				placeholder-gray-500 focus:outline-none ${
 					(activeRole.name === "admin" ||
-						activeRole.name === "common") &&
+						activeRole.name === "default") &&
 					"cursor-not-allowed"
 				}`}
 				readOnly={
-					activeRole.name === "admin" || activeRole.name === "common"
+					activeRole.name === "admin" || activeRole.name === "default"
 				}
 				onChange={onNameChanged}
 			/>

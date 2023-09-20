@@ -27,12 +27,12 @@ const Row = (props: any) => {
 						>
 							{<CrownIcon size={16} />} admin
 						</div>
-					) : col1 === "common" ? (
+					) : col1 === "default" ? (
 						<div
 							className="flex justify-start items-center w-fit px-1
 							text-gray-500 bg-gray-200 rounded-md"
 						>
-							common
+							default
 						</div>
 					) : (
 						<div>{col1}</div>
@@ -176,7 +176,7 @@ export const Main = (props: any) => {
 										<button
 											className={
 												role.name === "admin" ||
-												role.name === "common"
+												role.name === "default"
 													? `flex justify-center items-center w-8 h-8
 												text-gray-400
 												bg-gray-200
@@ -188,7 +188,7 @@ export const Main = (props: any) => {
 											}
 											disabled={
 												role.name === "admin" ||
-												role.name === "common"
+												role.name === "default"
 											}
 											onClick={() => {
 												setRoleToDelete(role);
