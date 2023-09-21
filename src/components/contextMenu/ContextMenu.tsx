@@ -1,7 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { IdIcon } from "@/components/icons";
+import { useQuery } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { getMyInfo } from "@/utilities/api/users";
+import { useAuthStore } from "@/stores/auth";
 
 const Item = (props: { children: any; type: "normal" | "danger" }) => {
 	const { children, type } = props;
@@ -50,57 +54,91 @@ export const ContextMenu = (props: {
 		setShowTransferOwnershipDialog,
 	} = props;
 
+	const accessToken = useAuthStore((state) => state.accessToken);
+
+	const [isAdmin, setIsAdmin] = useState<boolean>(false);
+	const [isMe, setIsMe] = useState<boolean>(false);
+
+	const myInfoQuery = useQuery<any, AxiosError>({
+		queryKey: ["myInfo", accessToken],
+		queryFn: async () => {
+			const isSignedIn = await getMyInfo(accessToken);
+			return isSignedIn;
+		},
+		retry: false,
+		refetchOnWindowFocus: false,
+	});
+
+	useEffect(() => {
+		if (myInfoQuery.data) {
+			if (user.roles.some((role: any) => role.name === "admin")) {
+				setIsAdmin(true);
+			}
+			if (myInfoQuery.data.id === user.id) {
+				setIsMe(true);
+			}
+		}
+	}, [myInfoQuery.data]);
+
 	return (
 		<div
 			className="flex flex-col justify-center items-center w-fit min-h-[32px] p-2
 			font-normal
 			bg-gray-100 rounded-md shadow-md overflow-hidden"
 		>
-			<div
+			<button
 				className="w-full"
 				onClick={() => {
 					setShowEditRolesDialog(true);
 				}}
 			>
 				<Item type="normal">Edit Roles</Item>
-			</div>
-			<div
+			</button>
+			<button
 				className="w-full"
 				onClick={() => {
 					setShowEditGroupsDialog(true);
 				}}
 			>
 				<Item type="normal">Edit Groups</Item>
-			</div>
-			<div
-				className="w-full"
-				onClick={() => {
-					setShowFreezeUserDialog(true);
-				}}
-			>
-				<Item type="danger">Freeze {user.nickname}</Item>
-			</div>
-			<div
-				className="w-full"
-				onClick={() => {
-					setShowDeleteUserDialog(true);
-				}}
-			>
-				<Item type="danger">Delete {user.nickname}</Item>
-			</div>
+			</button>
+			{!isAdmin && !isMe && (
+				<button
+					className="w-full"
+					onClick={() => {
+						setShowFreezeUserDialog(true);
+					}}
+				>
+					<Item type="danger">Freeze {user.nickname}</Item>
+				</button>
+			)}
+			{!isAdmin && !isMe && (
+				<button
+					className="w-full"
+					onClick={() => {
+						setShowDeleteUserDialog(true);
+					}}
+				>
+					<Item type="danger">Delete {user.nickname}</Item>
+				</button>
+			)}
 			<hr className="w-full my-1 border-gray-300" />
-			<div
-				className="w-full"
-				onClick={() => {
-					setShowTransferOwnershipDialog(true);
-				}}
-			>
-				<Item type="danger">Transfer Ownership</Item>
-			</div>
-			<hr className="w-full my-1 border-gray-300" />
+			{!isAdmin && !isMe && (
+				<div className="w-full">
+					<button
+						className="w-full"
+						onClick={() => {
+							setShowTransferOwnershipDialog(true);
+						}}
+					>
+						<Item type="danger">Transfer Ownership</Item>
+					</button>
+					<hr className="w-full my-1 border-gray-300" />
+				</div>
+			)}
 			<Item type="normal">
 				<div
-					className="flex justify-between items-center w-full"
+					className="flex justify-between items-center w-full gap-2"
 					onClick={() => {
 						navigator.clipboard.writeText(user.id);
 					}}
