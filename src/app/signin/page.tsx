@@ -4,7 +4,6 @@ import { Button, GoogleIcon } from "@/components";
 import { CheckingSeeded } from "@/components/sacl/CheckingSeeded";
 import { CheckingSignedIn } from "@/components/sacl/CheckingSignedIn";
 import { NetworkError } from "@/components/sacl/NetworkError";
-import { signIn } from "@/utilities/api/api";
 import { useAuthStore } from "@/stores/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence, motion } from "framer-motion";
@@ -14,6 +13,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { AxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
+import { signIn } from "@/utilities/api/auth";
 
 interface IFormInput {
 	email: string;

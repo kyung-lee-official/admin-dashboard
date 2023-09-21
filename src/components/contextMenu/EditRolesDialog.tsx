@@ -1,7 +1,6 @@
 "use client";
 
 import { useAuthStore } from "@/stores/auth";
-import { editUserRoles, getRoles } from "@/utilities/api/api";
 import { queryClient } from "@/utilities/react-query/react-query";
 import { AxiosError } from "axios";
 import { motion } from "framer-motion";
@@ -9,6 +8,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { CheckboxList } from "../input";
 import { SearchOutlineIcon } from "../icons";
+import { editUserRoles } from "@/utilities/api/users";
+import { getRoles } from "@/utilities/api/roles";
 
 export const EditRolesDialog = (props: {
 	user: any;

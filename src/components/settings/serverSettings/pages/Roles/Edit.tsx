@@ -6,9 +6,9 @@ import { useState } from "react";
 import { GeneralPage } from "./GeneralPage";
 import { PermissionsPage } from "./PermissionsPage";
 import { MembersPage } from "./MembersPage";
-import { createRole } from "@/utilities/api/api";
 import { queryClient } from "@/utilities/react-query/react-query";
 import { useMutation } from "@tanstack/react-query";
+import { createRole } from "@/utilities/api/roles";
 
 export const Edit = (props: any) => {
 	const { rolesQuery, activeRoleId, setActiveRoleId, setPage, accessToken } =

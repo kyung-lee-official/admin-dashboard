@@ -2,7 +2,8 @@
 
 import { CheckboxList, SearchOutlineIcon } from "@/components";
 import { useAuthStore } from "@/stores/auth";
-import { getUsers, updateGroupById } from "@/utilities/api/api";
+import { updateGroupById } from "@/utilities/api/groups";
+import { getUsers } from "@/utilities/api/users";
 import { uniq } from "@/utilities/data/data";
 import { queryClient } from "@/utilities/react-query/react-query";
 import { useMutation, useQuery } from "@tanstack/react-query";

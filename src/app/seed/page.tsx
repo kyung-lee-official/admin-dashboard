@@ -4,7 +4,6 @@ import { Button, GoogleIcon } from "@/components";
 import { CheckingSeeded } from "@/components/sacl/CheckingSeeded";
 import { CheckingSignedIn } from "@/components/sacl/CheckingSignedIn";
 import { NetworkError } from "@/components/sacl/NetworkError";
-import { seed } from "@/utilities/api/api";
 import { queryClient } from "@/utilities/react-query/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence, motion } from "framer-motion";
@@ -15,6 +14,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import lottieFiles from "@/components/lottie-animations/animation_congratulations.json";
 import { useMutation } from "@tanstack/react-query";
+import { seed } from "@/utilities/api/auth";
 
 interface IFormInput {
 	email: string;

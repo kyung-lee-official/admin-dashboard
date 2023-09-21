@@ -1,7 +1,6 @@
 "use client";
 
 import { useAuthStore } from "@/stores/auth";
-import { editUserGroups, getGroups } from "@/utilities/api/api";
 import { queryClient } from "@/utilities/react-query/react-query";
 import { AxiosError } from "axios";
 import { motion } from "framer-motion";
@@ -9,6 +8,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { SearchOutlineIcon } from "../icons";
 import { CheckboxList } from "../input";
+import { getGroups } from "@/utilities/api/groups";
+import { editUserGroups } from "@/utilities/api/users";
 
 export const EditGroupsDialog = (props: {
 	user: any;

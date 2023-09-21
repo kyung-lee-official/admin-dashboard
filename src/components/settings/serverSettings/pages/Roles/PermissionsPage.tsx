@@ -1,12 +1,12 @@
 "use client";
 
 import { SettingsChangedIndicator, Toggle } from "@/components";
-import { updateRoleById } from "@/utilities/api/api";
 import { queryClient } from "@/utilities/react-query/react-query";
 import { useAuthStore } from "@/stores/auth";
 import { AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
+import { updateRoleById } from "@/utilities/api/roles";
 
 const permissions = [
 	{

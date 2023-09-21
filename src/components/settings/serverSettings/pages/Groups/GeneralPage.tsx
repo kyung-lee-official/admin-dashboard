@@ -2,7 +2,7 @@
 
 import { SettingsChangedIndicator } from "@/components/settings/SettingsChangedIndicator";
 import { useAuthStore } from "@/stores/auth";
-import { updateGroupById } from "@/utilities/api/api";
+import { updateGroupById } from "@/utilities/api/groups";
 import { queryClient } from "@/utilities/react-query/react-query";
 import { useMutation } from "@tanstack/react-query";
 import { AnimatePresence } from "framer-motion";

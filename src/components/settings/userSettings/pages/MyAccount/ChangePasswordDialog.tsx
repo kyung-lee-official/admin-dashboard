@@ -1,13 +1,13 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import { changePassword } from "@/utilities/api/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AxiosError } from "axios";
 import { motion } from "framer-motion";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { useMutation } from "@tanstack/react-query";
+import { changePassword } from "@/utilities/api/users";
 
 interface IFormInput {
 	oldPassword: string;

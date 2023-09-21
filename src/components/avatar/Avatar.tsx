@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuthStore } from "@/stores/auth";
-import { downloadAvatar } from "@/utilities/api/api";
+import { downloadAvatar } from "@/utilities/api/users";
 import React, { useEffect, useState } from "react";
 
 export const Avatar = (props: { user: any; className?: string }) => {

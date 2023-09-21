@@ -4,13 +4,13 @@ import { Button, CopyIcon, SettingsHeading, VerifiedIcon } from "@/components";
 import { queryClient } from "@/utilities/react-query/react-query";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "next/navigation";
-import { sendVerificationEmail } from "@/utilities/api/api";
 import { AxiosError } from "axios";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChangePasswordDialog } from "./ChangePasswordDialog";
 import { ChangeAvatarDialog } from "./ChangeAvatarDialog";
 import { useMutation } from "@tanstack/react-query";
+import { sendVerificationEmail } from "@/utilities/api/auth";
 
 const InfoPanel = (props: any) => {
 	const { myInfo, accessToken } = props;

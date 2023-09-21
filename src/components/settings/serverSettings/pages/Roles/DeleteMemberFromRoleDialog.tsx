@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuthStore } from "@/stores/auth";
-import { updateRoleById } from "@/utilities/api/api";
+import { updateRoleById } from "@/utilities/api/roles";
 import { queryClient } from "@/utilities/react-query/react-query";
 import { useMutation } from "@tanstack/react-query";
 import React, { useEffect, useRef } from "react";

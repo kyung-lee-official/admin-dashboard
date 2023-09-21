@@ -6,16 +6,16 @@ import { Layout } from "../layout";
 import { useSidebarStore } from "@/stores/sidebar";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { useAuthStore } from "@/stores/auth";
+import ms from "ms";
+import { usePathname, useRouter } from "next/navigation";
+import { Loading } from "./Loading";
 import {
 	getIsSeeded,
 	getIsSignedIn,
 	getTencentCosTempCredential,
 	refreshAccessToken,
-} from "@/utilities/api/api";
-import { useAuthStore } from "@/stores/auth";
-import ms from "ms";
-import { usePathname, useRouter } from "next/navigation";
-import { Loading } from "./Loading";
+} from "@/utilities/api/auth";
 
 /**
  * SACL (Seed and Auth Checking Layer) UI

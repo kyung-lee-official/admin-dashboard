@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuthStore } from "@/stores/auth";
-import { deleteUserById } from "@/utilities/api/api";
+import { deleteUserById } from "@/utilities/api/users";
 import { queryClient } from "@/utilities/react-query/react-query";
 import { useMutation } from "@tanstack/react-query";
 import { motion } from "framer-motion";

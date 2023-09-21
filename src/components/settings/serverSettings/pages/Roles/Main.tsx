@@ -3,7 +3,7 @@
 import { CrownIcon, DeleteIcon, EditIcon, UserIcon } from "@/components/icons";
 import { SettingsHeading } from "@/components/settings/ContentRegion";
 import { Skeleton } from "@/components/skeleton";
-import { createRole, deleteRoleById } from "@/utilities/api/api";
+import { createRole, deleteRoleById } from "@/utilities/api/roles";
 import { queryClient } from "@/utilities/react-query/react-query";
 import { useMutation } from "@tanstack/react-query";
 import { useAnimate } from "framer-motion";

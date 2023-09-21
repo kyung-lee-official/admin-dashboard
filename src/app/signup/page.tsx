@@ -11,8 +11,9 @@ import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getIsSignUpAvailable, signUp } from "@/utilities/api/api";
 import { AxiosError } from "axios";
+import { signUp } from "@/utilities/api/auth";
+import { getIsSignUpAvailable } from "@/utilities/api/server-settings";
 
 interface IFormInput {
 	email: string;

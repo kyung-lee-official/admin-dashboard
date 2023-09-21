@@ -5,9 +5,9 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AxiosError } from "axios";
-import { forgetPassword } from "@/utilities/api/api";
 import { motion } from "framer-motion";
 import { useMutation } from "@tanstack/react-query";
+import { forgetPassword } from "@/utilities/api/auth";
 
 interface IFormInput {
 	email: string;

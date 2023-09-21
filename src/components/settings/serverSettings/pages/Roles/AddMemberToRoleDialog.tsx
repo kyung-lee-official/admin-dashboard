@@ -3,12 +3,13 @@
 import { SearchOutlineIcon } from "@/components/icons";
 import { CheckboxList } from "@/components/input";
 import { useAuthStore } from "@/stores/auth";
-import { getUsers, updateRoleById } from "@/utilities/api/api";
 import { uniq } from "@/utilities/data/data";
 import { queryClient } from "@/utilities/react-query/react-query";
 import { AxiosError } from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { getUsers } from "@/utilities/api/users";
+import { updateRoleById } from "@/utilities/api/roles";
 
 export const AddMemberToRoleDialog = (props: {
 	activeRole: any;

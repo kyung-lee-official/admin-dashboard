@@ -7,8 +7,8 @@ import { AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useAuthStore } from "@/stores/auth";
-import { downloadAvatar, getMyInfo } from "@/utilities/api/api";
 import { metaData } from "../settings/userSettings";
+import { downloadAvatar, getMyInfo } from "@/utilities/api/users";
 
 const PanelItems = (props: any) => {
 	const { children, onClick } = props;

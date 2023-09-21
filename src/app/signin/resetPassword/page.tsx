@@ -5,10 +5,10 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AxiosError } from "axios";
-import { resetPassword } from "@/utilities/api/api";
 import { motion } from "framer-motion";
 import { useSearchParams } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
+import { resetPassword } from "@/utilities/api/auth";
 
 interface IFormInput {
 	password: string;

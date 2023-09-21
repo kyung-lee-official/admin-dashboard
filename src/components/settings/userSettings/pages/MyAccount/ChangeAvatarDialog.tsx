@@ -5,8 +5,8 @@ import COS from "cos-js-sdk-v5";
 import { add, multiply } from "mathjs";
 import { useAnimate } from "framer-motion";
 import { queryClient } from "@/utilities/react-query/react-query";
-import { uploadMyAvatar } from "@/utilities/api/api";
 import { useMutation } from "@tanstack/react-query";
+import { uploadMyAvatar } from "@/utilities/api/users";
 
 export const ChangeAvatarDialog = (props: {
 	avatarInputRef: any;

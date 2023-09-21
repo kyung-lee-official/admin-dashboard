@@ -1,7 +1,6 @@
 "use client";
 
 import { Button, DatePicker, DateRangePicker, Layout } from "@/components";
-import { getChituboxManualFeedbacks, getIsSeeded } from "@/utilities/api/api";
 import { MenuKey, useSidebarStore } from "@/stores/sidebar";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
@@ -10,6 +9,7 @@ import { Geo } from "@/components/geo/Geo";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { usePathname } from "next/navigation";
+import { getChituboxManualFeedbacks } from "@/utilities/api/chitubox-manual-feedbacks";
 
 const Index = () => {
 	const pathname = usePathname();

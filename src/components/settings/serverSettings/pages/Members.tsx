@@ -5,7 +5,6 @@ import { SettingsHeading } from "../../ContentRegion";
 import { useAuthStore } from "@/stores/auth";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { getUsers } from "@/utilities/api/api";
 import { Skeleton } from "@/components/skeleton";
 import { Avatar } from "@/components/avatar";
 import {
@@ -21,6 +20,7 @@ import {
 	TransferOwnershipDialog,
 } from "@/components/contextMenu";
 import { EditGroupsDialog } from "@/components/contextMenu/EditGroupsDialog";
+import { getUsers } from "@/utilities/api/users";
 
 const Divider = () => {
 	return <div className="w-full h-[1px] my-4 bg-slate-200" />;
