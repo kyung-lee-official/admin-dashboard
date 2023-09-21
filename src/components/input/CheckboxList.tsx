@@ -1,35 +1,42 @@
 "use client";
 
 import { uniq } from "@/utilities/data/data";
-import React from "react";
+import React, { useEffect } from "react";
 
-export const CheckboxList = (props: {
-	availableOptions: any[];
+type CheckboxListProps = {
+	allOptions: any[];
 	newSelectedOptions: any[];
 	setNewSelectedOptions: React.Dispatch<React.SetStateAction<any[]>>;
 	itemKey: string;
-}) => {
+	disabledOptionIds?: (number | string)[];
+};
+
+export const CheckboxList = (props: CheckboxListProps) => {
 	const {
-		availableOptions,
+		allOptions,
 		newSelectedOptions,
 		setNewSelectedOptions,
 		itemKey,
+		disabledOptionIds,
 	} = props;
+
 	return (
 		<ul
 			className="flex flex-col justify-start items-start w-full h-44 gap-1 p-4
 			bg-gray-100 rounded scrollbar
 			overflow-y-scroll"
 		>
-			{availableOptions?.map((availableOption: any) => {
+			{allOptions?.map((option: any) => {
+				const disabled = disabledOptionIds?.includes(option.id);
 				return (
 					<CheckboxItem
-						key={availableOption.id}
-						option={availableOption}
+						key={option.id}
+						option={option}
 						newSelectedOptions={newSelectedOptions}
 						setNewSelectedOptions={setNewSelectedOptions}
+						disabled={disabled}
 					>
-						{availableOption[itemKey]}
+						{option[itemKey]}
 					</CheckboxItem>
 				);
 			})}
@@ -42,44 +49,65 @@ const CheckboxItem = (props: {
 	option: any;
 	newSelectedOptions: any[];
 	setNewSelectedOptions: React.Dispatch<React.SetStateAction<any[]>>;
+	disabled?: boolean;
 }) => {
-	const { children, option, newSelectedOptions, setNewSelectedOptions } =
-		props;
+	const {
+		children,
+		option,
+		newSelectedOptions,
+		setNewSelectedOptions,
+		disabled,
+	} = props;
 
 	const checked = newSelectedOptions.some(
 		(newSelectedOption: any) => newSelectedOption.id === option.id
 	);
 
 	return (
-		<li
-			className="flex justify-between items-center gap-2 w-full px-2 py-1
-			hover:bg-gray-200 rounded cursor-pointer select-none"
-			onClick={() => {
-				if (checked) {
-					setNewSelectedOptions(
-						newSelectedOptions.filter(
-							(newSelectedOption: any) =>
-								newSelectedOption.id !== option.id
-						)
-					);
-				} else {
-					setNewSelectedOptions(
-						uniq([...newSelectedOptions, option])
-					);
+		<li className="w-full">
+			<button
+				className={
+					disabled
+						? `flex justify-between items-center gap-2 w-full px-2 py-1
+					text-gray-400
+					bg-gray-200 rounded select-none cursor-not-allowed`
+						: `flex justify-between items-center gap-2 w-full px-2 py-1
+					hover:bg-gray-200 rounded select-none`
 				}
-			}}
-		>
-			<div>{children}</div>
-			<Checkbox checked={checked} />
+				disabled={disabled}
+				onClick={() => {
+					if (checked) {
+						setNewSelectedOptions(
+							newSelectedOptions.filter(
+								(newSelectedOption: any) =>
+									newSelectedOption.id !== option.id
+							)
+						);
+					} else {
+						setNewSelectedOptions(
+							uniq([...newSelectedOptions, option])
+						);
+					}
+				}}
+			>
+				<div>{children}</div>
+				<Checkbox checked={checked} disabled={disabled} />
+			</button>
 		</li>
 	);
 };
 
-const Checkbox = (props: { checked: boolean }) => {
-	const { checked } = props;
+const Checkbox = (props: { checked: boolean; disabled?: boolean }) => {
+	const { checked, disabled } = props;
 
 	return checked ? (
-		<div className="text-blue-500 rounded-md overflow-hidden">
+		<div
+			className={
+				disabled
+					? `text-blue-500/60 rounded-md overflow-hidden`
+					: `text-blue-500 rounded-md overflow-hidden`
+			}
+		>
 			<CheckSquareFillIcon />
 		</div>
 	) : (

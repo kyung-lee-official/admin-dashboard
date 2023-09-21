@@ -30,6 +30,7 @@ export const EditGroupsDialog = (props: {
 	});
 
 	const [newUserGroups, setNewUserGroups] = useState(user.groups);
+	const [disabledGroupIds, setDisabledGroupIds] = useState<number[]>([]);
 	const [searchResults, setSearchResults] = useState<any[]>([]);
 
 	const editGroupsDialogRef = useRef<HTMLDialogElement | null>(null);
@@ -68,6 +69,12 @@ export const EditGroupsDialog = (props: {
 
 	useEffect(() => {
 		setSearchResults(groupsQuery.data);
+		if (groupsQuery.data) {
+			const disabledGroupIds = groupsQuery.data
+				.filter((group: any) => group.name === "everyone")
+				.map((group: any) => group.id);
+			setDisabledGroupIds(disabledGroupIds);
+		}
 	}, [groupsQuery.data]);
 
 	const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -118,10 +125,11 @@ export const EditGroupsDialog = (props: {
 					</div>
 				</div>
 				<CheckboxList
-					availableOptions={searchResults}
+					allOptions={searchResults}
 					newSelectedOptions={newUserGroups}
 					setNewSelectedOptions={setNewUserGroups}
 					itemKey="name"
+					disabledOptionIds={disabledGroupIds}
 				/>
 				<div className="flex gap-6">
 					<button

@@ -130,7 +130,7 @@ const AddMemberToGroupDialog = (props: {
 					</div>
 				</div>
 				<CheckboxList
-					availableOptions={searchResults}
+					allOptions={searchResults}
 					newSelectedOptions={newlySelectedGroupMembers}
 					setNewSelectedOptions={setNewlySelectedGroupMembers}
 					itemKey="nickname"

@@ -30,6 +30,7 @@ export const EditRolesDialog = (props: {
 	});
 
 	const [newUserRoles, setNewUserRoles] = useState(user.roles);
+	const [disabledRoleIds, setDisabledRoleIds] = useState<number[]>([]);
 	const [searchResults, setSearchResults] = useState<any[]>([]);
 
 	const showRolesDialogRef = useRef<HTMLDialogElement | null>(null);
@@ -68,6 +69,12 @@ export const EditRolesDialog = (props: {
 
 	useEffect(() => {
 		setSearchResults(rolesQuery.data);
+		if (rolesQuery.data) {
+			const disabledRoleIds = rolesQuery.data
+				.filter((role: any) => role.name === "admin")
+				.map((role: any) => role.id);
+			setDisabledRoleIds(disabledRoleIds);
+		}
 	}, [rolesQuery.data]);
 
 	const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -118,10 +125,11 @@ export const EditRolesDialog = (props: {
 					</div>
 				</div>
 				<CheckboxList
-					availableOptions={searchResults}
+					allOptions={searchResults}
 					newSelectedOptions={newUserRoles}
 					setNewSelectedOptions={setNewUserRoles}
 					itemKey="name"
+					disabledOptionIds={disabledRoleIds}
 				/>
 				<div className="flex gap-6">
 					<button

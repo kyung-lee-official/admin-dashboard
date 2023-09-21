@@ -131,7 +131,7 @@ export const AddMemberToRoleDialog = (props: {
 					</div>
 				</div>
 				<CheckboxList
-					availableOptions={searchResults}
+					allOptions={searchResults}
 					newSelectedOptions={newlySelectedRoleMembers}
 					setNewSelectedOptions={setNewlySelectedRoleMembers}
 					itemKey="nickname"
