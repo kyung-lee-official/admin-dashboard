@@ -11,19 +11,21 @@ import {
 	CrownIcon,
 	MoreVerticalOutlineIcon,
 	SearchOutlineIcon,
+	SnowflakeIcon,
 } from "@/components/icons";
 import {
 	ContextMenu,
 	DeleteUserDialog,
 	EditRolesDialog,
 	FreezeUserDialog,
+	UnfreezeUserDialog,
 	TransferOwnershipDialog,
 } from "@/components/contextMenu";
 import { EditGroupsDialog } from "@/components/contextMenu/EditGroupsDialog";
 import { getUsers } from "@/utilities/api/users";
 
 const Divider = () => {
-	return <div className="w-full h-[1px] my-4 bg-slate-200" />;
+	return <div className="w-full h-[1px] my-2 bg-slate-200" />;
 };
 
 const Row = (props: { user: any }) => {
@@ -40,6 +42,8 @@ const Row = (props: { user: any }) => {
 	const [showEditGroupsDialog, setShowEditGroupsDialog] =
 		useState<boolean>(false);
 	const [showFreezeUserDialog, setShowFreezeUserDialog] =
+		useState<boolean>(false);
+	const [showUnfreezeUserDialog, setShowUnfreezeUserDialog] =
 		useState<boolean>(false);
 	const [showDeleteUserDialog, setShowDeleteUserDialog] =
 		useState<boolean>(false);
@@ -79,7 +83,7 @@ const Row = (props: { user: any }) => {
 				setShowMoreIcon(false);
 			}}
 		>
-			<div className="flex justify-between items-center gap-4">
+			<div className="flex justify-between items-center p-2 gap-2">
 				<div className="flex items-center gap-4">
 					<Avatar
 						user={user}
@@ -90,7 +94,11 @@ const Row = (props: { user: any }) => {
 							className="flex justify-start items-center gap-4
 							text-gray-800 text-base font-mono font-semibold"
 						>
-							<div>{user.nickname}</div>
+							<div
+								className={user.isFrozen ? "text-gray-400" : ""}
+							>
+								{user.nickname}
+							</div>
 							{user.roles.some(
 								(role: any) => role.name === "admin"
 							) && (
@@ -104,8 +112,25 @@ const Row = (props: { user: any }) => {
 									admin
 								</div>
 							)}
+							{user.isFrozen && (
+								<div
+									className="flex justify-start items-center px-2 py-[1px] gap-2
+									text-sm font-semibold
+									text-sky-50
+									bg-sky-300 rounded-md"
+								>
+									<SnowflakeIcon size={16} />
+									Frozen
+								</div>
+							)}
 						</div>
-						<div className="text-slate-400 font-normal">
+						<div
+							className={
+								user.isFrozen
+									? "text-slate-300 font-normal"
+									: "text-slate-400 font-normal"
+							}
+						>
 							{user.email}
 						</div>
 					</div>
@@ -132,6 +157,9 @@ const Row = (props: { user: any }) => {
 							setShowEditGroupsDialog={setShowEditGroupsDialog}
 							setShowDeleteUserDialog={setShowDeleteUserDialog}
 							setShowFreezeUserDialog={setShowFreezeUserDialog}
+							setShowUnfreezeUserDialog={
+								setShowUnfreezeUserDialog
+							}
 							setShowTransferOwnershipDialog={
 								setShowTransferOwnershipDialog
 							}
@@ -164,6 +192,13 @@ const Row = (props: { user: any }) => {
 					<FreezeUserDialog
 						showFreezeUserDialog={showFreezeUserDialog}
 						setShowFreezeUserDialog={setShowFreezeUserDialog}
+						user={user}
+					/>
+				)}
+				{showUnfreezeUserDialog && (
+					<UnfreezeUserDialog
+						showUnfreezeUserDialog={showUnfreezeUserDialog}
+						setShowUnfreezeUserDialog={setShowUnfreezeUserDialog}
 						user={user}
 					/>
 				)}

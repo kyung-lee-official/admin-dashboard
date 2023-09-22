@@ -22,10 +22,10 @@ export const DeleteUserDialog = (props: {
 			return deleteUserById(userId, accessToken);
 		},
 		onSuccess: (data) => {
+			setShowDeleteUserDialog(false);
 			queryClient.invalidateQueries({
 				queryKey: ["getUsers", accessToken],
 			});
-			deleteUserDialogRef.current!.close();
 		},
 	});
 

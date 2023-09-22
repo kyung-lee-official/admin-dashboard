@@ -132,13 +132,16 @@ export const transferOwnership = async (
 	return res.data;
 };
 
-export const freezeUserById = async (
+export const setIsFrozenUserById = async (
 	userId: string,
+	isFrozen: boolean,
 	accessToken?: string | null
 ): Promise<any> => {
 	const res = await axios.patch(
 		`/users/freeze/${userId}`,
-		{},
+		{
+			isFrozen: isFrozen,
+		},
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
 			headers: {

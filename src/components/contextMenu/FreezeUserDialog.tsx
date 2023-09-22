@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuthStore } from "@/stores/auth";
-import { freezeUserById } from "@/utilities/api/users";
+import { setIsFrozenUserById } from "@/utilities/api/users";
 import { queryClient } from "@/utilities/react-query/react-query";
 import { useMutation } from "@tanstack/react-query";
 import { motion } from "framer-motion";
@@ -19,13 +19,13 @@ export const FreezeUserDialog = (props: {
 
 	const freezeUserMutation = useMutation({
 		mutationFn: async (userId: string) => {
-			return freezeUserById(userId, accessToken);
+			return setIsFrozenUserById(userId, true, accessToken);
 		},
 		onSuccess: (data) => {
+			setShowFreezeUserDialog(false);
 			queryClient.invalidateQueries({
 				queryKey: ["getUsers", accessToken],
 			});
-			freezeUserDialogRef.current!.close();
 		},
 	});
 

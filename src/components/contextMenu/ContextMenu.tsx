@@ -41,6 +41,7 @@ export const ContextMenu = (props: {
 	setShowEditGroupsDialog: React.Dispatch<React.SetStateAction<boolean>>;
 	setShowDeleteUserDialog: React.Dispatch<React.SetStateAction<boolean>>;
 	setShowFreezeUserDialog: React.Dispatch<React.SetStateAction<boolean>>;
+	setShowUnfreezeUserDialog: React.Dispatch<React.SetStateAction<boolean>>;
 	setShowTransferOwnershipDialog: React.Dispatch<
 		React.SetStateAction<boolean>
 	>;
@@ -51,6 +52,7 @@ export const ContextMenu = (props: {
 		setShowEditGroupsDialog,
 		setShowDeleteUserDialog,
 		setShowFreezeUserDialog,
+		setShowUnfreezeUserDialog,
 		setShowTransferOwnershipDialog,
 	} = props;
 
@@ -102,16 +104,27 @@ export const ContextMenu = (props: {
 			>
 				<Item type="normal">Edit Groups</Item>
 			</button>
-			{!isAdmin && !isMe && (
-				<button
-					className="w-full"
-					onClick={() => {
-						setShowFreezeUserDialog(true);
-					}}
-				>
-					<Item type="danger">Freeze {user.nickname}</Item>
-				</button>
-			)}
+			{!isAdmin &&
+				!isMe &&
+				(user.isFrozen ? (
+					<button
+						className="w-full"
+						onClick={() => {
+							setShowUnfreezeUserDialog(true);
+						}}
+					>
+						<Item type="danger">Unfreeze {user.nickname}</Item>
+					</button>
+				) : (
+					<button
+						className="w-full"
+						onClick={() => {
+							setShowFreezeUserDialog(true);
+						}}
+					>
+						<Item type="danger">Freeze {user.nickname}</Item>
+					</button>
+				))}
 			{!isAdmin && !isMe && (
 				<button
 					className="w-full"
@@ -123,7 +136,7 @@ export const ContextMenu = (props: {
 				</button>
 			)}
 			<hr className="w-full my-1 border-gray-300" />
-			{!isAdmin && !isMe && (
+			{!isAdmin && !isMe && !user.isFrozen && (
 				<div className="w-full">
 					<button
 						className="w-full"

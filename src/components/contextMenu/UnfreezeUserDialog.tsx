@@ -1,34 +1,28 @@
 "use client";
 
 import { useAuthStore } from "@/stores/auth";
-import { transferOwnership } from "@/utilities/api/users";
+import { setIsFrozenUserById } from "@/utilities/api/users";
 import { queryClient } from "@/utilities/react-query/react-query";
 import { useMutation } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import React, { useEffect, useRef } from "react";
 
-export const TransferOwnershipDialog = (props: {
+export const UnfreezeUserDialog = (props: {
 	user: any;
-	showTransferOwnershipDialog: boolean;
-	setShowTransferOwnershipDialog: React.Dispatch<
-		React.SetStateAction<boolean>
-	>;
+	showUnfreezeUserDialog: boolean;
+	setShowUnfreezeUserDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-	const {
-		user,
-		showTransferOwnershipDialog,
-		setShowTransferOwnershipDialog,
-	} = props;
+	const { user, showUnfreezeUserDialog, setShowUnfreezeUserDialog } = props;
 	const accessToken = useAuthStore((state) => state.accessToken);
 
-	const transferOwnershipDialogRef = useRef<HTMLDialogElement | null>(null);
+	const unfreezeUserDialogRef = useRef<HTMLDialogElement | null>(null);
 
-	const transferOwnershipMutation = useMutation({
+	const freezeUserMutation = useMutation({
 		mutationFn: async (userId: string) => {
-			return transferOwnership(userId, accessToken);
+			return setIsFrozenUserById(userId, false, accessToken);
 		},
 		onSuccess: (data) => {
-			setShowTransferOwnershipDialog(false);
+			setShowUnfreezeUserDialog(false);
 			queryClient.invalidateQueries({
 				queryKey: ["getUsers", accessToken],
 			});
@@ -36,22 +30,22 @@ export const TransferOwnershipDialog = (props: {
 	});
 
 	useEffect(() => {
-		if (showTransferOwnershipDialog) {
-			transferOwnershipDialogRef.current!.showModal();
+		if (showUnfreezeUserDialog) {
+			unfreezeUserDialogRef.current!.showModal();
 		}
 	}, []);
 
 	useEffect(() => {
-		if (showTransferOwnershipDialog) {
-			transferOwnershipDialogRef.current!.showModal();
+		if (showUnfreezeUserDialog) {
+			unfreezeUserDialogRef.current!.showModal();
 		} else {
-			transferOwnershipDialogRef.current!.close();
+			unfreezeUserDialogRef.current!.close();
 		}
-	}, [showTransferOwnershipDialog]);
+	}, [showUnfreezeUserDialog]);
 
 	return (
 		<motion.dialog
-			ref={transferOwnershipDialogRef}
+			ref={unfreezeUserDialogRef}
 			initial={{ opacity: 0, scale: 0.9 }}
 			animate={{ opacity: 1, scale: 1 }}
 			className="w-[440px]
@@ -59,23 +53,26 @@ export const TransferOwnershipDialog = (props: {
 			shadow-lg rounded-md backdrop:bg-black/80 backdrop:[backdrop-filter:blur(2px)]"
 			onCancel={(e: React.SyntheticEvent<HTMLDialogElement, Event>) => {
 				e.preventDefault();
-				setShowTransferOwnershipDialog(false);
+				setShowUnfreezeUserDialog(false);
 			}}
 		>
 			<div
 				className="flex flex-col justify-center items-center p-6 gap-8
-				text-gray-600"
+							text-gray-600"
 			>
-				<h1 className="text-lg">Transfer Ownership</h1>
-				<div className="font-normal">
-					This will transfer the ownership of this server to{" "}
-					<strong>{user.nickname}</strong> ({user.email}). This cannot
-					be undone!
+				<h1 className="text-lg">Unfreeze User</h1>
+				<div className="flex flex-col items-center gap-2 font-normal">
+					<p className="px-4 text-center">
+						Are you sure you want to unfreeze user
+					</p>
+					<p>
+						<strong>{user.nickname}</strong>({user.email})?
+					</p>
 				</div>
 				<div className="flex gap-6">
 					<button
 						className={
-							transferOwnershipMutation.isLoading
+							freezeUserMutation.isLoading
 								? `flex justify-center items-center w-20 h-8
 							text-gray-700/60
 							bg-gray-300/60 rounded outline-none cursor-wait`
@@ -84,26 +81,26 @@ export const TransferOwnershipDialog = (props: {
 							bg-gray-300 hover:bg-gray-400 rounded outline-none`
 						}
 						onClick={() => {
-							setShowTransferOwnershipDialog(false);
+							setShowUnfreezeUserDialog(false);
 						}}
 					>
 						Cancel
 					</button>
 					<button
 						className={
-							transferOwnershipMutation.isLoading
+							freezeUserMutation.isLoading
 								? `flex justify-center items-center w-20 h-8
 							text-gray-100
 							bg-red-500/60 rounded cursor-wait`
-								: `flex justify-center items-center w-40 h-8
+								: `flex justify-center items-center w-20 h-8
 							text-gray-100
 							bg-red-500 hover:bg-red-600 rounded`
 						}
 						onClick={() => {
-							transferOwnershipMutation.mutate(user.id);
+							freezeUserMutation.mutate(user.id);
 						}}
 					>
-						Transfer Ownership
+						Unfreeze
 					</button>
 				</div>
 			</div>
