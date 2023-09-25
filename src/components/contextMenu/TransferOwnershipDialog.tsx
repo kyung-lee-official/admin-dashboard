@@ -68,9 +68,13 @@ export const TransferOwnershipDialog = (props: {
 			>
 				<h1 className="text-lg">Transfer Ownership</h1>
 				<div className="font-normal">
-					This will transfer the ownership of this server to{" "}
-					<strong>{user.nickname}</strong> ({user.email}). This cannot
-					be undone!
+					This will transfer the ownership of this server and the
+					ownership of the{" "}
+					<span className="p-[2px] text-gray-700 bg-gray-300 rounded">
+						everyone
+					</span>{" "}
+					group to <strong>{user.nickname}</strong> ({user.email}).
+					This cannot be undone!
 				</div>
 				<div className="flex gap-6">
 					<button
