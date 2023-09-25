@@ -151,58 +151,92 @@ const InfoPanel = (props: any) => {
 						<div className="text-gray-600 font-bold text-sm select-none">
 							ROLES
 						</div>
-						{myInfo.roles?.map((role: any) => {
-							return (
-								<div
-									key={role.id}
-									className="text-gray-600 font-normal text-base"
-								>
-									{role.name}
-								</div>
-							);
-						})}
+						<div className="flex flex-wrap gap-2">
+							{myInfo.roles?.map((role: any) => {
+								if (role.name === "admin") {
+									return (
+										<div
+											key={role.id}
+											className="px-1
+											text-yellow-500 font-normal text-base
+											bg-zinc-800 rounded"
+										>
+											{role.name}
+										</div>
+									);
+								}
+								return (
+									<div
+										key={role.id}
+										className="px-1 
+										text-gray-600 font-normal text-base
+										bg-gray-300 rounded"
+									>
+										{role.name}
+									</div>
+								);
+							})}
+						</div>
 					</div>
 					<div className="flex flex-col">
 						<div className="text-gray-600 font-bold text-sm select-none">
 							GROUPS
 						</div>
-						{myInfo.groups.length > 0 ? (
-							myInfo.groups?.map((group: any) => {
-								return (
-									<div
-										key={group.id}
-										className="text-gray-600 font-normal text-base"
-									>
-										{group.name}
-									</div>
-								);
-							})
-						) : (
-							<div className="text-gray-600 font-normal text-base">
-								No Groups
-							</div>
-						)}
+						<div className="flex flex-wrap gap-2">
+							{myInfo.groups.length > 0 ? (
+								myInfo.groups?.map((group: any) => {
+									if (group.name === "everyone") {
+										return (
+											<div
+												key={group.id}
+												className="px-1
+												text-gray-600 font-normal text-base
+												bg-gray-300 rounded"
+											>
+												{group.name}
+											</div>
+										);
+									}
+									return (
+										<div
+											key={group.id}
+											className="text-gray-600 font-normal text-base"
+										>
+											{group.name}
+										</div>
+									);
+								})
+							) : (
+								<div className="text-gray-600 font-normal text-base">
+									No Groups
+								</div>
+							)}
+						</div>
 					</div>
 					<div className="flex flex-col">
 						<div className="text-gray-600 font-bold text-sm select-none">
 							OWNED GROUPS
 						</div>
-						{myInfo.ownedGroups.length > 0 ? (
-							myInfo.ownedGroups?.map((ownedGroups: any) => {
-								return (
-									<div
-										key={ownedGroups.id}
-										className="text-gray-600 font-normal text-base"
-									>
-										{ownedGroups.name}
-									</div>
-								);
-							})
-						) : (
-							<div className="text-gray-600 font-normal text-base">
-								No Owned Groups
-							</div>
-						)}
+						<div className="flex flex-wrap gap-2">
+							{myInfo.ownedGroups.length > 0 ? (
+								myInfo.ownedGroups?.map((ownedGroups: any) => {
+									return (
+										<div
+											key={ownedGroups.id}
+											className="px-1
+											text-gray-600 font-normal text-base
+											bg-gray-300 rounded"
+										>
+											{ownedGroups.name}
+										</div>
+									);
+								})
+							) : (
+								<div className="text-gray-600 font-normal text-base">
+									No Owned Groups
+								</div>
+							)}
+						</div>
 					</div>
 					<div className="flex flex-col gap-2">
 						<div className="text-gray-600 font-bold text-sm select-none">
