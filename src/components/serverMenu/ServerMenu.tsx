@@ -5,6 +5,12 @@ import { ChevronDownOutline, SettingsIcon } from "../icons";
 import { AnimatePresence, motion } from "framer-motion";
 import { Settings, SettingsMask } from "../settings";
 import { metaData } from "../settings/serverSettings";
+import { useAuthStore } from "@/stores/auth";
+import { getMyInfo } from "@/utilities/api/users";
+import { uniq } from "@/utilities/data/data";
+import { useQuery } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { Permissions } from "../sacl/Permissions";
 
 export const ServerMenuItem = (props: any) => {
 	const { children, onClick } = props;
@@ -51,6 +57,71 @@ const MenuContent = forwardRef<HTMLDivElement, any>(function MenuContent(
 });
 
 export const ServerMenu = () => {
+	const accessToken = useAuthStore((state) => state.accessToken);
+	const myInfoQuery = useQuery<any, AxiosError>({
+		queryKey: ["myInfo", accessToken],
+		queryFn: async () => {
+			const isSignedIn = await getMyInfo(accessToken);
+			return isSignedIn;
+		},
+		retry: false,
+		refetchOnWindowFocus: false,
+	});
+
+	const [filteredMetaData, setFilteredMetaData] = useState<any>([]);
+
+	useEffect(() => {
+		if (myInfoQuery.data) {
+			const roles = myInfoQuery.data.roles;
+			let metaDataClone: any = [];
+			Object.assign(metaDataClone, metaData);
+
+			const myPermissions = uniq(
+				roles.map((role: any) => role.permissions).flat()
+			);
+			if (!myPermissions.includes(Permissions.UPDATE_SERVER_SETTING)) {
+				const serverSettingsIndex = metaDataClone.findIndex(
+					(section: any) => section.heading === "SERVER SETTINGS"
+				);
+				metaDataClone[serverSettingsIndex].items = metaDataClone[
+					serverSettingsIndex
+				].items.filter((item: any) => item.name !== "Server");
+			}
+			if (
+				!(
+					myPermissions.includes(Permissions.UPDATE_ROLE) &&
+					myPermissions.includes(Permissions.UPDATE_GROUP) &&
+					myPermissions.includes(Permissions.UPDATE_USER)
+				)
+			) {
+				const userManagementIndex = metaDataClone.findIndex(
+					(section: any) => section.heading === "USER MANAGEMENT"
+				);
+
+				if (!myPermissions.includes(Permissions.UPDATE_ROLE)) {
+					metaDataClone[userManagementIndex].items = metaDataClone[
+						userManagementIndex
+					].items.filter((item: any) => item.name !== "Roles");
+				}
+				if (!myPermissions.includes(Permissions.UPDATE_GROUP)) {
+					metaDataClone[userManagementIndex].items = metaDataClone[
+						userManagementIndex
+					].items.filter((item: any) => item.name !== "Groups");
+				}
+				if (!myPermissions.includes(Permissions.UPDATE_USER)) {
+					metaDataClone[userManagementIndex].items = metaDataClone[
+						userManagementIndex
+					].items.filter((item: any) => item.name !== "Members");
+				}
+			}
+
+			metaDataClone = metaDataClone.filter((section: any) => {
+				return section.items.length > 0;
+			});
+			setFilteredMetaData(metaDataClone);
+		}
+	}, [myInfoQuery.data]);
+
 	const [showMenu, setShowMenu] = useState<boolean>(false);
 	const menuContentRef = useRef<HTMLDivElement>(null);
 	const [showServerSettings, setShowServerSettings] =
@@ -95,7 +166,7 @@ export const ServerMenu = () => {
 				{showServerSettings && (
 					<SettingsMask key={"serverSettingsMask"}>
 						<Settings
-							metaData={metaData}
+							metaData={filteredMetaData}
 							setShowSettings={setShowServerSettings}
 						/>
 					</SettingsMask>
