@@ -1,10 +1,6 @@
-"use client";
-
-import { Theme, useThemeStore } from "@/stores/theme";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { useEffect } from "react";
 import AppWrapper from "@/components/appWrapper/AppWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -19,17 +15,6 @@ export default function RootLayout({
 }: {
 	children: React.ReactNode;
 }) {
-	const theme = useThemeStore((state) => state.theme);
-	useEffect(() => {
-		const className = "dark";
-		const bodyClass = window.document.body.classList;
-		if (theme === Theme.DARK) {
-			bodyClass.add(className);
-		} else {
-			bodyClass.remove(className);
-		}
-	}, [theme]);
-
 	return (
 		<html lang="en">
 			<body className={inter.className}>
