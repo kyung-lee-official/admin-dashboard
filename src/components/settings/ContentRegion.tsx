@@ -1,6 +1,13 @@
 "use client";
 
 import { CloseIcon } from "../icons/Icons";
+import { Groups } from "./serverSettings/pages/Groups/Groups";
+import { Members } from "./serverSettings/pages/Members";
+import { Overview } from "./serverSettings/pages/Overview";
+import { Roles } from "./serverSettings/pages/Roles/Roles";
+import { Server } from "./serverSettings/pages/Server";
+import { Appearance } from "./userSettings/pages/Appearance";
+import { MyAccount } from "./userSettings/pages/MyAccount/MyAccount";
 
 export const SettingsHeading = (props: any) => {
 	const { children } = props;
@@ -14,6 +21,47 @@ export const SettingsHeading = (props: any) => {
 export const SettingsSubHeading = (props: any) => {
 	const { children } = props;
 	return <h2 className="text-xs text-gray-500 font-bold my-2">{children}</h2>;
+};
+
+const ActiveComponent = (props: any) => {
+	const { activeItem } = props;
+	switch (activeItem.path) {
+		case "/serverSettings/overview":
+			return <Overview />;
+			break;
+
+		case "/serverSettings/server":
+			return <Server />;
+			break;
+
+		case "/userManagement/roles":
+			return <Roles />;
+			break;
+
+		case "/userManagement/groups":
+			return <Groups />;
+			break;
+
+		case "/userManagement/members":
+			return <Members />;
+			break;
+
+		case "/userManagement/groups":
+			return <Groups />;
+			break;
+
+		case "/userSettings/myAccount":
+			return <MyAccount />;
+			break;
+
+		case "/appSettings/appearance":
+			return <Appearance />;
+			break;
+
+		default:
+			return <div></div>;
+			break;
+	}
 };
 
 export const ContentRegion = (props: any) => {
@@ -31,7 +79,7 @@ export const ContentRegion = (props: any) => {
 		>
 			<div className="relative w-[740px] px-10">
 				<div className="h-12" />
-				<activeItem.component />
+				<ActiveComponent activeItem={activeItem} />
 				<div className="h-12" />
 			</div>
 			<div

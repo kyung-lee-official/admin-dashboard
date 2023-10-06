@@ -74,8 +74,7 @@ export const ServerMenu = () => {
 	useEffect(() => {
 		if (myInfoQuery.data) {
 			const roles = myInfoQuery.data.roles;
-			let metaDataClone: any = [];
-			Object.assign(metaDataClone, metaData);
+			let metaDataClone: any = JSON.parse(JSON.stringify(metaData));
 
 			const myPermissions = uniq(
 				roles.map((role: any) => role.permissions).flat()

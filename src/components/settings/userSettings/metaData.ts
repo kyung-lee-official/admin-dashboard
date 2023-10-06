@@ -1,6 +1,3 @@
-import { Appearance } from "./pages/Appearance";
-import { MyAccount } from "./pages/MyAccount/MyAccount";
-
 export const metaData = [
 	{
 		heading: "USER SETTINGS",
@@ -8,7 +5,6 @@ export const metaData = [
 			{
 				name: "My Account",
 				path: "/userSettings/myAccount",
-				component: MyAccount,
 			},
 		],
 	},
@@ -18,7 +14,6 @@ export const metaData = [
 			{
 				name: "Appearance",
 				path: "/appSettings/appearance",
-				component: Appearance,
 			},
 		],
 	},
