@@ -1,10 +1,10 @@
 "use client";
 
-import { Avatar } from "@/components/avatar";
-import { CircleWithCrossIcon, SearchOutlineIcon } from "@/components/icons";
 import React, { useEffect, useState } from "react";
 import AddMemberToGroupDialog from "./AddMemberToGroupDialog";
 import { DeleteMemberFromGroupDialog } from "./DeleteMemberFromGroupDialog";
+import { Avatar } from "@/components/avatar/Avatar";
+import { CircleWithCrossIcon, SearchOutlineIcon } from "@/components/icons/Icons";
 
 const MemberRow = (props: {
 	user: any;

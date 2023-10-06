@@ -10,9 +10,9 @@ import {
 	useState,
 } from "react";
 import dayjs from "dayjs";
-import { Calendar, ChevronLeftOutline, ChevronRightOutline } from "../icons";
 import classNames from "classnames";
 import { AnimatePresence, motion, useAnimationControls } from "framer-motion";
+import { Calendar, ChevronLeftOutline, ChevronRightOutline } from "../icons/Icons";
 
 type DateRangePickerProps = {
 	onChange?: (startDate: dayjs.Dayjs, endDate: dayjs.Dayjs) => void;

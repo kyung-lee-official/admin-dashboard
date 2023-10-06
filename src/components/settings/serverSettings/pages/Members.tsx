@@ -5,24 +5,22 @@ import { SettingsHeading } from "../../ContentRegion";
 import { useAuthStore } from "@/stores/auth";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { Skeleton } from "@/components/skeleton";
-import { Avatar } from "@/components/avatar";
-import {
-	CrownIcon,
-	MoreVerticalOutlineIcon,
-	SearchOutlineIcon,
-	SnowflakeIcon,
-} from "@/components/icons";
-import {
-	ContextMenu,
-	DeleteUserDialog,
-	EditRolesDialog,
-	FreezeUserDialog,
-	UnfreezeUserDialog,
-	TransferOwnershipDialog,
-} from "@/components/contextMenu";
 import { EditGroupsDialog } from "@/components/contextMenu/EditGroupsDialog";
 import { getUsers } from "@/utilities/api/users";
+import { Avatar } from "@/components/avatar/Avatar";
+import { ContextMenu } from "@/components/contextMenu/ContextMenu";
+import { DeleteUserDialog } from "@/components/contextMenu/DeleteUserDialog";
+import { EditRolesDialog } from "@/components/contextMenu/EditRolesDialog";
+import { FreezeUserDialog } from "@/components/contextMenu/FreezeUserDialog";
+import { TransferOwnershipDialog } from "@/components/contextMenu/TransferOwnershipDialog";
+import { UnfreezeUserDialog } from "@/components/contextMenu/UnfreezeUserDialog";
+import {
+	CrownIcon,
+	SnowflakeIcon,
+	MoreVerticalOutlineIcon,
+	SearchOutlineIcon,
+} from "@/components/icons/Icons";
+import { Skeleton } from "@/components/skeleton/Skeleton";
 
 const Divider = () => {
 	return <div className="w-full h-[1px] my-2 bg-slate-200" />;

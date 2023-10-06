@@ -1,16 +1,17 @@
 "use client";
 
 import React, { forwardRef, useEffect, useRef, useState } from "react";
-import { ChevronDownOutline, SettingsIcon } from "../icons";
 import { AnimatePresence, motion } from "framer-motion";
-import { Settings, SettingsMask } from "../settings";
-import { metaData } from "../settings/serverSettings";
 import { useAuthStore } from "@/stores/auth";
 import { getMyInfo } from "@/utilities/api/users";
 import { uniq } from "@/utilities/data/data";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { Permissions } from "../sacl/Permissions";
+import { SettingsIcon, ChevronDownOutline } from "../icons/Icons";
+import { Settings } from "../settings/Settings";
+import { SettingsMask } from "../settings/SettingsMask";
+import { metaData } from "../settings/serverSettings/metaData";
 
 export const ServerMenuItem = (props: any) => {
 	const { children, onClick } = props;

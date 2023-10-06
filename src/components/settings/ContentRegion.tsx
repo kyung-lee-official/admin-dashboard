@@ -1,6 +1,6 @@
 "use client";
 
-import { CloseIcon } from "..";
+import { CloseIcon } from "../icons/Icons";
 
 export const SettingsHeading = (props: any) => {
 	const { children } = props;

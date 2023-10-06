@@ -1,6 +1,5 @@
 "use client";
 
-import { Button, GoogleIcon } from "@/components";
 import { CheckingSeeded } from "@/components/sacl/CheckingSeeded";
 import { CheckingSignedIn } from "@/components/sacl/CheckingSignedIn";
 import { NetworkError } from "@/components/sacl/NetworkError";
@@ -15,6 +14,8 @@ import { z } from "zod";
 import lottieFiles from "@/components/lottie-animations/animation_congratulations.json";
 import { useMutation } from "@tanstack/react-query";
 import { seed } from "@/utilities/api/auth";
+import { Button } from "@/components/button/Button";
+import { GoogleIcon } from "@/components/icons/Icons";
 
 interface IFormInput {
 	email: string;

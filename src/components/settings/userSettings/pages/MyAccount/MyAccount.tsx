@@ -1,6 +1,5 @@
 "use client";
 
-import { Button, CopyIcon, SettingsHeading, VerifiedIcon } from "@/components";
 import { queryClient } from "@/utilities/react-query/react-query";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "next/navigation";
@@ -11,6 +10,9 @@ import { ChangePasswordDialog } from "./ChangePasswordDialog";
 import { ChangeAvatarDialog } from "./ChangeAvatarDialog";
 import { useMutation } from "@tanstack/react-query";
 import { sendVerificationEmail } from "@/utilities/api/auth";
+import { Button } from "@/components/button/Button";
+import { CopyIcon, VerifiedIcon } from "@/components/icons/Icons";
+import { SettingsHeading } from "@/components/settings/ContentRegion";
 
 const InfoPanel = (props: any) => {
 	const { myInfo, accessToken } = props;

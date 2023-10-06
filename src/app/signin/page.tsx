@@ -1,6 +1,5 @@
 "use client";
 
-import { Button, GoogleIcon } from "@/components";
 import { CheckingSeeded } from "@/components/sacl/CheckingSeeded";
 import { CheckingSignedIn } from "@/components/sacl/CheckingSignedIn";
 import { NetworkError } from "@/components/sacl/NetworkError";
@@ -14,6 +13,8 @@ import { z } from "zod";
 import { AxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
 import { signIn } from "@/utilities/api/auth";
+import { Button } from "@/components/button/Button";
+import { GoogleIcon } from "@/components/icons/Icons";
 
 interface IFormInput {
 	email: string;

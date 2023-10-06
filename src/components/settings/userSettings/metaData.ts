@@ -1,4 +1,5 @@
-import { Appearance, MyAccount } from "./pages";
+import { Appearance } from "./pages/Appearance";
+import { MyAccount } from "./pages/MyAccount/MyAccount";
 
 export const metaData = [
 	{

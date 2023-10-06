@@ -2,7 +2,6 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
-import { Layout } from "../layout";
 import { useSidebarStore } from "@/stores/sidebar";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
@@ -16,6 +15,7 @@ import {
 	getTencentCosTempCredential,
 	refreshAccessToken,
 } from "@/utilities/api/auth";
+import { Layout } from "../layout/Layout";
 
 /**
  * SACL (Seed and Auth Checking Layer) UI

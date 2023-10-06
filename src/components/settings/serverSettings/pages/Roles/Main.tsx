@@ -1,8 +1,8 @@
 "use client";
 
-import { CrownIcon, DeleteIcon, EditIcon, UserIcon } from "@/components/icons";
+import { CrownIcon, UserIcon, EditIcon, DeleteIcon } from "@/components/icons/Icons";
 import { SettingsHeading } from "@/components/settings/ContentRegion";
-import { Skeleton } from "@/components/skeleton";
+import { Skeleton } from "@/components/skeleton/Skeleton";
 import { createRole, deleteRoleById } from "@/utilities/api/roles";
 import { queryClient } from "@/utilities/react-query/react-query";
 import { useMutation } from "@tanstack/react-query";

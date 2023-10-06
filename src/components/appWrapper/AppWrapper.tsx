@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect } from "react";
-import { Sacl } from "..";
 import { publicRoutes } from "./publicRoutes";
 import { usePathname } from "next/navigation";
 import { Theme, useThemeStore } from "@/stores/theme";
 import { queryClient } from "@/utilities/react-query/react-query";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { Sacl } from "../sacl/Sacl";
 
 const AppWrapper = ({ children }: any) => {
 	const pathname = usePathname();

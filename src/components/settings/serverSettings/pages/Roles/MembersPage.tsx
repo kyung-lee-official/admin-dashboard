@@ -1,10 +1,10 @@
 "use client";
 
-import { Avatar } from "@/components/avatar";
-import { CircleWithCrossIcon, SearchOutlineIcon } from "@/components/icons";
 import { useEffect, useState } from "react";
 import { AddMemberToRoleDialog } from "./AddMemberToRoleDialog";
 import { DeleteMemberFromRoleDialog } from "./DeleteMemberFromRoleDialog";
+import { Avatar } from "@/components/avatar/Avatar";
+import { CircleWithCrossIcon, SearchOutlineIcon } from "@/components/icons/Icons";
 
 const MemberRow = (props: {
 	user: any;

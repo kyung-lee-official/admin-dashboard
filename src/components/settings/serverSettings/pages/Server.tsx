@@ -2,13 +2,18 @@
 
 import React, { useEffect, useState } from "react";
 import { SettingsHeading, SettingsSubHeading } from "../../ContentRegion";
-import { SettingsChangedIndicator, Skeleton, Toggle } from "@/components";
 import { AxiosError } from "axios";
 import { useAuthStore } from "@/stores/auth";
 import { AnimatePresence } from "framer-motion";
 import { queryClient } from "@/utilities/react-query/react-query";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getServerSettings, updateServerSettings } from "@/utilities/api/server-settings";
+import {
+	getServerSettings,
+	updateServerSettings,
+} from "@/utilities/api/server-settings";
+import { Skeleton } from "@/components/skeleton/Skeleton";
+import { Toggle } from "@/components/toggle/Toggle";
+import { SettingsChangedIndicator } from "../../SettingsChangedIndicator";
 
 export const Server = (props: any) => {
 	const { accessToken } = useAuthStore();

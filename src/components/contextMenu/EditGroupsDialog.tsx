@@ -6,10 +6,10 @@ import { AxiosError } from "axios";
 import { motion } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { SearchOutlineIcon } from "../icons";
-import { CheckboxList } from "../input";
 import { getGroups } from "@/utilities/api/groups";
 import { editUserGroups } from "@/utilities/api/users";
+import { SearchOutlineIcon } from "../icons/Icons";
+import { CheckboxList } from "../input/CheckboxList";
 
 export const EditGroupsDialog = (props: {
 	user: any;

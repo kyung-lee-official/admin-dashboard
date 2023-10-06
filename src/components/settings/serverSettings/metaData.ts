@@ -1,4 +1,8 @@
-import { Groups, Members, Overview, Roles, Server } from "./pages";
+import { Groups } from "./pages/Groups/Groups";
+import { Members } from "./pages/Members";
+import { Overview } from "./pages/Overview";
+import { Roles } from "./pages/Roles/Roles";
+import { Server } from "./pages/Server";
 
 export const metaData = [
 	{

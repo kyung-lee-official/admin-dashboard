@@ -1,7 +1,5 @@
 "use client";
 
-import { SearchOutlineIcon } from "@/components/icons";
-import { CheckboxList } from "@/components/input";
 import { useAuthStore } from "@/stores/auth";
 import { uniq } from "@/utilities/data/data";
 import { queryClient } from "@/utilities/react-query/react-query";
@@ -10,6 +8,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getUsers } from "@/utilities/api/users";
 import { updateRoleById } from "@/utilities/api/roles";
+import { SearchOutlineIcon } from "@/components/icons/Icons";
+import { CheckboxList } from "@/components/input/CheckboxList";
 
 export const AddMemberToRoleDialog = (props: {
 	activeRole: any;

@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import React from "react";
-import { Load } from "..";
+import { Load } from "../icons/Icons";
 
 export type ButtonType = "regular" | "settings";
 

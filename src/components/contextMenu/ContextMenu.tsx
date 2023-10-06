@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { IdIcon } from "@/components/icons";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { getMyInfo } from "@/utilities/api/users";
 import { useAuthStore } from "@/stores/auth";
+import { IdIcon } from "../icons/Icons";
 
 const Item = (props: { children: any; type: "normal" | "danger" }) => {
 	const { children, type } = props;

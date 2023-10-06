@@ -1,6 +1,7 @@
 "use client";
 
-import { CheckboxList, SearchOutlineIcon } from "@/components";
+import { SearchOutlineIcon } from "@/components/icons/Icons";
+import { CheckboxList } from "@/components/input/CheckboxList";
 import { useAuthStore } from "@/stores/auth";
 import { updateGroupById } from "@/utilities/api/groups";
 import { getUsers } from "@/utilities/api/users";

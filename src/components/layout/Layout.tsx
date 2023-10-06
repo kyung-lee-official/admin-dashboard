@@ -1,10 +1,10 @@
 "use client";
 
 import React from "react";
-import { Sidebar, SubSidebar } from "../sidebar";
-import { Content } from "../content";
 import { AnimatePresence, motion } from "framer-motion";
 import { usePathname } from "next/navigation";
+import { Content } from "../content/Content";
+import { Sidebar, SubSidebar } from "../sidebar/Sidebar";
 
 export const Layout = (props: any) => {
 	const pathname = usePathname();

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { ContentRegion, SidebarRegion } from ".";
+import { ContentRegion } from "./ContentRegion";
+import { SidebarRegion } from "./SidebarRegion";
 
 export const Settings = (props: any) => {
 	const { metaData, setShowSettings } = props;

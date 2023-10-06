@@ -1,6 +1,5 @@
 "use client";
 
-import { ArrowBackIcon, PlusIcon } from "@/components/icons";
 import { SettingsHeading } from "@/components/settings/ContentRegion";
 import { queryClient } from "@/utilities/react-query/react-query";
 import React, { useState } from "react";
@@ -8,6 +7,7 @@ import { GeneralPage } from "./GeneralPage";
 import { MembersPage } from "./MembersPage";
 import { useMutation } from "@tanstack/react-query";
 import { createGroup } from "@/utilities/api/groups";
+import { ArrowBackIcon, PlusIcon } from "@/components/icons/Icons";
 
 export const Edit = (props: any) => {
 	const {

@@ -74,7 +74,7 @@ export const Manual = ({ size, fill }: any) => {
 	);
 };
 
-export const Performance = ({ size, fill }: any) => {
+export const PerformanceIcon = ({ size, fill }: any) => {
 	return (
 		<svg
 			height={size}

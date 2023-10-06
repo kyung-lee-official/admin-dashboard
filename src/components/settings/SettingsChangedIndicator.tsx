@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Button } from "..";
+import { Button } from "../button/Button";
 
 export const SettingsChangedIndicator = (props: any) => {
 	const { onReset, onSave, isLoading } = props;

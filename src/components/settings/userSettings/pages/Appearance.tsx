@@ -1,8 +1,8 @@
 "use client";
 
-import { CircleCheckIcon } from "@/components/icons";
+import { CircleCheckIcon } from "@/components/icons/Icons";
 import { Theme, useThemeStore } from "@/stores/theme";
-import { SettingsHeading, SettingsSubHeading } from "@/components";
+import { SettingsHeading, SettingsSubHeading } from "../../ContentRegion";
 
 const ThemeOption = (props: any) => {
 	const { label } = props;

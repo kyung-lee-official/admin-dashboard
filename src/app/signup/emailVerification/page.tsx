@@ -1,12 +1,12 @@
 "use client";
 
-import { Button } from "@/components";
 import { AxiosError } from "axios";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { verifyEmail } from "@/utilities/api/auth";
+import { Button } from "@/components/button/Button";
 
 const Index = () => {
 	const router = useRouter();

@@ -1,17 +1,18 @@
 "use client";
 
 import React from "react";
-import {
-	Home,
-	Manual,
-	Performance,
-	Crawler,
-	SidebarIcon,
-	ServerMenu,
-} from "..";
+
 import { MenuKey, SubMenuItem, useSidebarStore } from "@/stores/sidebar";
 import Link from "next/link";
 import { Panel } from "../panel/Panel";
+import {
+	Crawler,
+	Home,
+	Manual,
+	PerformanceIcon,
+	SidebarIcon,
+} from "../icons/Icons";
+import { ServerMenu } from "../serverMenu/ServerMenu";
 
 const Divider = () => {
 	return <div className="w-[50%] h-[3px] bg-gray-400/50 rounded-sm" />;
@@ -39,7 +40,7 @@ export const Sidebar = () => {
 					text={"CHITUBOX Docs Analytics"}
 				/>
 				<SidebarIcon
-					icon={<Performance size="28" />}
+					icon={<PerformanceIcon size="28" />}
 					menuKey={MenuKey.KPI}
 					text={"KPI"}
 				/>

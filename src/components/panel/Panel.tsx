@@ -1,14 +1,15 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { SettingsIcon } from "..";
-import { Settings, SettingsMask } from "../settings";
 import { AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useAuthStore } from "@/stores/auth";
-import { metaData } from "../settings/userSettings";
 import { downloadAvatar, getMyInfo } from "@/utilities/api/users";
+import { SettingsIcon } from "../icons/Icons";
+import { Settings } from "../settings/Settings";
+import { SettingsMask } from "../settings/SettingsMask";
+import { metaData } from "../settings/userSettings/metaData";
 
 const PanelItems = (props: any) => {
 	const { children, onClick } = props;

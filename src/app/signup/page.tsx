@@ -3,7 +3,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { Button } from "@/components";
 import { CheckingSeeded } from "@/components/sacl/CheckingSeeded";
 import { NetworkError } from "@/components/sacl/NetworkError";
 import { CheckingSignedIn } from "@/components/sacl/CheckingSignedIn";
@@ -14,6 +13,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { signUp } from "@/utilities/api/auth";
 import { getIsSignUpAvailable } from "@/utilities/api/server-settings";
+import { Button } from "@/components/button/Button";
 
 interface IFormInput {
 	email: string;
