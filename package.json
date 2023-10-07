@@ -41,6 +41,7 @@
     "zustand": "^4.4.2"
   },
   "devDependencies": {
+    "@playwright/test": "^1.38.1",
     "@types/ms": "^0.7.32",
     "@types/qs": "^6.9.8",
     "@types/react-simple-maps": "^3.0.1"
