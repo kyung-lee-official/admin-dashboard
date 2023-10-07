@@ -21,6 +21,7 @@ export const Settings = (props: any) => {
 				metaData={metaData}
 				setShowSettings={setShowSettings}
 				activePath={activePath}
+				setActivePath={setActivePath}
 			/>
 		</div>
 	);

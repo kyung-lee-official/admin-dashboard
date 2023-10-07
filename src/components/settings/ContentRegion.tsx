@@ -24,7 +24,7 @@ export const SettingsSubHeading = (props: any) => {
 };
 
 const ActiveComponent = (props: any) => {
-	const { activeItem } = props;
+	const { activeItem, setActivePath } = props;
 	switch (activeItem.path) {
 		case "/serverSettings/overview":
 			return <Overview />;
@@ -43,11 +43,7 @@ const ActiveComponent = (props: any) => {
 			break;
 
 		case "/userManagement/members":
-			return <Members />;
-			break;
-
-		case "/userManagement/groups":
-			return <Groups />;
+			return <Members setActivePath={setActivePath} />;
 			break;
 
 		case "/userSettings/myAccount":
@@ -65,7 +61,7 @@ const ActiveComponent = (props: any) => {
 };
 
 export const ContentRegion = (props: any) => {
-	const { metaData, setShowSettings, activePath } = props;
+	const { metaData, setShowSettings, activePath, setActivePath } = props;
 	const flattenItems = metaData.map((section: any) => section.items).flat();
 	const activeItem = flattenItems.find(
 		(page: any) => page.path === activePath
@@ -79,7 +75,10 @@ export const ContentRegion = (props: any) => {
 		>
 			<div className="relative w-[740px] px-10">
 				<div className="h-12" />
-				<ActiveComponent activeItem={activeItem} />
+				<ActiveComponent
+					activeItem={activeItem}
+					setActivePath={setActivePath}
+				/>
 				<div className="h-12" />
 			</div>
 			<div

@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+	Dispatch,
+	SetStateAction,
+	useEffect,
+	useRef,
+	useState,
+} from "react";
 import { SettingsHeading } from "../../ContentRegion";
 import { useAuthStore } from "@/stores/auth";
 import { useQuery } from "@tanstack/react-query";
@@ -26,8 +32,11 @@ const Divider = () => {
 	return <div className="w-full h-[1px] my-2 bg-slate-200" />;
 };
 
-const Row = (props: { user: any }) => {
-	const { user } = props;
+const Row = (props: {
+	user: any;
+	setActivePath: Dispatch<SetStateAction<string>>;
+}) => {
+	const { user, setActivePath } = props;
 	const [showMoreIcon, setShowMoreIcon] = useState<boolean>(false);
 	const [showContextMenu, setShowContextMenu] = useState<boolean>(false);
 	const [contextMenuPos, setContextMenuPos] = useState<{
@@ -202,13 +211,14 @@ const Row = (props: { user: any }) => {
 				)}
 				{showTransferOwnershipDialog && (
 					<TransferOwnershipDialog
+						user={user}
 						showTransferOwnershipDialog={
 							showTransferOwnershipDialog
 						}
 						setShowTransferOwnershipDialog={
 							setShowTransferOwnershipDialog
 						}
-						user={user}
+						setActivePath={setActivePath}
 					/>
 				)}
 			</div>
@@ -217,7 +227,8 @@ const Row = (props: { user: any }) => {
 	);
 };
 
-export const Members = () => {
+export const Members = (props: any) => {
+	const { setActivePath } = props;
 	const { accessToken } = useAuthStore();
 
 	const [searchResults, setSearchResults] = useState<any[]>([]);
@@ -284,7 +295,13 @@ export const Members = () => {
 			) : (
 				<div>
 					{searchResults.map((user: any) => {
-						return <Row user={user} key={user.id} />;
+						return (
+							<Row
+								key={user.id}
+								user={user}
+								setActivePath={setActivePath}
+							/>
+						);
 					})}
 				</div>
 			)}
