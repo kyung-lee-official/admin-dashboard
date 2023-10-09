@@ -1,8 +1,5 @@
 "use client";
 
-import { CheckingSeeded } from "@/components/sacl/CheckingSeeded";
-import { CheckingSignedIn } from "@/components/sacl/CheckingSignedIn";
-import { NetworkError } from "@/components/sacl/NetworkError";
 import { useAuthStore } from "@/stores/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence, motion } from "framer-motion";
@@ -168,9 +165,9 @@ const SignIn = () => {
 						);
 					}}
 					className="flex justify-center items-center w-full gap-4 py-2
-				text-xl
-				bg-gray-50 hover:bg-gray-400
-				rounded"
+					text-xl
+					bg-gray-50 hover:bg-gray-100
+					rounded"
 				>
 					<GoogleIcon size={32} /> <div>Sign In With Google</div>
 				</button>

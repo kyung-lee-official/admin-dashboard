@@ -1,5 +1,5 @@
 "use client";
 
 export function NetworkError() {
-	return <div>❗ Network Error</div>;
+	return <div className="auth-mask">❗ Network Error</div>;
 }

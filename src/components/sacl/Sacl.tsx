@@ -16,6 +16,11 @@ import {
 	refreshAccessToken,
 } from "@/utilities/api/auth";
 import { Layout } from "../layout/Layout";
+import { getMyInfo } from "@/utilities/api/users";
+import IsFrozen from "./IsFrozen";
+import { NetworkError } from "./NetworkError";
+import { UnknownError } from "./UnknownError";
+import VerifyAccount from "./VerifyAccount";
 
 /**
  * SACL (Seed and Auth Checking Layer) UI
@@ -116,6 +121,19 @@ export const Sacl = (props: any) => {
 		onSuccess: (data) => {},
 	});
 
+	const myInfoQuery = useQuery<any, AxiosError>({
+		queryKey: ["myInfo", accessToken],
+		queryFn: async () => {
+			const isSignedIn = await getMyInfo(accessToken);
+			return isSignedIn;
+		},
+		retry: false,
+		refetchOnWindowFocus: false,
+		enabled: isSignedInQuery.data?.isSignedIn,
+		refetchInterval: refetchIntervalMs,
+		onSuccess: (data) => {},
+	});
+
 	useEffect(() => {
 		if (isSeededQuery.isSuccess) {
 			/* Response received */
@@ -126,24 +144,46 @@ export const Sacl = (props: any) => {
 				} else if (isSignedInQuery.isError) {
 					/* Error */
 					if (isSignedInQuery.error.response?.status === 401) {
-						/* Unauthorized */
-						if (pathname !== "/signin") {
-							const timer = setTimeout(() => {
-								router.push("/signin");
-							}, 1500);
-							return () => clearTimeout(timer);
-						} else {
-							setShowChildren(true);
+						/* Unauthorized, not signed in */
+						switch (pathname) {
+							case "/signin":
+								setShowChildren(true);
+								break;
+							case "/signup":
+								setShowChildren(true);
+								break;
+							default:
+								const timer = setTimeout(() => {
+									router.push("/signin");
+								}, 1500);
+								return () => clearTimeout(timer);
+								break;
 						}
 					} else {
-						/* Network Error */
+						/* Network Error, corresponding UI should be returned */
 					}
 				} else {
 					/* Signed In */
-					if (saclRoutes.includes(pathname)) {
-						router.push("/home");
+					if (myInfoQuery.isLoading) {
+						/* Loading */
 					} else {
-						setShowChildren(true);
+						if (myInfoQuery.isSuccess) {
+							if (myInfoQuery.data.isFrozen) {
+								/* Frozen, corresponding UI should be returned */
+							} else {
+								if (myInfoQuery.data.isVerified) {
+									if (saclRoutes.includes(pathname)) {
+										router.push("/home");
+									} else {
+										setShowChildren(true);
+									}
+								} else {
+									/* Not verified, corresponding UI should be returned */
+								}
+							}
+						} else {
+							/* Error */
+						}
 					}
 				}
 			} else {
@@ -160,27 +200,45 @@ export const Sacl = (props: any) => {
 		} else {
 			/* Loading or no response received */
 		}
-	}, [isSeededQuery.status, isSignedInQuery.status, pathname]);
+	}, [
+		isSeededQuery.status,
+		isSignedInQuery.status,
+		myInfoQuery.status,
+		pathname,
+	]);
 
 	if (isSeededQuery.isError) {
 		if (isSeededQuery.error instanceof AxiosError) {
 			if (isSeededQuery.error.code === "ERR_NETWORK") {
-				return <div>Network Error</div>;
+				return <NetworkError />;
 			}
 		} else {
-			return <div>Unknown Error</div>;
+			return <UnknownError />;
 		}
 	}
 
 	if (isSignedInQuery.isError) {
 		if (isSignedInQuery.error instanceof AxiosError) {
 			if (isSignedInQuery.error.code === "ERR_NETWORK") {
-				return <div>Network Error</div>;
+				return <NetworkError />;
 			} else {
 			}
 		} else {
-			return <div>Unknown Error</div>;
+			return <UnknownError />;
 		}
+	}
+
+	if (myInfoQuery.data?.isFrozen) {
+		return <IsFrozen />;
+	}
+
+	if (myInfoQuery.data?.isVerified === false) {
+		return (
+			<VerifyAccount
+				myInfo={myInfoQuery.data}
+				accessToken={accessToken}
+			/>
+		);
 	}
 
 	/**

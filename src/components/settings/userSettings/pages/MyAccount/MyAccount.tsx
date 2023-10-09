@@ -3,13 +3,10 @@
 import { queryClient } from "@/utilities/react-query/react-query";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "next/navigation";
-import { AxiosError } from "axios";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChangePasswordDialog } from "./ChangePasswordDialog";
 import { ChangeAvatarDialog } from "./ChangeAvatarDialog";
-import { useMutation } from "@tanstack/react-query";
-import { sendVerificationEmail } from "@/utilities/api/auth";
 import { Button } from "@/components/button/Button";
 import { CopyIcon, VerifiedIcon } from "@/components/icons/Icons";
 import { SettingsHeading } from "@/components/settings/ContentRegion";
@@ -28,15 +25,6 @@ const InfoPanel = (props: any) => {
 			return () => clearTimeout(timer);
 		}
 	}, [copyClicked]);
-
-	const sendVerificationEmailMutation = useMutation<
-		any,
-		AxiosError,
-		string | null | undefined
-	>({
-		mutationKey: ["sendVerificationEmail", accessToken],
-		mutationFn: sendVerificationEmail,
-	});
 
 	const onAvatarInputChange = (e: any) => {
 		const file = e.target.files[0];
@@ -265,27 +253,6 @@ const InfoPanel = (props: any) => {
 								<div className="px-2 text-gray-50 bg-orange-400 rounded-md">
 									Unverified
 								</div>
-								<button
-									className="px-2 w-[220px]
-									text-gray-500
-									bg-white rounded-md shadow-sm hover:shadow-md"
-									onClick={() => {
-										sendVerificationEmailMutation.mutate(
-											accessToken
-										);
-									}}
-									disabled={
-										sendVerificationEmailMutation.isLoading
-									}
-								>
-									{sendVerificationEmailMutation.isLoading ? (
-										<div className="text-gray-400 cursor-not-allowed">
-											Sending...
-										</div>
-									) : (
-										<div>Send verification email</div>
-									)}
-								</button>
 							</div>
 						)}
 					</div>

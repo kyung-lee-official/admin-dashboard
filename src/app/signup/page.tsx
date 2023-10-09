@@ -3,9 +3,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { CheckingSeeded } from "@/components/sacl/CheckingSeeded";
-import { NetworkError } from "@/components/sacl/NetworkError";
-import { CheckingSignedIn } from "@/components/sacl/CheckingSignedIn";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -306,7 +303,7 @@ const Index = () => {
 	}
 
 	if (isSignUpAvailableQuery.isError) {
-		return <NetworkError />;
+		return <div>❗ Network Error</div>;
 	}
 
 	if (isSignUpAvailableQuery.data.isSignUpAvailable) {
