@@ -27,6 +27,7 @@ import {
 	SearchOutlineIcon,
 } from "@/components/icons/Icons";
 import { Skeleton } from "@/components/skeleton/Skeleton";
+import VerifyUserDialog from "@/components/contextMenu/VerifyUserDialog";
 
 const Divider = () => {
 	return <div className="w-full h-[1px] my-2 bg-slate-200" />;
@@ -53,6 +54,8 @@ const Row = (props: {
 	const [showUnfreezeUserDialog, setShowUnfreezeUserDialog] =
 		useState<boolean>(false);
 	const [showDeleteUserDialog, setShowDeleteUserDialog] =
+		useState<boolean>(false);
+	const [showVerifyUserDialog, setShowVerifyUserDialog] =
 		useState<boolean>(false);
 	const [showTransferOwnershipDialog, setShowTransferOwnershipDialog] =
 		useState<boolean>(false);
@@ -130,6 +133,16 @@ const Row = (props: {
 									Frozen
 								</div>
 							)}
+							{!user.isVerified && (
+								<div
+									className="flex justify-start items-center px-2 py-[1px] gap-2
+									text-sm font-semibold
+									text-sky-50
+									bg-gray-400 rounded-md"
+								>
+									Unverified
+								</div>
+							)}
 						</div>
 						<div
 							className={
@@ -167,6 +180,7 @@ const Row = (props: {
 							setShowUnfreezeUserDialog={
 								setShowUnfreezeUserDialog
 							}
+							setShowVerifyUserDialog={setShowVerifyUserDialog}
 							setShowTransferOwnershipDialog={
 								setShowTransferOwnershipDialog
 							}
@@ -206,6 +220,13 @@ const Row = (props: {
 					<UnfreezeUserDialog
 						showUnfreezeUserDialog={showUnfreezeUserDialog}
 						setShowUnfreezeUserDialog={setShowUnfreezeUserDialog}
+						user={user}
+					/>
+				)}
+				{showVerifyUserDialog && (
+					<VerifyUserDialog
+						showVerifyUserDialog={showVerifyUserDialog}
+						setShowVerifyUserDialog={setShowVerifyUserDialog}
 						user={user}
 					/>
 				)}

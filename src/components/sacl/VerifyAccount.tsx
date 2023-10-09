@@ -2,9 +2,19 @@ import { sendVerificationEmail } from "@/utilities/api/auth";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import React, { useEffect, useState } from "react";
+import { Button } from "../button/Button";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/stores/auth";
 
-const VerifyAccount = (props: any) => {
+export const VerifyAccount = (props: any) => {
 	const { myInfo, accessToken } = props;
+
+	const router = useRouter();
+	const setAccessToken = useAuthStore((state) => state.setAccessToken);
+	const setTencentCosTempCredential = useAuthStore(
+		(state) => state.setTencentCosTempCredential
+	);
+
 	const [emailSent, setEmailSent] = useState<boolean>(false);
 	const [allowResendTimestamp, setAllowResendTimestamp] = useState<number>(0);
 	const [now, setNow] = useState<number>(Date.now());
@@ -90,9 +100,16 @@ const VerifyAccount = (props: any) => {
 						<div>Send Verification Email</div>
 					)}
 				</button>
+				<Button
+					onClick={() => {
+						setAccessToken(null);
+						setTencentCosTempCredential(null);
+						router.push("/signin");
+					}}
+				>
+					Sign Out
+				</Button>
 			</div>
 		</div>
 	);
 };
-
-export default VerifyAccount;

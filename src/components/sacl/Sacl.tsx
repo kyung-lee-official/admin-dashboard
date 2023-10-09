@@ -17,10 +17,10 @@ import {
 } from "@/utilities/api/auth";
 import { Layout } from "../layout/Layout";
 import { getMyInfo } from "@/utilities/api/users";
-import IsFrozen from "./IsFrozen";
 import { NetworkError } from "./NetworkError";
 import { UnknownError } from "./UnknownError";
-import VerifyAccount from "./VerifyAccount";
+import { IsFrozen } from "./IsFrozen";
+import { VerifyAccount } from "./VerifyAccount";
 
 /**
  * SACL (Seed and Auth Checking Layer) UI

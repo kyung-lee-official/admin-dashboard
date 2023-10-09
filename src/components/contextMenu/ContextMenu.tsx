@@ -7,8 +7,24 @@ import { getMyInfo } from "@/utilities/api/users";
 import { useAuthStore } from "@/stores/auth";
 import { IdIcon } from "../icons/Icons";
 
-const Item = (props: { children: any; type: "normal" | "danger" }) => {
+const Item = (props: {
+	children: any;
+	type: "normal" | "warning" | "danger";
+}) => {
 	const { children, type } = props;
+	if (type === "warning") {
+		return (
+			<div
+				className="flex justify-start items-center w-full px-2 py-1 gap-4
+				text-base font-mono
+				text-yellow-500 hover:text-yellow-50
+				hover:bg-yellow-500
+				rounded cursor-pointer"
+			>
+				{children}
+			</div>
+		);
+	}
 	if (type === "danger") {
 		return (
 			<div
@@ -42,6 +58,7 @@ export const ContextMenu = (props: {
 	setShowDeleteUserDialog: React.Dispatch<React.SetStateAction<boolean>>;
 	setShowFreezeUserDialog: React.Dispatch<React.SetStateAction<boolean>>;
 	setShowUnfreezeUserDialog: React.Dispatch<React.SetStateAction<boolean>>;
+	setShowVerifyUserDialog: React.Dispatch<React.SetStateAction<boolean>>;
 	setShowTransferOwnershipDialog: React.Dispatch<
 		React.SetStateAction<boolean>
 	>;
@@ -53,6 +70,7 @@ export const ContextMenu = (props: {
 		setShowDeleteUserDialog,
 		setShowFreezeUserDialog,
 		setShowUnfreezeUserDialog,
+		setShowVerifyUserDialog,
 		setShowTransferOwnershipDialog,
 	} = props;
 
@@ -104,6 +122,16 @@ export const ContextMenu = (props: {
 			>
 				<Item type="normal">Edit Groups</Item>
 			</button>
+			{!user.isVerified && (
+				<button
+					className="w-full"
+					onClick={() => {
+						setShowVerifyUserDialog(true);
+					}}
+				>
+					<Item type="warning">Verify {user.nickname}</Item>
+				</button>
+			)}
 			{!isAdmin &&
 				!isMe &&
 				(user.isFrozen ? (

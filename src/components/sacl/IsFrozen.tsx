@@ -3,7 +3,7 @@ import { Button } from "../button/Button";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "next/navigation";
 
-const IsFrozen = () => {
+export const IsFrozen = () => {
 	const router = useRouter();
 	const setAccessToken = useAuthStore((state) => state.setAccessToken);
 	const setTencentCosTempCredential = useAuthStore(
@@ -35,5 +35,3 @@ const IsFrozen = () => {
 		</div>
 	);
 };
-
-export default IsFrozen;
