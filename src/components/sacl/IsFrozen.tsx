@@ -2,7 +2,6 @@ import React from "react";
 import { Button } from "../button/Button";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "next/navigation";
-import { SnowflakeIcon } from "../icons/Icons";
 
 const IsFrozen = () => {
 	const router = useRouter();
