@@ -8,14 +8,20 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChangePasswordDialog } from "./ChangePasswordDialog";
 import { ChangeAvatarDialog } from "./ChangeAvatarDialog";
 import { Button } from "@/components/button/Button";
-import { CopyIcon, VerifiedIcon } from "@/components/icons/Icons";
+import { CopyIcon, EditIcon, VerifiedIcon } from "@/components/icons/Icons";
 import { SettingsHeading } from "@/components/settings/ContentRegion";
+import { ChangeNicknameDialog } from "./ChangeNicknameDialog";
 
 const InfoPanel = (props: any) => {
 	const { myInfo, accessToken } = props;
-	const [copyClicked, setCopyClicked] = useState(false);
+	const [copyClicked, setCopyClicked] = useState<boolean>(false);
 	const avatarInputRef = useRef<HTMLInputElement>(null);
 	const myAvatar = queryClient.getQueryData<any>(["myAvatar", accessToken]);
+
+	const [showChangeNicknameDialog, setShowChangeNicknameDialog] =
+		useState<boolean>(false);
+	const [showChangeEmailDialog, setShowChangeEmailDialog] =
+		useState<boolean>(false);
 
 	useEffect(() => {
 		if (copyClicked === true) {
@@ -91,18 +97,36 @@ const InfoPanel = (props: any) => {
 						<div className="text-gray-600 font-bold text-sm select-none">
 							NICKNAME
 						</div>
-						<div className="text-gray-600 font-normal text-base">
-							{myInfo.nickname}
+						<div
+							className="flex gap-6
+							text-gray-600 font-normal text-base"
+						>
+							<div>{myInfo.nickname}</div>
+							<div
+								className="p-1
+								text-gray-400 hover:text-gray-600
+								bg-gray-200 hover:bg-gray-300 rounded-md cursor-pointer"
+								onClick={() => {
+									setShowChangeNicknameDialog(true);
+								}}
+							>
+								<EditIcon size={18} />
+							</div>
 						</div>
 					</div>
 					<div className="flex flex-col">
 						<div className="text-gray-600 font-bold text-sm select-none">
 							USER ID
 						</div>
-						<div className="flex items-center gap-6 text-gray-600 font-normal text-base">
+						<div
+							className="flex items-center gap-6
+							text-gray-600 font-normal text-base"
+						>
 							<div>{myInfo.id}</div>
 							<div
-								className="p-1 hover:bg-gray-400 rounded-md cursor-pointer"
+								className="p-1
+								text-gray-400 hover:text-gray-600
+								bg-gray-200 hover:bg-gray-300 rounded-md cursor-pointer"
 								onClick={() => {
 									navigator.clipboard.writeText(myInfo.id);
 									if (copyClicked === false) {
@@ -110,7 +134,7 @@ const InfoPanel = (props: any) => {
 									}
 								}}
 							>
-								<CopyIcon size={24} />
+								<CopyIcon size={18} />
 							</div>
 							{
 								<AnimatePresence mode="wait">
@@ -133,8 +157,19 @@ const InfoPanel = (props: any) => {
 						<div className="text-gray-600 font-bold text-sm select-none">
 							EMAIL
 						</div>
-						<div className="text-gray-600 font-normal text-base">
-							{myInfo.email}
+						<div
+							className="flex gap-6
+							text-gray-600 font-normal text-base"
+						>
+							<div>{myInfo.email}</div>
+							<div
+								className="p-1
+								text-gray-400 hover:text-gray-600
+								bg-gray-200 hover:bg-gray-300 rounded-md cursor-pointer"
+								onClick={() => {}}
+							>
+								<EditIcon size={18} />
+							</div>
 						</div>
 					</div>
 					<div className="flex flex-col">
@@ -228,7 +263,7 @@ const InfoPanel = (props: any) => {
 							)}
 						</div>
 					</div>
-					<div className="flex flex-col gap-2">
+					{/* <div className="flex flex-col gap-2">
 						<div className="text-gray-600 font-bold text-sm select-none">
 							VERIFICATION
 						</div>
@@ -238,11 +273,11 @@ const InfoPanel = (props: any) => {
 								text-gray-600 font-normal text-base"
 							>
 								<div
-									className="flex justify-center items-center px-2 py-1 gap-2
+									className="flex justify-center items-center px-1 gap-2
 									text-gray-50 bg-lime-500 rounded-md"
 								>
 									<div>Verified</div>
-									<VerifiedIcon />
+									<VerifiedIcon size={18} />
 								</div>
 							</div>
 						) : (
@@ -255,8 +290,17 @@ const InfoPanel = (props: any) => {
 								</div>
 							</div>
 						)}
-					</div>
+					</div> */}
 				</div>
+				{showChangeNicknameDialog && (
+					<ChangeNicknameDialog
+						user={myInfo}
+						showChangeNicknameDialog={showChangeNicknameDialog}
+						setShowChangeNicknameDialog={
+							setShowChangeNicknameDialog
+						}
+					/>
+				)}
 			</div>
 		);
 	} else {

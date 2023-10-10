@@ -305,8 +305,8 @@ export const VerifiedIcon = ({ size, fill }: any) => {
 	return (
 		<svg
 			viewBox="0 0 24 24"
-			height="24"
-			width="24"
+			height={size}
+			width={size}
 			focusable="false"
 			role="img"
 			fill="currentColor"

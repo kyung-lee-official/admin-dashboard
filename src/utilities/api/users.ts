@@ -37,6 +37,24 @@ export const verifyUser = async (
 	return res.data;
 };
 
+export const updateProfile = async (
+	userId: string,
+	nickname: string,
+	accessToken?: string | null
+): Promise<any> => {
+	const res = await axios.patch(
+		`/users/profile/${userId}`,
+		{ nickname: nickname },
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: accessToken,
+			},
+		}
+	);
+	return res.data;
+};
+
 export const changePassword = async (
 	userId: string,
 	body: { oldPassword: string; newPassword: string },
