@@ -1,5 +1,5 @@
 import { useAuthStore } from "@/stores/auth";
-import { updateProfile } from "@/utilities/api/users";
+import { sendUpdateEmailVerificationRequest } from "@/utilities/api/auth";
 import { queryClient } from "@/utilities/react-query/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -10,20 +10,19 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import z from "zod";
 
 interface IFormInput {
-	nickname: string;
+	newEmail: string;
 }
 
 const schema = z.object({
-	nickname: z.string().trim().min(1, { message: "Required" }),
+	newEmail: z.string().toLowerCase().email(),
 });
 
-export const ChangeNicknameDialog = (props: {
+export const ChangeEmailDialog = (props: {
 	user: any;
-	showChangeNicknameDialog: boolean;
-	setShowChangeNicknameDialog: React.Dispatch<React.SetStateAction<boolean>>;
+	showChangeEmailDialog: boolean;
+	setShowChangeEmailDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-	const { user, showChangeNicknameDialog, setShowChangeNicknameDialog } =
-		props;
+	const { user, showChangeEmailDialog, setShowChangeEmailDialog } = props;
 	const accessToken = useAuthStore((state) => state.accessToken);
 
 	const { register, handleSubmit, formState } = useForm<IFormInput>({
@@ -31,19 +30,15 @@ export const ChangeNicknameDialog = (props: {
 		resolver: zodResolver(schema),
 	});
 
-	const changeNicknameDialogRef = useRef<HTMLDialogElement | null>(null);
+	const changeEmailDialogRef = useRef<HTMLDialogElement | null>(null);
 
-	const changeNicknameMutation = useMutation<
-		any,
-		AxiosError<any>,
-		IFormInput
-	>({
+	const changeEmailMutation = useMutation<any, AxiosError<any>, IFormInput>({
 		mutationFn: async (data: IFormInput) => {
-			const { nickname } = data;
-			return updateProfile(user.id, nickname, accessToken);
+			const { newEmail } = data;
+			return sendUpdateEmailVerificationRequest(newEmail, accessToken);
 		},
 		onSuccess: (data) => {
-			setShowChangeNicknameDialog(false);
+			setShowChangeEmailDialog(false);
 			queryClient.invalidateQueries({
 				queryKey: ["myInfo", accessToken],
 			});
@@ -51,27 +46,27 @@ export const ChangeNicknameDialog = (props: {
 	});
 
 	const onSubmit: SubmitHandler<IFormInput> = async (data: IFormInput) => {
-		changeNicknameMutation.reset();
-		changeNicknameMutation.mutate(data);
+		changeEmailMutation.reset();
+		changeEmailMutation.mutate(data);
 	};
 
 	useEffect(() => {
-		if (showChangeNicknameDialog) {
-			changeNicknameDialogRef.current!.showModal();
+		if (showChangeEmailDialog) {
+			changeEmailDialogRef.current!.showModal();
 		}
 	}, []);
 
 	useEffect(() => {
-		if (showChangeNicknameDialog) {
-			changeNicknameDialogRef.current!.showModal();
+		if (showChangeEmailDialog) {
+			changeEmailDialogRef.current!.showModal();
 		} else {
-			changeNicknameDialogRef.current!.close();
+			changeEmailDialogRef.current!.close();
 		}
-	}, [showChangeNicknameDialog]);
+	}, [showChangeEmailDialog]);
 
 	return (
 		<motion.dialog
-			ref={changeNicknameDialogRef}
+			ref={changeEmailDialogRef}
 			initial={{ opacity: 0, scale: 0.9 }}
 			animate={{ opacity: 1, scale: 1 }}
 			className="w-[440px]
@@ -79,19 +74,20 @@ export const ChangeNicknameDialog = (props: {
 			shadow-lg rounded-md backdrop:bg-black/80 backdrop:[backdrop-filter:blur(2px)]"
 			onCancel={(e: React.SyntheticEvent<HTMLDialogElement, Event>) => {
 				e.preventDefault();
-				setShowChangeNicknameDialog(false);
+				setShowChangeEmailDialog(false);
 			}}
 		>
 			<div
 				className="flex flex-col justify-center items-center p-6 gap-8
 				text-gray-600"
 			>
-				<h1 className="text-lg">Change Nickname</h1>
+				<h1 className="text-lg">Change Email</h1>
 				<h1 className="flex justify-center text-base text-gray-500">
-					Enter your new nickname
+					Enter your new email address, and we will send you a
+					confirmation email.
 				</h1>
 				<form
-					id="changeNicknameForm"
+					id="changePasswordForm"
 					method="dialog"
 					className="flex flex-col gap-6"
 					onSubmit={handleSubmit(onSubmit)}
@@ -99,11 +95,10 @@ export const ChangeNicknameDialog = (props: {
 					<div className="flex flex-col gap-2">
 						<input
 							type="text"
-							defaultValue={user.nickname}
-							className={`h-10 p-2 bg-slate-300 rounded outline-0`}
-							{...register("nickname")}
+							className={`w-80 h-10 p-2 bg-slate-300 rounded outline-0`}
+							{...register("newEmail")}
 						/>
-						{formState.errors.nickname && (
+						{formState.errors.newEmail && (
 							<motion.div
 								className="text-base text-red-400 font-bold"
 								initial={{
@@ -118,27 +113,49 @@ export const ChangeNicknameDialog = (props: {
 									height: "auto",
 								}}
 							>
-								{formState.errors.nickname.message}
+								{formState.errors.newEmail.message}
 							</motion.div>
 						)}
-						{changeNicknameMutation.isError && (
-							<motion.div
-								className="text-base text-red-400 font-semibold"
-								initial={{
-									opacity: 0,
-									scaleY: 0,
-									height: "0rem",
-									originY: 0,
-								}}
-								animate={{
-									opacity: 1,
-									scaleY: 1,
-									height: "auto",
-								}}
-							>
-								Something went wrong...
-							</motion.div>
-						)}
+						{changeEmailMutation.isError &&
+							(changeEmailMutation.error.response?.data
+								.statusCode === 400 ? (
+								<motion.div
+									className="text-base text-red-400 font-semibold"
+									initial={{
+										opacity: 0,
+										scaleY: 0,
+										height: "0rem",
+										originY: 0,
+									}}
+									animate={{
+										opacity: 1,
+										scaleY: 1,
+										height: "auto",
+									}}
+								>
+									{
+										changeEmailMutation.error.response?.data
+											.message
+									}
+								</motion.div>
+							) : (
+								<motion.div
+									className="text-base text-red-400 font-semibold"
+									initial={{
+										opacity: 0,
+										scaleY: 0,
+										height: "0rem",
+										originY: 0,
+									}}
+									animate={{
+										opacity: 1,
+										scaleY: 1,
+										height: "auto",
+									}}
+								>
+									Something went wrong...
+								</motion.div>
+							))}
 					</div>
 					<div
 						className="flex justify-center items-center gap-6
@@ -146,7 +163,7 @@ export const ChangeNicknameDialog = (props: {
 					>
 						<button
 							className={
-								changeNicknameMutation.isLoading
+								changeEmailMutation.isLoading
 									? `flex justify-center items-center w-20 h-8
 							text-gray-700/60
 							bg-gray-300/60 rounded outline-none cursor-wait`
@@ -155,7 +172,7 @@ export const ChangeNicknameDialog = (props: {
 							bg-gray-300 hover:bg-gray-400 rounded outline-none`
 							}
 							onClick={() => {
-								setShowChangeNicknameDialog(false);
+								setShowChangeEmailDialog(false);
 							}}
 						>
 							Cancel
@@ -163,7 +180,7 @@ export const ChangeNicknameDialog = (props: {
 						<button
 							type="submit"
 							className={
-								changeNicknameMutation.isLoading
+								changeEmailMutation.isLoading
 									? `flex justify-center items-center w-20 h-8
 									text-gray-100
 									bg-blue-500/60 rounded cursor-wait`
@@ -177,10 +194,10 @@ export const ChangeNicknameDialog = (props: {
 							}
 							disabled={
 								!formState.isValid ||
-								changeNicknameMutation.isLoading
+								changeEmailMutation.isLoading
 							}
 						>
-							Confirm
+							Send
 						</button>
 					</div>
 				</form>

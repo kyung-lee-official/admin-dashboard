@@ -11,6 +11,7 @@ import { Button } from "@/components/button/Button";
 import { CopyIcon, EditIcon, VerifiedIcon } from "@/components/icons/Icons";
 import { SettingsHeading } from "@/components/settings/ContentRegion";
 import { ChangeNicknameDialog } from "./ChangeNicknameDialog";
+import { ChangeEmailDialog } from "./ChangeEmailDialog";
 
 const InfoPanel = (props: any) => {
 	const { myInfo, accessToken } = props;
@@ -166,7 +167,9 @@ const InfoPanel = (props: any) => {
 								className="p-1
 								text-gray-400 hover:text-gray-600
 								bg-gray-200 hover:bg-gray-300 rounded-md cursor-pointer"
-								onClick={() => {}}
+								onClick={() => {
+									setShowChangeEmailDialog(true);
+								}}
 							>
 								<EditIcon size={18} />
 							</div>
@@ -301,6 +304,13 @@ const InfoPanel = (props: any) => {
 						}
 					/>
 				)}
+				{showChangeEmailDialog && (
+					<ChangeEmailDialog
+						user={myInfo}
+						showChangeEmailDialog={showChangeEmailDialog}
+						setShowChangeEmailDialog={setShowChangeEmailDialog}
+					/>
+				)}
 			</div>
 		);
 	} else {
@@ -324,8 +334,6 @@ export const MyAccount = () => {
 		useState<boolean>(false);
 
 	const myInfo = queryClient.getQueryData<any>(["myInfo", accessToken]);
-
-	const changePasswordDialogRef = useRef<HTMLDialogElement | null>(null);
 
 	return (
 		<div className="flex flex-col gap-6">

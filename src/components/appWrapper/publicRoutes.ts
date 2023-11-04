@@ -3,4 +3,5 @@ export const publicRoutes = [
 	"/signin/googleOauth2Redirect",
 	"/signin/forgetPassword",
 	"/signin/resetPassword",
+	"/auth/newEmailVerification",
 ];

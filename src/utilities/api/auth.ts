@@ -22,7 +22,7 @@ export const seed = async (body: {
 
 export const getIsSignedIn = async (
 	accessToken?: string | null
-): Promise<{ isSignedIn: true }> => {
+): Promise<{ isSignedIn: true; }> => {
 	const res = await axios.get("/auth/isSignedIn", {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
@@ -82,7 +82,33 @@ export const verifyEmail = async (body: {
 	return res.data;
 };
 
-export const forgetPassword = async (body: { email: string }): Promise<any> => {
+export const sendUpdateEmailVerificationRequest = async (
+	newEmail: string,
+	accessToken?: string | null
+): Promise<any> => {
+	const res = await axios.patch(
+		"/auth/update-email-request",
+		{ newEmail: newEmail },
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: accessToken,
+			},
+		}
+	);
+	return res;
+};
+
+export const verifyNewEmail = async (body: {
+	verificationToken: string;
+}): Promise<any> => {
+	const res = await axios.patch("/auth/verifyNewEmail", body, {
+		baseURL: process.env.NEXT_PUBLIC_API_HOST,
+	});
+	return res.data;
+};
+
+export const forgetPassword = async (body: { email: string; }): Promise<any> => {
 	const res = await axios.post("/auth/forgetPassword", body, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 	});
