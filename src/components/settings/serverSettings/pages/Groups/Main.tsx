@@ -139,7 +139,7 @@ export const Main = (props: any) => {
 						/>
 						<div
 							className={
-								createGroupMutation.isLoading
+								createGroupMutation.isPending
 									? `flex-[0_0_8rem] flex justify-center items-center p-2
 									text-gray-100 bg-blue-500 rounded cursor-wait`
 									: `flex-[0_0_8rem] flex justify-center items-center p-2
@@ -230,7 +230,7 @@ export const Main = (props: any) => {
 							<div className="flex gap-6 p-2">
 								<button
 									className={
-										deleteGroupMutation.isLoading
+										deleteGroupMutation.isPending
 											? `flex justify-center items-center w-20 h-8
 										text-gray-700/60
 										bg-gray-300/60 rounded outline-none cursor-wait`
@@ -250,7 +250,7 @@ export const Main = (props: any) => {
 								</button>
 								<button
 									className={
-										deleteGroupMutation.isLoading
+										deleteGroupMutation.isPending
 											? `flex justify-center items-center w-20 h-8
 										text-gray-100
 										bg-red-500/60 rounded cursor-wait`

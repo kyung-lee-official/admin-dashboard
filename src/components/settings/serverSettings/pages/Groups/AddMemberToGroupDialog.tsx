@@ -139,7 +139,7 @@ const AddMemberToGroupDialog = (props: {
 				<div className="flex gap-6">
 					<button
 						className={
-							addMembersMutation.isLoading
+							addMembersMutation.isPending
 								? `flex justify-center items-center w-20 h-8
 							text-gray-700/60
 							bg-gray-300/60 rounded outline-none cursor-wait`
@@ -155,7 +155,7 @@ const AddMemberToGroupDialog = (props: {
 					</button>
 					<button
 						className={
-							addMembersMutation.isLoading
+							addMembersMutation.isPending
 								? `flex justify-center items-center w-20 h-8
 							text-gray-100
 							bg-blue-500/60 rounded cursor-wait`

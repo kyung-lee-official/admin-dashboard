@@ -134,7 +134,7 @@ export const EditGroupsDialog = (props: {
 				<div className="flex gap-6">
 					<button
 						className={
-							editGroupsMutation.isLoading
+							editGroupsMutation.isPending
 								? `flex justify-center items-center w-20 h-8
 							text-gray-700/60
 							bg-gray-300/60 rounded outline-none cursor-wait`
@@ -150,7 +150,7 @@ export const EditGroupsDialog = (props: {
 					</button>
 					<button
 						className={
-							editGroupsMutation.isLoading
+							editGroupsMutation.isPending
 								? `flex justify-center items-center w-20 h-8
 							text-gray-100
 							bg-blue-500/60 rounded cursor-wait`

@@ -80,7 +80,7 @@ export const DeleteMemberFromGroupDialog = (props: {
 				<div className="flex gap-6">
 					<button
 						className={
-							removeUserMutation.isLoading
+							removeUserMutation.isPending
 								? `flex justify-center items-center w-20 h-8
 							text-gray-700/60
 							bg-gray-300/60 rounded outline-none cursor-wait`
@@ -96,7 +96,7 @@ export const DeleteMemberFromGroupDialog = (props: {
 					</button>
 					<button
 						className={
-							removeUserMutation.isLoading
+							removeUserMutation.isPending
 								? `flex justify-center items-center w-20 h-8
 							text-gray-100
 							bg-red-500/60 rounded cursor-wait`

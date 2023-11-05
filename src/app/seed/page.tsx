@@ -142,7 +142,7 @@ const Seed = () => {
 									}`}
 									{...register("email")}
 									placeholder="Email"
-									disabled={mutation.isLoading}
+									disabled={mutation.isPending}
 								/>
 								<AnimatePresence>
 									{formState.errors.email && (
@@ -176,7 +176,7 @@ const Seed = () => {
 									className="input text-base"
 									{...register("nickname")}
 									placeholder="Nickname"
-									disabled={mutation.isLoading}
+									disabled={mutation.isPending}
 								/>
 								<AnimatePresence>
 									{formState.errors.nickname && (
@@ -211,7 +211,7 @@ const Seed = () => {
 									type="password"
 									{...register("password")}
 									placeholder="Password"
-									disabled={mutation.isLoading}
+									disabled={mutation.isPending}
 								/>
 								<AnimatePresence>
 									{formState.errors.password && (
@@ -246,7 +246,7 @@ const Seed = () => {
 									type="password"
 									{...register("confirmPassword")}
 									placeholder="Confirm Password"
-									disabled={mutation.isLoading}
+									disabled={mutation.isPending}
 								/>
 								<AnimatePresence>
 									{formState.errors.confirmPassword && (
@@ -283,7 +283,7 @@ const Seed = () => {
 								disabled={
 									Object.keys(formState.errors).length !== 0
 								}
-								isLoading={mutation.isLoading}
+								isLoading={mutation.isPending}
 							>
 								Sign Up
 							</Button>

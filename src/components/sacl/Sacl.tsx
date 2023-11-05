@@ -118,7 +118,6 @@ export const Sacl = (props: any) => {
 		refetchOnWindowFocus: false,
 		enabled: isSeededQuery.data?.isSeeded,
 		refetchInterval: refetchIntervalMs,
-		onSuccess: (data) => {},
 	});
 
 	const myInfoQuery = useQuery<any, AxiosError>({
@@ -131,7 +130,6 @@ export const Sacl = (props: any) => {
 		refetchOnWindowFocus: false,
 		enabled: isSignedInQuery.data?.isSignedIn,
 		refetchInterval: refetchIntervalMs,
-		onSuccess: (data) => {},
 	});
 
 	useEffect(() => {

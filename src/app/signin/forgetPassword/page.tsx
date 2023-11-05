@@ -69,7 +69,7 @@ const Index = () => {
 								}`}
 								{...register("email")}
 								placeholder="Email"
-								disabled={mutation.isLoading}
+								disabled={mutation.isPending}
 							/>
 							{formState.errors.email && (
 								<motion.div
@@ -115,14 +115,14 @@ const Index = () => {
 							text-xl
 							text-blue-100
 							${
-								formState.isValid && !mutation.isLoading
+								formState.isValid && !mutation.isPending
 									? "bg-blue-500 hover:bg-blue-600"
-									: mutation.isLoading
+									: mutation.isPending
 									? "bg-blue-400 cursor-wait"
 									: "bg-gray-400 cursor-not-allowed"
 							}
 							rounded`}
-							disabled={!formState.isValid || mutation.isLoading}
+							disabled={!formState.isValid || mutation.isPending}
 						>
 							Send
 						</button>

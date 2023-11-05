@@ -69,7 +69,7 @@ const VerifyUserDialog = (props: {
 				<div className="flex gap-6">
 					<button
 						className={
-							verifyUserMutation.isLoading
+							verifyUserMutation.isPending
 								? `flex justify-center items-center w-20 h-8
 							text-gray-700/60
 							bg-gray-300/60 rounded outline-none cursor-wait`
@@ -85,7 +85,7 @@ const VerifyUserDialog = (props: {
 					</button>
 					<button
 						className={
-							verifyUserMutation.isLoading
+							verifyUserMutation.isPending
 								? `flex justify-center items-center w-20 h-8
 							text-gray-100
 							bg-yellow-500/60 rounded cursor-wait`

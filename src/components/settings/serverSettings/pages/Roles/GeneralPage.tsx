@@ -90,7 +90,7 @@ export const GeneralPage = (props: any) => {
 					<SettingsChangedIndicator
 						onReset={onReset}
 						onSave={onSave}
-						isLoading={mutation.isLoading}
+						isLoading={mutation.isPending}
 					/>
 				)}
 			</AnimatePresence>

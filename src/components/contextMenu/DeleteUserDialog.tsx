@@ -72,7 +72,7 @@ export const DeleteUserDialog = (props: {
 				<div className="flex gap-6">
 					<button
 						className={
-							deleteUserMutation.isLoading
+							deleteUserMutation.isPending
 								? `flex justify-center items-center w-20 h-8
 							text-gray-700/60
 							bg-gray-300/60 rounded outline-none cursor-wait`
@@ -88,7 +88,7 @@ export const DeleteUserDialog = (props: {
 					</button>
 					<button
 						className={
-							deleteUserMutation.isLoading
+							deleteUserMutation.isPending
 								? `flex justify-center items-center w-20 h-8
 							text-gray-100
 							bg-red-500/60 rounded cursor-wait`

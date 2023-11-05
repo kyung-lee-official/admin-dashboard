@@ -69,11 +69,11 @@ export const VerifyAccount = (props: any) => {
 						sendVerificationEmailMutation.mutate(accessToken);
 					}}
 					disabled={
-						sendVerificationEmailMutation.isLoading ||
+						sendVerificationEmailMutation.isPending ||
 						allowResendTimestamp - now > 0
 					}
 				>
-					{sendVerificationEmailMutation.isLoading ? (
+					{sendVerificationEmailMutation.isPending ? (
 						<div className="text-gray-400 cursor-not-allowed">
 							Sending...
 						</div>

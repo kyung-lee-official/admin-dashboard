@@ -385,11 +385,11 @@ export const ChangeAvatarDialog = (props: {
 					<div className="flex justify-between w-full">
 						<button
 							className={
-								updateAvatarMutation.isLoading
+								updateAvatarMutation.isPending
 									? "bg-blue-500/60 text-white px-4 py-2 rounded-md cursor-wait"
 									: "bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
 							}
-							disabled={updateAvatarMutation.isLoading}
+							disabled={updateAvatarMutation.isPending}
 							onClick={() => {
 								setImageTranslation([0, 0]);
 								setScale(1);
@@ -400,7 +400,7 @@ export const ChangeAvatarDialog = (props: {
 						<div className="flex gap-4">
 							<button
 								className={
-									updateAvatarMutation.isLoading
+									updateAvatarMutation.isPending
 										? `flex justify-center items-center w-20
 									text-gray-700/60
 									bg-gray-300/60 rounded-md outline-none cursor-wait`
@@ -418,11 +418,11 @@ export const ChangeAvatarDialog = (props: {
 							</button>
 							<button
 								className={
-									updateAvatarMutation.isLoading
+									updateAvatarMutation.isPending
 										? "bg-blue-500/60 text-white px-4 py-2 rounded-md cursor-wait"
 										: "bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
 								}
-								disabled={updateAvatarMutation.isLoading}
+								disabled={updateAvatarMutation.isPending}
 								onClick={() => {
 									updateAvatarMutation.mutate();
 								}}
