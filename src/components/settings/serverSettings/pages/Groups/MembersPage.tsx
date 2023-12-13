@@ -4,7 +4,10 @@ import React, { useEffect, useState } from "react";
 import AddMemberToGroupDialog from "./AddMemberToGroupDialog";
 import { DeleteMemberFromGroupDialog } from "./DeleteMemberFromGroupDialog";
 import { Avatar } from "@/components/avatar/Avatar";
-import { CircleWithCrossIcon, SearchOutlineIcon } from "@/components/icons/Icons";
+import {
+	CircleWithCrossIcon,
+	SearchOutlineIcon,
+} from "@/components/icons/Icons";
 
 const MemberRow = (props: {
 	user: any;
@@ -71,14 +74,14 @@ export const MembersPage = (props: any) => {
 
 	useEffect(() => {
 		if (activeGroup) {
-			setSearchResults(activeGroup.users);
+			setSearchResults(activeGroup.members);
 		}
 	}, [activeGroup]);
 
 	const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (activeGroup) {
-			const results = activeGroup.users.filter((user: any) =>
-				user.nickname
+			const results = activeGroup.members.filter((member: any) =>
+				member.nickname
 					.toLowerCase()
 					.includes(e.target.value.toLowerCase())
 			);

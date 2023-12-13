@@ -156,7 +156,7 @@ export const Main = (props: any) => {
 								col1={role.name}
 								col2={
 									<div className="flex gap-2">
-										{role.users.length}{" "}
+										{role.members.length}{" "}
 										<UserIcon size={20} />
 									</div>
 								}

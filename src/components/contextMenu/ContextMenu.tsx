@@ -91,7 +91,7 @@ export const ContextMenu = (props: {
 
 	useEffect(() => {
 		if (myInfoQuery.data) {
-			if (user.roles.some((role: any) => role.name === "admin")) {
+			if (user.memberRoles.some((role: any) => role.name === "admin")) {
 				setIsAdmin(true);
 			}
 			if (myInfoQuery.data.id === user.id) {

@@ -33,8 +33,6 @@ export const VerifyAccount = (props: any) => {
 	});
 
 	useEffect(() => {
-		console.log(myInfo);
-
 		const interval = setInterval(() => {
 			setNow(Date.now());
 		}, 1000);

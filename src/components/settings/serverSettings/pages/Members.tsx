@@ -109,7 +109,7 @@ const Row = (props: {
 							>
 								{user.nickname}
 							</div>
-							{user.roles.some(
+							{user.memberRoles.some(
 								(role: any) => role.name === "admin"
 							) && (
 								<div
@@ -270,8 +270,8 @@ export const Members = (props: any) => {
 
 	const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (usersQuery.data) {
-			const results = usersQuery.data.filter((user: any) =>
-				user.nickname
+			const results = usersQuery.data.filter((member: any) =>
+				member.nickname
 					.toLowerCase()
 					.includes(e.target.value.toLowerCase())
 			);

@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 
 export const getMyInfo = async (accessToken?: string | null): Promise<any> => {
-	const res = await axios.get("/users/me", {
+	const res = await axios.get("/members/me", {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: accessToken,
@@ -11,7 +11,7 @@ export const getMyInfo = async (accessToken?: string | null): Promise<any> => {
 };
 
 export const getUsers = async (accessToken?: string | null): Promise<any> => {
-	const res = await axios.get("/users", {
+	const res = await axios.get("/members", {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: accessToken,
@@ -25,7 +25,7 @@ export const verifyUser = async (
 	accessToken?: string | null
 ): Promise<any> => {
 	const res = await axios.patch(
-		`/users/user-verification/${userId}`,
+		`/members/user-verification/${userId}`,
 		{},
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
@@ -43,7 +43,7 @@ export const updateProfile = async (
 	accessToken?: string | null
 ): Promise<any> => {
 	const res = await axios.patch(
-		`/users/profile/${userId}`,
+		`/members/profile/${userId}`,
 		{ nickname: nickname },
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
@@ -57,10 +57,10 @@ export const updateProfile = async (
 
 export const changePassword = async (
 	userId: string,
-	body: { oldPassword: string; newPassword: string },
+	body: { oldPassword: string; newPassword: string; },
 	accessToken?: string | null
 ): Promise<any> => {
-	const res = await axios.patch(`/users/password/${userId}`, body, {
+	const res = await axios.patch(`/members/password/${userId}`, body, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: accessToken,
@@ -75,7 +75,7 @@ export const uploadMyAvatar = async (
 ) => {
 	const fileFromBlob = new File([blob], "avatar.png", { type: "image/png" });
 	const res = await axios.put(
-		"/users/updateAvatar",
+		"/members/updateAvatar",
 		{ file: fileFromBlob },
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
@@ -94,7 +94,7 @@ export const editUserRoles = async (
 	accessToken?: string | null
 ) => {
 	const res = await axios.patch(
-		`/users/roles/${userId}`,
+		`/members/roles/${userId}`,
 		{ roleIds },
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
@@ -112,7 +112,7 @@ export const editUserGroups = async (
 	accessToken?: string | null
 ) => {
 	const res = await axios.patch(
-		`/users/groups/${userId}`,
+		`/members/groups/${userId}`,
 		{ groupIds },
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
@@ -129,7 +129,7 @@ export const downloadAvatar = async (
 	accessToken?: string | null
 ) => {
 	try {
-		const res = await axios.get(`/users/downloadAvatar/${userId}`, {
+		const res = await axios.get(`/members/downloadAvatar/${userId}`, {
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
 			headers: {
 				Authorization: accessToken,
@@ -155,7 +155,7 @@ export const transferOwnership = async (
 	accessToken?: string | null
 ): Promise<any> => {
 	const res = await axios.patch(
-		`/users/transferOwnership/${userId}`,
+		`/members/transferOwnership/${userId}`,
 		{},
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
@@ -173,7 +173,7 @@ export const setIsFrozenUserById = async (
 	accessToken?: string | null
 ): Promise<any> => {
 	const res = await axios.patch(
-		`/users/freeze/${userId}`,
+		`/members/freeze/${userId}`,
 		{
 			isFrozen: isFrozen,
 		},
@@ -191,7 +191,7 @@ export const deleteUserById = async (
 	userId: string,
 	accessToken?: string | null
 ): Promise<any> => {
-	const res = await axios.delete(`/users/${userId}`, {
+	const res = await axios.delete(`/members/${userId}`, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: accessToken,

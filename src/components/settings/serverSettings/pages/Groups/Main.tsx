@@ -165,7 +165,7 @@ export const Main = (props: any) => {
 								col1={group.name}
 								col2={
 									<div className="flex gap-2">
-										{group.users.length}{" "}
+										{group.members.length}{" "}
 										<UserIcon size={20} />
 									</div>
 								}

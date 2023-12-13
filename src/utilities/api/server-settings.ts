@@ -3,7 +3,7 @@ import axios from "axios";
 export const getServerSettings = async (
 	accessToken: string | null | undefined
 ): Promise<{ isSignUpAvailable: boolean }> => {
-	const res = await axios.get("/server-settings", {
+	const res = await axios.get("/member-server-settings", {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: accessToken,
@@ -16,7 +16,7 @@ export const updateServerSettings = async (
 	body: any,
 	accessToken: string | null | undefined
 ): Promise<any> => {
-	const res = await axios.patch("/server-settings", body, {
+	const res = await axios.patch("/member-server-settings", body, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: accessToken,
@@ -28,7 +28,7 @@ export const updateServerSettings = async (
 export const getIsSignUpAvailable = async (): Promise<{
 	isSignUpAvailable: boolean;
 }> => {
-	const res = await axios.get("/server-settings/isSignUpAvailable", {
+	const res = await axios.get("/member-server-settings/isSignUpAvailable", {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 	});
 	return res.data;

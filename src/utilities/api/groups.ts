@@ -4,7 +4,7 @@ export const createGroup = async (
 	accessToken?: string | null
 ): Promise<any> => {
 	const res = await axios.post(
-		"/groups",
+		"/member-groups",
 		{},
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
@@ -17,7 +17,7 @@ export const createGroup = async (
 };
 
 export const getGroups = async (accessToken?: string | null): Promise<any> => {
-	const res = await axios.get("/groups", {
+	const res = await axios.get("/member-groups", {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: accessToken,
@@ -31,7 +31,7 @@ export const updateGroupById = async (
 	groupId: number,
 	accessToken?: string | null
 ): Promise<any> => {
-	const res = await axios.patch(`/groups/${groupId}`, body, {
+	const res = await axios.patch(`/member-groups/${groupId}`, body, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: accessToken,
@@ -44,7 +44,7 @@ export const deleteGroupById = async (
 	groupId: number,
 	accessToken?: string | null
 ): Promise<any> => {
-	const res = await axios.delete(`/groups/${groupId}`, {
+	const res = await axios.delete(`/member-groups/${groupId}`, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: accessToken,

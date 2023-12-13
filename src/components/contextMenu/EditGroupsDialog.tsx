@@ -29,7 +29,7 @@ export const EditGroupsDialog = (props: {
 		refetchOnWindowFocus: false,
 	});
 
-	const [newUserGroups, setNewUserGroups] = useState(user.groups);
+	const [newUserGroups, setNewUserGroups] = useState(user.memberGroups);
 	const [disabledGroupIds, setDisabledGroupIds] = useState<number[]>([]);
 	const [searchResults, setSearchResults] = useState<any[]>([]);
 

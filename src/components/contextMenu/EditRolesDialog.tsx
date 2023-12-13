@@ -29,7 +29,7 @@ export const EditRolesDialog = (props: {
 		refetchOnWindowFocus: false,
 	});
 
-	const [newUserRoles, setNewUserRoles] = useState(user.roles);
+	const [newUserRoles, setNewUserRoles] = useState(user.memberRoles);
 	const [disabledRoleIds, setDisabledRoleIds] = useState<number[]>([]);
 	const [searchResults, setSearchResults] = useState<any[]>([]);
 

@@ -4,7 +4,10 @@ import { useEffect, useState } from "react";
 import { AddMemberToRoleDialog } from "./AddMemberToRoleDialog";
 import { DeleteMemberFromRoleDialog } from "./DeleteMemberFromRoleDialog";
 import { Avatar } from "@/components/avatar/Avatar";
-import { CircleWithCrossIcon, SearchOutlineIcon } from "@/components/icons/Icons";
+import {
+	CircleWithCrossIcon,
+	SearchOutlineIcon,
+} from "@/components/icons/Icons";
 
 const MemberRow = (props: {
 	user: any;
@@ -71,14 +74,14 @@ export const MembersPage = (props: any) => {
 
 	useEffect(() => {
 		if (activeRole) {
-			setSearchResults(activeRole.users);
+			setSearchResults(activeRole.members);
 		}
 	}, [activeRole]);
 
 	const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (activeRole) {
-			const results = activeRole.users.filter((user: any) =>
-				user.nickname
+			const results = activeRole.members.filter((member: any) =>
+				member.nickname
 					.toLowerCase()
 					.includes(e.target.value.toLowerCase())
 			);

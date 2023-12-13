@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const createRole = async (accessToken?: string | null): Promise<any> => {
 	const res = await axios.post(
-		"/roles",
+		"/member-roles",
 		{},
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
@@ -15,7 +15,7 @@ export const createRole = async (accessToken?: string | null): Promise<any> => {
 };
 
 export const getRoles = async (accessToken?: string | null): Promise<any> => {
-	const res = await axios.get("/roles", {
+	const res = await axios.get("/member-roles", {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: accessToken,
@@ -29,7 +29,7 @@ export const updateRoleById = async (
 	roleId: number,
 	accessToken?: string | null
 ): Promise<any> => {
-	const res = await axios.patch(`/roles/${roleId}`, body, {
+	const res = await axios.patch(`/member-roles/${roleId}`, body, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: accessToken,
@@ -42,7 +42,7 @@ export const deleteRoleById = async (
 	roleId: number,
 	accessToken?: string | null
 ): Promise<any> => {
-	const res = await axios.delete(`/roles/${roleId}`, {
+	const res = await axios.delete(`/member-roles/${roleId}`, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: accessToken,

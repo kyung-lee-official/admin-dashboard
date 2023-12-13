@@ -73,13 +73,18 @@ export const ServerMenu = () => {
 
 	useEffect(() => {
 		if (myInfoQuery.data) {
-			const roles = myInfoQuery.data.roles;
+			const roles = myInfoQuery.data.memberRoles;
 			let metaDataClone: any = JSON.parse(JSON.stringify(metaData));
 
 			const myPermissions = uniq(
 				roles.map((role: any) => role.permissions).flat()
 			);
-			if (!myPermissions.includes(Permissions.UPDATE_SERVER_SETTING)) {
+
+			if (
+				!myPermissions.includes(
+					Permissions.UPDATE_MEMBER_SERVER_SETTING
+				)
+			) {
 				const serverSettingsIndex = metaDataClone.findIndex(
 					(section: any) => section.heading === "SERVER SETTINGS"
 				);
@@ -89,26 +94,26 @@ export const ServerMenu = () => {
 			}
 			if (
 				!(
-					myPermissions.includes(Permissions.UPDATE_ROLE) &&
-					myPermissions.includes(Permissions.UPDATE_GROUP) &&
-					myPermissions.includes(Permissions.UPDATE_USER)
+					myPermissions.includes(Permissions.UPDATE_MEMBER_ROLE) &&
+					myPermissions.includes(Permissions.UPDATE_MEMBER_GROUP) &&
+					myPermissions.includes(Permissions.UPDATE_MEMBER)
 				)
 			) {
 				const userManagementIndex = metaDataClone.findIndex(
 					(section: any) => section.heading === "USER MANAGEMENT"
 				);
 
-				if (!myPermissions.includes(Permissions.UPDATE_ROLE)) {
+				if (!myPermissions.includes(Permissions.UPDATE_MEMBER_ROLE)) {
 					metaDataClone[userManagementIndex].items = metaDataClone[
 						userManagementIndex
 					].items.filter((item: any) => item.name !== "Roles");
 				}
-				if (!myPermissions.includes(Permissions.UPDATE_GROUP)) {
+				if (!myPermissions.includes(Permissions.UPDATE_MEMBER_GROUP)) {
 					metaDataClone[userManagementIndex].items = metaDataClone[
 						userManagementIndex
 					].items.filter((item: any) => item.name !== "Groups");
 				}
-				if (!myPermissions.includes(Permissions.UPDATE_USER)) {
+				if (!myPermissions.includes(Permissions.UPDATE_MEMBER)) {
 					metaDataClone[userManagementIndex].items = metaDataClone[
 						userManagementIndex
 					].items.filter((item: any) => item.name !== "Members");

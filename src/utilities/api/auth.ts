@@ -3,7 +3,7 @@ import qs from "qs";
 
 export const getIsSeeded = async (): Promise<any> => {
 	const query = qs.stringify({}, { encodeValuesOnly: true });
-	const res = await axios.get("/auth/isSeeded", {
+	const res = await axios.get("/member-auth/isSeeded", {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 	});
 	return res.data;
@@ -14,7 +14,7 @@ export const seed = async (body: {
 	nickname: string;
 	password: string;
 }): Promise<any> => {
-	const res = await axios.post("/auth/seed", body, {
+	const res = await axios.post("/member-auth/seed", body, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 	});
 	return res.data;
@@ -23,7 +23,7 @@ export const seed = async (body: {
 export const getIsSignedIn = async (
 	accessToken?: string | null
 ): Promise<{ isSignedIn: true; }> => {
-	const res = await axios.get("/auth/isSignedIn", {
+	const res = await axios.get("/member-auth/isSignedIn", {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: accessToken,
@@ -36,7 +36,7 @@ export const signIn = async (body: {
 	email: string;
 	password: string;
 }): Promise<any> => {
-	const res = await axios.post("/auth/signin", body, {
+	const res = await axios.post("/member-auth/signin", body, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 	});
 	return res.data;
@@ -47,14 +47,14 @@ export const signUp = async (body: {
 	nickname: string;
 	password: string;
 }): Promise<any> => {
-	const res = await axios.post("/auth/signup", body, {
+	const res = await axios.post("/member-auth/signup", body, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 	});
 	return res.data;
 };
 
 export const refreshAccessToken = async (accessToken?: string | null) => {
-	const res = await axios.get("/auth/refreshAccessToken", {
+	const res = await axios.get("/member-auth/refreshAccessToken", {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: accessToken,
@@ -64,7 +64,7 @@ export const refreshAccessToken = async (accessToken?: string | null) => {
 };
 
 export const sendVerificationEmail = async (accessToken?: string | null) => {
-	const res = await axios.post("/auth/sendVerificationEmail", null, {
+	const res = await axios.post("/member-auth/sendVerificationEmail", null, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: accessToken,
@@ -76,7 +76,7 @@ export const sendVerificationEmail = async (accessToken?: string | null) => {
 export const verifyEmail = async (body: {
 	verificationToken: string;
 }): Promise<any> => {
-	const res = await axios.post("/auth/verifyEmail", body, {
+	const res = await axios.post("/member-auth/verifyEmail", body, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 	});
 	return res.data;
@@ -87,7 +87,7 @@ export const sendUpdateEmailVerificationRequest = async (
 	accessToken?: string | null
 ): Promise<any> => {
 	const res = await axios.patch(
-		"/auth/update-email-request",
+		"/member-auth/update-email-request",
 		{ newEmail: newEmail },
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
@@ -102,14 +102,14 @@ export const sendUpdateEmailVerificationRequest = async (
 export const verifyNewEmail = async (body: {
 	verificationToken: string;
 }): Promise<any> => {
-	const res = await axios.patch("/auth/verifyNewEmail", body, {
+	const res = await axios.patch("/member-auth/verifyNewEmail", body, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 	});
 	return res.data;
 };
 
 export const forgetPassword = async (body: { email: string; }): Promise<any> => {
-	const res = await axios.post("/auth/forgetPassword", body, {
+	const res = await axios.post("/member-auth/forgetPassword", body, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 	});
 	return res.data;
@@ -119,7 +119,7 @@ export const resetPassword = async (body: {
 	password: string;
 	resetPasswordToken: string | null;
 }): Promise<any> => {
-	const res = await axios.post(`/auth/resetPassword`, body, {
+	const res = await axios.post(`/member-auth/resetPassword`, body, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 	});
 	return res.data;
@@ -128,7 +128,7 @@ export const resetPassword = async (body: {
 export const getTencentCosTempCredential = async (
 	accessToken?: string | null
 ): Promise<any> => {
-	const res = await axios.get("/auth/tencentCosTempCredential", {
+	const res = await axios.get("/member-auth/tencentCosTempCredential", {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: accessToken,

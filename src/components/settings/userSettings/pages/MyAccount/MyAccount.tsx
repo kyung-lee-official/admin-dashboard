@@ -211,8 +211,8 @@ const InfoPanel = (props: any) => {
 							GROUPS
 						</div>
 						<div className="flex flex-wrap gap-2">
-							{myInfo.groups.length > 0 ? (
-								myInfo.groups?.map((group: any) => {
+							{myInfo.memberGroups.length > 0 ? (
+								myInfo.memberGroups?.map((group: any) => {
 									if (group.name === "everyone") {
 										return (
 											<div
