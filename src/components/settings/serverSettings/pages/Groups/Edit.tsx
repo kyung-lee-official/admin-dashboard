@@ -94,7 +94,7 @@ const EditSidebar = (props: any) => {
 							return (
 								<div
 									key={group.id}
-									className={`flex items-center h-[40px] px-4
+									className={`flex items-center min-h-[40px] px-4
 									text-base font-normal
 									${activeGroupId === group.id && "bg-gray-200"} hover:bg-gray-100
 									rounded cursor-pointer`}
