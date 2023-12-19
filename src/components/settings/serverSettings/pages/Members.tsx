@@ -27,7 +27,7 @@ import {
 	SearchOutlineIcon,
 } from "@/components/icons/Icons";
 import { Skeleton } from "@/components/skeleton/Skeleton";
-import VerifyMemberDialog from "@/components/contextMenu/VerifyMemberDialog";
+import { VerifyMemberDialog } from "@/components/contextMenu/VerifyMemberDialog";
 
 const Divider = () => {
 	return <div className="w-full h-[1px] my-2 bg-slate-200" />;
@@ -105,7 +105,9 @@ const Row = (props: {
 							text-gray-800 text-base font-mono font-semibold"
 						>
 							<div
-								className={member.isFrozen ? "text-gray-400" : ""}
+								className={
+									member.isFrozen ? "text-gray-400" : ""
+								}
 							>
 								{member.nickname}
 							</div>
@@ -175,12 +177,18 @@ const Row = (props: {
 						<ContextMenu
 							setShowEditRolesDialog={setShowEditRolesDialog}
 							setShowEditGroupsDialog={setShowEditGroupsDialog}
-							setShowDeleteMemberDialog={setShowDeleteMemberDialog}
-							setShowFreezeMemberDialog={setShowFreezeMemberDialog}
+							setShowDeleteMemberDialog={
+								setShowDeleteMemberDialog
+							}
+							setShowFreezeMemberDialog={
+								setShowFreezeMemberDialog
+							}
 							setShowUnfreezeMemberDialog={
 								setShowUnfreezeMemberDialog
 							}
-							setShowVerifyMemberDialog={setShowVerifyMemberDialog}
+							setShowVerifyMemberDialog={
+								setShowVerifyMemberDialog
+							}
 							setShowTransferOwnershipDialog={
 								setShowTransferOwnershipDialog
 							}
@@ -219,7 +227,9 @@ const Row = (props: {
 				{showUnfreezeMemberDialog && (
 					<UnfreezeMemberDialog
 						showUnfreezeMemberDialog={showUnfreezeMemberDialog}
-						setShowUnfreezeMemberDialog={setShowUnfreezeMemberDialog}
+						setShowUnfreezeMemberDialog={
+							setShowUnfreezeMemberDialog
+						}
 						member={member}
 					/>
 				)}
