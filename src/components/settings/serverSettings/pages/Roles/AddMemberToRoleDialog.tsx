@@ -45,7 +45,7 @@ export const AddMemberToRoleDialog = (props: {
 			newRoleMemberIds: string[];
 		}) => {
 			return updateRoleById(
-				{ userIds: newRoleMemberIds },
+				{ memberIds: newRoleMemberIds },
 				activeRole.id,
 				accessToken
 			);
@@ -60,9 +60,9 @@ export const AddMemberToRoleDialog = (props: {
 
 	useEffect(() => {
 		if (usersQuery.data) {
-			setOriginalRoleMembers(activeRole.users);
+			setOriginalRoleMembers(activeRole.members);
 			const selectableUsers = usersQuery.data.filter((user: any) => {
-				const originalRoleUserIds = activeRole.users.map(
+				const originalRoleUserIds = activeRole.members.map(
 					(user: any) => user.id
 				);
 				return !originalRoleUserIds.includes(user.id);
@@ -82,7 +82,7 @@ export const AddMemberToRoleDialog = (props: {
 	const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (activeRole) {
 			const selectableUsers = usersQuery.data.filter((user: any) => {
-				const originalRoleUserIds = activeRole.users.map(
+				const originalRoleUserIds = activeRole.members.map(
 					(user: any) => user.id
 				);
 				return !originalRoleUserIds.includes(user.id);

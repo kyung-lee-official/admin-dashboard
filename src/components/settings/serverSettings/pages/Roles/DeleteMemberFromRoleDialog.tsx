@@ -29,12 +29,12 @@ export const DeleteMemberFromRoleDialog = (props: {
 
 	const removeUserMutation = useMutation({
 		mutationFn: async (toBeRemovedUserId: string) => {
-			const newUsers = activeRole.users.filter((user: any) => {
-				return user.id !== toBeRemovedUserId;
+			const newMembers = activeRole.members.filter((member: any) => {
+				return member.id !== toBeRemovedUserId;
 			});
-			const newUserIds = newUsers.map((user: any) => user.id);
+			const newMemberIds = newMembers.map((member: any) => member.id);
 			return updateRoleById(
-				{ userIds: newUserIds },
+				{ memberIds: newMemberIds },
 				activeRoleId,
 				accessToken
 			);

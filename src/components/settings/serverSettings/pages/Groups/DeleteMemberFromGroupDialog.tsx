@@ -29,12 +29,12 @@ export const DeleteMemberFromGroupDialog = (props: {
 
 	const removeUserMutation = useMutation({
 		mutationFn: async (toBeRemovedUserId: string) => {
-			const newUsers = activeGroup.users.filter((user: any) => {
-				return user.id !== toBeRemovedUserId;
+			const newMembers = activeGroup.members.filter((member: any) => {
+				return member.id !== toBeRemovedUserId;
 			});
-			const newUserIds = newUsers.map((user: any) => user.id);
+			const newMemberIds = newMembers.map((member: any) => member.id);
 			return updateGroupById(
-				{ userIds: newUserIds },
+				{ memberIds: newMemberIds },
 				activeGroupId,
 				accessToken
 			);

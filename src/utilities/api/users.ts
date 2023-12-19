@@ -25,7 +25,7 @@ export const verifyUser = async (
 	accessToken?: string | null
 ): Promise<any> => {
 	const res = await axios.patch(
-		`/members/user-verification/${userId}`,
+		`/members/member-verification/${userId}`,
 		{},
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,

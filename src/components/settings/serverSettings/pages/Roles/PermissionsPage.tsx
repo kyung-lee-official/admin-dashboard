@@ -8,6 +8,7 @@ import { useMutation } from "@tanstack/react-query";
 import { updateRoleById } from "@/utilities/api/roles";
 import { SettingsChangedIndicator } from "@/components/settings/SettingsChangedIndicator";
 import { Toggle } from "@/components/toggle/Toggle";
+import { Permissions } from "@/components/sacl/Permissions";
 
 const permissions = [
 	{
@@ -16,12 +17,12 @@ const permissions = [
 			{
 				name: "View Server Settings",
 				description: "Can view server settings.",
-				key: "GET_SERVER_SETTING",
+				key: Permissions.GET_MEMBER_SERVER_SETTING,
 			},
 			{
 				name: "Update Server Settings",
 				description: "Can update server settings.",
-				key: "UPDATE_SERVER_SETTING",
+				key: Permissions.UPDATE_MEMBER_SERVER_SETTING,
 			},
 		],
 	},
@@ -31,27 +32,27 @@ const permissions = [
 			{
 				name: "Create Users",
 				description: "Can create users.",
-				key: "CREATE_USER",
+				key: Permissions.CREATE_MEMBER,
 			},
 			{
 				name: "View Users",
 				description: "Can view users.",
-				key: "GET_USERS",
+				key: Permissions.GET_MEMBERS,
 			},
 			{
 				name: "Update User",
 				description: "Can update users.",
-				key: "UPDATE_USER",
+				key: Permissions.UPDATE_MEMBER,
 			},
 			{
 				name: "Delete User",
 				description: "Can delete users.",
-				key: "DELETE_USER",
+				key: Permissions.DELETE_MEMBER,
 			},
 			{
 				name: "Update Me",
 				description: "Can update their own",
-				key: "UPDATE_ME",
+				key: Permissions.UPDATE_MEMBER_ME,
 			},
 		],
 	},
@@ -61,22 +62,22 @@ const permissions = [
 			{
 				name: "Create Roles",
 				description: "Can create roles.",
-				key: "CREATE_ROLE",
+				key: Permissions.CREATE_MEMBER_ROLE,
 			},
 			{
 				name: "View Roles",
 				description: "Can view roles.",
-				key: "GET_ROLES",
+				key: Permissions.GET_MEMBER_ROLES,
 			},
 			{
 				name: "Update Roles",
 				description: "Can update roles.",
-				key: "UPDATE_ROLE",
+				key: Permissions.UPDATE_MEMBER_ROLE,
 			},
 			{
 				name: "Delete Roles",
 				description: "Can delete roles.",
-				key: "DELETE_ROLE",
+				key: Permissions.DELETE_MEMBER_ROLE,
 			},
 		],
 	},
@@ -86,22 +87,22 @@ const permissions = [
 			{
 				name: "Create Groups",
 				description: "Can create groups.",
-				key: "CREATE_GROUP",
+				key: Permissions.CREATE_MEMBER_GROUP,
 			},
 			{
 				name: "View Groups",
 				description: "Can view groups.",
-				key: "GET_GROUPS",
+				key: Permissions.GET_MEMBER_GROUPS,
 			},
 			{
 				name: "Update Groups",
 				description: "Can update groups.",
-				key: "UPDATE_GROUP",
+				key: Permissions.UPDATE_MEMBER_GROUP,
 			},
 			{
 				name: "Delete Groups",
 				description: "Can delete groups.",
-				key: "DELETE_GROUP",
+				key: Permissions.DELETE_MEMBER_GROUP,
 			},
 		],
 	},

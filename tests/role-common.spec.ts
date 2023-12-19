@@ -2,10 +2,10 @@ import { test, expect } from "@playwright/test";
 import "dotenv/config";
 
 const {
-	E2E_TEST_USER_1_EMAIL,
-	E2E_TEST_USER_1_NICKNAME,
-	E2E_TEST_USER_2_EMAIL,
-	E2E_TEST_USER_2_NICKNAME,
+	E2E_TEST_MEMBER_1_EMAIL,
+	E2E_TEST_MEMBER_1_NICKNAME,
+	E2E_TEST_MEMBER_2_EMAIL,
+	E2E_TEST_MEMBER_2_NICKNAME,
 } = process.env;
 
 test.describe("Test Common Role", () => {
@@ -21,7 +21,7 @@ test.describe("Test Common Role", () => {
 			.hover();
 		await page
 			.getByPlaceholder("Email", { exact: true })
-			.fill(E2E_TEST_USER_1_EMAIL as string);
+			.fill(E2E_TEST_MEMBER_1_EMAIL as string);
 		await page
 			.getByPlaceholder("Password", { exact: true })
 			.fill("1234Abcd!");

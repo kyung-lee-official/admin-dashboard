@@ -45,7 +45,7 @@ const AddMemberToGroupDialog = (props: {
 			newGroupMemberIds: string[];
 		}) => {
 			return updateGroupById(
-				{ userIds: newGroupMemberIds },
+				{ memberIds: newGroupMemberIds },
 				activeGroup.id,
 				accessToken
 			);
@@ -60,9 +60,9 @@ const AddMemberToGroupDialog = (props: {
 
 	useEffect(() => {
 		if (usersQuery.data) {
-			setOriginalGroupMembers(activeGroup.users);
+			setOriginalGroupMembers(activeGroup.members);
 			const selectableUsers = usersQuery.data.filter((user: any) => {
-				const originalGroupUserIds = activeGroup.users.map(
+				const originalGroupUserIds = activeGroup.members.map(
 					(user: any) => user.id
 				);
 				return !originalGroupUserIds.includes(user.id);
@@ -82,7 +82,7 @@ const AddMemberToGroupDialog = (props: {
 	const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (activeGroup) {
 			const selectableUsers = usersQuery.data.filter((user: any) => {
-				const originalGroupUserIds = activeGroup.users.map(
+				const originalGroupUserIds = activeGroup.members.map(
 					(user: any) => user.id
 				);
 				return !originalGroupUserIds.includes(user.id);
