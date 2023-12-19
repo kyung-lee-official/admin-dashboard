@@ -9,14 +9,14 @@ import React, { useEffect, useRef } from "react";
 export const DeleteMemberFromRoleDialog = (props: {
 	activeRole: any;
 	activeRoleId: number;
-	user: any;
+	member: any;
 	showDeleteMemberDialog: boolean;
 	setShowDeleteMemberDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
 	const {
 		activeRole,
 		activeRoleId,
-		user,
+		member,
 		showDeleteMemberDialog,
 		setShowDeleteMemberDialog,
 	} = props;
@@ -27,10 +27,10 @@ export const DeleteMemberFromRoleDialog = (props: {
 		null
 	);
 
-	const removeUserMutation = useMutation({
-		mutationFn: async (toBeRemovedUserId: string) => {
+	const removeMemberMutation = useMutation({
+		mutationFn: async (toBeRemovedMemberId: string) => {
 			const newMembers = activeRole.members.filter((member: any) => {
-				return member.id !== toBeRemovedUserId;
+				return member.id !== toBeRemovedMemberId;
 			});
 			const newMemberIds = newMembers.map((member: any) => member.id);
 			return updateRoleById(
@@ -74,13 +74,13 @@ export const DeleteMemberFromRoleDialog = (props: {
 			>
 				<h1 className="text-lg">Remove Member</h1>
 				<div className="font-normal">
-					Remove <strong>{user.nickname}</strong> ({user.email}) from
+					Remove <strong>{member.nickname}</strong> ({member.email}) from
 					role <strong>{activeRole.name}</strong>?
 				</div>
 				<div className="flex gap-6">
 					<button
 						className={
-							removeUserMutation.isPending
+							removeMemberMutation.isPending
 								? `flex justify-center items-center w-20 h-8
 							text-gray-700/60
 							bg-gray-300/60 rounded outline-none cursor-wait`
@@ -96,7 +96,7 @@ export const DeleteMemberFromRoleDialog = (props: {
 					</button>
 					<button
 						className={
-							removeUserMutation.isPending
+							removeMemberMutation.isPending
 								? `flex justify-center items-center w-20 h-8
 							text-gray-100
 							bg-red-500/60 rounded cursor-wait`
@@ -105,7 +105,7 @@ export const DeleteMemberFromRoleDialog = (props: {
 							bg-red-500 hover:bg-red-600 rounded`
 						}
 						onClick={() => {
-							removeUserMutation.mutate(user.id);
+							removeMemberMutation.mutate(member.id);
 						}}
 					>
 						Remove

@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { useMutation } from "@tanstack/react-query";
-import { changePassword } from "@/utilities/api/users";
+import { changePassword } from "@/utilities/api/members";
 
 interface IFormInput {
 	oldPassword: string;
@@ -39,7 +39,7 @@ const schema = z
 	});
 
 type ChangePasswordDialogProps = {
-	userId: string;
+	memberId: string;
 	accessToken: string | null | undefined;
 	showChangePasswordDialog: boolean;
 	setShowChangePasswordDialog: React.Dispatch<React.SetStateAction<boolean>>;
@@ -47,7 +47,7 @@ type ChangePasswordDialogProps = {
 
 export const ChangePasswordDialog = (props: ChangePasswordDialogProps) => {
 	const {
-		userId,
+		memberId,
 		accessToken,
 		showChangePasswordDialog,
 		setShowChangePasswordDialog,
@@ -63,7 +63,7 @@ export const ChangePasswordDialog = (props: ChangePasswordDialogProps) => {
 	const mutation = useMutation<any, AxiosError, IFormInput>({
 		mutationKey: ["changePassword"],
 		mutationFn: (data: IFormInput) => {
-			return changePassword(userId, data, accessToken);
+			return changePassword(memberId, data, accessToken);
 		},
 	});
 

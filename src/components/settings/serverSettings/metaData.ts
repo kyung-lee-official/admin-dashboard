@@ -13,19 +13,19 @@ export const metaData = [
 		],
 	},
 	{
-		heading: "USER MANAGEMENT",
+		heading: "MEMBER MANAGEMENT",
 		items: [
 			{
 				name: "Roles",
-				path: "/userManagement/roles",
+				path: "/memberManagement/roles",
 			},
 			{
 				name: "Groups",
-				path: "/userManagement/groups",
+				path: "/memberManagement/groups",
 			},
 			{
 				name: "Members",
-				path: "/userManagement/members",
+				path: "/memberManagement/members",
 			},
 		],
 	},

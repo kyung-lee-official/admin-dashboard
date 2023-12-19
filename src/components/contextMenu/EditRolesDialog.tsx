@@ -6,17 +6,17 @@ import { AxiosError } from "axios";
 import { motion } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { editUserRoles } from "@/utilities/api/users";
+import { editMemberRoles } from "@/utilities/api/members";
 import { getRoles } from "@/utilities/api/roles";
 import { SearchOutlineIcon } from "../icons/Icons";
 import { CheckboxList } from "../input/CheckboxList";
 
 export const EditRolesDialog = (props: {
-	user: any;
+	member: any;
 	showEditRolesDialog: boolean;
 	setShowEditRolesDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-	const { user, showEditRolesDialog, setShowEditRolesDialog } = props;
+	const { member, showEditRolesDialog, setShowEditRolesDialog } = props;
 	const accessToken = useAuthStore((state) => state.accessToken);
 
 	const rolesQuery = useQuery<any, AxiosError>({
@@ -29,7 +29,7 @@ export const EditRolesDialog = (props: {
 		refetchOnWindowFocus: false,
 	});
 
-	const [newUserRoles, setNewUserRoles] = useState(user.memberRoles);
+	const [newMemberRoles, setNewMemberRoles] = useState(member.memberRoles);
 	const [disabledRoleIds, setDisabledRoleIds] = useState<number[]>([]);
 	const [searchResults, setSearchResults] = useState<any[]>([]);
 
@@ -37,18 +37,18 @@ export const EditRolesDialog = (props: {
 
 	const editRolesMutation = useMutation({
 		mutationFn: async ({
-			userId,
+			memberId,
 			roleIds,
 		}: {
-			userId: string;
+			memberId: string;
 			roleIds: number[];
 		}) => {
-			return editUserRoles(userId, roleIds, accessToken);
+			return editMemberRoles(memberId, roleIds, accessToken);
 		},
 		onSuccess: (data) => {
 			setShowEditRolesDialog(false);
 			queryClient.invalidateQueries({
-				queryKey: ["getUsers", accessToken],
+				queryKey: ["getMembers", accessToken],
 			});
 		},
 	});
@@ -106,7 +106,7 @@ export const EditRolesDialog = (props: {
 				<h1 className="text-lg">Edit Roles</h1>
 				<div className="font-normal">
 					You&apos;re editing the roles of{" "}
-					<strong>{user.nickname}</strong> ({user.email})
+					<strong>{member.nickname}</strong> ({member.email})
 				</div>
 				<div className="flex w-full font-normal">
 					<input
@@ -126,8 +126,8 @@ export const EditRolesDialog = (props: {
 				</div>
 				<CheckboxList
 					allOptions={searchResults}
-					newSelectedOptions={newUserRoles}
-					setNewSelectedOptions={setNewUserRoles}
+					newSelectedOptions={newMemberRoles}
+					setNewSelectedOptions={setNewMemberRoles}
 					itemKey="name"
 					disabledOptionIds={disabledRoleIds}
 				/>
@@ -159,12 +159,12 @@ export const EditRolesDialog = (props: {
 							bg-blue-500 hover:bg-blue-600 rounded`
 						}
 						onClick={() => {
-							const newUserRoleIds = newUserRoles.map(
+							const newMemberRoleIds = newMemberRoles.map(
 								(role: any) => role.id
 							);
 							editRolesMutation.mutate({
-								userId: user.id,
-								roleIds: newUserRoleIds,
+								memberId: member.id,
+								roleIds: newMemberRoleIds,
 							});
 						}}
 					>

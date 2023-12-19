@@ -105,7 +105,7 @@ const Index = () => {
 											height: "auto",
 										}}
 									>
-										User not found, please check your email
+										Member not found, please check your email
 									</motion.div>
 								)}
 						</div>

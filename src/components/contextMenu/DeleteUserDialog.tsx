@@ -1,51 +1,51 @@
 "use client";
 
 import { useAuthStore } from "@/stores/auth";
-import { deleteUserById } from "@/utilities/api/users";
+import { deleteMemberById } from "@/utilities/api/members";
 import { queryClient } from "@/utilities/react-query/react-query";
 import { useMutation } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import React, { useEffect, useRef } from "react";
 
-export const DeleteUserDialog = (props: {
-	user: any;
-	showDeleteUserDialog: boolean;
-	setShowDeleteUserDialog: React.Dispatch<React.SetStateAction<boolean>>;
+export const DeleteMemberDialog = (props: {
+	member: any;
+	showDeleteMemberDialog: boolean;
+	setShowDeleteMemberDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-	const { user, showDeleteUserDialog, setShowDeleteUserDialog } = props;
+	const { member, showDeleteMemberDialog, setShowDeleteMemberDialog } = props;
 	const accessToken = useAuthStore((state) => state.accessToken);
 
-	const deleteUserDialogRef = useRef<HTMLDialogElement | null>(null);
+	const deleteMemberDialogRef = useRef<HTMLDialogElement | null>(null);
 
-	const deleteUserMutation = useMutation({
-		mutationFn: async (userId: string) => {
-			return deleteUserById(userId, accessToken);
+	const deleteMemberMutation = useMutation({
+		mutationFn: async (memberId: string) => {
+			return deleteMemberById(memberId, accessToken);
 		},
 		onSuccess: (data) => {
-			setShowDeleteUserDialog(false);
+			setShowDeleteMemberDialog(false);
 			queryClient.invalidateQueries({
-				queryKey: ["getUsers", accessToken],
+				queryKey: ["getMembers", accessToken],
 			});
 		},
 	});
 
 	useEffect(() => {
-		if (showDeleteUserDialog) {
-			deleteUserDialogRef.current!.showModal();
+		if (showDeleteMemberDialog) {
+			deleteMemberDialogRef.current!.showModal();
 		}
 	}, []);
 
 	useEffect(() => {
-		if (showDeleteUserDialog) {
-			deleteUserDialogRef.current!.showModal();
+		if (showDeleteMemberDialog) {
+			deleteMemberDialogRef.current!.showModal();
 		} else {
-			deleteUserDialogRef.current!.close();
+			deleteMemberDialogRef.current!.close();
 		}
-	}, [showDeleteUserDialog]);
+	}, [showDeleteMemberDialog]);
 
 	return (
 		<motion.dialog
-			ref={deleteUserDialogRef}
+			ref={deleteMemberDialogRef}
 			initial={{ opacity: 0, scale: 0.9 }}
 			animate={{ opacity: 1, scale: 1 }}
 			className="w-[440px]
@@ -53,26 +53,26 @@ export const DeleteUserDialog = (props: {
 			shadow-lg rounded-md backdrop:bg-black/80 backdrop:[backdrop-filter:blur(2px)]"
 			onCancel={(e: React.SyntheticEvent<HTMLDialogElement, Event>) => {
 				e.preventDefault();
-				setShowDeleteUserDialog(false);
+				setShowDeleteMemberDialog(false);
 			}}
 		>
 			<div
 				className="flex flex-col justify-center items-center p-6 gap-8
 				text-gray-600"
 			>
-				<h1 className="text-lg">Delete User</h1>
+				<h1 className="text-lg">Delete Member</h1>
 				<div className="flex flex-col items-center gap-2  font-normal">
 					<p className="px-4 text-center">
-						Are you sure you want to delete user
+						Are you sure you want to delete member
 					</p>
 					<p>
-						<strong>{user.nickname}</strong>({user.email}) ?
+						<strong>{member.nickname}</strong>({member.email}) ?
 					</p>
 				</div>
 				<div className="flex gap-6">
 					<button
 						className={
-							deleteUserMutation.isPending
+							deleteMemberMutation.isPending
 								? `flex justify-center items-center w-20 h-8
 							text-gray-700/60
 							bg-gray-300/60 rounded outline-none cursor-wait`
@@ -81,14 +81,14 @@ export const DeleteUserDialog = (props: {
 							bg-gray-300 hover:bg-gray-400 rounded outline-none`
 						}
 						onClick={() => {
-							setShowDeleteUserDialog(false);
+							setShowDeleteMemberDialog(false);
 						}}
 					>
 						Cancel
 					</button>
 					<button
 						className={
-							deleteUserMutation.isPending
+							deleteMemberMutation.isPending
 								? `flex justify-center items-center w-20 h-8
 							text-gray-100
 							bg-red-500/60 rounded cursor-wait`
@@ -97,7 +97,7 @@ export const DeleteUserDialog = (props: {
 							bg-red-500 hover:bg-red-600 rounded`
 						}
 						onClick={() => {
-							deleteUserMutation.mutate(user.id);
+							deleteMemberMutation.mutate(member.id);
 						}}
 					>
 						Delete

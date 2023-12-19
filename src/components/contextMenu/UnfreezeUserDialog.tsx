@@ -1,51 +1,51 @@
 "use client";
 
 import { useAuthStore } from "@/stores/auth";
-import { setIsFrozenUserById } from "@/utilities/api/users";
+import { setIsFrozenMemberById } from "@/utilities/api/members";
 import { queryClient } from "@/utilities/react-query/react-query";
 import { useMutation } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import React, { useEffect, useRef } from "react";
 
-export const UnfreezeUserDialog = (props: {
-	user: any;
-	showUnfreezeUserDialog: boolean;
-	setShowUnfreezeUserDialog: React.Dispatch<React.SetStateAction<boolean>>;
+export const UnfreezeMemberDialog = (props: {
+	member: any;
+	showUnfreezeMemberDialog: boolean;
+	setShowUnfreezeMemberDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-	const { user, showUnfreezeUserDialog, setShowUnfreezeUserDialog } = props;
+	const { member, showUnfreezeMemberDialog, setShowUnfreezeMemberDialog } = props;
 	const accessToken = useAuthStore((state) => state.accessToken);
 
-	const unfreezeUserDialogRef = useRef<HTMLDialogElement | null>(null);
+	const unfreezeMemberDialogRef = useRef<HTMLDialogElement | null>(null);
 
-	const freezeUserMutation = useMutation({
-		mutationFn: async (userId: string) => {
-			return setIsFrozenUserById(userId, false, accessToken);
+	const freezeMemberMutation = useMutation({
+		mutationFn: async (memberId: string) => {
+			return setIsFrozenMemberById(memberId, false, accessToken);
 		},
 		onSuccess: (data) => {
-			setShowUnfreezeUserDialog(false);
+			setShowUnfreezeMemberDialog(false);
 			queryClient.invalidateQueries({
-				queryKey: ["getUsers", accessToken],
+				queryKey: ["getMembers", accessToken],
 			});
 		},
 	});
 
 	useEffect(() => {
-		if (showUnfreezeUserDialog) {
-			unfreezeUserDialogRef.current!.showModal();
+		if (showUnfreezeMemberDialog) {
+			unfreezeMemberDialogRef.current!.showModal();
 		}
 	}, []);
 
 	useEffect(() => {
-		if (showUnfreezeUserDialog) {
-			unfreezeUserDialogRef.current!.showModal();
+		if (showUnfreezeMemberDialog) {
+			unfreezeMemberDialogRef.current!.showModal();
 		} else {
-			unfreezeUserDialogRef.current!.close();
+			unfreezeMemberDialogRef.current!.close();
 		}
-	}, [showUnfreezeUserDialog]);
+	}, [showUnfreezeMemberDialog]);
 
 	return (
 		<motion.dialog
-			ref={unfreezeUserDialogRef}
+			ref={unfreezeMemberDialogRef}
 			initial={{ opacity: 0, scale: 0.9 }}
 			animate={{ opacity: 1, scale: 1 }}
 			className="w-[440px]
@@ -53,26 +53,26 @@ export const UnfreezeUserDialog = (props: {
 			shadow-lg rounded-md backdrop:bg-black/80 backdrop:[backdrop-filter:blur(2px)]"
 			onCancel={(e: React.SyntheticEvent<HTMLDialogElement, Event>) => {
 				e.preventDefault();
-				setShowUnfreezeUserDialog(false);
+				setShowUnfreezeMemberDialog(false);
 			}}
 		>
 			<div
 				className="flex flex-col justify-center items-center p-6 gap-8
 							text-gray-600"
 			>
-				<h1 className="text-lg">Unfreeze User</h1>
+				<h1 className="text-lg">Unfreeze Member</h1>
 				<div className="flex flex-col items-center gap-2 font-normal">
 					<p className="px-4 text-center">
-						Are you sure you want to unfreeze user
+						Are you sure you want to unfreeze member
 					</p>
 					<p>
-						<strong>{user.nickname}</strong>({user.email})?
+						<strong>{member.nickname}</strong>({member.email})?
 					</p>
 				</div>
 				<div className="flex gap-6">
 					<button
 						className={
-							freezeUserMutation.isPending
+							freezeMemberMutation.isPending
 								? `flex justify-center items-center w-20 h-8
 							text-gray-700/60
 							bg-gray-300/60 rounded outline-none cursor-wait`
@@ -81,14 +81,14 @@ export const UnfreezeUserDialog = (props: {
 							bg-gray-300 hover:bg-gray-400 rounded outline-none`
 						}
 						onClick={() => {
-							setShowUnfreezeUserDialog(false);
+							setShowUnfreezeMemberDialog(false);
 						}}
 					>
 						Cancel
 					</button>
 					<button
 						className={
-							freezeUserMutation.isPending
+							freezeMemberMutation.isPending
 								? `flex justify-center items-center w-20 h-8
 							text-gray-100
 							bg-red-500/60 rounded cursor-wait`
@@ -97,7 +97,7 @@ export const UnfreezeUserDialog = (props: {
 							bg-red-500 hover:bg-red-600 rounded`
 						}
 						onClick={() => {
-							freezeUserMutation.mutate(user.id);
+							freezeMemberMutation.mutate(member.id);
 						}}
 					>
 						Unfreeze

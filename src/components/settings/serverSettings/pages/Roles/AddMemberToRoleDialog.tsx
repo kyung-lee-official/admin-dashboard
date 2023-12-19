@@ -6,7 +6,7 @@ import { queryClient } from "@/utilities/react-query/react-query";
 import { AxiosError } from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getUsers } from "@/utilities/api/users";
+import { getMembers } from "@/utilities/api/members";
 import { updateRoleById } from "@/utilities/api/roles";
 import { SearchOutlineIcon } from "@/components/icons/Icons";
 import { CheckboxList } from "@/components/input/CheckboxList";
@@ -28,11 +28,11 @@ export const AddMemberToRoleDialog = (props: {
 
 	const addMemberToRoleDialogRef = useRef<HTMLDialogElement | null>(null);
 
-	const usersQuery = useQuery<any, AxiosError>({
-		queryKey: ["getUsers", accessToken],
+	const membersQuery = useQuery<any, AxiosError>({
+		queryKey: ["getMembers", accessToken],
 		queryFn: async () => {
-			const users = await getUsers(accessToken);
-			return users;
+			const members = await getMembers(accessToken);
+			return members;
 		},
 		retry: false,
 		refetchOnWindowFocus: false,
@@ -59,17 +59,17 @@ export const AddMemberToRoleDialog = (props: {
 	});
 
 	useEffect(() => {
-		if (usersQuery.data) {
+		if (membersQuery.data) {
 			setOriginalRoleMembers(activeRole.members);
-			const selectableUsers = usersQuery.data.filter((user: any) => {
-				const originalRoleUserIds = activeRole.members.map(
-					(user: any) => user.id
+			const selectableMembers = membersQuery.data.filter((member: any) => {
+				const originalRoleMemberIds = activeRole.members.map(
+					(member: any) => member.id
 				);
-				return !originalRoleUserIds.includes(user.id);
+				return !originalRoleMemberIds.includes(member.id);
 			});
-			setSearchResults(selectableUsers);
+			setSearchResults(selectableMembers);
 		}
-	}, [usersQuery.data, activeRole]);
+	}, [membersQuery.data, activeRole]);
 
 	useEffect(() => {
 		if (showAddMemberDialog) {
@@ -81,14 +81,14 @@ export const AddMemberToRoleDialog = (props: {
 
 	const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (activeRole) {
-			const selectableUsers = usersQuery.data.filter((user: any) => {
-				const originalRoleUserIds = activeRole.members.map(
-					(user: any) => user.id
+			const selectableMembers = membersQuery.data.filter((member: any) => {
+				const originalRoleMemberIds = activeRole.members.map(
+					(member: any) => member.id
 				);
-				return !originalRoleUserIds.includes(user.id);
+				return !originalRoleMemberIds.includes(member.id);
 			});
-			const results = selectableUsers.filter((user: any) =>
-				user.nickname
+			const results = selectableMembers.filter((member: any) =>
+				member.nickname
 					.toLowerCase()
 					.includes(e.target.value.toLowerCase())
 			);
@@ -165,10 +165,10 @@ export const AddMemberToRoleDialog = (props: {
 						}
 						onClick={() => {
 							const originalRoleMemberIds =
-								originalRoleMembers.map((user: any) => user.id);
+								originalRoleMembers.map((member: any) => member.id);
 							const newlySelectedRoleMemberIds: string[] =
 								newlySelectedRoleMembers.map(
-									(user: any) => user.id
+									(member: any) => member.id
 								);
 
 							const newRoleMemberIds: string[] = uniq(

@@ -1,10 +1,10 @@
 export const metaData = [
 	{
-		heading: "USER SETTINGS",
+		heading: "MEMBER SETTINGS",
 		items: [
 			{
 				name: "My Account",
-				path: "/userSettings/myAccount",
+				path: "/memberSettings/myAccount",
 			},
 		],
 	},

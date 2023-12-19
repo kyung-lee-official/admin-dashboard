@@ -103,7 +103,7 @@ export const Main = (props: any) => {
 		<div className="flex flex-col gap-6">
 			<SettingsHeading>Groups</SettingsHeading>
 			<div className="font-normal">
-				Groups are used to separate resources, users can only access
+				Groups are used to separate resources, members can only access
 				resources under the groups they are in.
 				{showSeeMore ? (
 					<div>

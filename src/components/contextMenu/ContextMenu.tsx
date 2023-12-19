@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { getMyInfo } from "@/utilities/api/users";
+import { getMyInfo } from "@/utilities/api/members";
 import { useAuthStore } from "@/stores/auth";
 import { IdIcon } from "../icons/Icons";
 
@@ -52,25 +52,25 @@ const Item = (props: {
 };
 
 export const ContextMenu = (props: {
-	user: any;
+	member: any;
 	setShowEditRolesDialog: React.Dispatch<React.SetStateAction<boolean>>;
 	setShowEditGroupsDialog: React.Dispatch<React.SetStateAction<boolean>>;
-	setShowDeleteUserDialog: React.Dispatch<React.SetStateAction<boolean>>;
-	setShowFreezeUserDialog: React.Dispatch<React.SetStateAction<boolean>>;
-	setShowUnfreezeUserDialog: React.Dispatch<React.SetStateAction<boolean>>;
-	setShowVerifyUserDialog: React.Dispatch<React.SetStateAction<boolean>>;
+	setShowDeleteMemberDialog: React.Dispatch<React.SetStateAction<boolean>>;
+	setShowFreezeMemberDialog: React.Dispatch<React.SetStateAction<boolean>>;
+	setShowUnfreezeMemberDialog: React.Dispatch<React.SetStateAction<boolean>>;
+	setShowVerifyMemberDialog: React.Dispatch<React.SetStateAction<boolean>>;
 	setShowTransferOwnershipDialog: React.Dispatch<
 		React.SetStateAction<boolean>
 	>;
 }) => {
 	const {
-		user,
+		member,
 		setShowEditRolesDialog,
 		setShowEditGroupsDialog,
-		setShowDeleteUserDialog,
-		setShowFreezeUserDialog,
-		setShowUnfreezeUserDialog,
-		setShowVerifyUserDialog,
+		setShowDeleteMemberDialog,
+		setShowFreezeMemberDialog,
+		setShowUnfreezeMemberDialog,
+		setShowVerifyMemberDialog,
 		setShowTransferOwnershipDialog,
 	} = props;
 
@@ -91,10 +91,10 @@ export const ContextMenu = (props: {
 
 	useEffect(() => {
 		if (myInfoQuery.data) {
-			if (user.memberRoles.some((role: any) => role.name === "admin")) {
+			if (member.memberRoles.some((role: any) => role.name === "admin")) {
 				setIsAdmin(true);
 			}
-			if (myInfoQuery.data.id === user.id) {
+			if (myInfoQuery.data.id === member.id) {
 				setIsMe(true);
 			}
 		}
@@ -122,49 +122,49 @@ export const ContextMenu = (props: {
 			>
 				<Item type="normal">Edit Groups</Item>
 			</button>
-			{!user.isVerified && (
+			{!member.isVerified && (
 				<button
 					className="w-full"
 					onClick={() => {
-						setShowVerifyUserDialog(true);
+						setShowVerifyMemberDialog(true);
 					}}
 				>
-					<Item type="warning">Verify {user.nickname}</Item>
+					<Item type="warning">Verify {member.nickname}</Item>
 				</button>
 			)}
 			{!isAdmin &&
 				!isMe &&
-				(user.isFrozen ? (
+				(member.isFrozen ? (
 					<button
 						className="w-full"
 						onClick={() => {
-							setShowUnfreezeUserDialog(true);
+							setShowUnfreezeMemberDialog(true);
 						}}
 					>
-						<Item type="danger">Unfreeze {user.nickname}</Item>
+						<Item type="danger">Unfreeze {member.nickname}</Item>
 					</button>
 				) : (
 					<button
 						className="w-full"
 						onClick={() => {
-							setShowFreezeUserDialog(true);
+							setShowFreezeMemberDialog(true);
 						}}
 					>
-						<Item type="danger">Freeze {user.nickname}</Item>
+						<Item type="danger">Freeze {member.nickname}</Item>
 					</button>
 				))}
 			{!isAdmin && !isMe && (
 				<button
 					className="w-full"
 					onClick={() => {
-						setShowDeleteUserDialog(true);
+						setShowDeleteMemberDialog(true);
 					}}
 				>
-					<Item type="danger">Delete {user.nickname}</Item>
+					<Item type="danger">Delete {member.nickname}</Item>
 				</button>
 			)}
 			<hr className="w-full my-1 border-gray-300" />
-			{!isAdmin && !isMe && !user.isFrozen && (
+			{!isAdmin && !isMe && !member.isFrozen && (
 				<div className="w-full">
 					<button
 						className="w-full"
@@ -181,10 +181,10 @@ export const ContextMenu = (props: {
 				<div
 					className="flex justify-between items-center w-full gap-2"
 					onClick={() => {
-						navigator.clipboard.writeText(user.id);
+						navigator.clipboard.writeText(member.id);
 					}}
 				>
-					<div>Copy User ID</div>
+					<div>Copy Member ID</div>
 					<IdIcon size={20} />
 				</div>
 			</Item>

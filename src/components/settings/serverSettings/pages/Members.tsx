@@ -12,14 +12,14 @@ import { useAuthStore } from "@/stores/auth";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { EditGroupsDialog } from "@/components/contextMenu/EditGroupsDialog";
-import { getUsers } from "@/utilities/api/users";
+import { getMembers } from "@/utilities/api/members";
 import { Avatar } from "@/components/avatar/Avatar";
 import { ContextMenu } from "@/components/contextMenu/ContextMenu";
-import { DeleteUserDialog } from "@/components/contextMenu/DeleteUserDialog";
+import { DeleteMemberDialog } from "@/components/contextMenu/DeleteMemberDialog";
 import { EditRolesDialog } from "@/components/contextMenu/EditRolesDialog";
-import { FreezeUserDialog } from "@/components/contextMenu/FreezeUserDialog";
+import { FreezeMemberDialog } from "@/components/contextMenu/FreezeMemberDialog";
 import { TransferOwnershipDialog } from "@/components/contextMenu/TransferOwnershipDialog";
-import { UnfreezeUserDialog } from "@/components/contextMenu/UnfreezeUserDialog";
+import { UnfreezeMemberDialog } from "@/components/contextMenu/UnfreezeMemberDialog";
 import {
 	CrownIcon,
 	SnowflakeIcon,
@@ -27,17 +27,17 @@ import {
 	SearchOutlineIcon,
 } from "@/components/icons/Icons";
 import { Skeleton } from "@/components/skeleton/Skeleton";
-import VerifyUserDialog from "@/components/contextMenu/VerifyUserDialog";
+import VerifyMemberDialog from "@/components/contextMenu/VerifyMemberDialog";
 
 const Divider = () => {
 	return <div className="w-full h-[1px] my-2 bg-slate-200" />;
 };
 
 const Row = (props: {
-	user: any;
+	member: any;
 	setActivePath: Dispatch<SetStateAction<string>>;
 }) => {
-	const { user, setActivePath } = props;
+	const { member, setActivePath } = props;
 	const [showMoreIcon, setShowMoreIcon] = useState<boolean>(false);
 	const [showContextMenu, setShowContextMenu] = useState<boolean>(false);
 	const [contextMenuPos, setContextMenuPos] = useState<{
@@ -49,13 +49,13 @@ const Row = (props: {
 		useState<boolean>(false);
 	const [showEditGroupsDialog, setShowEditGroupsDialog] =
 		useState<boolean>(false);
-	const [showFreezeUserDialog, setShowFreezeUserDialog] =
+	const [showFreezeMemberDialog, setShowFreezeMemberDialog] =
 		useState<boolean>(false);
-	const [showUnfreezeUserDialog, setShowUnfreezeUserDialog] =
+	const [showUnfreezeMemberDialog, setShowUnfreezeMemberDialog] =
 		useState<boolean>(false);
-	const [showDeleteUserDialog, setShowDeleteUserDialog] =
+	const [showDeleteMemberDialog, setShowDeleteMemberDialog] =
 		useState<boolean>(false);
-	const [showVerifyUserDialog, setShowVerifyUserDialog] =
+	const [showVerifyMemberDialog, setShowVerifyMemberDialog] =
 		useState<boolean>(false);
 	const [showTransferOwnershipDialog, setShowTransferOwnershipDialog] =
 		useState<boolean>(false);
@@ -96,7 +96,7 @@ const Row = (props: {
 			<div className="flex justify-between items-center p-2 gap-2">
 				<div className="flex items-center gap-4">
 					<Avatar
-						user={user}
+						member={member}
 						className="w-10 h-10 rounded-full bg-sky-400"
 					/>
 					<div>
@@ -105,11 +105,11 @@ const Row = (props: {
 							text-gray-800 text-base font-mono font-semibold"
 						>
 							<div
-								className={user.isFrozen ? "text-gray-400" : ""}
+								className={member.isFrozen ? "text-gray-400" : ""}
 							>
-								{user.nickname}
+								{member.nickname}
 							</div>
-							{user.memberRoles.some(
+							{member.memberRoles.some(
 								(role: any) => role.name === "admin"
 							) && (
 								<div
@@ -122,7 +122,7 @@ const Row = (props: {
 									admin
 								</div>
 							)}
-							{user.isFrozen && (
+							{member.isFrozen && (
 								<div
 									className="flex justify-start items-center px-2 py-[1px] gap-2
 									text-sm font-semibold
@@ -133,7 +133,7 @@ const Row = (props: {
 									Frozen
 								</div>
 							)}
-							{!user.isVerified && (
+							{!member.isVerified && (
 								<div
 									className="flex justify-start items-center px-2 py-[1px] gap-2
 									text-sm font-semibold
@@ -146,12 +146,12 @@ const Row = (props: {
 						</div>
 						<div
 							className={
-								user.isFrozen
+								member.isFrozen
 									? "text-slate-300 font-normal"
 									: "text-slate-400 font-normal"
 							}
 						>
-							{user.email}
+							{member.email}
 						</div>
 					</div>
 				</div>
@@ -175,16 +175,16 @@ const Row = (props: {
 						<ContextMenu
 							setShowEditRolesDialog={setShowEditRolesDialog}
 							setShowEditGroupsDialog={setShowEditGroupsDialog}
-							setShowDeleteUserDialog={setShowDeleteUserDialog}
-							setShowFreezeUserDialog={setShowFreezeUserDialog}
-							setShowUnfreezeUserDialog={
-								setShowUnfreezeUserDialog
+							setShowDeleteMemberDialog={setShowDeleteMemberDialog}
+							setShowFreezeMemberDialog={setShowFreezeMemberDialog}
+							setShowUnfreezeMemberDialog={
+								setShowUnfreezeMemberDialog
 							}
-							setShowVerifyUserDialog={setShowVerifyUserDialog}
+							setShowVerifyMemberDialog={setShowVerifyMemberDialog}
 							setShowTransferOwnershipDialog={
 								setShowTransferOwnershipDialog
 							}
-							user={user}
+							member={member}
 						/>
 					</div>
 				)}
@@ -192,47 +192,47 @@ const Row = (props: {
 					<EditRolesDialog
 						showEditRolesDialog={showEditRolesDialog}
 						setShowEditRolesDialog={setShowEditRolesDialog}
-						user={user}
+						member={member}
 					/>
 				)}
 				{showEditGroupsDialog && (
 					<EditGroupsDialog
 						showEditGroupsDialog={showEditGroupsDialog}
 						setShowEditGroupsDialog={setShowEditGroupsDialog}
-						user={user}
+						member={member}
 					/>
 				)}
-				{showDeleteUserDialog && (
-					<DeleteUserDialog
-						showDeleteUserDialog={showDeleteUserDialog}
-						setShowDeleteUserDialog={setShowDeleteUserDialog}
-						user={user}
+				{showDeleteMemberDialog && (
+					<DeleteMemberDialog
+						showDeleteMemberDialog={showDeleteMemberDialog}
+						setShowDeleteMemberDialog={setShowDeleteMemberDialog}
+						member={member}
 					/>
 				)}
-				{showFreezeUserDialog && (
-					<FreezeUserDialog
-						showFreezeUserDialog={showFreezeUserDialog}
-						setShowFreezeUserDialog={setShowFreezeUserDialog}
-						user={user}
+				{showFreezeMemberDialog && (
+					<FreezeMemberDialog
+						showFreezeMemberDialog={showFreezeMemberDialog}
+						setShowFreezeMemberDialog={setShowFreezeMemberDialog}
+						member={member}
 					/>
 				)}
-				{showUnfreezeUserDialog && (
-					<UnfreezeUserDialog
-						showUnfreezeUserDialog={showUnfreezeUserDialog}
-						setShowUnfreezeUserDialog={setShowUnfreezeUserDialog}
-						user={user}
+				{showUnfreezeMemberDialog && (
+					<UnfreezeMemberDialog
+						showUnfreezeMemberDialog={showUnfreezeMemberDialog}
+						setShowUnfreezeMemberDialog={setShowUnfreezeMemberDialog}
+						member={member}
 					/>
 				)}
-				{showVerifyUserDialog && (
-					<VerifyUserDialog
-						showVerifyUserDialog={showVerifyUserDialog}
-						setShowVerifyUserDialog={setShowVerifyUserDialog}
-						user={user}
+				{showVerifyMemberDialog && (
+					<VerifyMemberDialog
+						showVerifyMemberDialog={showVerifyMemberDialog}
+						setShowVerifyMemberDialog={setShowVerifyMemberDialog}
+						member={member}
 					/>
 				)}
 				{showTransferOwnershipDialog && (
 					<TransferOwnershipDialog
-						user={user}
+						member={member}
 						showTransferOwnershipDialog={
 							showTransferOwnershipDialog
 						}
@@ -254,23 +254,23 @@ export const Members = (props: any) => {
 
 	const [searchResults, setSearchResults] = useState<any[]>([]);
 
-	const usersQuery = useQuery<any, AxiosError>({
-		queryKey: ["getUsers", accessToken],
+	const membersQuery = useQuery<any, AxiosError>({
+		queryKey: ["getMembers", accessToken],
 		queryFn: async () => {
-			const users = await getUsers(accessToken);
-			return users;
+			const members = await getMembers(accessToken);
+			return members;
 		},
 		retry: false,
 		refetchOnWindowFocus: false,
 	});
 
 	useEffect(() => {
-		setSearchResults(usersQuery.data);
-	}, [usersQuery.data]);
+		setSearchResults(membersQuery.data);
+	}, [membersQuery.data]);
 
 	const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-		if (usersQuery.data) {
-			const results = usersQuery.data.filter((member: any) =>
+		if (membersQuery.data) {
+			const results = membersQuery.data.filter((member: any) =>
 				member.nickname
 					.toLowerCase()
 					.includes(e.target.value.toLowerCase())
@@ -284,13 +284,13 @@ export const Members = (props: any) => {
 			<SettingsHeading>Members</SettingsHeading>
 			<div className="flex justify-between items-center">
 				<div className="font-normal">
-					{usersQuery.data &&
-						(usersQuery.data.length === 0 ? (
+					{membersQuery.data &&
+						(membersQuery.data.length === 0 ? (
 							<div>0 Member</div>
-						) : usersQuery.data.length === 1 ? (
+						) : membersQuery.data.length === 1 ? (
 							<div>1 Member</div>
 						) : (
-							<div>{usersQuery.data.length} Members</div>
+							<div>{membersQuery.data.length} Members</div>
 						))}
 				</div>
 				<div className="flex gap-2 font-normal">
@@ -311,15 +311,15 @@ export const Members = (props: any) => {
 					</div>
 				</div>
 			</div>
-			{usersQuery.isLoading || !searchResults ? (
+			{membersQuery.isLoading || !searchResults ? (
 				<Skeleton />
 			) : (
 				<div>
-					{searchResults.map((user: any) => {
+					{searchResults.map((member: any) => {
 						return (
 							<Row
-								key={user.id}
-								user={user}
+								key={member.id}
+								member={member}
 								setActivePath={setActivePath}
 							/>
 						);

@@ -7,16 +7,16 @@ import { motion } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getGroups } from "@/utilities/api/groups";
-import { editUserGroups } from "@/utilities/api/users";
+import { editMemberGroups } from "@/utilities/api/members";
 import { SearchOutlineIcon } from "../icons/Icons";
 import { CheckboxList } from "../input/CheckboxList";
 
 export const EditGroupsDialog = (props: {
-	user: any;
+	member: any;
 	showEditGroupsDialog: boolean;
 	setShowEditGroupsDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-	const { user, showEditGroupsDialog, setShowEditGroupsDialog } = props;
+	const { member, showEditGroupsDialog, setShowEditGroupsDialog } = props;
 	const accessToken = useAuthStore((state) => state.accessToken);
 
 	const groupsQuery = useQuery<any, AxiosError>({
@@ -29,7 +29,7 @@ export const EditGroupsDialog = (props: {
 		refetchOnWindowFocus: false,
 	});
 
-	const [newUserGroups, setNewUserGroups] = useState(user.memberGroups);
+	const [newMemberGroups, setNewMemberGroups] = useState(member.memberGroups);
 	const [disabledGroupIds, setDisabledGroupIds] = useState<number[]>([]);
 	const [searchResults, setSearchResults] = useState<any[]>([]);
 
@@ -37,18 +37,18 @@ export const EditGroupsDialog = (props: {
 
 	const editGroupsMutation = useMutation({
 		mutationFn: async ({
-			userId,
+			memberId,
 			groupIds,
 		}: {
-			userId: string;
+			memberId: string;
 			groupIds: number[];
 		}) => {
-			return editUserGroups(userId, groupIds, accessToken);
+			return editMemberGroups(memberId, groupIds, accessToken);
 		},
 		onSuccess: (data) => {
 			setShowEditGroupsDialog(false);
 			queryClient.invalidateQueries({
-				queryKey: ["getUsers", accessToken],
+				queryKey: ["getMembers", accessToken],
 			});
 		},
 	});
@@ -106,7 +106,7 @@ export const EditGroupsDialog = (props: {
 				<h1 className="text-lg">Edit Groups</h1>
 				<div className="font-normal">
 					You&apos;re editing the groups of{" "}
-					<strong>{user.nickname}</strong> ({user.email})
+					<strong>{member.nickname}</strong> ({member.email})
 				</div>
 				<div className="flex w-full font-normal">
 					<input
@@ -126,8 +126,8 @@ export const EditGroupsDialog = (props: {
 				</div>
 				<CheckboxList
 					allOptions={searchResults}
-					newSelectedOptions={newUserGroups}
-					setNewSelectedOptions={setNewUserGroups}
+					newSelectedOptions={newMemberGroups}
+					setNewSelectedOptions={setNewMemberGroups}
 					itemKey="name"
 					disabledOptionIds={disabledGroupIds}
 				/>
@@ -159,12 +159,12 @@ export const EditGroupsDialog = (props: {
 							bg-blue-500 hover:bg-blue-600 rounded`
 						}
 						onClick={() => {
-							const newUserGroupsIds = newUserGroups.map(
+							const newMemberGroupsIds = newMemberGroups.map(
 								(group: any) => group.id
 							);
 							editGroupsMutation.mutate({
-								userId: user.id,
-								groupIds: newUserGroupsIds,
+								memberId: member.id,
+								groupIds: newMemberGroupsIds,
 							});
 						}}
 					>

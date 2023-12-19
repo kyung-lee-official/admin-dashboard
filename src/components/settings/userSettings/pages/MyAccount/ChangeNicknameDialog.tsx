@@ -1,5 +1,5 @@
 import { useAuthStore } from "@/stores/auth";
-import { updateProfile } from "@/utilities/api/users";
+import { updateProfile } from "@/utilities/api/members";
 import { queryClient } from "@/utilities/react-query/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -18,11 +18,11 @@ const schema = z.object({
 });
 
 export const ChangeNicknameDialog = (props: {
-	user: any;
+	member: any;
 	showChangeNicknameDialog: boolean;
 	setShowChangeNicknameDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-	const { user, showChangeNicknameDialog, setShowChangeNicknameDialog } =
+	const { member, showChangeNicknameDialog, setShowChangeNicknameDialog } =
 		props;
 	const accessToken = useAuthStore((state) => state.accessToken);
 
@@ -40,7 +40,7 @@ export const ChangeNicknameDialog = (props: {
 	>({
 		mutationFn: async (data: IFormInput) => {
 			const { nickname } = data;
-			return updateProfile(user.id, nickname, accessToken);
+			return updateProfile(member.id, nickname, accessToken);
 		},
 		onSuccess: (data) => {
 			setShowChangeNicknameDialog(false);
@@ -99,7 +99,7 @@ export const ChangeNicknameDialog = (props: {
 					<div className="flex flex-col gap-2">
 						<input
 							type="text"
-							defaultValue={user.nickname}
+							defaultValue={member.nickname}
 							className={`h-10 p-2 bg-slate-300 rounded outline-0`}
 							{...register("nickname")}
 						/>

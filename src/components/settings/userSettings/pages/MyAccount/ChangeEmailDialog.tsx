@@ -18,11 +18,11 @@ const schema = z.object({
 });
 
 export const ChangeEmailDialog = (props: {
-	user: any;
+	member: any;
 	showChangeEmailDialog: boolean;
 	setShowChangeEmailDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-	const { user, showChangeEmailDialog, setShowChangeEmailDialog } = props;
+	const { member, showChangeEmailDialog, setShowChangeEmailDialog } = props;
 	const accessToken = useAuthStore((state) => state.accessToken);
 
 	const { register, handleSubmit, formState } = useForm<IFormInput>({

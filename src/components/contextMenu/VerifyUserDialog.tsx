@@ -1,49 +1,49 @@
 import { useAuthStore } from "@/stores/auth";
-import { verifyUser } from "@/utilities/api/users";
+import { verifyMember } from "@/utilities/api/members";
 import { queryClient } from "@/utilities/react-query/react-query";
 import { useMutation } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import React, { useEffect, useRef } from "react";
 
-const VerifyUserDialog = (props: {
-	user: any;
-	showVerifyUserDialog: boolean;
-	setShowVerifyUserDialog: React.Dispatch<React.SetStateAction<boolean>>;
+export const VerifyMemberDialog = (props: {
+	member: any;
+	showVerifyMemberDialog: boolean;
+	setShowVerifyMemberDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-	const { user, showVerifyUserDialog, setShowVerifyUserDialog } = props;
+	const { member, showVerifyMemberDialog, setShowVerifyMemberDialog } = props;
 	const accessToken = useAuthStore((state) => state.accessToken);
 
-	const verifyUserDialogRef = useRef<HTMLDialogElement | null>(null);
+	const verifyMemberDialogRef = useRef<HTMLDialogElement | null>(null);
 
-	const verifyUserMutation = useMutation({
-		mutationFn: async (userId: string) => {
-			return verifyUser(userId, accessToken);
+	const verifyMemberMutation = useMutation({
+		mutationFn: async (memberId: string) => {
+			return verifyMember(memberId, accessToken);
 		},
 		onSuccess: (data) => {
-			setShowVerifyUserDialog(false);
+			setShowVerifyMemberDialog(false);
 			queryClient.invalidateQueries({
-				queryKey: ["getUsers", accessToken],
+				queryKey: ["getMembers", accessToken],
 			});
 		},
 	});
 
 	useEffect(() => {
-		if (showVerifyUserDialog) {
-			verifyUserDialogRef.current!.showModal();
+		if (showVerifyMemberDialog) {
+			verifyMemberDialogRef.current!.showModal();
 		}
 	}, []);
 
 	useEffect(() => {
-		if (showVerifyUserDialog) {
-			verifyUserDialogRef.current!.showModal();
+		if (showVerifyMemberDialog) {
+			verifyMemberDialogRef.current!.showModal();
 		} else {
-			verifyUserDialogRef.current!.close();
+			verifyMemberDialogRef.current!.close();
 		}
-	}, [showVerifyUserDialog]);
+	}, [showVerifyMemberDialog]);
 
 	return (
 		<motion.dialog
-			ref={verifyUserDialogRef}
+			ref={verifyMemberDialogRef}
 			initial={{ opacity: 0, scale: 0.9 }}
 			animate={{ opacity: 1, scale: 1 }}
 			className="w-[440px]
@@ -51,25 +51,25 @@ const VerifyUserDialog = (props: {
 			shadow-lg rounded-md backdrop:bg-black/80 backdrop:[backdrop-filter:blur(2px)]"
 			onCancel={(e: React.SyntheticEvent<HTMLDialogElement, Event>) => {
 				e.preventDefault();
-				setShowVerifyUserDialog(false);
+				setShowVerifyMemberDialog(false);
 			}}
 		>
 			<div
 				className="flex flex-col justify-center items-center p-6 gap-8
 				text-gray-600"
 			>
-				<h1 className="text-lg">Verify User</h1>
+				<h1 className="text-lg">Verify Member</h1>
 				<div className="flex flex-col items-center gap-2  font-normal">
 					<p className="px-4 text-center">
-						Are you sure you want to verify user{" "}
-						<strong>{user.nickname}</strong> ({user.email})
+						Are you sure you want to verify member{" "}
+						<strong>{member.nickname}</strong> ({member.email})
 						manually?
 					</p>
 				</div>
 				<div className="flex gap-6">
 					<button
 						className={
-							verifyUserMutation.isPending
+							verifyMemberMutation.isPending
 								? `flex justify-center items-center w-20 h-8
 							text-gray-700/60
 							bg-gray-300/60 rounded outline-none cursor-wait`
@@ -78,14 +78,14 @@ const VerifyUserDialog = (props: {
 							bg-gray-300 hover:bg-gray-400 rounded outline-none`
 						}
 						onClick={() => {
-							setShowVerifyUserDialog(false);
+							setShowVerifyMemberDialog(false);
 						}}
 					>
 						Cancel
 					</button>
 					<button
 						className={
-							verifyUserMutation.isPending
+							verifyMemberMutation.isPending
 								? `flex justify-center items-center w-20 h-8
 							text-gray-100
 							bg-yellow-500/60 rounded cursor-wait`
@@ -94,7 +94,7 @@ const VerifyUserDialog = (props: {
 							bg-yellow-500 hover:bg-yellow-600 rounded`
 						}
 						onClick={() => {
-							verifyUserMutation.mutate(user.id);
+							verifyMemberMutation.mutate(member.id);
 						}}
 					>
 						Verify
@@ -104,5 +104,3 @@ const VerifyUserDialog = (props: {
 		</motion.dialog>
 	);
 };
-
-export default VerifyUserDialog;

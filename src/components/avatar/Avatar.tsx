@@ -1,17 +1,17 @@
 "use client";
 
 import { useAuthStore } from "@/stores/auth";
-import { downloadAvatar } from "@/utilities/api/users";
+import { downloadAvatar } from "@/utilities/api/members";
 import React, { useEffect, useState } from "react";
 
-export const Avatar = (props: { user: any; className?: string }) => {
-	const { user, className } = props;
+export const Avatar = (props: { member: any; className?: string }) => {
+	const { member, className } = props;
 	const accessToken = useAuthStore((state) => state.accessToken);
 	const [avatar, setAvatar] = useState<Blob | null>(null);
 
 	useEffect(() => {
 		const getAvatar = async () => {
-			const avatar = await downloadAvatar(user.id, accessToken);
+			const avatar = await downloadAvatar(member.id, accessToken);
 			setAvatar(avatar);
 		};
 		getAvatar();
@@ -29,7 +29,7 @@ export const Avatar = (props: { user: any; className?: string }) => {
 					className="flex justify-center items-center w-full h-full
 					text-gray-100 text-lg select-none"
 				>
-					{user.nickname[0]}
+					{member.nickname[0]}
 				</div>
 			)}
 		</div>

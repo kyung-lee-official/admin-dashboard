@@ -1,14 +1,14 @@
 "use client";
 
 import { useAuthStore } from "@/stores/auth";
-import { transferOwnership } from "@/utilities/api/users";
+import { transferOwnership } from "@/utilities/api/members";
 import { queryClient } from "@/utilities/react-query/react-query";
 import { useMutation } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import React, { useEffect, useRef } from "react";
 
 export const TransferOwnershipDialog = (props: {
-	user: any;
+	member: any;
 	showTransferOwnershipDialog: boolean;
 	setShowTransferOwnershipDialog: React.Dispatch<
 		React.SetStateAction<boolean>
@@ -16,7 +16,7 @@ export const TransferOwnershipDialog = (props: {
 	setActivePath: React.Dispatch<React.SetStateAction<string>>;
 }) => {
 	const {
-		user,
+		member,
 		showTransferOwnershipDialog,
 		setShowTransferOwnershipDialog,
 		setActivePath,
@@ -26,13 +26,13 @@ export const TransferOwnershipDialog = (props: {
 	const transferOwnershipDialogRef = useRef<HTMLDialogElement | null>(null);
 
 	const transferOwnershipMutation = useMutation({
-		mutationFn: async (userId: string) => {
-			return transferOwnership(userId, accessToken);
+		mutationFn: async (memberId: string) => {
+			return transferOwnership(memberId, accessToken);
 		},
 		onSuccess: (data) => {
 			setShowTransferOwnershipDialog(false);
 			queryClient.invalidateQueries({
-				queryKey: ["getUsers", accessToken],
+				queryKey: ["getMembers", accessToken],
 			});
 			queryClient.invalidateQueries({
 				queryKey: ["myInfo", accessToken],
@@ -79,7 +79,7 @@ export const TransferOwnershipDialog = (props: {
 					<span className="p-[2px] text-gray-700 bg-gray-300 rounded">
 						everyone
 					</span>{" "}
-					group to <strong>{user.nickname}</strong> ({user.email}).
+					group to <strong>{member.nickname}</strong> ({member.email}).
 					This cannot be undone!
 				</div>
 				<div className="flex gap-6">
@@ -110,7 +110,7 @@ export const TransferOwnershipDialog = (props: {
 							bg-red-500 hover:bg-red-600 rounded`
 						}
 						onClick={() => {
-							transferOwnershipMutation.mutate(user.id);
+							transferOwnershipMutation.mutate(member.id);
 						}}
 					>
 						Transfer Ownership

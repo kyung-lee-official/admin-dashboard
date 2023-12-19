@@ -117,7 +117,7 @@ const InfoPanel = (props: any) => {
 					</div>
 					<div className="flex flex-col">
 						<div className="text-gray-600 font-bold text-sm select-none">
-							USER ID
+							MEMBER ID
 						</div>
 						<div
 							className="flex items-center gap-6
@@ -297,7 +297,7 @@ const InfoPanel = (props: any) => {
 				</div>
 				{showChangeNicknameDialog && (
 					<ChangeNicknameDialog
-						user={myInfo}
+						member={myInfo}
 						showChangeNicknameDialog={showChangeNicknameDialog}
 						setShowChangeNicknameDialog={
 							setShowChangeNicknameDialog
@@ -306,7 +306,7 @@ const InfoPanel = (props: any) => {
 				)}
 				{showChangeEmailDialog && (
 					<ChangeEmailDialog
-						user={myInfo}
+						member={myInfo}
 						showChangeEmailDialog={showChangeEmailDialog}
 						setShowChangeEmailDialog={setShowChangeEmailDialog}
 					/>
@@ -352,7 +352,7 @@ export const MyAccount = () => {
 			</div>
 			{showChangePasswordDialog && (
 				<ChangePasswordDialog
-					userId={myInfo.id}
+					memberId={myInfo.id}
 					accessToken={accessToken}
 					showChangePasswordDialog={showChangePasswordDialog}
 					setShowChangePasswordDialog={setShowChangePasswordDialog}

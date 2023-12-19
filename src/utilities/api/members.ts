@@ -10,7 +10,7 @@ export const getMyInfo = async (accessToken?: string | null): Promise<any> => {
 	return res.data;
 };
 
-export const getUsers = async (accessToken?: string | null): Promise<any> => {
+export const getMembers = async (accessToken?: string | null): Promise<any> => {
 	const res = await axios.get("/members", {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
@@ -20,12 +20,12 @@ export const getUsers = async (accessToken?: string | null): Promise<any> => {
 	return res.data;
 };
 
-export const verifyUser = async (
-	userId: string,
+export const verifyMember = async (
+	memberId: string,
 	accessToken?: string | null
 ): Promise<any> => {
 	const res = await axios.patch(
-		`/members/member-verification/${userId}`,
+		`/members/member-verification/${memberId}`,
 		{},
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
@@ -38,12 +38,12 @@ export const verifyUser = async (
 };
 
 export const updateProfile = async (
-	userId: string,
+	memberId: string,
 	nickname: string,
 	accessToken?: string | null
 ): Promise<any> => {
 	const res = await axios.patch(
-		`/members/profile/${userId}`,
+		`/members/profile/${memberId}`,
 		{ nickname: nickname },
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
@@ -56,11 +56,11 @@ export const updateProfile = async (
 };
 
 export const changePassword = async (
-	userId: string,
+	memberId: string,
 	body: { oldPassword: string; newPassword: string; },
 	accessToken?: string | null
 ): Promise<any> => {
-	const res = await axios.patch(`/members/password/${userId}`, body, {
+	const res = await axios.patch(`/members/password/${memberId}`, body, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: accessToken,
@@ -88,13 +88,13 @@ export const uploadMyAvatar = async (
 	return res;
 };
 
-export const editUserRoles = async (
-	userId: string,
+export const editMemberRoles = async (
+	memberId: string,
 	roleIds: number[],
 	accessToken?: string | null
 ) => {
 	const res = await axios.patch(
-		`/members/roles/${userId}`,
+		`/members/roles/${memberId}`,
 		{ roleIds },
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
@@ -106,13 +106,13 @@ export const editUserRoles = async (
 	return res.data;
 };
 
-export const editUserGroups = async (
-	userId: string,
+export const editMemberGroups = async (
+	memberId: string,
 	groupIds: number[],
 	accessToken?: string | null
 ) => {
 	const res = await axios.patch(
-		`/members/groups/${userId}`,
+		`/members/groups/${memberId}`,
 		{ groupIds },
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
@@ -125,11 +125,11 @@ export const editUserGroups = async (
 };
 
 export const downloadAvatar = async (
-	userId: string,
+	memberId: string,
 	accessToken?: string | null
 ) => {
 	try {
-		const res = await axios.get(`/members/downloadAvatar/${userId}`, {
+		const res = await axios.get(`/members/downloadAvatar/${memberId}`, {
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
 			headers: {
 				Authorization: accessToken,
@@ -151,11 +151,11 @@ export const downloadAvatar = async (
 };
 
 export const transferOwnership = async (
-	userId: string,
+	memberId: string,
 	accessToken?: string | null
 ): Promise<any> => {
 	const res = await axios.patch(
-		`/members/transferOwnership/${userId}`,
+		`/members/transferOwnership/${memberId}`,
 		{},
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
@@ -167,13 +167,13 @@ export const transferOwnership = async (
 	return res.data;
 };
 
-export const setIsFrozenUserById = async (
-	userId: string,
+export const setIsFrozenMemberById = async (
+	memberId: string,
 	isFrozen: boolean,
 	accessToken?: string | null
 ): Promise<any> => {
 	const res = await axios.patch(
-		`/members/freeze/${userId}`,
+		`/members/freeze/${memberId}`,
 		{
 			isFrozen: isFrozen,
 		},
@@ -187,11 +187,11 @@ export const setIsFrozenUserById = async (
 	return res.data;
 };
 
-export const deleteUserById = async (
-	userId: string,
+export const deleteMemberById = async (
+	memberId: string,
 	accessToken?: string | null
 ): Promise<any> => {
-	const res = await axios.delete(`/members/${userId}`, {
+	const res = await axios.delete(`/members/${memberId}`, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: accessToken,

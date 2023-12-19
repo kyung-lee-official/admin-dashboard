@@ -3,7 +3,7 @@
 import React, { forwardRef, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAuthStore } from "@/stores/auth";
-import { getMyInfo } from "@/utilities/api/users";
+import { getMyInfo } from "@/utilities/api/members";
 import { uniq } from "@/utilities/data/data";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
@@ -99,23 +99,23 @@ export const ServerMenu = () => {
 					myPermissions.includes(Permissions.UPDATE_MEMBER)
 				)
 			) {
-				const userManagementIndex = metaDataClone.findIndex(
-					(section: any) => section.heading === "USER MANAGEMENT"
+				const memberManagementIndex = metaDataClone.findIndex(
+					(section: any) => section.heading === "MEMBER MANAGEMENT"
 				);
 
 				if (!myPermissions.includes(Permissions.UPDATE_MEMBER_ROLE)) {
-					metaDataClone[userManagementIndex].items = metaDataClone[
-						userManagementIndex
+					metaDataClone[memberManagementIndex].items = metaDataClone[
+						memberManagementIndex
 					].items.filter((item: any) => item.name !== "Roles");
 				}
 				if (!myPermissions.includes(Permissions.UPDATE_MEMBER_GROUP)) {
-					metaDataClone[userManagementIndex].items = metaDataClone[
-						userManagementIndex
+					metaDataClone[memberManagementIndex].items = metaDataClone[
+						memberManagementIndex
 					].items.filter((item: any) => item.name !== "Groups");
 				}
 				if (!myPermissions.includes(Permissions.UPDATE_MEMBER)) {
-					metaDataClone[userManagementIndex].items = metaDataClone[
-						userManagementIndex
+					metaDataClone[memberManagementIndex].items = metaDataClone[
+						memberManagementIndex
 					].items.filter((item: any) => item.name !== "Members");
 				}
 			}

@@ -4,7 +4,7 @@ import { SearchOutlineIcon } from "@/components/icons/Icons";
 import { CheckboxList } from "@/components/input/CheckboxList";
 import { useAuthStore } from "@/stores/auth";
 import { updateGroupById } from "@/utilities/api/groups";
-import { getUsers } from "@/utilities/api/users";
+import { getMembers } from "@/utilities/api/members";
 import { uniq } from "@/utilities/data/data";
 import { queryClient } from "@/utilities/react-query/react-query";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -28,11 +28,11 @@ const AddMemberToGroupDialog = (props: {
 
 	const addMemberToGroupDialogRef = useRef<HTMLDialogElement | null>(null);
 
-	const usersQuery = useQuery<any, AxiosError>({
-		queryKey: ["getUsers", accessToken],
+	const membersQuery = useQuery<any, AxiosError>({
+		queryKey: ["getMembers", accessToken],
 		queryFn: async () => {
-			const users = await getUsers(accessToken);
-			return users;
+			const members = await getMembers(accessToken);
+			return members;
 		},
 		retry: false,
 		refetchOnWindowFocus: false,
@@ -59,17 +59,17 @@ const AddMemberToGroupDialog = (props: {
 	});
 
 	useEffect(() => {
-		if (usersQuery.data) {
+		if (membersQuery.data) {
 			setOriginalGroupMembers(activeGroup.members);
-			const selectableUsers = usersQuery.data.filter((user: any) => {
-				const originalGroupUserIds = activeGroup.members.map(
-					(user: any) => user.id
+			const selectableMembers = membersQuery.data.filter((member: any) => {
+				const originalGroupMemberIds = activeGroup.members.map(
+					(member: any) => member.id
 				);
-				return !originalGroupUserIds.includes(user.id);
+				return !originalGroupMemberIds.includes(member.id);
 			});
-			setSearchResults(selectableUsers);
+			setSearchResults(selectableMembers);
 		}
-	}, [usersQuery.data, activeGroup]);
+	}, [membersQuery.data, activeGroup]);
 
 	useEffect(() => {
 		if (showAddMemberDialog) {
@@ -81,14 +81,14 @@ const AddMemberToGroupDialog = (props: {
 
 	const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (activeGroup) {
-			const selectableUsers = usersQuery.data.filter((user: any) => {
-				const originalGroupUserIds = activeGroup.members.map(
-					(user: any) => user.id
+			const selectableMembers = membersQuery.data.filter((member: any) => {
+				const originalGroupMemberIds = activeGroup.members.map(
+					(member: any) => member.id
 				);
-				return !originalGroupUserIds.includes(user.id);
+				return !originalGroupMemberIds.includes(member.id);
 			});
-			const results = selectableUsers.filter((user: any) =>
-				user.nickname
+			const results = selectableMembers.filter((member: any) =>
+				member.nickname
 					.toLowerCase()
 					.includes(e.target.value.toLowerCase())
 			);
@@ -166,11 +166,11 @@ const AddMemberToGroupDialog = (props: {
 						onClick={() => {
 							const originalGroupMemberIds =
 								originalGroupMembers.map(
-									(user: any) => user.id
+									(member: any) => member.id
 								);
 							const newlySelectedGroupMemberIds: string[] =
 								newlySelectedGroupMembers.map(
-									(user: any) => user.id
+									(member: any) => member.id
 								);
 
 							const newGroupMemberIds: string[] = uniq(

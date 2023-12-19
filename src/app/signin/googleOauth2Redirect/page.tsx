@@ -14,8 +14,8 @@ const Index = () => {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const accessToken = searchParams.get("accessToken");
-	const isNewUser = searchParams.get("isNewUser") === "true" ? true : false;
-	const isSeedUser = searchParams.get("isSeedUser") === "true" ? true : false;
+	const isNewMember = searchParams.get("isNewMember") === "true" ? true : false;
+	const isSeedMember = searchParams.get("isSeedMember") === "true" ? true : false;
 	const setAccessToken = useAuthStore((state) => state.setAccessToken);
 
 	const isValidToken = useQuery<any, AxiosError>({
@@ -32,7 +32,7 @@ const Index = () => {
 	useEffect(() => {
 		if (isValidToken.isSuccess) {
 			if (isValidToken.data.isSignedIn) {
-				if (!isNewUser) {
+				if (!isNewMember) {
 					const interval = setInterval(() => {
 						if (countDown > 0) {
 							setCountDown((countDown) => {
@@ -102,8 +102,8 @@ const Index = () => {
 
 	if (isValidToken.data.isSignedIn) {
 		setAccessToken(accessToken);
-		if (isNewUser) {
-			if (isSeedUser) {
+		if (isNewMember) {
+			if (isSeedMember) {
 				return (
 					<div className="flex justify-center items-center w-full min-h-screen">
 						<div

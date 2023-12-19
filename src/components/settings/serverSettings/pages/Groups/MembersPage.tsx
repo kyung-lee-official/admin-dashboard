@@ -10,29 +10,29 @@ import {
 } from "@/components/icons/Icons";
 
 const MemberRow = (props: {
-	user: any;
+	member: any;
 	activeGroup: any;
 	activeGroupId: number;
 }) => {
-	const { user, activeGroup, activeGroupId } = props;
+	const { member, activeGroup, activeGroupId } = props;
 	const [showDeleteMemberDialog, setShowDeleteMemberDialog] =
 		useState<boolean>(false);
 
 	return (
 		<div
-			key={user.id}
+			key={member.id}
 			className="flex justify-between items-center h-[40px] px-2 py-1
 			hover:bg-gray-100 dark:hover:bg-gray-800 rounded"
 		>
 			<div className="flex items-center gap-4">
 				<Avatar
-					user={user}
+					member={member}
 					className="w-6 h-6 rounded-full bg-sky-400"
 				/>
 				<div className="flex gap-2">
-					<div className="text-sm">{user.nickname}</div>
+					<div className="text-sm">{member.nickname}</div>
 					<div className="text-gray-500 text-sm font-normal">
-						{user.email}
+						{member.email}
 					</div>
 				</div>
 			</div>
@@ -53,7 +53,7 @@ const MemberRow = (props: {
 				<DeleteMemberFromGroupDialog
 					activeGroup={activeGroup}
 					activeGroupId={activeGroupId}
-					user={user}
+					member={member}
 					showDeleteMemberDialog={showDeleteMemberDialog}
 					setShowDeleteMemberDialog={setShowDeleteMemberDialog}
 				/>
@@ -130,11 +130,11 @@ export const MembersPage = (props: any) => {
 					setShowAddMemberDialog={setShowAddMemberDialog}
 				/>
 			)}
-			{searchResults.map((user: any) => {
+			{searchResults.map((member: any) => {
 				return (
 					<MemberRow
-						key={user.id}
-						user={user}
+						key={member.id}
+						member={member}
 						activeGroup={activeGroup}
 						activeGroupId={activeGroupId}
 					/>

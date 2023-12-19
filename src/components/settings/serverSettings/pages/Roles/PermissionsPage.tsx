@@ -27,26 +27,26 @@ const permissions = [
 		],
 	},
 	{
-		blockTitle: "USER PERMISSIONS",
+		blockTitle: "MEMBER PERMISSIONS",
 		items: [
 			{
-				name: "Create Users",
-				description: "Can create users.",
+				name: "Create Members",
+				description: "Can create members.",
 				key: Permissions.CREATE_MEMBER,
 			},
 			{
-				name: "View Users",
-				description: "Can view users.",
+				name: "View Members",
+				description: "Can view members.",
 				key: Permissions.GET_MEMBERS,
 			},
 			{
-				name: "Update User",
-				description: "Can update users.",
+				name: "Update Member",
+				description: "Can update members.",
 				key: Permissions.UPDATE_MEMBER,
 			},
 			{
-				name: "Delete User",
-				description: "Can delete users.",
+				name: "Delete Member",
+				description: "Can delete members.",
 				key: Permissions.DELETE_MEMBER,
 			},
 			{

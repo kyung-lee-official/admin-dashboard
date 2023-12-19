@@ -5,11 +5,11 @@ import { AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useAuthStore } from "@/stores/auth";
-import { downloadAvatar, getMyInfo } from "@/utilities/api/users";
+import { downloadAvatar, getMyInfo } from "@/utilities/api/members";
 import { SettingsIcon } from "../icons/Icons";
 import { Settings } from "../settings/Settings";
 import { SettingsMask } from "../settings/SettingsMask";
-import { metaData } from "../settings/userSettings/metaData";
+import { metaData } from "../settings/memberSettings/metaData";
 
 const PanelItems = (props: any) => {
 	const { children, onClick } = props;
@@ -27,7 +27,7 @@ const PanelItems = (props: any) => {
 };
 
 export const Panel = () => {
-	const [showUserSettings, setShowUserSettings] = useState<boolean>(false);
+	const [showMemberSettings, setShowMemberSettings] = useState<boolean>(false);
 	const accessToken = useAuthStore((state) => state.accessToken);
 	const tencentCosTempCredential = useAuthStore(
 		(state) => state.tencentCosTempCredential
@@ -96,7 +96,7 @@ export const Panel = () => {
 			</div>
 			<PanelItems
 				onClick={() => {
-					setShowUserSettings(true);
+					setShowMemberSettings(true);
 				}}
 			>
 				<div className="hover:rotate-90 duration-300">
@@ -104,11 +104,11 @@ export const Panel = () => {
 				</div>
 			</PanelItems>
 			<AnimatePresence mode="wait">
-				{showUserSettings && (
-					<SettingsMask key={"userSettingsMask"}>
+				{showMemberSettings && (
+					<SettingsMask key={"memberSettingsMask"}>
 						<Settings
 							metaData={metaData}
-							setShowSettings={setShowUserSettings}
+							setShowSettings={setShowMemberSettings}
 						/>
 					</SettingsMask>
 				)}
