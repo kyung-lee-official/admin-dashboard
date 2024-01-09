@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { verifyNewEmail } from "@/utilities/api/auth";
+import { verifyNewEmail } from "@/utils/api/auth";
 import { Button } from "@/components/button/Button";
 
 const Page = () => {

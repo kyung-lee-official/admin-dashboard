@@ -1,4 +1,4 @@
-import { sendVerificationEmail } from "@/utilities/api/auth";
+import { sendVerificationEmail } from "@/utils/api/auth";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import React, { useEffect, useState } from "react";

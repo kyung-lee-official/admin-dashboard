@@ -8,7 +8,7 @@ import { Geo } from "@/components/geo/Geo";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { usePathname } from "next/navigation";
-import { getChituboxManualFeedbacks } from "@/utilities/api/chitubox-manual-feedbacks";
+import { getChituboxManualFeedbacks } from "@/utils/api/chitubox-manual-feedbacks";
 import { Button } from "@/components/button/Button";
 import { DateRangePicker } from "@/components/datepicker/DateRangePicker";
 

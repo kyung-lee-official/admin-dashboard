@@ -1,6 +1,6 @@
 "use client";
 
-import { queryClient } from "@/utilities/react-query/react-query";
+import { queryClient } from "@/utils/react-query/react-query";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";

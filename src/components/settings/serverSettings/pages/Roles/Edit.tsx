@@ -5,9 +5,9 @@ import { useState } from "react";
 import { GeneralPage } from "./GeneralPage";
 import { PermissionsPage } from "./PermissionsPage";
 import { MembersPage } from "./MembersPage";
-import { queryClient } from "@/utilities/react-query/react-query";
+import { queryClient } from "@/utils/react-query/react-query";
 import { useMutation } from "@tanstack/react-query";
-import { createRole } from "@/utilities/api/roles";
+import { createRole } from "@/utils/api/roles";
 import { ArrowBackIcon, PlusIcon } from "@/components/icons/Icons";
 
 export const Edit = (props: any) => {

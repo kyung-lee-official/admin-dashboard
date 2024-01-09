@@ -12,7 +12,7 @@ import { useAuthStore } from "@/stores/auth";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { EditGroupsDialog } from "@/components/contextMenu/EditGroupsDialog";
-import { getMembers } from "@/utilities/api/members";
+import { getMembers } from "@/utils/api/members";
 import { Avatar } from "@/components/avatar/Avatar";
 import { ContextMenu } from "@/components/contextMenu/ContextMenu";
 import { DeleteMemberDialog } from "@/components/contextMenu/DeleteMemberDialog";

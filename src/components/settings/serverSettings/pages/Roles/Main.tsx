@@ -3,8 +3,8 @@
 import { CrownIcon, UserIcon, EditIcon, DeleteIcon } from "@/components/icons/Icons";
 import { SettingsHeading } from "@/components/settings/ContentRegion";
 import { Skeleton } from "@/components/skeleton/Skeleton";
-import { createRole, deleteRoleById } from "@/utilities/api/roles";
-import { queryClient } from "@/utilities/react-query/react-query";
+import { createRole, deleteRoleById } from "@/utils/api/roles";
+import { queryClient } from "@/utils/react-query/react-query";
 import { useMutation } from "@tanstack/react-query";
 import { useAnimate } from "framer-motion";
 import { useEffect, useRef, useState } from "react";

@@ -14,9 +14,9 @@ import {
 	getIsSignedIn,
 	getTencentCosTempCredential,
 	refreshAccessToken,
-} from "@/utilities/api/auth";
+} from "@/utils/api/auth";
 import { Layout } from "../layout/Layout";
-import { getMyInfo } from "@/utilities/api/members";
+import { getMyInfo } from "@/utils/api/members";
 import { NetworkError } from "./NetworkError";
 import { UnknownError } from "./UnknownError";
 import { IsFrozen } from "./IsFrozen";

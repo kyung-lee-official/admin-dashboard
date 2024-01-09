@@ -1,13 +1,13 @@
 "use client";
 
 import { useAuthStore } from "@/stores/auth";
-import { queryClient } from "@/utilities/react-query/react-query";
+import { queryClient } from "@/utils/react-query/react-query";
 import { AxiosError } from "axios";
 import { motion } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getGroups } from "@/utilities/api/groups";
-import { editMemberGroups } from "@/utilities/api/members";
+import { getGroups } from "@/utils/api/groups";
+import { editMemberGroups } from "@/utils/api/members";
 import { SearchOutlineIcon } from "../icons/Icons";
 import { CheckboxList } from "../input/CheckboxList";
 

@@ -1,6 +1,6 @@
 import { useAuthStore } from "@/stores/auth";
-import { updateProfile } from "@/utilities/api/members";
-import { queryClient } from "@/utilities/react-query/react-query";
+import { updateProfile } from "@/utils/api/members";
+import { queryClient } from "@/utils/react-query/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";

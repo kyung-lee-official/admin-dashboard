@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { getMyInfo } from "@/utilities/api/members";
+import { getMyInfo } from "@/utils/api/members";
 import { useAuthStore } from "@/stores/auth";
 import { IdIcon } from "../icons/Icons";
 

@@ -8,7 +8,7 @@ import { AxiosError } from "axios";
 import { motion } from "framer-motion";
 import { useSearchParams } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
-import { resetPassword } from "@/utilities/api/auth";
+import { resetPassword } from "@/utils/api/auth";
 
 interface IFormInput {
 	password: string;

@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { Main } from "./Main";
 import { Edit } from "./Edit";
-import { getGroups } from "@/utilities/api/groups";
+import { getGroups } from "@/utils/api/groups";
 
 export const Groups = () => {
 	const [page, setPage] = useState<"main" | "edit" | "error">("main");

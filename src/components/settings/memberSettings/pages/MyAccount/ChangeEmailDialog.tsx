@@ -1,6 +1,6 @@
 import { useAuthStore } from "@/stores/auth";
-import { sendUpdateEmailVerificationRequest } from "@/utilities/api/auth";
-import { queryClient } from "@/utilities/react-query/react-query";
+import { sendUpdateEmailVerificationRequest } from "@/utils/api/auth";
+import { queryClient } from "@/utils/react-query/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";

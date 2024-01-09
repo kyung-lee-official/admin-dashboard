@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { publicRoutes } from "./publicRoutes";
 import { usePathname } from "next/navigation";
 import { Theme, useThemeStore } from "@/stores/theme";
-import { queryClient } from "@/utilities/react-query/react-query";
+import { queryClient } from "@/utils/react-query/react-query";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Sacl } from "../sacl/Sacl";

@@ -3,8 +3,8 @@
 import React, { forwardRef, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAuthStore } from "@/stores/auth";
-import { getMyInfo } from "@/utilities/api/members";
-import { uniq } from "@/utilities/data/data";
+import { getMyInfo } from "@/utils/api/members";
+import { uniq } from "@/utils/data/data";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { Permissions } from "../sacl/Permissions";

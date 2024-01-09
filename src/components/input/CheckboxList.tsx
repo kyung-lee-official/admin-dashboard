@@ -1,6 +1,6 @@
 "use client";
 
-import { uniq } from "@/utilities/data/data";
+import { uniq } from "@/utils/data/data";
 import React, { useEffect } from "react";
 
 type CheckboxListProps = {

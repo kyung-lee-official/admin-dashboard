@@ -6,7 +6,7 @@ import { AxiosError } from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { Edit } from "./Edit";
 import { Main } from "./Main";
-import { getRoles } from "@/utilities/api/roles";
+import { getRoles } from "@/utils/api/roles";
 
 export const Roles = () => {
 	const [page, setPage] = useState<"main" | "edit" | "error">("main");

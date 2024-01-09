@@ -1,6 +1,6 @@
 "use client";
 
-import { scale } from "@/utilities/math/math";
+import { scale } from "@/utils/math/math";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";

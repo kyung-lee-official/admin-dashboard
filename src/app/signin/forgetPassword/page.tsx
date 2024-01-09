@@ -7,7 +7,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { AxiosError } from "axios";
 import { motion } from "framer-motion";
 import { useMutation } from "@tanstack/react-query";
-import { forgetPassword } from "@/utilities/api/auth";
+import { forgetPassword } from "@/utils/api/auth";
 
 interface IFormInput {
 	email: string;

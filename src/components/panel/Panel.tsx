@@ -5,7 +5,7 @@ import { AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useAuthStore } from "@/stores/auth";
-import { downloadAvatar, getMyInfo } from "@/utilities/api/members";
+import { downloadAvatar, getMyInfo } from "@/utils/api/members";
 import { SettingsIcon } from "../icons/Icons";
 import { Settings } from "../settings/Settings";
 import { SettingsMask } from "../settings/SettingsMask";

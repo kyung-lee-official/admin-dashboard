@@ -1,6 +1,6 @@
 import { useAuthStore } from "@/stores/auth";
-import { verifyMember } from "@/utilities/api/members";
-import { queryClient } from "@/utilities/react-query/react-query";
+import { verifyMember } from "@/utils/api/members";
+import { queryClient } from "@/utils/react-query/react-query";
 import { useMutation } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import React, { useEffect, useRef } from "react";

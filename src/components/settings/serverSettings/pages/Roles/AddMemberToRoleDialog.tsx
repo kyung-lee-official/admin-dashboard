@@ -1,13 +1,13 @@
 "use client";
 
 import { useAuthStore } from "@/stores/auth";
-import { uniq } from "@/utilities/data/data";
-import { queryClient } from "@/utilities/react-query/react-query";
+import { uniq } from "@/utils/data/data";
+import { queryClient } from "@/utils/react-query/react-query";
 import { AxiosError } from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getMembers } from "@/utilities/api/members";
-import { updateRoleById } from "@/utilities/api/roles";
+import { getMembers } from "@/utils/api/members";
+import { updateRoleById } from "@/utils/api/roles";
 import { SearchOutlineIcon } from "@/components/icons/Icons";
 import { CheckboxList } from "@/components/input/CheckboxList";
 

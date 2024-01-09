@@ -9,7 +9,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { AxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
-import { signIn } from "@/utilities/api/auth";
+import { signIn } from "@/utils/api/auth";
 import { Button } from "@/components/button/Button";
 import { GoogleIcon } from "@/components/icons/Icons";
 

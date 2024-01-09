@@ -1,6 +1,6 @@
 "use client";
 
-import { queryClient } from "@/utilities/react-query/react-query";
+import { queryClient } from "@/utils/react-query/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence, motion } from "framer-motion";
 import Lottie from "lottie-react";
@@ -10,7 +10,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import lottieFiles from "@/components/lottie-animations/animation_congratulations.json";
 import { useMutation } from "@tanstack/react-query";
-import { seed } from "@/utilities/api/auth";
+import { seed } from "@/utils/api/auth";
 import { Button } from "@/components/button/Button";
 import { GoogleIcon } from "@/components/icons/Icons";
 

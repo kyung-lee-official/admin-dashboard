@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { useMutation } from "@tanstack/react-query";
-import { changePassword } from "@/utilities/api/members";
+import { changePassword } from "@/utils/api/members";
 
 interface IFormInput {
 	oldPassword: string;

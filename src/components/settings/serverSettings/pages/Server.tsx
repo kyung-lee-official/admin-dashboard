@@ -5,12 +5,12 @@ import { SettingsHeading, SettingsSubHeading } from "../../ContentRegion";
 import { AxiosError } from "axios";
 import { useAuthStore } from "@/stores/auth";
 import { AnimatePresence } from "framer-motion";
-import { queryClient } from "@/utilities/react-query/react-query";
+import { queryClient } from "@/utils/react-query/react-query";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
 	getServerSettings,
 	updateServerSettings,
-} from "@/utilities/api/server-settings";
+} from "@/utils/api/server-settings";
 import { Skeleton } from "@/components/skeleton/Skeleton";
 import { Toggle } from "@/components/toggle/Toggle";
 import { SettingsChangedIndicator } from "../../SettingsChangedIndicator";

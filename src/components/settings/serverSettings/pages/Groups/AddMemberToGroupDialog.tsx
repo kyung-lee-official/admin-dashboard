@@ -3,10 +3,10 @@
 import { SearchOutlineIcon } from "@/components/icons/Icons";
 import { CheckboxList } from "@/components/input/CheckboxList";
 import { useAuthStore } from "@/stores/auth";
-import { updateGroupById } from "@/utilities/api/groups";
-import { getMembers } from "@/utilities/api/members";
-import { uniq } from "@/utilities/data/data";
-import { queryClient } from "@/utilities/react-query/react-query";
+import { updateGroupById } from "@/utils/api/groups";
+import { getMembers } from "@/utils/api/members";
+import { uniq } from "@/utils/data/data";
+import { queryClient } from "@/utils/react-query/react-query";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useEffect, useRef, useState } from "react";

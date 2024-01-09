@@ -8,8 +8,8 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { signUp } from "@/utilities/api/auth";
-import { getIsSignUpAvailable } from "@/utilities/api/server-settings";
+import { signUp } from "@/utils/api/auth";
+import { getIsSignUpAvailable } from "@/utils/api/server-settings";
 import { Button } from "@/components/button/Button";
 
 interface IFormInput {

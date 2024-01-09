@@ -3,8 +3,8 @@
 import { UserIcon, EditIcon, DeleteIcon } from "@/components/icons/Icons";
 import { SettingsHeading } from "@/components/settings/ContentRegion";
 import { Skeleton } from "@/components/skeleton/Skeleton";
-import { createGroup, deleteGroupById } from "@/utilities/api/groups";
-import { queryClient } from "@/utilities/react-query/react-query";
+import { createGroup, deleteGroupById } from "@/utils/api/groups";
+import { queryClient } from "@/utils/react-query/react-query";
 import { useMutation } from "@tanstack/react-query";
 import { animate } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
