@@ -291,7 +291,7 @@ const Seed = () => {
 						<button
 							onClick={() => {
 								router.push(
-									`${process.env.NEXT_PUBLIC_API_HOST}/auth/google`
+									`${process.env.NEXT_PUBLIC_API_HOST}/member-auth/google`
 								);
 							}}
 							className="flex justify-center items-center w-full gap-4 py-2
