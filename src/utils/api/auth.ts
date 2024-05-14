@@ -22,7 +22,7 @@ export const seed = async (body: {
 
 export const getIsSignedIn = async (
 	accessToken?: string | null
-): Promise<{ isSignedIn: true; }> => {
+): Promise<{ isSignedIn: true }> => {
 	const res = await axios.get("/member-auth/isSignedIn", {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
@@ -108,7 +108,7 @@ export const verifyNewEmail = async (body: {
 	return res.data;
 };
 
-export const forgetPassword = async (body: { email: string; }): Promise<any> => {
+export const forgetPassword = async (body: { email: string }): Promise<any> => {
 	const res = await axios.post("/member-auth/forgetPassword", body, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 	});
@@ -125,6 +125,8 @@ export const resetPassword = async (body: {
 	return res.data;
 };
 
+/* Tencent COS */
+
 export const getTencentCosTempCredential = async (
 	accessToken?: string | null
 ): Promise<any> => {
@@ -135,4 +137,24 @@ export const getTencentCosTempCredential = async (
 		},
 	});
 	return res.data;
+};
+
+/* Google OAuth2 */
+
+export const googleConsentScreen = () => {
+	const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
+	const options = {
+		client_id: process.env.NEXT_PUBLIC_GOOGLE_OAUTH20_CLIENT_ID as string,
+		redirect_uri: process.env
+			.NEXT_PUBLIC_GOOGLE_OAUTH20_VANILLA_REDIRECT_URI as string,
+		access_type: "offline",
+		response_type: "code",
+		prompt: "consent",
+		scope: [
+			"https://www.googleapis.com/auth/userinfo.profile",
+			"https://www.googleapis.com/auth/userinfo.email",
+		].join(" "),
+	};
+	const qs = new URLSearchParams(options);
+	return `${rootUrl}?${qs.toString()}`;
 };

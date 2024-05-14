@@ -9,7 +9,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { AxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
-import { signIn } from "@/utils/api/auth";
+import { googleConsentScreen, signIn } from "@/utils/api/auth";
 import { Button } from "@/components/button/Button";
 import { GoogleIcon } from "@/components/icons/Icons";
 
@@ -160,9 +160,7 @@ const SignIn = () => {
 			<div className="flex flex-col w-full gap-4 mt-4">
 				<button
 					onClick={() => {
-						router.push(
-							`${process.env.NEXT_PUBLIC_API_HOST}/member-auth/google`
-						);
+						router.push(googleConsentScreen());
 					}}
 					className="flex justify-center items-center w-full gap-4 py-2
 					text-xl

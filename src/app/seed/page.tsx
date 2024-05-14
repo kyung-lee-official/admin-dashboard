@@ -10,7 +10,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import lottieFiles from "@/components/lottie-animations/animation_congratulations.json";
 import { useMutation } from "@tanstack/react-query";
-import { seed } from "@/utils/api/auth";
+import { googleConsentScreen, seed } from "@/utils/api/auth";
 import { Button } from "@/components/button/Button";
 import { GoogleIcon } from "@/components/icons/Icons";
 
@@ -290,9 +290,7 @@ const Seed = () => {
 						</form>
 						<button
 							onClick={() => {
-								router.push(
-									`${process.env.NEXT_PUBLIC_API_HOST}/member-auth/google`
-								);
+								router.push(googleConsentScreen());
 							}}
 							className="flex justify-center items-center w-full gap-4 py-2
 							text-xl
