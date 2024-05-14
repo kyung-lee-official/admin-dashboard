@@ -42,16 +42,15 @@ const InfoPanel = (props: any) => {
 			<div
 				className="flex flex-col gap-3 
 				p-4
-				bg-gray-300 
-				font-mono
+				bg-neutral-300 
 				rounded-lg"
 			>
 				<div className="flex justify-start items-center gap-2 select-none">
 					<div className="relative flex justify-center items-center">
 						<div
 							className="absolute flex justify-center items-center top-0 right-0 bottom-0 left-0
-							text-gray-100 text-sm font-bold
-							bg-gray-500/40 opacity-0 hover:opacity-100
+							text-neutral-100 text-sm font-bold
+							bg-neutral-500/40 opacity-0 hover:opacity-100
 							rounded-full cursor-pointer"
 							onClick={() => {
 								avatarInputRef.current?.click();
@@ -62,7 +61,7 @@ const InfoPanel = (props: any) => {
 							AVATAR
 						</div>
 						{myAvatar ? (
-							<div className="w-[88px] h-[88px] border-4 border-gray-400 rounded-full">
+							<div className="w-[88px] h-[88px] border-4 border-neutral-400 rounded-full">
 								<img
 									src={URL.createObjectURL(myAvatar)}
 									alt="avatar"
@@ -72,14 +71,14 @@ const InfoPanel = (props: any) => {
 						) : (
 							<div
 								className="flex justify-center items-center w-[88px] h-[88px]
-								text-6xl text-gray-300
-								bg-slate-600 border-4 border-gray-400 rounded-full"
+								text-6xl text-neutral-300
+								bg-slate-600 border-4 border-neutral-400 rounded-full"
 							>
 								{myInfo.nickname[0]}
 							</div>
 						)}
 					</div>
-					<div className="p-2 text-gray-600 font-bold text-xl">
+					<div className="p-2 text-neutral-600 font-bold text-xl">
 						{myInfo.nickname}
 					</div>
 					<ChangeAvatarDialog
@@ -91,22 +90,22 @@ const InfoPanel = (props: any) => {
 				<div
 					className="flex flex-col gap-5
 					p-4
-					bg-gray-100
+					bg-neutral-100
 					rounded-lg"
 				>
 					<div className="flex flex-col">
-						<div className="text-gray-600 font-bold text-sm select-none">
+						<div className="text-neutral-600 font-bold text-sm select-none">
 							NICKNAME
 						</div>
 						<div
 							className="flex gap-6
-							text-gray-600 font-normal text-base"
+							text-neutral-600 font-normal text-base"
 						>
 							<div>{myInfo.nickname}</div>
 							<div
 								className="p-1
-								text-gray-400 hover:text-gray-600
-								bg-gray-200 hover:bg-gray-300 rounded-md cursor-pointer"
+								text-neutral-400 hover:text-neutral-600
+								bg-neutral-200 hover:bg-neutral-300 rounded-md cursor-pointer"
 								onClick={() => {
 									setShowChangeNicknameDialog(true);
 								}}
@@ -116,18 +115,18 @@ const InfoPanel = (props: any) => {
 						</div>
 					</div>
 					<div className="flex flex-col">
-						<div className="text-gray-600 font-bold text-sm select-none">
+						<div className="text-neutral-600 font-bold text-sm select-none">
 							MEMBER ID
 						</div>
 						<div
 							className="flex items-center gap-6
-							text-gray-600 font-normal text-base"
+							text-neutral-600 font-normal text-base"
 						>
 							<div>{myInfo.id}</div>
 							<div
 								className="p-1
-								text-gray-400 hover:text-gray-600
-								bg-gray-200 hover:bg-gray-300 rounded-md cursor-pointer"
+								text-neutral-400 hover:text-neutral-600
+								bg-neutral-200 hover:bg-neutral-300 rounded-md cursor-pointer"
 								onClick={() => {
 									navigator.clipboard.writeText(myInfo.id);
 									if (copyClicked === false) {
@@ -155,18 +154,18 @@ const InfoPanel = (props: any) => {
 						</div>
 					</div>
 					<div className="flex flex-col">
-						<div className="text-gray-600 font-bold text-sm select-none">
+						<div className="text-neutral-600 font-bold text-sm select-none">
 							EMAIL
 						</div>
 						<div
 							className="flex gap-6
-							text-gray-600 font-normal text-base"
+							text-neutral-600 font-normal text-base"
 						>
 							<div>{myInfo.email}</div>
 							<div
 								className="p-1
-								text-gray-400 hover:text-gray-600
-								bg-gray-200 hover:bg-gray-300 rounded-md cursor-pointer"
+								text-neutral-400 hover:text-neutral-600
+								bg-neutral-200 hover:bg-neutral-300 rounded-md cursor-pointer"
 								onClick={() => {
 									setShowChangeEmailDialog(true);
 								}}
@@ -176,7 +175,7 @@ const InfoPanel = (props: any) => {
 						</div>
 					</div>
 					<div className="flex flex-col">
-						<div className="text-gray-600 font-bold text-sm select-none">
+						<div className="text-neutral-600 font-bold text-sm select-none">
 							ROLES
 						</div>
 						<div className="flex flex-wrap gap-2">
@@ -197,8 +196,8 @@ const InfoPanel = (props: any) => {
 									<div
 										key={role.id}
 										className="px-1 
-										text-gray-600 font-normal text-base
-										bg-gray-300 rounded"
+										text-neutral-600 font-normal text-base
+										bg-neutral-300 rounded"
 									>
 										{role.name}
 									</div>
@@ -207,7 +206,7 @@ const InfoPanel = (props: any) => {
 						</div>
 					</div>
 					<div className="flex flex-col">
-						<div className="text-gray-600 font-bold text-sm select-none">
+						<div className="text-neutral-600 font-bold text-sm select-none">
 							GROUPS
 						</div>
 						<div className="flex flex-wrap gap-2">
@@ -218,8 +217,8 @@ const InfoPanel = (props: any) => {
 											<div
 												key={group.id}
 												className="px-1
-												text-gray-600 font-normal text-base
-												bg-gray-300 rounded"
+												text-neutral-600 font-normal text-base
+												bg-neutral-300 rounded"
 											>
 												{group.name}
 											</div>
@@ -228,21 +227,21 @@ const InfoPanel = (props: any) => {
 									return (
 										<div
 											key={group.id}
-											className="text-gray-600 font-normal text-base"
+											className="text-neutral-600 font-normal text-base"
 										>
 											{group.name}
 										</div>
 									);
 								})
 							) : (
-								<div className="text-gray-600 font-normal text-base">
+								<div className="text-neutral-600 font-normal text-base">
 									No Groups
 								</div>
 							)}
 						</div>
 					</div>
 					<div className="flex flex-col">
-						<div className="text-gray-600 font-bold text-sm select-none">
+						<div className="text-neutral-600 font-bold text-sm select-none">
 							OWNED GROUPS
 						</div>
 						<div className="flex flex-wrap gap-2">
@@ -252,32 +251,32 @@ const InfoPanel = (props: any) => {
 										<div
 											key={ownedGroups.id}
 											className="px-1
-											text-gray-600 font-normal text-base
-											bg-gray-300 rounded"
+											text-neutral-600 font-normal text-base
+											bg-neutral-300 rounded"
 										>
 											{ownedGroups.name}
 										</div>
 									);
 								})
 							) : (
-								<div className="text-gray-600 font-normal text-base">
+								<div className="text-neutral-600 font-normal text-base">
 									No Owned Groups
 								</div>
 							)}
 						</div>
 					</div>
 					{/* <div className="flex flex-col gap-2">
-						<div className="text-gray-600 font-bold text-sm select-none">
+						<div className="text-neutral-600 font-bold text-sm select-none">
 							VERIFICATION
 						</div>
 						{myInfo.isVerified ? (
 							<div
 								className="flex 
-								text-gray-600 font-normal text-base"
+								text-neutral-600 font-normal text-base"
 							>
 								<div
 									className="flex justify-center items-center px-1 gap-2
-									text-gray-50 bg-lime-500 rounded-md"
+									text-neutral-50 bg-lime-500 rounded-md"
 								>
 									<div>Verified</div>
 									<VerifiedIcon size={18} />
@@ -286,9 +285,9 @@ const InfoPanel = (props: any) => {
 						) : (
 							<div
 								className="flex gap-4
-								text-gray-600 font-normal text-base"
+								text-neutral-600 font-normal text-base"
 							>
-								<div className="px-2 text-gray-50 bg-orange-400 rounded-md">
+								<div className="px-2 text-neutral-50 bg-orange-400 rounded-md">
 									Unverified
 								</div>
 							</div>

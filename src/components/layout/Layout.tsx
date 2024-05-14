@@ -12,7 +12,7 @@ export const Layout = (props: any) => {
 	return (
 		<div
 			className="flex justify-start h-screen 
-			bg-gray-400 dark:bg-gray-700"
+			bg-neutral-400 dark:bg-neutral-700"
 		>
 			<Sidebar />
 			<SubSidebar />

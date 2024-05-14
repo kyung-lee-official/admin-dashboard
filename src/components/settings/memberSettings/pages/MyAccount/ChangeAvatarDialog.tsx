@@ -253,7 +253,7 @@ export const ChangeAvatarDialog = (props: {
 			<dialog
 				ref={dialogRef}
 				className="w-[600px] p-4
-				bg-gray-200
+				bg-neutral-200
 				shadow-lg rounded-md
 				backdrop:bg-black/80 backdrop:[backdrop-filter:blur(2px)]"
 				onClose={() => {
@@ -322,7 +322,7 @@ export const ChangeAvatarDialog = (props: {
 								<rect
 									width="100%"
 									height="100%"
-									className="fill-gray-800/60 [mask:url(#circleMask)]"
+									className="fill-neutral-800/60 [mask:url(#circleMask)]"
 								/>
 								<mask id="circleMask">
 									<rect
@@ -340,7 +340,7 @@ export const ChangeAvatarDialog = (props: {
 							</svg>
 						</div>
 						<div
-							className="absolute rounded-full border-4 border-gray-100 pointer-events-none"
+							className="absolute rounded-full border-4 border-neutral-100 pointer-events-none"
 							style={{
 								width: `${avatarRadius * 2}px`,
 								height: `${avatarRadius * 2}px`,
@@ -402,11 +402,11 @@ export const ChangeAvatarDialog = (props: {
 								className={
 									updateAvatarMutation.isPending
 										? `flex justify-center items-center w-20
-									text-gray-700/60
-									bg-gray-300/60 rounded-md outline-none cursor-wait`
+									text-neutral-700/60
+									bg-neutral-300/60 rounded-md outline-none cursor-wait`
 										: `flex justify-center items-center w-20
-									text-gray-700
-									bg-gray-300 hover:bg-gray-400 rounded-md outline-none`
+									text-neutral-700
+									bg-neutral-300 hover:bg-neutral-400 rounded-md outline-none`
 								}
 								onClick={() => {
 									if (dialogRef.current) {

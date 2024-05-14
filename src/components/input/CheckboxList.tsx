@@ -23,7 +23,7 @@ export const CheckboxList = (props: CheckboxListProps) => {
 	return (
 		<ul
 			className="flex flex-col justify-start items-start w-full h-44 gap-1 p-4
-			bg-gray-100 rounded scrollbar
+			bg-neutral-100 rounded scrollbar
 			overflow-y-scroll"
 		>
 			{allOptions?.map((option: any) => {
@@ -69,10 +69,10 @@ const CheckboxItem = (props: {
 				className={
 					disabled
 						? `flex justify-between items-center gap-2 w-full px-2 py-1
-					text-gray-400
-					bg-gray-200 rounded select-none cursor-not-allowed`
+					text-neutral-400
+					bg-neutral-200 rounded select-none cursor-not-allowed`
 						: `flex justify-between items-center gap-2 w-full px-2 py-1
-					hover:bg-gray-200 rounded select-none`
+					hover:bg-neutral-200 rounded select-none`
 				}
 				disabled={disabled}
 				onClick={() => {

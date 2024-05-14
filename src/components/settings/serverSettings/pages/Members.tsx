@@ -102,11 +102,11 @@ const Row = (props: {
 					<div>
 						<div
 							className="flex justify-start items-center gap-4
-							text-gray-800 text-base font-mono font-semibold"
+							text-neutral-800 text-base font-semibold"
 						>
 							<div
 								className={
-									member.isFrozen ? "text-gray-400" : ""
+									member.isFrozen ? "text-neutral-400" : ""
 								}
 							>
 								{member.nickname}
@@ -140,7 +140,7 @@ const Row = (props: {
 									className="flex justify-start items-center px-2 py-[1px] gap-2
 									text-sm font-semibold
 									text-sky-50
-									bg-gray-400 rounded-md"
+									bg-neutral-400 rounded-md"
 								>
 									Unverified
 								</div>
@@ -160,7 +160,7 @@ const Row = (props: {
 				{showMoreIcon && (
 					<div
 						ref={moreIconRef}
-						className="text-gray-400 hover:text-gray-500 cursor-pointer"
+						className="text-neutral-400 hover:text-neutral-500 cursor-pointer"
 					>
 						<MoreVerticalOutlineIcon size={24} />
 					</div>
@@ -307,14 +307,14 @@ export const Members = (props: any) => {
 					<div className="flex">
 						<input
 							type="text"
-							className="bg-gray-200 px-2
-							rounded-l placeholder-gray-500 outline-none"
+							className="bg-neutral-200 px-2
+							rounded-l placeholder-neutral-500 outline-none"
 							placeholder="Search"
 							onChange={onSearch}
 						/>
 						<div
 							className="flex justify-center items-center w-6 
-							bg-gray-200 rounded-r"
+							bg-neutral-200 rounded-r"
 						>
 							<SearchOutlineIcon size={18} />
 						</div>

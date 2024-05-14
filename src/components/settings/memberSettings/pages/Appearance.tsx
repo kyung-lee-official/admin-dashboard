@@ -11,7 +11,7 @@ const ThemeOption = (props: any) => {
 	return (
 		<div
 			className={`relative w-16 h-16 
-			${label === Theme.LIGHT ? "bg-white" : "bg-gray-700"} rounded-full shadow-md
+			${label === Theme.LIGHT ? "bg-white" : "bg-neutral-700"} rounded-full shadow-md
 			${label === theme && "border-2 border-blue-500"} hover:cursor-pointer`}
 			onClick={() => {
 				setTheme(label);

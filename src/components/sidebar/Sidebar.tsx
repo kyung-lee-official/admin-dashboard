@@ -15,7 +15,7 @@ import {
 import { ServerMenu } from "../serverMenu/ServerMenu";
 
 const Divider = () => {
-	return <div className="w-[50%] h-[3px] bg-gray-400/50 rounded-sm" />;
+	return <div className="w-[50%] h-[3px] bg-neutral-400/50 rounded-sm" />;
 };
 
 export const Sidebar = () => {
@@ -23,8 +23,8 @@ export const Sidebar = () => {
 		<div
 			className="flex-none w-[4.5rem] h-screen
 			flex flex-col items-center
-			bg-gray-300 text-secondary shadow-lg
-			dark:bg-gray-900
+			bg-neutral-300 text-secondary shadow-lg
+			dark:bg-neutral-900
 			z-10"
 		>
 			<SidebarIcon
@@ -65,7 +65,7 @@ export const SubSidebar = () => {
 		<div
 			className="flex-none w-60 h-screen
 			flex flex-col justify-between
-			bg-gray-200 dark:bg-gray-800 text-gray-500 shadow-lg"
+			bg-neutral-200 dark:bg-neutral-800 text-neutral-500 shadow-lg"
 		>
 			<div className="flex-[1_0_auto] flex flex-col">
 				{subSidebar?.subMenu.map((subMenuItem) => {
@@ -96,8 +96,8 @@ export const SubSidebarTitle = (props: SubMenuItem) => {
 			<div
 				className={`flex items-center justify-between
 				p-3 m-2 rounded-md
-				text-gray-700 bg-gray-300 
-				dark:text-gray-300 dark:bg-gray-600
+				text-neutral-700 bg-neutral-300 
+				dark:text-neutral-300 dark:bg-neutral-600
 				font-bold text-sm
 				transition-all duration-100 ease-linear`}
 			>
@@ -113,9 +113,9 @@ export const SubSidebarTitle = (props: SubMenuItem) => {
 				p-3 m-2 rounded-md
 				${
 					selectedSubMenu?.link === link
-						? "text-gray-700 bg-gray-300 dark:text-gray-300 dark:bg-gray-600"
-						: `text-gray-500 bg-gray-200 hover:text-gray-600 hover:bg-gray-300/60
-						dark:text-gray-500 dark:bg-gray-800 dark:hover:text-gray-400 dark:hover:bg-gray-700`
+						? "text-neutral-700 bg-neutral-300 dark:text-neutral-300 dark:bg-neutral-600"
+						: `text-neutral-500 bg-neutral-200 hover:text-neutral-600 hover:bg-neutral-300/60
+						dark:text-neutral-500 dark:bg-neutral-800 dark:hover:text-neutral-400 dark:hover:bg-neutral-700`
 				}
 				font-bold text-sm overflow-hidden whitespace-nowrap text-ellipsis
 				transition-all duration-100 ease-linear

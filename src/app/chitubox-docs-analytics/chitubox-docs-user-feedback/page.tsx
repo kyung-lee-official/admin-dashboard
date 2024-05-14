@@ -66,7 +66,7 @@ const Index = () => {
 		<div
 			className="flex flex-col justify-start items-center gap-8 min-h-screen
 			p-10
-			font-bold text-gray-600 dark:text-gray-500"
+			font-bold text-neutral-600 dark:text-neutral-500"
 		>
 			<div
 				className="flex justify-start items-center w-full

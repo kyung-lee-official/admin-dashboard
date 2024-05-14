@@ -16,7 +16,7 @@ const Item = (props: {
 		return (
 			<div
 				className="flex justify-start items-center w-full px-2 py-1 gap-4
-				text-base font-mono
+				text-base
 				text-yellow-500 hover:text-yellow-50
 				hover:bg-yellow-500
 				rounded cursor-pointer"
@@ -29,7 +29,7 @@ const Item = (props: {
 		return (
 			<div
 				className="flex justify-start items-center w-full px-2 py-1 gap-4
-				text-base font-mono
+				text-base
 				text-red-500 hover:text-red-50
 				hover:bg-red-600
 				rounded cursor-pointer"
@@ -41,9 +41,9 @@ const Item = (props: {
 	return (
 		<div
 			className="flex justify-start items-center w-full px-2 py-1 gap-4
-			text-base font-mono
-			text-gray-500 hover:text-gray-200
-			hover:bg-gray-500
+			text-base
+			text-neutral-500 hover:text-neutral-200
+			hover:bg-neutral-500
 			rounded cursor-pointer"
 		>
 			{children}
@@ -104,7 +104,7 @@ export const ContextMenu = (props: {
 		<div
 			className="flex flex-col justify-center items-center w-fit min-h-[32px] p-2
 			font-normal
-			bg-gray-100 rounded-md shadow-md overflow-hidden"
+			bg-neutral-100 rounded-md shadow-md overflow-hidden"
 		>
 			<button
 				className="w-full"
@@ -163,7 +163,7 @@ export const ContextMenu = (props: {
 					<Item type="danger">Delete {member.nickname}</Item>
 				</button>
 			)}
-			<hr className="w-full my-1 border-gray-300" />
+			<hr className="w-full my-1 border-neutral-300" />
 			{!isAdmin && !isMe && !member.isFrozen && (
 				<div className="w-full">
 					<button
@@ -174,7 +174,7 @@ export const ContextMenu = (props: {
 					>
 						<Item type="danger">Transfer Ownership</Item>
 					</button>
-					<hr className="w-full my-1 border-gray-300" />
+					<hr className="w-full my-1 border-neutral-300" />
 				</div>
 			)}
 			<Item type="normal">

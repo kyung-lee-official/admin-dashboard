@@ -122,7 +122,7 @@ const PermissionItem = (props: any) => {
 		<div className="flex flex-col gap-4">
 			<div
 				className="flex justify-between 
-                text-gray-800 text-base font-mono"
+                text-neutral-800 text-base"
 			>
 				<div>{itemName}</div>
 				<Toggle
@@ -154,7 +154,7 @@ const PermissionBlock = (props: any) => {
 	const { title, children } = props;
 	return (
 		<div className="flex flex-col gap-6">
-			<h1 className="text-gray-500 text-xs">{title}</h1>
+			<h1 className="text-neutral-500 text-xs">{title}</h1>
 			{children}
 		</div>
 	);

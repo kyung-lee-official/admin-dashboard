@@ -72,10 +72,10 @@ export const GeneralPage = (props: any) => {
 				${
 					(activeRole.name === "admin" ||
 						activeRole.name === "default") &&
-					"text-gray-500"
+					"text-neutral-500"
 				}
-				bg-gray-200 rounded
-				placeholder-gray-500 focus:outline-none ${
+				bg-neutral-200 rounded
+				placeholder-neutral-500 focus:outline-none ${
 					(activeRole.name === "admin" ||
 						activeRole.name === "default") &&
 					"cursor-not-allowed"

@@ -117,8 +117,8 @@ export const DateRangePicker = (props: DateRangePickerProps) => {
 						className="start-date-picker-input
 						flex justify-center items-center gap-4
 						w-fit px-4
-						text-gray-500
-						border-2 border-solid border-gray-500 rounded-lg
+						text-neutral-500
+						border-2 border-solid border-neutral-500 rounded-lg
 						cursor-pointer"
 						onClick={() => {
 							if (!isStartDatePickerVisible) {
@@ -277,14 +277,14 @@ const DateRangePickerCore = (props: DatePickerCoreProps) => {
 			ref={picker}
 			className={`absolute top-20 ${mode === "end" && " left-44"}
 			flex flex-col gap-3 max-h-[436px] min-w-[358px]
-			bg-gray-50 dark:bg-gray-800
-			border-gray-400 dark:border-gray-600
+			bg-neutral-50 dark:bg-neutral-800
+			border-neutral-400 dark:border-neutral-600
 			border-2 rounded-xl p-3 shadow-lg
 			z-10`}
 		>
 			<div
 				className="grid gap-3 grid-cols-7 min-h-[36px]
-				text-gray-700 dark:text-gray-300"
+				text-neutral-700 dark:text-neutral-300"
 			>
 				<div
 					className="flex justify-center items-center
@@ -351,7 +351,7 @@ const DateRangePickerCore = (props: DatePickerCoreProps) => {
 					>
 						<div
 							className="grid gap-3 grid-cols-7 
-							text-gray-700 dark:text-gray-300"
+							text-neutral-700 dark:text-neutral-300"
 						>
 							{weekdays.map((weekday) => {
 								return (
@@ -404,7 +404,7 @@ const DateRangePickerCore = (props: DatePickerCoreProps) => {
 						>
 							<div
 								className="px-2 py-1
-								text-gray-200 hover:text-gray-100
+								text-neutral-200 hover:text-neutral-100
 								bg-green-500 hover:bg-green-600
 								rounded-2xl
 								transition-all duration-200"
@@ -426,7 +426,7 @@ const DateRangePickerCore = (props: DatePickerCoreProps) => {
 					>
 						<div
 							className="grid gap-3 grid-cols-4
-							text-gray-700 dark:text-gray-300"
+							text-neutral-700 dark:text-neutral-300"
 						>
 							{selectableYears.map((year) => {
 								let textClass;
@@ -438,13 +438,13 @@ const DateRangePickerCore = (props: DatePickerCoreProps) => {
 								}
 								if (year === selectedYear) {
 									textClass = classNames(`
-										text-gray-50 bg-green-500
-										dark:text-gray-200 dark:bg-green-600
+										text-neutral-50 bg-green-500
+										dark:text-neutral-200 dark:bg-green-600
 									`);
 								} else {
 									textClass = classNames(`
-										text-gray-500 hover:text-gray-600 hover:bg-green-200
-										dark:text-gray-400 dark:hover:text-gray-300 dark:hover:bg-green-800
+										text-neutral-500 hover:text-neutral-600 hover:bg-green-200
+										dark:text-neutral-400 dark:hover:text-neutral-300 dark:hover:bg-green-800
 									`);
 								}
 								return (
@@ -489,7 +489,7 @@ const DateRangePickerCore = (props: DatePickerCoreProps) => {
 					>
 						<div
 							className="grid gap-3 grid-cols-3
-							text-gray-700 dark:text-gray-300"
+							text-neutral-700 dark:text-neutral-300"
 						>
 							{selectableMonths.map((month) => {
 								let textClass;
@@ -501,13 +501,13 @@ const DateRangePickerCore = (props: DatePickerCoreProps) => {
 								}
 								if (month === selectedMonth) {
 									textClass = classNames(`
-									text-gray-50 bg-green-500
-									dark:text-gray-200 dark:bg-green-600
+									text-neutral-50 bg-green-500
+									dark:text-neutral-200 dark:bg-green-600
 							`);
 								} else {
 									textClass = classNames(`
-									text-gray-500 hover:text-gray-600 hover:bg-green-200
-									dark:text-gray-400 dark:hover:text-gray-300 dark:hover:bg-green-800
+									text-neutral-500 hover:text-neutral-600 hover:bg-green-200
+									dark:text-neutral-400 dark:hover:text-neutral-300 dark:hover:bg-green-800
 							`);
 								}
 								return (
@@ -572,26 +572,26 @@ const Cell = (props: CellProps) => {
 			if (isToday && isSelectedDate) {
 				/* Today is selected date */
 				textClass = classNames(`
-					text-gray-50 bg-green-500
-					dark:text-gray-200 dark:bg-green-600
+					text-neutral-50 bg-green-500
+					dark:text-neutral-200 dark:bg-green-600
 				`);
 			} else if (isToday) {
 				/* Today */
 				textClass = classNames(
-					`text-gray-500 border-2 border-green-500 hover:text-gray-600 hover:border-0 hover:bg-green-200
-					dark:text-gray-400 dark:hover:bg-green-800`
+					`text-neutral-500 border-2 border-green-500 hover:text-neutral-600 hover:border-0 hover:bg-green-200
+					dark:text-neutral-400 dark:hover:bg-green-800`
 				);
 			} else {
 				/* Selected date */
 				textClass = classNames(`
-					text-gray-50 bg-green-500
-					dark:text-gray-200 dark:bg-green-600
+					text-neutral-50 bg-green-500
+					dark:text-neutral-200 dark:bg-green-600
 				`);
 			}
 		} else {
 			textClass = classNames(
-				`text-gray-500 hover:text-gray-600 hover:bg-green-200
-				dark:text-gray-400 dark:hover:text-gray-300 dark:hover:bg-green-800`
+				`text-neutral-500 hover:text-neutral-600 hover:bg-green-200
+				dark:text-neutral-400 dark:hover:text-neutral-300 dark:hover:bg-green-800`
 			);
 		}
 		return (

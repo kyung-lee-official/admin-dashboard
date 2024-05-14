@@ -43,7 +43,7 @@ export const VerifyAccount = (props: any) => {
 		<div className="auth-mask">
 			<div
 				className="flex flex-col items-center w-[600px] p-10 gap-10
-				bg-gray-200
+				bg-neutral-200
 				rounded-3xl shadow-lg"
 			>
 				<h1>Verify your account</h1>
@@ -62,7 +62,7 @@ export const VerifyAccount = (props: any) => {
 				<button
 					className="w-fit px-2 py-1
 					text-2xl
-					bg-white hover:bg-gray-100 rounded-md shadow-sm"
+					bg-white hover:bg-neutral-100 rounded-md shadow-sm"
 					onClick={() => {
 						sendVerificationEmailMutation.mutate(accessToken);
 					}}
@@ -72,14 +72,14 @@ export const VerifyAccount = (props: any) => {
 					}
 				>
 					{sendVerificationEmailMutation.isPending ? (
-						<div className="text-gray-400 cursor-not-allowed">
+						<div className="text-neutral-400 cursor-not-allowed">
 							Sending...
 						</div>
 					) : emailSent ? (
 						<div
 							className={
 								allowResendTimestamp - now > 0
-									? "text-gray-400 cursor-not-allowed"
+									? "text-neutral-400 cursor-not-allowed"
 									: ""
 							}
 						>

@@ -17,7 +17,7 @@ const PanelItems = (props: any) => {
 	return (
 		<div
 			className="flex justify-between items-center p-2
-			hover:bg-gray-300 dark:hover:bg-gray-800
+			hover:bg-neutral-300 dark:hover:bg-neutral-800
 			cursor-pointer rounded-md transition-all duration-300"
 			onClick={onClick}
 		>
@@ -59,13 +59,13 @@ export const Panel = () => {
 		<div
 			className="flex-none flex justify-between items-center h-[52px] p-2
 			text-lg
-			bg-gray-300/40 shadow-lg
-			dark:bg-gray-900"
+			bg-neutral-300/40 shadow-lg
+			dark:bg-neutral-900"
 		>
 			<div className="flex justify-start items-center gap-2">
 				<div
 					className="flex justify-center items-center w-8 h-8
-					text-gray-50 font-bold select-none
+					text-neutral-50 font-bold select-none
 					bg-slate-600 rounded-full"
 				>
 					{myAvatarQuery.isLoading ? (

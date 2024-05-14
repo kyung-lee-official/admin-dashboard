@@ -8,7 +8,7 @@ export const SettingsMask = (props: any) => {
 	return (
 		<motion.div
 			className="fixed top-0 right-0 bottom-0 left-0
-			bg-gray-400
+			bg-neutral-400
 			z-20"
 			initial={{ opacity: 0, scale: 0.95 }}
 			animate={{ opacity: 1, scale: 1 }}

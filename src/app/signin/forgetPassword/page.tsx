@@ -39,8 +39,8 @@ const Index = () => {
 			{mutation.isSuccess ? (
 				<div
 					className="flex flex-col items-center w-96 px-10 py-6 gap-6
-					text-3xl text-gray-600
-					bg-gray-200
+					text-3xl text-neutral-600
+					bg-neutral-200
 					rounded-3xl shadow-lg"
 				>
 					<h1>Email has been sent</h1>
@@ -49,12 +49,12 @@ const Index = () => {
 			) : (
 				<div
 					className="flex flex-col items-center w-[450px] px-10 py-6 gap-6
-					text-3xl text-gray-600
-					bg-gray-200
+					text-3xl text-neutral-600
+					bg-neutral-200
 					rounded-3xl shadow-lg"
 				>
 					<h1 className="text-3xl">Forget your Password?</h1>
-					<div className="flex justify-center text-base text-gray-500">
+					<div className="flex justify-center text-base text-neutral-500">
 						Enter your email address and we will send you a link to
 						reset your password.
 					</div>
@@ -119,7 +119,7 @@ const Index = () => {
 									? "bg-blue-500 hover:bg-blue-600"
 									: mutation.isPending
 									? "bg-blue-400 cursor-wait"
-									: "bg-gray-400 cursor-not-allowed"
+									: "bg-neutral-400 cursor-not-allowed"
 							}
 							rounded`}
 							disabled={!formState.isValid || mutation.isPending}

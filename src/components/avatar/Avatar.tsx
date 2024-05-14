@@ -27,7 +27,7 @@ export const Avatar = (props: { member: any; className?: string }) => {
 			) : (
 				<div
 					className="flex justify-center items-center w-full h-full
-					text-gray-100 text-lg select-none"
+					text-neutral-100 text-lg select-none"
 				>
 					{member.nickname[0]}
 				</div>

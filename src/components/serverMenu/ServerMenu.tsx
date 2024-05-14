@@ -35,7 +35,7 @@ const MenuContent = forwardRef<HTMLDivElement, any>(function MenuContent(
 			ref={ref}
 			className="absolute top-8 right-0
             flex flex-col justify-center items-center gap-1 w-52
-            bg-gray-50
+            bg-neutral-50
             px-4 py-1
             rounded-md shadow-md
             origin-top

@@ -14,8 +14,8 @@ const PanelContainer = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<div
 			className="relative flex flex-col items-center w-96 px-10 py-6 gap-6
-				text-3xl text-gray-600
-				bg-gray-200
+				text-3xl text-neutral-600
+				bg-neutral-200
 				rounded-3xl shadow-lg"
 		>
 			{children}
@@ -109,7 +109,7 @@ const Content = () => {
 							admin
 						</div>
 						<div className="text-3xl">🎉🎉🎉</div>
-						<div className="text-lg text-gray-500">
+						<div className="text-lg text-neutral-500">
 							The initial password has been sent to your email{" "}
 							<span className="text-3xl">📨</span>
 						</div>
@@ -119,7 +119,7 @@ const Content = () => {
 							}}
 							className="flex justify-center items-center w-full gap-4 py-2
 									text-xl
-									bg-gray-50 hover:bg-gray-400
+									bg-neutral-50 hover:bg-neutral-400
 									rounded-xl"
 						>
 							<div>Go to home page</div>
@@ -138,7 +138,7 @@ const Content = () => {
 					<PanelContainer>
 						<div>You&apos;ve Signed In</div>
 						<div className="text-3xl">✅</div>
-						<div className="text-lg text-gray-500">
+						<div className="text-lg text-neutral-500">
 							The initial password has been sent to your email.
 						</div>
 						<button
@@ -147,7 +147,7 @@ const Content = () => {
 							}}
 							className="flex justify-center items-center w-full gap-4 py-2
 									text-xl
-									bg-gray-50 hover:bg-gray-400
+									bg-neutral-50 hover:bg-neutral-400
 									rounded-xl"
 						>
 							<div>Go to home page</div>
@@ -160,7 +160,7 @@ const Content = () => {
 				<PanelContainer>
 					<div>You&apos;ve Signed In</div>
 					<div className="text-3xl">✅</div>
-					<div className="text-lg text-gray-500">
+					<div className="text-lg text-neutral-500">
 						{`You will be redirect to the home page in ${countDown} seconds`}
 					</div>
 				</PanelContainer>

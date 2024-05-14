@@ -30,7 +30,7 @@ const Row = (props: any) => {
 					) : col1 === "default" ? (
 						<div
 							className="flex justify-start items-center w-fit px-1
-							text-gray-500 bg-gray-200 rounded-md"
+							text-neutral-500 bg-neutral-200 rounded-md"
 						>
 							default
 						</div>
@@ -124,17 +124,17 @@ export const Main = (props: any) => {
 							type="text"
 							placeholder="Search Roles"
 							className="flex-1 h-9 px-2
-							bg-gray-200 rounded
-							placeholder-gray-500 focus:outline-none"
+							bg-neutral-200 rounded
+							placeholder-neutral-500 focus:outline-none"
 							onChange={onSearch}
 						/>
 						<div
 							className={
 								createRoleMutation.isPending
 									? `flex-[0_0_8rem] flex justify-center items-center p-2
-									text-gray-100 bg-blue-500 rounded cursor-wait`
+									text-neutral-100 bg-blue-500 rounded cursor-wait`
 									: `flex-[0_0_8rem] flex justify-center items-center p-2
-									text-gray-100 bg-blue-500 hover:bg-blue-600 cursor-pointer
+									text-neutral-100 bg-blue-500 hover:bg-blue-600 cursor-pointer
 									rounded`
 							}
 							onClick={() => {
@@ -164,7 +164,7 @@ export const Main = (props: any) => {
 									<div className="flex justify-center items-center gap-2">
 										<button
 											className="flex justify-center items-center w-8 h-8
-											bg-gray-200 hover:bg-gray-300
+											bg-neutral-200 hover:bg-neutral-300
 											rounded-full"
 											onClick={() => {
 												setActiveRoleId(role.id);
@@ -178,12 +178,12 @@ export const Main = (props: any) => {
 												role.name === "admin" ||
 												role.name === "default"
 													? `flex justify-center items-center w-8 h-8
-												text-gray-400
-												bg-gray-200
+												text-neutral-400
+												bg-neutral-200
 												rounded-full cursor-not-allowed`
 													: `flex justify-center items-center w-8 h-8
-												hover:text-gray-200
-												bg-gray-200 hover:bg-red-500
+												hover:text-neutral-200
+												bg-neutral-200 hover:bg-red-500
 												rounded-full`
 											}
 											disabled={
@@ -209,12 +209,12 @@ export const Main = (props: any) => {
 					<dialog
 						ref={deleteDialogRef}
 						className="w-[440px]
-						bg-gray-200
+						bg-neutral-200
 						shadow-lg rounded-md backdrop:bg-black/80 backdrop:[backdrop-filter:blur(2px)]"
 					>
 						<div
 							className="flex flex-col justify-center items-center p-6 gap-8
-							text-gray-600"
+							text-neutral-600"
 						>
 							<h1 className="text-lg">DELETE ROLE</h1>
 							<p className="px-4 text-cente font-normal">
@@ -227,11 +227,11 @@ export const Main = (props: any) => {
 									className={
 										deleteRoleMutation.isPending
 											? `flex justify-center items-center w-20 h-8
-										text-gray-700/60
-										bg-gray-300/60 rounded outline-none cursor-wait`
+										text-neutral-700/60
+										bg-neutral-300/60 rounded outline-none cursor-wait`
 											: `flex justify-center items-center w-20 h-8
-										text-gray-700
-										bg-gray-300 hover:bg-gray-400 rounded outline-none`
+										text-neutral-700
+										bg-neutral-300 hover:bg-neutral-400 rounded outline-none`
 									}
 									onClick={() => {
 										deleteDialogRef.current!.close();
@@ -247,10 +247,10 @@ export const Main = (props: any) => {
 									className={
 										deleteRoleMutation.isPending
 											? `flex justify-center items-center w-20 h-8
-										text-gray-100
+										text-neutral-100
 										bg-red-500/60 rounded cursor-wait`
 											: `flex justify-center items-center w-20 h-8
-										text-gray-100
+										text-neutral-100
 										bg-red-500 hover:bg-red-600 rounded`
 									}
 									onClick={() => {

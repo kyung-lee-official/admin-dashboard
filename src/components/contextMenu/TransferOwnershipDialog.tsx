@@ -61,7 +61,7 @@ export const TransferOwnershipDialog = (props: {
 			initial={{ opacity: 0, scale: 0.9 }}
 			animate={{ opacity: 1, scale: 1 }}
 			className="w-[440px]
-			bg-gray-200
+			bg-neutral-200
 			shadow-lg rounded-md backdrop:bg-black/80 backdrop:[backdrop-filter:blur(2px)]"
 			onCancel={(e: React.SyntheticEvent<HTMLDialogElement, Event>) => {
 				e.preventDefault();
@@ -70,13 +70,13 @@ export const TransferOwnershipDialog = (props: {
 		>
 			<div
 				className="flex flex-col justify-center items-center p-6 gap-8
-				text-gray-600"
+				text-neutral-600"
 			>
 				<h1 className="text-lg">Transfer Ownership</h1>
 				<div className="font-normal">
 					This will transfer the ownership of this server and the
 					ownership of the{" "}
-					<span className="p-[2px] text-gray-700 bg-gray-300 rounded">
+					<span className="p-[2px] text-neutral-700 bg-neutral-300 rounded">
 						everyone
 					</span>{" "}
 					group to <strong>{member.nickname}</strong> ({member.email}).
@@ -87,11 +87,11 @@ export const TransferOwnershipDialog = (props: {
 						className={
 							transferOwnershipMutation.isPending
 								? `flex justify-center items-center w-20 h-8
-							text-gray-700/60
-							bg-gray-300/60 rounded outline-none cursor-wait`
+							text-neutral-700/60
+							bg-neutral-300/60 rounded outline-none cursor-wait`
 								: `flex justify-center items-center w-20 h-8
-							text-gray-700
-							bg-gray-300 hover:bg-gray-400 rounded outline-none`
+							text-neutral-700
+							bg-neutral-300 hover:bg-neutral-400 rounded outline-none`
 						}
 						onClick={() => {
 							setShowTransferOwnershipDialog(false);
@@ -103,10 +103,10 @@ export const TransferOwnershipDialog = (props: {
 						className={
 							transferOwnershipMutation.isPending
 								? `flex justify-center items-center w-20 h-8
-							text-gray-100
+							text-neutral-100
 							bg-red-500/60 rounded cursor-wait`
 								: `flex justify-center items-center w-40 h-8
-							text-gray-100
+							text-neutral-100
 							bg-red-500 hover:bg-red-600 rounded`
 						}
 						onClick={() => {

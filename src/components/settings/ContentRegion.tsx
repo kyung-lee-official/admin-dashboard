@@ -12,7 +12,7 @@ import { MyAccount } from "./memberSettings/pages/MyAccount/MyAccount";
 export const SettingsHeading = (props: any) => {
 	const { children } = props;
 	return (
-		<h1 className="text-xl text-gray-600 font-mono font-bold">
+		<h1 className="text-xl text-neutral-600 font-bold">
 			{children}
 		</h1>
 	);
@@ -20,7 +20,7 @@ export const SettingsHeading = (props: any) => {
 
 export const SettingsSubHeading = (props: any) => {
 	const { children } = props;
-	return <h2 className="text-xs text-gray-500 font-bold my-2">{children}</h2>;
+	return <h2 className="text-xs text-neutral-500 font-bold my-2">{children}</h2>;
 };
 
 const ActiveComponent = (props: any) => {
@@ -70,7 +70,7 @@ export const ContentRegion = (props: any) => {
 	return (
 		<div
 			className="flex-[6_0_740px] flex justify-start h-screen
-			bg-white dark:bg-gray-700
+			bg-white dark:bg-neutral-700
 			overflow-auto scrollbar"
 		>
 			<div className="relative w-[740px] px-10">
@@ -83,7 +83,7 @@ export const ContentRegion = (props: any) => {
 			</div>
 			<div
 				className="sticky top-12 right-0 h-12 w-12 flex justify-center items-center
-				text-gray-500"
+				text-neutral-500"
 			>
 				<div
 					className="cursor-pointer"

@@ -34,7 +34,7 @@ export function Unauthorized() {
 				<div
 					className="flex justify-center items-center
 						p-5
-						text-gray-300 bg-red-500
+						text-neutral-300 bg-red-500
 						rounded-2xl shadow-lg"
 				>
 					Unauthorized

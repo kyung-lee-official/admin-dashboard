@@ -14,7 +14,7 @@ export const IsFrozen = () => {
 		<div className="auth-mask">
 			<div
 				className="flex flex-col items-center w-[600px] p-10 gap-10
-				bg-gray-200
+				bg-neutral-200
 				rounded-3xl shadow-lg"
 			>
 				<h1>Account has been frozen ❄️</h1>

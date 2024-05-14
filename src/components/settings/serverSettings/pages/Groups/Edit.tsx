@@ -61,12 +61,12 @@ const EditSidebar = (props: any) => {
 			<div className="flex flex-col">
 				<div
 					className="flex justify-between
-					text-gray-600
+					text-neutral-600
 					text-xl font-normal"
 				>
 					<button
 						className="flex justify-center items-center gap-2 
-						hover:text-gray-800
+						hover:text-neutral-800
 						cursor-pointer"
 						onClick={() => {
 							setPage("main");
@@ -79,7 +79,7 @@ const EditSidebar = (props: any) => {
 					</button>
 					<button
 						className="flex justify-center items-center
-						hover:text-gray-800
+						hover:text-neutral-800
 						cursor-pointer"
 						onClick={() => {
 							createGroupMutation.mutate();
@@ -96,7 +96,7 @@ const EditSidebar = (props: any) => {
 									key={group.id}
 									className={`flex items-center min-h-[40px] px-4
 									text-base font-normal
-									${activeGroupId === group.id && "bg-gray-200"} hover:bg-gray-100
+									${activeGroupId === group.id && "bg-neutral-200"} hover:bg-neutral-100
 									rounded cursor-pointer`}
 									onClick={() => {
 										setActiveGroupId(group.id);
@@ -122,7 +122,7 @@ const EditContent = (props: any) => {
 	return (
 		<div
 			className="flex-[7] flex flex-col gap-6 px-4 pt-12
-			border-l-[1px] border-gray-400"
+			border-l-[1px] border-neutral-400"
 		>
 			<SettingsHeading>Edit Groups</SettingsHeading>
 			<ContentTabs
@@ -148,7 +148,7 @@ const ContentTabs = (props: any) => {
 				activeTabTitle={activeTabTitle}
 				setActiveTabTitle={setActiveTabTitle}
 			/>
-			<div className="flex-1 border-b-[2px] border-gray-400"></div>
+			<div className="flex-1 border-b-[2px] border-neutral-400"></div>
 			<Tab
 				title={"Members"}
 				activeTabTitle={activeTabTitle}
@@ -189,9 +189,9 @@ const Tab = (props: any) => {
 	return (
 		<div
 			className={`flex items-center
-			text-gray-600
+			text-neutral-600
 			border-b-[2px] ${
-				title === activeTabTitle ? "border-blue-500" : "border-gray-400"
+				title === activeTabTitle ? "border-blue-500" : "border-neutral-400"
 			} cursor-pointer select-none`}
 			onClick={() => {
 				setActiveTabTitle(title);

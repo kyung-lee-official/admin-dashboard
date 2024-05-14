@@ -65,7 +65,7 @@ const Seed = () => {
 
 	return (
 		<div
-			className="bg-gray-200
+			className="bg-neutral-200
 			rounded-3xl shadow-lg"
 		>
 			<AnimatePresence mode="wait">
@@ -294,7 +294,7 @@ const Seed = () => {
 							}}
 							className="flex justify-center items-center w-full gap-4 py-2
 							text-xl
-							bg-gray-50 hover:bg-gray-400
+							bg-neutral-50 hover:bg-neutral-400
 							rounded-xl"
 						>
 							<GoogleIcon size={32} />{" "}

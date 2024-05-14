@@ -55,8 +55,8 @@ const Page = () => {
 				{verificationState === "verifying" && (
 					<motion.div
 						className="flex flex-col items-center w-96 px-10 py-6 gap-6
-						text-3xl text-gray-600
-						bg-gray-200
+						text-3xl text-neutral-600
+						bg-neutral-200
 						rounded-3xl shadow-lg"
 						key="verifying"
 						initial={{ opacity: 0, y: -20 }}
@@ -70,8 +70,8 @@ const Page = () => {
 				{verificationState === "verified" && (
 					<motion.div
 						className="flex flex-col items-center w-96 px-10 py-6 gap-6
-						text-3xl text-gray-600
-						bg-gray-200
+						text-3xl text-neutral-600
+						bg-neutral-200
 						rounded-3xl shadow-lg"
 						key="verified"
 						initial={{ opacity: 0, y: -20 }}
@@ -94,8 +94,8 @@ const Page = () => {
 				{verificationState === "invalid-token" && (
 					<motion.div
 						className="flex flex-col items-center w-96 px-10 py-6 gap-6
-						text-3xl text-gray-600
-						bg-gray-200
+						text-3xl text-neutral-600
+						bg-neutral-200
 						rounded-3xl shadow-lg"
 						key="invalid-token"
 						initial={{ opacity: 0, y: -20 }}
@@ -109,8 +109,8 @@ const Page = () => {
 				{verificationState === "varification-failed" && (
 					<motion.div
 						className="flex flex-col items-center w-96 px-10 py-6 gap-6
-						text-3xl text-gray-600
-						bg-gray-200
+						text-3xl text-neutral-600
+						bg-neutral-200
 						rounded-3xl shadow-lg"
 						key="varification-failed"
 						initial={{ opacity: 0, y: -20 }}

@@ -8,8 +8,8 @@
 		h-12 w-12 mt-2 mb-2 mx-auto shadow-lg
 		bg-white text-green-500
 		hover:bg-green-600 hover:text-white
-		dark:bg-gray-800 dark:text-green-500
-		dark:hover:bg-green-600 dark:hover:text-gray-800
+		dark:bg-neutral-800 dark:text-green-500
+		dark:hover:bg-green-600 dark:hover:text-neutral-800
 		rounded-3xl hover:rounded-xl
 		transition-all duration-200 ease-linear
 		cursor-pointer;
@@ -19,7 +19,7 @@
 		@apply relative flex items-center justify-center
 		h-12 w-12 mt-2 mb-2 mx-auto shadow-lg
 		bg-green-600 text-white
-		dark:bg-green-600 dark:text-gray-800
+		dark:bg-green-600 dark:text-neutral-800
 		rounded-xl
 		transition-all duration-200 ease-linear
 		cursor-pointer;
@@ -28,17 +28,17 @@
 	.sidebar-tooltip {
 		@apply absolute w-auto p-3 m-2 min-w-max left-14
 		rounded-md shadow-md
-		text-gray-900 bg-gray-100
-		dark:text-gray-400 dark:bg-gray-900
+		text-neutral-900 bg-neutral-100
+		dark:text-neutral-400 dark:bg-neutral-900
 		text-sm font-bold
 		transition-all duration-100 scale-0 origin-left;
 	}
 
 	.auth-mask {
 		@apply flex justify-center items-center h-screen w-screen
-		text-3xl font-mono
-		text-gray-600 dark:text-gray-500
-		bg-gray-300 dark:bg-gray-700
+		text-3xl
+		text-neutral-600 dark:text-neutral-500
+		bg-neutral-300 dark:bg-neutral-700
 		z-20;
 	}
 
@@ -48,7 +48,7 @@
 
 	.input {
 		@apply px-3 py-2
-		caret-gray-600
+		caret-neutral-600
 		rounded-2xl 
 		outline-none;
 	}
@@ -60,18 +60,18 @@
 	.scrollbar::-webkit-scrollbar-track {
 		@apply rounded-lg
 		bg-slate-300
-		dark:bg-gray-700;
+		dark:bg-neutral-700;
 	}
 
 	.scrollbar::-webkit-scrollbar-thumb {
 		@apply rounded-lg
 		bg-slate-400
-		dark:bg-gray-600;
+		dark:bg-neutral-600;
 	}
 
 	.scrollbar::-webkit-scrollbar-thumb:hover {
 		@apply bg-slate-500 
-		dark:bg-gray-500;
+		dark:bg-neutral-500;
 	}
 
 	.scrollbar-hide::-webkit-scrollbar {

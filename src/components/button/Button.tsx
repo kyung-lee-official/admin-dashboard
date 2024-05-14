@@ -47,7 +47,7 @@ export const Button: React.FC<NativeButtonProps> = (props) => {
 			return (
 				<button
 					className={`flex justify-center items-center py-1 px-4
-					text-gray-400 bg-gray-300
+					text-neutral-400 bg-neutral-300
 					rounded
 					cursor-not-allowed
 					transition-all duration-150`}
@@ -72,8 +72,8 @@ export const Button: React.FC<NativeButtonProps> = (props) => {
 			<button
 				className={`flex justify-center items-center py-1
 				px-4
-				${disabled ? "text-gray-400" : "text-gray-50"}
-				${disabled ? "bg-gray-300" : buttonLevelClass}
+				${disabled ? "text-neutral-400" : "text-neutral-50"}
+				${disabled ? "bg-neutral-300" : buttonLevelClass}
 				rounded
 				${disabled ? "cursor-not-allowed" : "cursor-pointer"}
 				transition-all duration-150`}
@@ -90,7 +90,7 @@ export const Button: React.FC<NativeButtonProps> = (props) => {
 				<button
 					className={`flex justify-center items-center min-h-[40px]
 					px-4
-					text-gray-400 bg-gray-300
+					text-neutral-400 bg-neutral-300
 					rounded
 					cursor-not-allowed
 					transition-all duration-150`}
@@ -115,8 +115,8 @@ export const Button: React.FC<NativeButtonProps> = (props) => {
 			<button
 				className={`flex justify-center items-center min-h-[40px]
 				px-4
-				${disabled ? "text-gray-500" : "text-gray-50 hover:text-gray-100"}
-				${disabled ? "bg-gray-400" : buttonLevelClass}
+				${disabled ? "text-neutral-500" : "text-neutral-50 hover:text-neutral-100"}
+				${disabled ? "bg-neutral-400" : buttonLevelClass}
 				rounded
 				${disabled ? "cursor-not-allowed" : "cursor-pointer"}
 				transition-all duration-150`}

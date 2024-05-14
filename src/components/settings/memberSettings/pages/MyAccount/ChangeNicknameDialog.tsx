@@ -75,7 +75,7 @@ export const ChangeNicknameDialog = (props: {
 			initial={{ opacity: 0, scale: 0.9 }}
 			animate={{ opacity: 1, scale: 1 }}
 			className="w-[440px]
-			bg-gray-200
+			bg-neutral-200
 			shadow-lg rounded-md backdrop:bg-black/80 backdrop:[backdrop-filter:blur(2px)]"
 			onCancel={(e: React.SyntheticEvent<HTMLDialogElement, Event>) => {
 				e.preventDefault();
@@ -84,10 +84,10 @@ export const ChangeNicknameDialog = (props: {
 		>
 			<div
 				className="flex flex-col justify-center items-center p-6 gap-8
-				text-gray-600"
+				text-neutral-600"
 			>
 				<h1 className="text-lg">Change Nickname</h1>
-				<h1 className="flex justify-center text-base text-gray-500">
+				<h1 className="flex justify-center text-base text-neutral-500">
 					Enter your new nickname
 				</h1>
 				<form
@@ -148,11 +148,11 @@ export const ChangeNicknameDialog = (props: {
 							className={
 								changeNicknameMutation.isPending
 									? `flex justify-center items-center w-20 h-8
-							text-gray-700/60
-							bg-gray-300/60 rounded outline-none cursor-wait`
+							text-neutral-700/60
+							bg-neutral-300/60 rounded outline-none cursor-wait`
 									: `flex justify-center items-center w-20 h-8
-							text-gray-700
-							bg-gray-300 hover:bg-gray-400 rounded outline-none`
+							text-neutral-700
+							bg-neutral-300 hover:bg-neutral-400 rounded outline-none`
 							}
 							onClick={() => {
 								setShowChangeNicknameDialog(false);
@@ -165,14 +165,14 @@ export const ChangeNicknameDialog = (props: {
 							className={
 								changeNicknameMutation.isPending
 									? `flex justify-center items-center w-20 h-8
-									text-gray-100
+									text-neutral-100
 									bg-blue-500/60 rounded cursor-wait`
 									: formState.isValid
 									? `flex justify-center items-center w-20 h-8
-									text-gray-100
+									text-neutral-100
 									bg-blue-500 hover:bg-blue-600 rounded`
 									: `flex justify-center items-center w-20 h-8
-									text-gray-100
+									text-neutral-100
 									bg-blue-500/60 rounded cursor-not-allowed`
 							}
 							disabled={

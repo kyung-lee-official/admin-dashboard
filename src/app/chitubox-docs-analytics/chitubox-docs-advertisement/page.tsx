@@ -19,7 +19,7 @@ const Index = () => {
 	return (
 		<div
 			className="flex flex-col justify-center items-center pt-20 gap-20
-			font-bold text-gray-500 dark:text-gray-500"
+			font-bold text-neutral-500 dark:text-neutral-500"
 		>
 			<span className="text-4xl">📌 This Page Is Under Planning 📌</span>
 			<img

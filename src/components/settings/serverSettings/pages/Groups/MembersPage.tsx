@@ -22,7 +22,7 @@ const MemberRow = (props: {
 		<div
 			key={member.id}
 			className="flex justify-between items-center h-[40px] px-2 py-1
-			hover:bg-gray-100 dark:hover:bg-gray-800 rounded"
+			hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded"
 		>
 			<div className="flex items-center gap-4">
 				<Avatar
@@ -31,7 +31,7 @@ const MemberRow = (props: {
 				/>
 				<div className="flex gap-2">
 					<div className="text-sm">{member.nickname}</div>
-					<div className="text-gray-500 text-sm font-normal">
+					<div className="text-neutral-500 text-sm font-normal">
 						{member.email}
 					</div>
 				</div>
@@ -39,8 +39,8 @@ const MemberRow = (props: {
 			<button
 				className={
 					activeGroup.name === "everyone"
-						? `text-gray-200 cursor-not-allowed`
-						: `text-gray-400 hover:text-gray-500 cursor-pointer`
+						? `text-neutral-200 cursor-not-allowed`
+						: `text-neutral-400 hover:text-neutral-500 cursor-pointer`
 				}
 				disabled={activeGroup.name === "everyone"}
 				onClick={() => {
@@ -95,17 +95,17 @@ export const MembersPage = (props: any) => {
 				<div className="flex-1 flex">
 					<input
 						className="w-full h-8 px-2
-						text-gray-600 dark:text-gray-400
+						text-neutral-600 dark:text-neutral-400
 						font-medium
-						bg-gray-200
+						bg-neutral-200
 						rounded-l outline-none
-						placeholder-gray-500 dark:placeholder-gray-400"
+						placeholder-neutral-500 dark:placeholder-neutral-400"
 						placeholder="Search Members"
 						onChange={onSearch}
 					/>
 					<div
 						className="flex justify-center items-center w-10
-						bg-gray-200
+						bg-neutral-200
 						rounded-r"
 					>
 						<SearchOutlineIcon size={24} />

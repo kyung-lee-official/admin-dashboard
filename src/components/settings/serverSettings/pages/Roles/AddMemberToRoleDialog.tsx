@@ -100,7 +100,7 @@ export const AddMemberToRoleDialog = (props: {
 		<dialog
 			ref={addMemberToRoleDialogRef}
 			className="w-[440px]
-			bg-gray-200
+			bg-neutral-200
 			shadow-lg rounded-md backdrop:bg-black/80 backdrop:[backdrop-filter:blur(2px)]"
 			onCancel={(e: React.SyntheticEvent<HTMLDialogElement, Event>) => {
 				e.preventDefault();
@@ -109,7 +109,7 @@ export const AddMemberToRoleDialog = (props: {
 		>
 			<div
 				className="flex flex-col justify-center items-center p-6 gap-8
-				text-gray-600"
+				text-neutral-600"
 			>
 				<h1 className="text-lg">Add Members</h1>
 				<div className="font-semibold">{activeRole.name}</div>
@@ -117,14 +117,14 @@ export const AddMemberToRoleDialog = (props: {
 					<input
 						type="text"
 						className="w-full h-10 px-4
-						bg-gray-100
-						rounded-l placeholder-gray-500 outline-none"
+						bg-neutral-100
+						rounded-l placeholder-neutral-500 outline-none"
 						placeholder="Search members"
 						onChange={onSearch}
 					/>
 					<div
 						className="flex justify-center items-center w-12
-						bg-gray-100
+						bg-neutral-100
 						rounded-r"
 					>
 						<SearchOutlineIcon size={28} />
@@ -141,11 +141,11 @@ export const AddMemberToRoleDialog = (props: {
 						className={
 							addMembersMutation.isPending
 								? `flex justify-center items-center w-20 h-8
-							text-gray-700/60
-							bg-gray-300/60 rounded outline-none cursor-wait`
+							text-neutral-700/60
+							bg-neutral-300/60 rounded outline-none cursor-wait`
 								: `flex justify-center items-center w-20 h-8
-							text-gray-700
-							bg-gray-300 hover:bg-gray-400 rounded outline-none`
+							text-neutral-700
+							bg-neutral-300 hover:bg-neutral-400 rounded outline-none`
 						}
 						onClick={() => {
 							setShowAddMemberDialog(false);
@@ -157,10 +157,10 @@ export const AddMemberToRoleDialog = (props: {
 						className={
 							addMembersMutation.isPending
 								? `flex justify-center items-center w-20 h-8
-							text-gray-100
+							text-neutral-100
 							bg-blue-500/60 rounded cursor-wait`
 								: `flex justify-center items-center w-20 h-8
-							text-gray-100
+							text-neutral-100
 							bg-blue-500 hover:bg-blue-600 rounded`
 						}
 						onClick={() => {

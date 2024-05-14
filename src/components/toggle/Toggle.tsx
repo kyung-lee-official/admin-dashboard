@@ -21,7 +21,7 @@ export const Toggle = (props: ToggleProps) => {
 		<motion.div
 			className={`flex 
             ${isOn ? "justify-end" : "justify-start"}
-            items-center w-12 h-7 bg-gray-500
+            items-center w-12 h-7 bg-neutral-500
             p-1
 			shadow-[inset_0_1px_3px_rgba(0,0,0,0.3)] rounded-full ${
 				isAllowed ? "cursor-pointer" : "cursor-not-allowed"
@@ -32,7 +32,7 @@ export const Toggle = (props: ToggleProps) => {
 		>
 			<motion.div
 				layout
-				className="w-5 h-5 bg-gray-100 shadow rounded-full"
+				className="w-5 h-5 bg-neutral-100 shadow rounded-full"
 				transition={spring}
 			></motion.div>
 		</motion.div>

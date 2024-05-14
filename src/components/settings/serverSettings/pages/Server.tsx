@@ -80,7 +80,7 @@ export const Server = (props: any) => {
 				<Skeleton />
 			) : (
 				<>
-					<div className="flex justify-between items-center font-mono">
+					<div className="flex justify-between items-center">
 						<div>Allow public sign up.</div>
 						<Toggle
 							isOn={newData?.allowPublicSignUp}
@@ -94,7 +94,7 @@ export const Server = (props: any) => {
 							}}
 						/>
 					</div>
-					<div className="flex justify-between items-center font-mono">
+					<div className="flex justify-between items-center">
 						<div>Allow Google sign up.</div>
 						<Toggle
 							isOn={newData?.allowGoogleSignIn}

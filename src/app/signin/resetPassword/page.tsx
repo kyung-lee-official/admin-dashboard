@@ -69,8 +69,8 @@ const Index = () => {
 			{mutation.isSuccess ? (
 				<div
 					className="flex flex-col items-center w-[480px] px-10 py-6 gap-6
-					text-3xl text-gray-600
-					bg-gray-200
+					text-3xl text-neutral-600
+					bg-neutral-200
 					rounded-3xl shadow-lg"
 				>
 					<div>Your password has been reset</div>
@@ -80,8 +80,8 @@ const Index = () => {
 			  mutation.error.response?.data?.message === "Invalid token" ? (
 				<div
 					className="flex flex-col items-center w-[480px] px-10 py-6 gap-6
-					text-3xl text-gray-600
-					bg-gray-200
+					text-3xl text-neutral-600
+					bg-neutral-200
 					rounded-3xl shadow-lg"
 				>
 					Invalid token ❌
@@ -89,8 +89,8 @@ const Index = () => {
 			) : (
 				<div
 					className="flex flex-col items-center w-[480px] px-10 py-6 gap-6
-					text-3xl text-gray-600
-					bg-gray-200
+					text-3xl text-neutral-600
+					bg-neutral-200
 					rounded-3xl shadow-lg"
 				>
 					<h1 className="text-3xl">Reset your password</h1>
@@ -168,7 +168,7 @@ const Index = () => {
 									? "bg-blue-500 hover:bg-blue-600"
 									: mutation.isPending
 									? "bg-blue-400 cursor-wait"
-									: "bg-gray-400 cursor-not-allowed"
+									: "bg-neutral-400 cursor-not-allowed"
 							}
 							rounded`}
 							disabled={!formState.isValid || mutation.isPending}

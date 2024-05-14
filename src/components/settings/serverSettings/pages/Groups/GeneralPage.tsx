@@ -71,10 +71,10 @@ export const GeneralPage = (props: any) => {
 				className={
 					activeGroup.name === "everyone"
 						? `w-full h-9 px-2
-					text-gray-500
-					bg-gray-200 rounded placeholder-gray-500 focus:outline-none cursor-not-allowed`
+					text-neutral-500
+					bg-neutral-200 rounded placeholder-neutral-500 focus:outline-none cursor-not-allowed`
 						: `w-full h-9 px-2
-					bg-gray-200 rounded placeholder-gray-500 focus:outline-none`
+					bg-neutral-200 rounded placeholder-neutral-500 focus:outline-none`
 				}
 				readOnly={activeGroup.name === "everyone"}
 				onChange={onNameChanged}

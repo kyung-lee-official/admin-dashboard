@@ -64,7 +64,7 @@ const SignUp = () => {
 
 	return (
 		<div
-			className="bg-gray-200
+			className="bg-neutral-200
 			rounded-3xl shadow-lg"
 		>
 			<AnimatePresence mode="wait">

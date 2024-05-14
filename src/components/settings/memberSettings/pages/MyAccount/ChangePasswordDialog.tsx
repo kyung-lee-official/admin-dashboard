@@ -91,7 +91,7 @@ export const ChangePasswordDialog = (props: ChangePasswordDialogProps) => {
 			initial={{ opacity: 0, scale: 0.9 }}
 			animate={{ opacity: 1, scale: 1 }}
 			className="w-[440px]
-				bg-gray-200
+				bg-neutral-200
 				shadow-lg rounded-md backdrop-blur-sm
 				backdrop:bg-black/50 backdrop:[backdrop-filter:blur(2px)]"
 		>
@@ -100,7 +100,7 @@ export const ChangePasswordDialog = (props: ChangePasswordDialogProps) => {
 					<div>Your password has been updated</div>
 					<div className="text-3xl">✅</div>
 					<button
-						className="w-24 p-2 bg-gray-300 hover:bg-gray-400 rounded"
+						className="w-24 p-2 bg-neutral-300 hover:bg-neutral-400 rounded"
 						onClick={() => {
 							setShowChangePasswordDialog(false);
 						}}
@@ -113,7 +113,7 @@ export const ChangePasswordDialog = (props: ChangePasswordDialogProps) => {
 					<div className="flex justify-center font-bold">
 						Update your password
 					</div>
-					<div className="flex justify-center text-base text-gray-500">
+					<div className="flex justify-center text-base text-neutral-500">
 						Enter your current password and a new password.
 					</div>
 					<form
@@ -123,7 +123,7 @@ export const ChangePasswordDialog = (props: ChangePasswordDialogProps) => {
 						onSubmit={handleSubmit(onSubmit)}
 					>
 						<div className="flex flex-col gap-2">
-							<div className="text-xs font-bold text-gray-500">
+							<div className="text-xs font-bold text-neutral-500">
 								CURRENT PASSWORD
 							</div>
 							<input
@@ -161,7 +161,7 @@ export const ChangePasswordDialog = (props: ChangePasswordDialogProps) => {
 								)}
 						</div>
 						<div className="flex flex-col gap-2">
-							<div className="text-xs font-bold text-gray-500">
+							<div className="text-xs font-bold text-neutral-500">
 								NEW PASSWORD
 							</div>
 							<input
@@ -198,7 +198,7 @@ export const ChangePasswordDialog = (props: ChangePasswordDialogProps) => {
 							)}
 						</div>
 						<div className="flex flex-col gap-2">
-							<div className="text-xs font-bold text-gray-500">
+							<div className="text-xs font-bold text-neutral-500">
 								CONFIRM NEW PASSWORD
 							</div>
 							<input
@@ -244,7 +244,7 @@ export const ChangePasswordDialog = (props: ChangePasswordDialogProps) => {
 					>
 						<button
 							className="w-24 p-2 
-							bg-gray-300 hover:bg-gray-400
+							bg-neutral-300 hover:bg-neutral-400
 							rounded"
 							onClick={() => {
 								mutation.reset();
@@ -263,7 +263,7 @@ export const ChangePasswordDialog = (props: ChangePasswordDialogProps) => {
 									? "bg-blue-500 hover:bg-blue-600"
 									: mutation.isPending
 									? "bg-blue-400 cursor-wait"
-									: "bg-gray-500 cursor-not-allowed"
+									: "bg-neutral-500 cursor-not-allowed"
 							}
 							rounded`}
 							disabled={!formState.isValid || mutation.isPending}

@@ -19,7 +19,7 @@ const SidebarSection = (props: any) => {
 						key={i}
 						className={`w-full px-2 py-1
 						font-normal text-lg
-						${activePath === item.path && "bg-gray-300"} hover:bg-gray-200
+						${activePath === item.path && "bg-neutral-300"} hover:bg-neutral-200
 						rounded-md cursor-pointer`}
 						onClick={() => {
 							setActivePath(item.path);
@@ -45,9 +45,9 @@ export const SidebarRegion = (props: any) => {
 		<div
 			className="flex-[4_0_220px] flex flex-col items-end min-h-screen
 			px-6 pt-12
-			text-gray-500
-			bg-gray-100
-			font-bold font-mono text-lg"
+			text-neutral-500
+			bg-neutral-100
+			font-bold text-lg"
 		>
 			<div className="w-44">
 				{metaData.map((section: any, i: number) => {

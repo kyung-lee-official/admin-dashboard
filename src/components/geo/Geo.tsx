@@ -282,7 +282,7 @@ export const Geo = (props: any) => {
 			<h1 className="text-5xl">Overview</h1>
 			<div
 				className="w-3/5 px-8
-				bg-gray-500
+				bg-neutral-500
 				dark:bg-slate-900
 				rounded-xl shadow-lg"
 			>
@@ -363,8 +363,8 @@ export const Geo = (props: any) => {
 						},
 					}}
 					className="w-3/5 min-h-[120px] px-8 py-4 origin-top flex flex-col gap-4
-					text-gray-200
-					bg-gray-500 dark:bg-slate-900
+					text-neutral-200
+					bg-neutral-500 dark:bg-slate-900
 					rounded-xl shadow-lg"
 				>
 					<div className="flex justify-center items-center text-3xl">
@@ -444,8 +444,8 @@ export const Geo = (props: any) => {
 						},
 					}}
 					className="w-3/5 min-h-[120px] px-8 pt-4 pb-8 origin-top flex flex-col gap-4
-					text-gray-200
-					bg-gray-500 dark:bg-slate-900
+					text-neutral-200
+					bg-neutral-500 dark:bg-slate-900
 					rounded-xl shadow-lg"
 				>
 					<div className="flex justify-center items-center gap-12">
@@ -537,8 +537,8 @@ export const Geo = (props: any) => {
 			<h1 className="text-5xl">Page Data</h1>
 			<div
 				className="w-3/5 min-h-[800px] flex flex-col justify-start items-between px-8 py-4 gap-6
-				text-gray-200
-				bg-gray-500 dark:bg-slate-900
+				text-neutral-200
+				bg-neutral-500 dark:bg-slate-900
 				rounded-xl shadow-lg"
 			>
 				<div className="flex justify-center items-center gap-12">
@@ -585,7 +585,7 @@ export const Geo = (props: any) => {
 						return (
 							<div
 								className="flex flex-col w-full gap-1 p-3
-								text-gray-400 bg-gray-600
+								text-neutral-400 bg-neutral-600
 								rounded-md shadow-md"
 								key={`page-info-${index}`}
 							>

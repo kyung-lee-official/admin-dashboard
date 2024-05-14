@@ -26,9 +26,12 @@ const AppWrapper = ({ children }: any) => {
 
 	return (
 		<QueryClientProvider client={queryClient}>
-			<div className="bg-gray-300 dark:bg-gray-700">
+			<div
+				className="bg-neutral-300 dark:bg-neutral-800
+				font-mono"
+			>
 				{isPublicRoute ? (
-					<div className="min-h-screen">{children}</div>
+					<div className="min-h-[100svh]">{children}</div>
 				) : (
 					<Sacl>{children}</Sacl>
 				)}
