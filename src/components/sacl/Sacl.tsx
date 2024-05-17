@@ -32,7 +32,7 @@ export const Sacl = (props: any) => {
 	const { children } = props;
 	const router = useRouter();
 	const saclRoutes = ["/", "/signin", "/signup", "/seed"];
-	const [showChildren, setShowChildren] = useState(false);
+	const [showLoading, setShowLoading] = useState(true);
 	const accessToken = useAuthStore((state) => state.accessToken);
 	const setAccessToken = useAuthStore((state) => state.setAccessToken);
 	const tencentCosTempCredential = useAuthStore(
@@ -141,14 +141,17 @@ export const Sacl = (props: any) => {
 					/* Loading */
 				} else if (isSignedInQuery.isError) {
 					/* Error */
-					if (isSignedInQuery.error.response?.status === 401) {
+					if (
+						isSignedInQuery.error.response?.status === 400 ||
+						isSignedInQuery.error.response?.status === 401
+					) {
 						/* Unauthorized, not signed in */
 						switch (pathname) {
 							case "/signin":
-								setShowChildren(true);
+								setShowLoading(false);
 								break;
 							case "/signup":
-								setShowChildren(true);
+								setShowLoading(false);
 								break;
 							default:
 								const timer = setTimeout(() => {
@@ -173,7 +176,7 @@ export const Sacl = (props: any) => {
 									if (saclRoutes.includes(pathname)) {
 										router.push("/home");
 									} else {
-										setShowChildren(true);
+										setShowLoading(false);
 									}
 								} else {
 									/* Not verified, corresponding UI should be returned */
@@ -192,7 +195,7 @@ export const Sacl = (props: any) => {
 					}, 1500);
 					return () => clearTimeout(timer);
 				} else {
-					setShowChildren(true);
+					setShowLoading(false);
 				}
 			}
 		} else {
@@ -244,7 +247,17 @@ export const Sacl = (props: any) => {
 	 */
 	return (
 		<AnimatePresence mode="wait">
-			{showChildren ? (
+			{showLoading ? (
+				<motion.div
+					key={"sacl"}
+					className="auth-mask"
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					exit={{ opacity: 0 }}
+				>
+					<Loading hint="Loading" />
+				</motion.div>
+			) : (
 				<motion.div
 					key={"regularPages"}
 					initial={{ opacity: 0 }}
@@ -258,16 +271,6 @@ export const Sacl = (props: any) => {
 							{children}
 						</Layout>
 					)}
-				</motion.div>
-			) : (
-				<motion.div
-					key={"sacl"}
-					className="auth-mask"
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					exit={{ opacity: 0 }}
-				>
-					<Loading hint="Loading" />
 				</motion.div>
 			)}
 		</AnimatePresence>

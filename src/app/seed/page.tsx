@@ -99,8 +99,8 @@ const Seed = () => {
 						<div className="text-2xl">You&apos;ve signed up as</div>
 						<div
 							className="px-2 py-1
-								text-yellow-500
-								bg-zinc-900 rounded-md"
+							text-yellow-500
+							bg-zinc-900 rounded-md"
 						>
 							admin
 						</div>
@@ -109,7 +109,6 @@ const Seed = () => {
 								queryClient.invalidateQueries({
 									queryKey: ["isSeeded"],
 								});
-								// router.push("/signin");
 							}}
 						>
 							Sign In
