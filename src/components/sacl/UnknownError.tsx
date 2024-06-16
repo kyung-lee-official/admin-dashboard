@@ -1,5 +1,7 @@
 "use client";
 
+import { AuthMask } from "./AuthMask";
+
 export function UnknownError() {
-	return <div className="auth-mask">❗ Unknown Error</div>;
+	return <AuthMask>❗ Unknown Error</AuthMask>;
 }

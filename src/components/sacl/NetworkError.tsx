@@ -1,5 +1,7 @@
 "use client";
 
+import { AuthMask } from "./AuthMask";
+
 export function NetworkError() {
-	return <div className="auth-mask">❗ Network Error</div>;
+	return <AuthMask>❗ Network Error</AuthMask>;
 }

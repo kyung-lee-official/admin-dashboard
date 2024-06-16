@@ -21,6 +21,7 @@ import { NetworkError } from "./NetworkError";
 import { UnknownError } from "./UnknownError";
 import { IsFrozen } from "./IsFrozen";
 import { VerifyAccount } from "./VerifyAccount";
+import { AuthMask } from "./AuthMask";
 
 /**
  * SACL (Seed and Auth Checking Layer) UI
@@ -250,12 +251,13 @@ export const Sacl = (props: any) => {
 			{showLoading ? (
 				<motion.div
 					key={"sacl"}
-					className="auth-mask"
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 					exit={{ opacity: 0 }}
 				>
-					<Loading hint="Loading" />
+					<AuthMask>
+						<Loading hint="Loading" />
+					</AuthMask>
 				</motion.div>
 			) : (
 				<motion.div
@@ -265,7 +267,7 @@ export const Sacl = (props: any) => {
 					exit={{ opacity: 0 }}
 				>
 					{saclRoutes.includes(pathname) ? (
-						<div className="auth-mask">{children}</div>
+						<AuthMask>{children}</AuthMask>
 					) : (
 						<Layout heading={selectedSubMenu?.title}>
 							{children}

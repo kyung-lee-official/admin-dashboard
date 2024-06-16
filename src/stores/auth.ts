@@ -18,7 +18,11 @@ export const useAuthStore = create<State & Action>()(
 				accessToken: undefined,
 				setAccessToken: (newAccessToken) => {
 					return set((state) => {
-						return { accessToken: `Bearer ${newAccessToken}` };
+						if (newAccessToken) {
+							return { accessToken: `Bearer ${newAccessToken}` };
+						} else {
+							return { accessToken: undefined };
+						}
 					});
 				},
 				tencentCosTempCredential: undefined,

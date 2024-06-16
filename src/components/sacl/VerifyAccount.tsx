@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { Button } from "../button/Button";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/auth";
+import { AuthMask } from "./AuthMask";
 
 export const VerifyAccount = (props: any) => {
 	const { myInfo, accessToken } = props;
@@ -40,7 +41,7 @@ export const VerifyAccount = (props: any) => {
 	}, []);
 
 	return (
-		<div className="auth-mask">
+		<AuthMask>
 			<div
 				className="flex flex-col items-center w-[600px] p-10 gap-10
 				bg-neutral-200
@@ -108,6 +109,6 @@ export const VerifyAccount = (props: any) => {
 					Sign Out
 				</Button>
 			</div>
-		</div>
+		</AuthMask>
 	);
 };

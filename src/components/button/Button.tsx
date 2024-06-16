@@ -88,7 +88,7 @@ export const Button: React.FC<NativeButtonProps> = (props) => {
 		if (isLoading) {
 			return (
 				<button
-					className={`flex justify-center items-center min-h-[40px]
+					className={`flex justify-center items-center p-2 min-h-[40px]
 					px-4
 					text-neutral-400 bg-neutral-300
 					rounded
@@ -113,7 +113,7 @@ export const Button: React.FC<NativeButtonProps> = (props) => {
 
 		return (
 			<button
-				className={`flex justify-center items-center min-h-[40px]
+				className={`flex justify-center items-center p-2 min-h-[40px]
 				px-4
 				${disabled ? "text-neutral-500" : "text-neutral-50 hover:text-neutral-100"}
 				${disabled ? "bg-neutral-400" : buttonLevelClass}

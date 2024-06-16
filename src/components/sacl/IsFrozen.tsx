@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "../button/Button";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "next/navigation";
+import { AuthMask } from "./AuthMask";
 
 export const IsFrozen = () => {
 	const router = useRouter();
@@ -11,7 +12,7 @@ export const IsFrozen = () => {
 	);
 
 	return (
-		<div className="auth-mask">
+		<AuthMask>
 			<div
 				className="flex flex-col items-center w-[600px] p-10 gap-10
 				bg-neutral-200
@@ -32,6 +33,6 @@ export const IsFrozen = () => {
 					Sign Out
 				</Button>
 			</div>
-		</div>
+		</AuthMask>
 	);
 };

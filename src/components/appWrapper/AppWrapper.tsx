@@ -27,7 +27,7 @@ const AppWrapper = ({ children }: any) => {
 	return (
 		<QueryClientProvider client={queryClient}>
 			<div
-				className="bg-neutral-300 dark:bg-neutral-800
+				className="bg-neutral-100 dark:bg-neutral-800
 				font-mono"
 			>
 				{isPublicRoute ? (

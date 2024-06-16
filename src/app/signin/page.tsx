@@ -12,6 +12,8 @@ import { useMutation } from "@tanstack/react-query";
 import { googleConsentScreen, signIn } from "@/utils/api/auth";
 import { Button } from "@/components/button/Button";
 import { GoogleIcon } from "@/components/icons/Icons";
+import { AuthDialog } from "@/components/sacl/AuthDialog";
+import { Input } from "@/components/input/Input";
 
 interface IFormInput {
 	email: string;
@@ -50,88 +52,27 @@ const SignIn = () => {
 	}, [mutation]);
 
 	return (
-		<div
-			className="flex flex-col items-center w-96 px-10 py-6
-			bg-neutral-200
-			rounded-3xl shadow-lg"
-		>
+		<AuthDialog title={"Sign In"}>
 			<div className="flex flex-col items-center gap-6 w-full">
-				<h1>Sign In</h1>
 				<form
-					className="flex flex-col gap-6 w-full"
+					className="flex flex-col gap-4 w-full"
 					onSubmit={handleSubmit(onSubmit)}
 				>
-					<div className="input-wrapper-text">
-						<input
-							className={`input text-base ${
-								formState.errors.email && "text-red-400"
-							}`}
-							{...register("email")}
-							placeholder="Email"
-							disabled={mutation.isPending}
-						/>
-						<AnimatePresence>
-							{formState.errors.email && (
-								<motion.div
-									className="text-base text-red-400 font-bold"
-									initial={{
-										opacity: 0,
-										scaleY: 0,
-										height: "0rem",
-										originY: 0,
-									}}
-									animate={{
-										opacity: 1,
-										scaleY: 1,
-										height: "1rem",
-									}}
-									exit={{
-										opacity: 0,
-										scaleY: 0,
-										height: "0rem",
-										originY: 0,
-									}}
-								>
-									{formState.errors.email.message}
-								</motion.div>
-							)}
-						</AnimatePresence>
-					</div>
-					<div className="input-wrapper-text">
-						<input
-							className="input text-base"
-							type="password"
-							{...register("password")}
-							placeholder="Password"
-							disabled={mutation.isPending}
-						/>
-						<AnimatePresence>
-							{formState.errors.password && (
-								<motion.div
-									className="text-base text-red-400 font-bold"
-									initial={{
-										opacity: 0,
-										scaleY: 0,
-										height: "0rem",
-										originY: 0,
-									}}
-									animate={{
-										opacity: 1,
-										scaleY: 1,
-										height: "1rem",
-									}}
-									exit={{
-										opacity: 0,
-										scaleY: 0,
-										height: "0rem",
-										originY: 0,
-									}}
-								>
-									{formState.errors.password.message}
-								</motion.div>
-							)}
-						</AnimatePresence>
-					</div>
+					<Input
+						isInvalid={!!formState.errors.email}
+						errorMessage={formState.errors.email?.message}
+						{...register("email")}
+						placeholder="Email"
+						disabled={mutation.isPending}
+					/>
+					<Input
+						isInvalid={!!formState.errors.password}
+						errorMessage={formState.errors.password?.message}
+						{...register("password")}
+						type="password"
+						placeholder="Password"
+						disabled={mutation.isPending}
+					/>
 					{mutation.isError &&
 						mutation.error.response?.status === 401 && (
 							<div className="text-base text-red-400 font-bold">
@@ -183,20 +124,21 @@ const SignIn = () => {
 					</button>
 				</div>
 			</div>
-		</div>
+		</AuthDialog>
 	);
 };
 
-const Index = () => {
+const Page = () => {
 	return (
 		<motion.div
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
 			exit={{ opacity: 0 }}
+			className="flex justify-center items-center w-full h-svh"
 		>
 			<SignIn />
 		</motion.div>
 	);
 };
 
-export default Index;
+export default Page;

@@ -34,25 +34,6 @@
 		transition-all duration-100 scale-0 origin-left;
 	}
 
-	.auth-mask {
-		@apply flex justify-center items-center h-screen w-screen
-		text-3xl
-		text-neutral-600 dark:text-neutral-500
-		bg-neutral-300 dark:bg-neutral-700
-		z-20;
-	}
-
-	.input-wrapper-text {
-		@apply flex flex-col gap-2 w-full;
-	}
-
-	.input {
-		@apply px-3 py-2
-		caret-neutral-600
-		rounded-2xl 
-		outline-none;
-	}
-
 	.scrollbar::-webkit-scrollbar {
 		@apply w-2;
 	}
