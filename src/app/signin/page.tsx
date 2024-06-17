@@ -59,14 +59,17 @@ const SignIn = () => {
 					onSubmit={handleSubmit(onSubmit)}
 				>
 					<Input
+						title={"Email"}
 						isInvalid={!!formState.errors.email}
+						isRequired={true}
 						errorMessage={formState.errors.email?.message}
 						{...register("email")}
-						placeholder="Email"
 						disabled={mutation.isPending}
 					/>
 					<Input
+						title={"Password"}
 						isInvalid={!!formState.errors.password}
+						isRequired={true}
 						errorMessage={formState.errors.password?.message}
 						{...register("password")}
 						type="password"
@@ -81,8 +84,10 @@ const SignIn = () => {
 						)}
 					<Button
 						type="submit"
-						disabled={Object.keys(formState.errors).length !== 0}
+						color="primary"
 						isLoading={mutation.isPending}
+						isDisabled={Object.keys(formState.errors).length !== 0}
+						className="font-bold"
 					>
 						Sign In
 					</Button>

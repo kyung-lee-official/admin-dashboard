@@ -184,22 +184,26 @@ export const Calendar = ({ size, fill }: any) => {
 export const Load = ({ size, fill }: any) => {
 	return (
 		<svg
-			height={size}
+			className="animate-spin"
 			width={size}
+			height={size}
 			viewBox="0 0 24 24"
-			focusable="false"
-			role="img"
-			fill="currentColor"
 			xmlns="http://www.w3.org/2000/svg"
+			fill="none"
 		>
-			<circle cx="12" cy="20" r="2"></circle>
-			<circle cx="12" cy="4" r="2"></circle>
-			<circle cx="6.343" cy="17.657" r="2"></circle>
-			<circle cx="17.657" cy="6.343" r="2"></circle>
-			<circle cx="4" cy="12" r="2.001"></circle>
-			<circle cx="20" cy="12" r="2"></circle>
-			<circle cx="6.343" cy="6.344" r="2"></circle>
-			<circle cx="17.657" cy="17.658" r="2"></circle>
+			<circle
+				className="opacity-25"
+				cx="12"
+				cy="12"
+				r="10"
+				stroke="currentColor"
+				stroke-width="4"
+			></circle>
+			<path
+				className="opacity-75"
+				fill="currentColor"
+				d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+			></path>
 		</svg>
 	);
 };

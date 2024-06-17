@@ -179,7 +179,7 @@ const InfoPanel = (props: any) => {
 							ROLES
 						</div>
 						<div className="flex flex-wrap gap-2">
-							{myInfo.roles?.map((role: any) => {
+							{myInfo.memberRoles?.map((role: any) => {
 								if (role.name === "admin") {
 									return (
 										<div
@@ -342,6 +342,7 @@ export const MyAccount = () => {
 			<SettingsHeading>Password</SettingsHeading>
 			<div>
 				<Button
+					color="danger"
 					onClick={() => {
 						setShowChangePasswordDialog(true);
 					}}
