@@ -11,7 +11,7 @@ export const getMyInfo = async (accessToken?: string | null): Promise<any> => {
 };
 
 export const getMembers = async (accessToken?: string | null): Promise<any> => {
-	const res = await axios.get("/members", {
+	const res = await axios.post("/members/find", null, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: accessToken,
@@ -57,7 +57,7 @@ export const updateProfile = async (
 
 export const changePassword = async (
 	memberId: string,
-	body: { oldPassword: string; newPassword: string; },
+	body: { oldPassword: string; newPassword: string },
 	accessToken?: string | null
 ): Promise<any> => {
 	const res = await axios.patch(`/members/password/${memberId}`, body, {

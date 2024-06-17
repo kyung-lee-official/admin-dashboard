@@ -15,12 +15,16 @@ export const createRole = async (accessToken?: string | null): Promise<any> => {
 };
 
 export const getRoles = async (accessToken?: string | null): Promise<any> => {
-	const res = await axios.get("/member-roles", {
-		baseURL: process.env.NEXT_PUBLIC_API_HOST,
-		headers: {
-			Authorization: accessToken,
-		},
-	});
+	const res = await axios.post(
+		"/member-roles/find",
+		{ roleIds: [] },
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: accessToken,
+			},
+		}
+	);
 	return res.data;
 };
 
