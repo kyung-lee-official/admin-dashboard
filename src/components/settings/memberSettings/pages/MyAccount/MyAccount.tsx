@@ -3,35 +3,62 @@
 import { queryClient } from "@/utils/react-query/react-query";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import {
+	ReactNode,
+	useEffect,
+	useRef,
+	useState,
+	MouseEventHandler,
+} from "react";
 import { ChangePasswordDialog } from "./ChangePasswordDialog";
 import { ChangeAvatarDialog } from "./ChangeAvatarDialog";
 import { Button } from "@/components/button/Button";
-import { CopyIcon, EditIcon, VerifiedIcon } from "@/components/icons/Icons";
 import { SettingsHeading } from "@/components/settings/ContentRegion";
 import { ChangeNicknameDialog } from "./ChangeNicknameDialog";
 import { ChangeEmailDialog } from "./ChangeEmailDialog";
+import { useSpring } from "framer-motion";
+import { Copied } from "./Copied";
+
+const Row = (props: {
+	children: ReactNode;
+	title: string;
+	btnText?: string;
+	btnOnClick?: MouseEventHandler<HTMLButtonElement>;
+}) => {
+	const { children, title, btnText, btnOnClick } = props;
+	return (
+		<div className="flex justify-between items-center">
+			<div className="flex flex-col">
+				<div className="text-neutral-600 font-bold text-sm select-none">
+					{title}
+				</div>
+				<div
+					className="flex gap-6
+					text-neutral-600 text-base leading-4"
+				>
+					<div>{children}</div>
+				</div>
+			</div>
+			{btnText && (
+				<Button color="default" onClick={btnOnClick}>
+					{btnText}
+				</Button>
+			)}
+		</div>
+	);
+};
 
 const InfoPanel = (props: any) => {
 	const { myInfo, accessToken } = props;
-	const [copyClicked, setCopyClicked] = useState<boolean>(false);
 	const avatarInputRef = useRef<HTMLInputElement>(null);
+	const copiedRef = useRef<any>(null);
+
 	const myAvatar = queryClient.getQueryData<any>(["myAvatar", accessToken]);
 
 	const [showChangeNicknameDialog, setShowChangeNicknameDialog] =
 		useState<boolean>(false);
 	const [showChangeEmailDialog, setShowChangeEmailDialog] =
 		useState<boolean>(false);
-
-	useEffect(() => {
-		if (copyClicked === true) {
-			const timer = setTimeout(() => {
-				setCopyClicked(false);
-			}, 2000);
-			return () => clearTimeout(timer);
-		}
-	}, [copyClicked]);
 
 	const onAvatarInputChange = (e: any) => {
 		const file = e.target.files[0];
@@ -93,91 +120,38 @@ const InfoPanel = (props: any) => {
 					bg-neutral-100
 					rounded-lg"
 				>
-					<div className="flex flex-col">
-						<div className="text-neutral-600 font-bold text-sm select-none">
-							NICKNAME
-						</div>
-						<div
-							className="flex gap-6
-							text-neutral-600 font-normal text-base"
-						>
-							<div>{myInfo.nickname}</div>
-							<div
-								className="p-1
-								text-neutral-400 hover:text-neutral-600
-								bg-neutral-200 hover:bg-neutral-300 rounded-md cursor-pointer"
-								onClick={() => {
-									setShowChangeNicknameDialog(true);
-								}}
-							>
-								<EditIcon size={18} />
-							</div>
-						</div>
-					</div>
-					<div className="flex flex-col">
-						<div className="text-neutral-600 font-bold text-sm select-none">
-							MEMBER ID
-						</div>
-						<div
-							className="flex items-center gap-6
-							text-neutral-600 font-normal text-base"
-						>
+					<Row
+						title="NICKNAME"
+						btnText="Edit"
+						btnOnClick={() => {
+							setShowChangeNicknameDialog(true);
+						}}
+					>
+						{myInfo.nickname}
+					</Row>
+					<Row
+						title="MEMBER ID"
+						btnText="Copy"
+						btnOnClick={() => {
+							navigator.clipboard.writeText(myInfo.id);
+							copiedRef.current?.trigger();
+						}}
+					>
+						<div className="flex gap-4">
 							<div>{myInfo.id}</div>
-							<div
-								className="p-1
-								text-neutral-400 hover:text-neutral-600
-								bg-neutral-200 hover:bg-neutral-300 rounded-md cursor-pointer"
-								onClick={() => {
-									navigator.clipboard.writeText(myInfo.id);
-									if (copyClicked === false) {
-										setCopyClicked(true);
-									}
-								}}
-							>
-								<CopyIcon size={18} />
-							</div>
-							{
-								<AnimatePresence mode="wait">
-									{copyClicked && (
-										<motion.div
-											key="copied"
-											className="text-lime-600 font font-semibold"
-											initial={{ opacity: 0 }}
-											animate={{ opacity: 1 }}
-											exit={{ opacity: 0 }}
-										>
-											Copyied
-										</motion.div>
-									)}
-								</AnimatePresence>
-							}
+							<Copied ref={copiedRef} />
 						</div>
-					</div>
-					<div className="flex flex-col">
-						<div className="text-neutral-600 font-bold text-sm select-none">
-							EMAIL
-						</div>
-						<div
-							className="flex gap-6
-							text-neutral-600 font-normal text-base"
-						>
-							<div>{myInfo.email}</div>
-							<div
-								className="p-1
-								text-neutral-400 hover:text-neutral-600
-								bg-neutral-200 hover:bg-neutral-300 rounded-md cursor-pointer"
-								onClick={() => {
-									setShowChangeEmailDialog(true);
-								}}
-							>
-								<EditIcon size={18} />
-							</div>
-						</div>
-					</div>
-					<div className="flex flex-col">
-						<div className="text-neutral-600 font-bold text-sm select-none">
-							ROLES
-						</div>
+					</Row>
+					<Row
+						title="EMAIL"
+						btnText="Edit"
+						btnOnClick={() => {
+							setShowChangeEmailDialog(true);
+						}}
+					>
+						{myInfo.email}
+					</Row>
+					<Row title="ROLES">
 						<div className="flex flex-wrap gap-2">
 							{myInfo.memberRoles?.map((role: any) => {
 								if (role.name === "admin") {
@@ -204,11 +178,8 @@ const InfoPanel = (props: any) => {
 								);
 							})}
 						</div>
-					</div>
-					<div className="flex flex-col">
-						<div className="text-neutral-600 font-bold text-sm select-none">
-							GROUPS
-						</div>
+					</Row>
+					<Row title="GROUPS">
 						<div className="flex flex-wrap gap-2">
 							{myInfo.memberGroups.length > 0 ? (
 								myInfo.memberGroups?.map((group: any) => {
@@ -239,11 +210,8 @@ const InfoPanel = (props: any) => {
 								</div>
 							)}
 						</div>
-					</div>
-					<div className="flex flex-col">
-						<div className="text-neutral-600 font-bold text-sm select-none">
-							OWNED GROUPS
-						</div>
+					</Row>
+					<Row title="OWNED GROUPS">
 						<div className="flex flex-wrap gap-2">
 							{myInfo.ownedGroups.length > 0 ? (
 								myInfo.ownedGroups?.map((ownedGroups: any) => {
@@ -264,7 +232,7 @@ const InfoPanel = (props: any) => {
 								</div>
 							)}
 						</div>
-					</div>
+					</Row>
 					{/* <div className="flex flex-col gap-2">
 						<div className="text-neutral-600 font-bold text-sm select-none">
 							VERIFICATION
@@ -342,7 +310,7 @@ export const MyAccount = () => {
 			<SettingsHeading>Password</SettingsHeading>
 			<div>
 				<Button
-					color="danger"
+					color="primary"
 					onClick={() => {
 						setShowChangePasswordDialog(true);
 					}}
