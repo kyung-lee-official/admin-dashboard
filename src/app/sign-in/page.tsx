@@ -55,11 +55,11 @@ const SignIn = () => {
 			<h1 className="text-2xl">Sign In</h1>
 			<div className="flex flex-col items-center gap-6 w-full">
 				<form
-					className="flex flex-col gap-2 w-full
+					className="flex flex-col gap-6 w-full
 					text-sm"
 					onSubmit={handleSubmit(onSubmit)}
 				>
-					<div className="flex flex-col gap-2 w-full">
+					<div className="flex flex-col gap-3 w-full">
 						<Input
 							placeholder={"Email"}
 							isInvalid={!!formState.errors.email}
@@ -129,7 +129,7 @@ const SignIn = () => {
 						}}
 						className="text-sm text-lime-600 hover:text-lime-700"
 					>
-						Sign Up
+						Sign up
 					</button>
 				</div>
 			</div>
