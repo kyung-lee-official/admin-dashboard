@@ -22,7 +22,6 @@ export const Input = forwardRef<
 						{title}
 					</label>
 				)}
-				{isRequired && <span className="text-red-400">*</span>}
 				{isInvalid && (
 					<div className="ml-2 text-red-400">{errorMessage}</div>
 				)}
@@ -30,13 +29,11 @@ export const Input = forwardRef<
 			<input
 				ref={ref}
 				{...rest}
-				className={`w-full p-[10px] m-[2px] 
-				text-base
+				className={`w-full py-[6px] px-[8px]
 				${isInvalid && "text-red-400"}
-				bg-neutral-100
-				caret-neutral-600
-				${isInvalid && "border-solid border-red-400 border-2 m-0"}
-				rounded
+				dark:bg-slate-700/50
+				${isInvalid && "border-solid border-red-500 border-[1px] m-0"}
+				rounded-lg
 				outline-none`}
 			>
 				{children}

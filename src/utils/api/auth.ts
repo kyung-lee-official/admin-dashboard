@@ -25,7 +25,7 @@ export const signIn = async (body: {
 	email: string;
 	password: string;
 }): Promise<any> => {
-	const res = await axios.post("/member-auth/signin", body, {
+	const res = await axios.post("/authentication/sign-in", body, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 	});
 	return res.data;
@@ -42,8 +42,8 @@ export const signUp = async (body: {
 	return res.data;
 };
 
-export const refreshAccessToken = async (accessToken?: string | null) => {
-	const res = await axios.get("/member-auth/refreshAccessToken", {
+export const refreshJwt = async (accessToken?: string | null) => {
+	const res = await axios.get("/authentication/refresh-jwt", {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: accessToken,

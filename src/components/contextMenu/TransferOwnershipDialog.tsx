@@ -35,7 +35,7 @@ export const TransferOwnershipDialog = (props: {
 				queryKey: ["getMembers", accessToken],
 			});
 			queryClient.invalidateQueries({
-				queryKey: ["myInfo", accessToken],
+				queryKey: ["my-info", jwt],
 			});
 			setActivePath("/serverSettings/overview");
 		},

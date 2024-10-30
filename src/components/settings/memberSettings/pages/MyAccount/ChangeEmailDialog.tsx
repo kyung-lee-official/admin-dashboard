@@ -40,7 +40,7 @@ export const ChangeEmailDialog = (props: {
 		onSuccess: (data) => {
 			setShowChangeEmailDialog(false);
 			queryClient.invalidateQueries({
-				queryKey: ["myInfo", accessToken],
+				queryKey: ["my-info", jwt],
 			});
 		},
 	});

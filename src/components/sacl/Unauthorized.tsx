@@ -14,7 +14,7 @@ export function Unauthorized() {
 					return countDown - 1;
 				});
 			} else {
-				router.push("/signin");
+				router.push("/sign-in");
 			}
 		}, 1000);
 		return () => {
@@ -39,7 +39,7 @@ export function Unauthorized() {
 				>
 					Unauthorized
 				</div>
-				<div>Redirecting to the sign-in page...({countDown})</div>
+				<div>Redirecting to thesign-in page...({countDown})</div>
 			</motion.div>
 		</AnimatePresence>
 	);

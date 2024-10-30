@@ -27,16 +27,17 @@ const PanelItems = (props: any) => {
 };
 
 export const Panel = () => {
-	const [showMemberSettings, setShowMemberSettings] = useState<boolean>(false);
-	const accessToken = useAuthStore((state) => state.accessToken);
+	const [showMemberSettings, setShowMemberSettings] =
+		useState<boolean>(false);
+	const jwt = useAuthStore((state) => state.jwt);
 	const tencentCosTempCredential = useAuthStore(
 		(state) => state.tencentCosTempCredential
 	);
 
 	const myInfoQuery = useQuery<any, AxiosError>({
-		queryKey: ["myInfo", accessToken],
+		queryKey: ["my-info", jwt],
 		queryFn: async () => {
-			const isSignedIn = await getMyInfo(accessToken);
+			const isSignedIn = await getMyInfo(jwt);
 			return isSignedIn;
 		},
 		retry: false,
@@ -44,12 +45,9 @@ export const Panel = () => {
 	});
 
 	const myAvatarQuery = useQuery<any, AxiosError>({
-		queryKey: ["myAvatar", accessToken],
+		queryKey: ["myAvatar", jwt],
 		queryFn: async () => {
-			const avatar = await downloadAvatar(
-				myInfoQuery.data.id,
-				accessToken
-			);
+			const avatar = await downloadAvatar(myInfoQuery.data.id, jwt);
 			return avatar;
 		},
 		enabled: !!tencentCosTempCredential && myInfoQuery.isSuccess,

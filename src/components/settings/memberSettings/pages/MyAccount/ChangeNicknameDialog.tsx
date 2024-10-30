@@ -45,7 +45,7 @@ export const ChangeNicknameDialog = (props: {
 		onSuccess: (data) => {
 			setShowChangeNicknameDialog(false);
 			queryClient.invalidateQueries({
-				queryKey: ["myInfo", accessToken],
+				queryKey: ["my-info", jwt],
 			});
 		},
 	});

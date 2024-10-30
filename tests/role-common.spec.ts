@@ -11,7 +11,7 @@ const {
 test.describe("Test Common Role", () => {
 	test("Test Common Role", async ({ page }) => {
 		/* Sign in page */
-		await page.goto("http://localhost:3000/signin");
+		await page.goto("http://localhost:3000/sign-in");
 		await page.waitForTimeout(1200); /* Wait for animation */
 		await expect(
 			page.getByRole("heading", { name: "Sign In", exact: true })

@@ -10,7 +10,7 @@ import { Loading } from "./Loading";
 import {
 	getIsSignedIn,
 	getTencentCosTempCredential,
-	refreshAccessToken,
+	refreshJwt,
 } from "@/utils/api/auth";
 import { Layout } from "../layout/Layout";
 import { getMyInfo } from "@/utils/api/members";
@@ -30,9 +30,9 @@ export const Sacl = (props: any) => {
 	const pathname = usePathname();
 	const { children } = props;
 	const router = useRouter();
-	const saclRoutes = ["/", "/signin", "/signup", "/seed"];
+	const saclRoutes = ["/", "/sign-in", "/signup", "/seed"];
 	const [showLoading, setShowLoading] = useState(true);
-	const accessToken = useAuthStore((state) => state.accessToken);
+	const jwt = useAuthStore((state) => state.jwt);
 	const setAccessToken = useAuthStore((state) => state.setAccessToken);
 	const tencentCosTempCredential = useAuthStore(
 		(state) => state.tencentCosTempCredential
@@ -47,9 +47,7 @@ export const Sacl = (props: any) => {
 	const tencentCosTempCredentialQuery = useQuery<any, AxiosError>({
 		queryKey: ["tencentCosTempCredential"],
 		queryFn: async () => {
-			const tempCredential = await getTencentCosTempCredential(
-				accessToken
-			);
+			const tempCredential = await getTencentCosTempCredential(jwt);
 			return tempCredential;
 		},
 		retry: false,
@@ -65,12 +63,12 @@ export const Sacl = (props: any) => {
 		}
 	}, [tencentCosTempCredentialQuery]);
 
-	const refreshAccessTokenQuery = useQuery<any, AxiosError>({
-		queryKey: ["refreshAccessToken"],
+	const refreshJwtQuery = useQuery<any, AxiosError>({
+		queryKey: ["refresh-jwt"],
 		queryFn: async () => {
-			if (accessToken) {
-				if (accessToken.split(".")[1]) {
-					const tokenPayload = window.atob(accessToken.split(".")[1]);
+			if (jwt) {
+				if (jwt.split(".")[1]) {
+					const tokenPayload = window.atob(jwt.split(".")[1]);
 					const { exp } = JSON.parse(tokenPayload);
 					const expirationTime = exp * 1000;
 					const now = Date.now();
@@ -79,9 +77,9 @@ export const Sacl = (props: any) => {
 						const timeLeft = expirationTime - now;
 						if (timeLeft < ms("2h")) {
 							/* Token is about to expire. */
-							const res = await refreshAccessToken(accessToken);
-							setAccessToken(res.accessToken);
-							return res.accessToken;
+							const res = await refreshJwt(jwt);
+							setAccessToken(res.jwt);
+							return res.jwt;
 						} else {
 							/* Ample time left. */
 							return null;
@@ -108,9 +106,9 @@ export const Sacl = (props: any) => {
 	});
 
 	const isSignedInQuery = useQuery<any, AxiosError>({
-		queryKey: ["isSignedIn", accessToken],
+		queryKey: ["is-signed-in", jwt],
 		queryFn: async () => {
-			const isSignedIn = await getIsSignedIn(accessToken);
+			const isSignedIn = await getIsSignedIn(jwt);
 			return isSignedIn;
 		},
 		retry: false,
@@ -120,9 +118,11 @@ export const Sacl = (props: any) => {
 	});
 
 	const myInfoQuery = useQuery<any, AxiosError>({
-		queryKey: ["myInfo", accessToken],
+		queryKey: ["my-info", jwt],
 		queryFn: async () => {
-			const isSignedIn = await getMyInfo(accessToken);
+			console.log(jwt);
+			
+			const isSignedIn = await getMyInfo(jwt);
 			return isSignedIn;
 		},
 		retry: false,
@@ -146,7 +146,7 @@ export const Sacl = (props: any) => {
 					) {
 						/* Unauthorized, not signed in */
 						switch (pathname) {
-							case "/signin":
+							case "/sign-in":
 								setShowLoading(false);
 								break;
 							case "/signup":
@@ -154,7 +154,7 @@ export const Sacl = (props: any) => {
 								break;
 							default:
 								const timer = setTimeout(() => {
-									router.push("/signin");
+									router.push("/sign-in");
 								}, 1500);
 								return () => clearTimeout(timer);
 								break;
@@ -233,12 +233,7 @@ export const Sacl = (props: any) => {
 	}
 
 	if (myInfoQuery.data?.isVerified === false) {
-		return (
-			<VerifyAccount
-				myInfo={myInfoQuery.data}
-				accessToken={accessToken}
-			/>
-		);
+		return <VerifyAccount myInfo={myInfoQuery.data} jwt={jwt} />;
 	}
 
 	/**

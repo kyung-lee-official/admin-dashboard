@@ -40,7 +40,7 @@ const schema = z
 
 type ChangePasswordDialogProps = {
 	memberId: string;
-	accessToken: string | null | undefined;
+	jwt: string | null | undefined;
 	showChangePasswordDialog: boolean;
 	setShowChangePasswordDialog: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -48,7 +48,7 @@ type ChangePasswordDialogProps = {
 export const ChangePasswordDialog = (props: ChangePasswordDialogProps) => {
 	const {
 		memberId,
-		accessToken,
+		jwt,
 		showChangePasswordDialog,
 		setShowChangePasswordDialog,
 	} = props;
@@ -63,7 +63,7 @@ export const ChangePasswordDialog = (props: ChangePasswordDialogProps) => {
 	const mutation = useMutation<any, AxiosError, IFormInput>({
 		mutationKey: ["changePassword"],
 		mutationFn: (data: IFormInput) => {
-			return changePassword(memberId, data, accessToken);
+			return changePassword(memberId, data, jwt);
 		},
 	});
 

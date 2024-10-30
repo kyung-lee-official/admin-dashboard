@@ -3,7 +3,7 @@ import { devtools, persist } from "zustand/middleware";
 
 export const enum Theme {
 	LIGHT = "LIGHT",
-	DARK = "DARK"
+	DARK = "DARK",
 }
 
 type State = {
@@ -14,24 +14,23 @@ type Action = {
 	setTheme: (theme: Theme) => void;
 };
 
-
 export const useThemeStore = create<State & Action>()(
 	devtools(
 		persist(
 			(set) => ({
-				theme: Theme.LIGHT,
+				theme: Theme.DARK,
 				setTheme: (theme: Theme) => {
 					return set((state) => {
 						return { theme: theme };
 					});
-				}
+				},
 			}),
 			{
-				name: "theme-storage"
+				name: "theme-storage",
 			}
 		),
 		{
-			name: "theme"
+			name: "theme",
 		}
 	)
 );

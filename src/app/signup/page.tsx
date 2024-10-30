@@ -99,7 +99,7 @@ const SignUp = () => {
 						<div>You&apos;ve signed up as admin 🎉🎉🎉</div>
 						<Button
 							onClick={() => {
-								router.push("/signin");
+								router.push("/sign-in");
 							}}
 						>
 							Sign In

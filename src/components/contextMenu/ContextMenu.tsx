@@ -80,7 +80,7 @@ export const ContextMenu = (props: {
 	const [isMe, setIsMe] = useState<boolean>(false);
 
 	const myInfoQuery = useQuery<any, AxiosError>({
-		queryKey: ["myInfo", accessToken],
+		queryKey: ["my-info", jwt],
 		queryFn: async () => {
 			const isSignedIn = await getMyInfo(accessToken);
 			return isSignedIn;

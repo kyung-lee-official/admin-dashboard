@@ -49,11 +49,11 @@ const Row = (props: {
 };
 
 const InfoPanel = (props: any) => {
-	const { myInfo, accessToken } = props;
+	const { myInfo, jwt } = props;
 	const avatarInputRef = useRef<HTMLInputElement>(null);
 	const copiedRef = useRef<any>(null);
 
-	const myAvatar = queryClient.getQueryData<any>(["myAvatar", accessToken]);
+	const myAvatar = queryClient.getQueryData<any>(["myAvatar", jwt]);
 
 	const [showChangeNicknameDialog, setShowChangeNicknameDialog] =
 		useState<boolean>(false);
@@ -111,7 +111,7 @@ const InfoPanel = (props: any) => {
 					<ChangeAvatarDialog
 						avatarInputRef={avatarInputRef}
 						myInfo={myInfo}
-						accessToken={accessToken}
+						jwt={jwt}
 					/>
 				</div>
 				<div
@@ -179,7 +179,7 @@ const InfoPanel = (props: any) => {
 							})}
 						</div>
 					</Row>
-					<Row title="GROUPS">
+					{/* <Row title="GROUPS">
 						<div className="flex flex-wrap gap-2">
 							{myInfo.memberGroups.length > 0 ? (
 								myInfo.memberGroups?.map((group: any) => {
@@ -232,7 +232,7 @@ const InfoPanel = (props: any) => {
 								</div>
 							)}
 						</div>
-					</Row>
+					</Row> */}
 					{/* <div className="flex flex-col gap-2">
 						<div className="text-neutral-600 font-bold text-sm select-none">
 							VERIFICATION
@@ -291,7 +291,7 @@ const Divider = () => {
 
 export const MyAccount = () => {
 	const router = useRouter();
-	const accessToken = useAuthStore((state) => state.accessToken);
+	const jwt = useAuthStore((state) => state.jwt);
 	const setAccessToken = useAuthStore((state) => state.setAccessToken);
 	const setTencentCosTempCredential = useAuthStore(
 		(state) => state.setTencentCosTempCredential
@@ -300,12 +300,12 @@ export const MyAccount = () => {
 	const [showChangePasswordDialog, setShowChangePasswordDialog] =
 		useState<boolean>(false);
 
-	const myInfo = queryClient.getQueryData<any>(["myInfo", accessToken]);
+	const myInfo = queryClient.getQueryData<any>(["my-info", jwt]);
 
 	return (
 		<div className="flex flex-col gap-6">
 			<SettingsHeading>My Account</SettingsHeading>
-			<InfoPanel myInfo={myInfo} accessToken={accessToken} />
+			<InfoPanel myInfo={myInfo} jwt={jwt} />
 			<Divider />
 			<SettingsHeading>Password</SettingsHeading>
 			<div>
@@ -321,7 +321,7 @@ export const MyAccount = () => {
 			{showChangePasswordDialog && (
 				<ChangePasswordDialog
 					memberId={myInfo.id}
-					accessToken={accessToken}
+					jwt={jwt}
 					showChangePasswordDialog={showChangePasswordDialog}
 					setShowChangePasswordDialog={setShowChangePasswordDialog}
 				/>
@@ -332,7 +332,7 @@ export const MyAccount = () => {
 					onClick={() => {
 						setAccessToken(null);
 						setTencentCosTempCredential(null);
-						router.push("/signin");
+						router.push("/sign-in");
 					}}
 				>
 					Sign Out

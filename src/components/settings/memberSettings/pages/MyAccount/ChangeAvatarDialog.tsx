@@ -11,9 +11,9 @@ import { uploadMyAvatar } from "@/utils/api/members";
 export const ChangeAvatarDialog = (props: {
 	avatarInputRef: any;
 	myInfo: any;
-	accessToken: string;
+	jwt: string;
 }) => {
-	const { avatarInputRef, accessToken } = props;
+	const { avatarInputRef, jwt } = props;
 
 	const draggableAreaSize: number[] = [568, 400];
 	const canvasSize: number[] = [400, 400];
@@ -43,7 +43,7 @@ export const ChangeAvatarDialog = (props: {
 				const blob = await new Promise((resolve) => {
 					return canvasRef.current!.toBlob(resolve);
 				});
-				const res = await uploadMyAvatar(blob as Blob, accessToken);
+				const res = await uploadMyAvatar(blob as Blob, jwt);
 				return res;
 			}
 		},
@@ -52,7 +52,7 @@ export const ChangeAvatarDialog = (props: {
 			if (dialogRef.current) {
 				dialogRef.current.close();
 				queryClient.invalidateQueries({
-					queryKey: ["myAvatar", accessToken],
+					queryKey: ["myAvatar", jwt],
 				});
 			}
 			/* Tencent COS response */
@@ -61,7 +61,7 @@ export const ChangeAvatarDialog = (props: {
 			// 		queryClient.invalidateQueries({
 			// 			queryKey: [
 			// 				"myAvatar",
-			// 				accessToken,
+			// 				jwt,
 			// 			],
 			// 		});
 			// 	}

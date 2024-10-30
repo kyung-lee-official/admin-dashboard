@@ -103,7 +103,7 @@ export const VerifyAccount = (props: any) => {
 					onClick={() => {
 						setAccessToken(null);
 						setTencentCosTempCredential(null);
-						router.push("/signin");
+						router.push("/sign-in");
 					}}
 				>
 					Sign Out

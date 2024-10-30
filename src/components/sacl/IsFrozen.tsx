@@ -27,7 +27,7 @@ export const IsFrozen = () => {
 					onClick={() => {
 						setAccessToken(null);
 						setTencentCosTempCredential(null);
-						router.push("/signin");
+						router.push("/sign-in");
 					}}
 				>
 					Sign Out

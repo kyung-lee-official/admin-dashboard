@@ -82,7 +82,7 @@ const Page = () => {
 						<div>✅</div>
 						<Button
 							onClick={() => {
-								router.push("/signin");
+								router.push("/sign-in");
 							}}
 						>
 							<div className="flex justify-center items-center py-2">

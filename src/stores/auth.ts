@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
 type State = {
-	accessToken: string | undefined | null;
+	jwt: string | undefined | null;
 	tencentCosTempCredential: any;
 };
 
@@ -15,16 +15,17 @@ export const useAuthStore = create<State & Action>()(
 	devtools(
 		persist(
 			(set) => ({
-				accessToken: undefined,
+				jwt: undefined,
 				setAccessToken: (newAccessToken) => {
 					return set((state) => {
 						if (newAccessToken) {
-							return { accessToken: `Bearer ${newAccessToken}` };
+							return { jwt: `Bearer ${newAccessToken}` };
 						} else {
-							return { accessToken: undefined };
+							return { jwt: undefined };
 						}
 					});
 				},
+
 				tencentCosTempCredential: undefined,
 				setTencentCosTempCredential: (newTencentCosTempCredential) => {
 					return set((state) => {

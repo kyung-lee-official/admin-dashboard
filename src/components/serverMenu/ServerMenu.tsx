@@ -58,11 +58,11 @@ const MenuContent = forwardRef<HTMLDivElement, any>(function MenuContent(
 });
 
 export const ServerMenu = () => {
-	const accessToken = useAuthStore((state) => state.accessToken);
+	const jwt = useAuthStore((state) => state.jwt);
 	const myInfoQuery = useQuery<any, AxiosError>({
-		queryKey: ["myInfo", accessToken],
+		queryKey: ["my-info", jwt],
 		queryFn: async () => {
-			const isSignedIn = await getMyInfo(accessToken);
+			const isSignedIn = await getMyInfo(jwt);
 			return isSignedIn;
 		},
 		retry: false,
