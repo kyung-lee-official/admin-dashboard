@@ -47,13 +47,11 @@ export const Button = ({
 				"bg-purple-500 hover:bg-purple-500/80 dark:bg-purple-600 dark:hover:bg-purple-600/80";
 			break;
 		case "success":
-			btnBgColor =
-				`text-neutral-600 dark:text-neutral-50
+			btnBgColor = `text-neutral-600 dark:text-neutral-50
 				bg-green-500 hover:bg-green-500/80 dark:bg-green-600 dark:hover:bg-green-600/80`;
 			break;
 		case "warning":
-			btnBgColor =
-				`text-neutral-600 dark:text-neutral-50
+			btnBgColor = `text-neutral-600 dark:text-neutral-50
 				bg-yellow-500 hover:bg-yellow-500/80 dark:bg-yellow-500 dark:hover:bg-yellow-500/80`;
 			break;
 		case "danger":
@@ -69,7 +67,7 @@ export const Button = ({
 	let btnSize: string;
 	switch (size) {
 		case "sm":
-			btnSize = "py-1 px-2 text-sm";
+			btnSize = "py-[6px] px-[12px] text-sm";
 			break;
 		case "md":
 			btnSize = "py-2 px-4 text-base";
