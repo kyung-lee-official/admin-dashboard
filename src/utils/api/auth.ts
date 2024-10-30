@@ -1,13 +1,4 @@
 import axios from "axios";
-import qs from "qs";
-
-export const getIsSeeded = async (): Promise<any> => {
-	const query = qs.stringify({}, { encodeValuesOnly: true });
-	const res = await axios.get("/member-auth/isSeeded", {
-		baseURL: process.env.NEXT_PUBLIC_API_HOST,
-	});
-	return res.data;
-};
 
 export const seed = async (body: {
 	email: string;
@@ -20,10 +11,8 @@ export const seed = async (body: {
 	return res.data;
 };
 
-export const getIsSignedIn = async (
-	accessToken?: string | null
-): Promise<{ isSignedIn: true }> => {
-	const res = await axios.get("/member-auth/isSignedIn", {
+export const getIsSignedIn = async (accessToken?: string | null) => {
+	const res = await axios.get("/authentication/is-signed-in", {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: accessToken,

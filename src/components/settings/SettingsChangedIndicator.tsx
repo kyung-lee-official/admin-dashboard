@@ -30,9 +30,11 @@ export const SettingsChangedIndicator = (props: any) => {
 							<Button
 								onClick={onSave}
 								isLoading={isLoading}
-								buttonType="settings"
+								color="primary"
 							>
-								<div className="font-semibold">Save Changes</div>
+								<div className="font-semibold">
+									Save Changes
+								</div>
 							</Button>
 						</div>
 					</div>

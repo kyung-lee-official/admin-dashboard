@@ -1,5 +1,3 @@
-"use client";
-
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useSidebarStore } from "@/stores/sidebar";
@@ -10,7 +8,6 @@ import ms from "ms";
 import { usePathname, useRouter } from "next/navigation";
 import { Loading } from "./Loading";
 import {
-	getIsSeeded,
 	getIsSignedIn,
 	getTencentCosTempCredential,
 	refreshAccessToken,
@@ -22,6 +19,7 @@ import { UnknownError } from "./UnknownError";
 import { IsFrozen } from "./IsFrozen";
 import { VerifyAccount } from "./VerifyAccount";
 import { AuthMask } from "./AuthMask";
+import { getIsSeeded } from "@/utils/api/server-settings";
 
 /**
  * SACL (Seed and Auth Checking Layer) UI
@@ -103,7 +101,7 @@ export const Sacl = (props: any) => {
 	});
 
 	const isSeededQuery = useQuery<any, AxiosError>({
-		queryKey: ["isSeeded"],
+		queryKey: ["is-seeded"],
 		queryFn: getIsSeeded,
 		retry: false,
 		refetchOnWindowFocus: false,

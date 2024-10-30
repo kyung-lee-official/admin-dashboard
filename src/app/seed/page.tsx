@@ -107,7 +107,7 @@ const Seed = () => {
 						<Button
 							onClick={() => {
 								queryClient.invalidateQueries({
-									queryKey: ["isSeeded"],
+									queryKey: ["is-seeded"],
 								});
 							}}
 						>

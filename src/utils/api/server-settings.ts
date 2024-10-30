@@ -1,4 +1,13 @@
 import axios from "axios";
+import qs from "qs";
+
+export const getIsSeeded = async (): Promise<any> => {
+	const query = qs.stringify({}, { encodeValuesOnly: true });
+	const res = await axios.get("/server/is-seeded", {
+		baseURL: process.env.NEXT_PUBLIC_API_HOST,
+	});
+	return res.data;
+};
 
 export const getServerSettings = async (
 	accessToken: string | null | undefined
