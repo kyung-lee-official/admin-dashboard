@@ -11,16 +11,14 @@ import { MyAccount } from "./memberSettings/pages/MyAccount/MyAccount";
 
 export const SettingsHeading = (props: any) => {
 	const { children } = props;
-	return (
-		<h1 className="text-xl text-neutral-600 font-bold">
-			{children}
-		</h1>
-	);
+	return <h1 className="text-xl text-neutral-600 font-bold">{children}</h1>;
 };
 
 export const SettingsSubHeading = (props: any) => {
 	const { children } = props;
-	return <h2 className="text-xs text-neutral-500 font-bold my-2">{children}</h2>;
+	return (
+		<h2 className="text-xs text-neutral-500 font-bold my-2">{children}</h2>
+	);
 };
 
 const ActiveComponent = (props: any) => {
@@ -85,14 +83,13 @@ export const ContentRegion = (props: any) => {
 				className="sticky top-12 right-0 h-12 w-12 flex justify-center items-center
 				text-neutral-500"
 			>
-				<div
-					className="cursor-pointer"
+				<button
 					onClick={() => {
 						setShowSettings(false);
 					}}
 				>
 					<CloseIcon />
-				</div>
+				</button>
 			</div>
 		</div>
 	);

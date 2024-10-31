@@ -87,17 +87,17 @@ export const Panel = () => {
 					</div>
 				</div>
 				<SettingsIcon size={20} />
-				<AnimatePresence mode="wait">
-					{showMemberSettings && (
-						<SettingsMask key={"memberSettingsMask"}>
-							<Settings
-								metaData={metaData}
-								setShowSettings={setShowMemberSettings}
-							/>
-						</SettingsMask>
-					)}
-				</AnimatePresence>
 			</button>
+			<AnimatePresence mode="wait">
+				{showMemberSettings && (
+					<SettingsMask key={"memberSettingsMask"}>
+						<Settings
+							metaData={metaData}
+							setShowSettings={setShowMemberSettings}
+						/>
+					</SettingsMask>
+				)}
+			</AnimatePresence>
 		</div>
 	);
 };

@@ -12,9 +12,9 @@ export const Content = (props: { children: ReactNode }) => {
 	});
 
 	return (
-		<div className="w-full h-svh">
+		<div className="flex flex-col w-full h-svh">
 			<h2
-				className="flex items-center h-14 p-3
+				className="flex-[0_0_56px] flex items-center p-3
 				text-sm font-semibold dark:text-white/40
 				border-b-[1px] dark:border-white/5"
 			>

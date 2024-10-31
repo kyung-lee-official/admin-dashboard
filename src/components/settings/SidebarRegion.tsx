@@ -46,7 +46,6 @@ export const SidebarRegion = (props: any) => {
 			className="flex-[4_0_220px] flex flex-col items-end min-h-screen
 			px-6 pt-12
 			text-neutral-500
-			bg-neutral-100
 			font-bold text-lg"
 		>
 			<div className="w-44">

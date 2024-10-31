@@ -11,7 +11,7 @@ import { getChituboxManualFeedbacks } from "@/utils/api/chitubox-manual-feedback
 import { Button } from "@/components/button/Button";
 import { DateRangePicker } from "@/components/datepicker/DateRangePicker";
 
-const Index = () => {
+const Page = () => {
 	const pathname = usePathname();
 
 	const { jwt } = useAuthStore();
@@ -53,16 +53,10 @@ const Index = () => {
 		feedbacksQuery.refetch();
 	};
 
-	// useEffect(() => {
-	// 	setSelectedMenu(MenuKey.CHITUBOX_DOCS_ANALYTICS);
-	// 	setSelectedSubMenu(MenuKey.CHITUBOX_DOCS_ANALYTICS, pathname);
-	// }, [setSelectedMenu, setSelectedSubMenu]);
-
 	return (
 		<div
-			className="flex flex-col justify-start items-center gap-8 min-h-screen
-			p-10
-			font-bold text-neutral-600 dark:text-neutral-500"
+			className="flex flex-col justify-start items-center gap-8 p-10
+			font-bold dark:text-neutral-500"
 		>
 			<div
 				className="flex justify-start items-center w-full
@@ -84,10 +78,10 @@ const Index = () => {
 				</Button>
 			</div>
 			<div className="flex justify-start w-full">
-				<Geo feedbacks={feedbacksQuery.data} />
+				{/* <Geo feedbacks={feedbacksQuery.data} /> */}
 			</div>
 		</div>
 	);
 };
 
-export default Index;
+export default Page;
