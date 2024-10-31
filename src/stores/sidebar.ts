@@ -2,10 +2,10 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
 export const enum MenuKey {
-	HOME = "HOME",
-	CHITUBOX_DOCS_ANALYTICS = "CHITUBOX_DOCS_ANALYTICS",
-	KPI = "KPI",
-	SNS_CRAWLER = "SNS Crawler",
+	HOME,
+	CHITUBOX_DOCS_ANALYTICS,
+	KPI,
+	SNS_CRAWLER,
 }
 
 export type SubMenuItem = {

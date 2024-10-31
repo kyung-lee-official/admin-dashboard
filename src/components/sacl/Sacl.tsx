@@ -40,7 +40,7 @@ export const Sacl = (props: any) => {
 	const setTencentCosTempCredential = useAuthStore(
 		(state) => state.setTencentCosTempCredential
 	);
-	const selectedSubMenu = useSidebarStore((state) => state.selectedSubMenu);
+	// const selectedSubMenu = useSidebarStore((state) => state.selectedSubMenu);
 	const enableRefetch: boolean = !saclRoutes.includes(pathname);
 	const refetchIntervalMs = enableRefetch && 10000;
 
@@ -120,8 +120,6 @@ export const Sacl = (props: any) => {
 	const myInfoQuery = useQuery<any, AxiosError>({
 		queryKey: ["my-info", jwt],
 		queryFn: async () => {
-			console.log(jwt);
-			
 			const isSignedIn = await getMyInfo(jwt);
 			return isSignedIn;
 		},
@@ -262,9 +260,7 @@ export const Sacl = (props: any) => {
 					{saclRoutes.includes(pathname) ? (
 						<AuthMask>{children}</AuthMask>
 					) : (
-						<Layout heading={selectedSubMenu?.title}>
-							{children}
-						</Layout>
+						<Layout>{children}</Layout>
 					)}
 				</motion.div>
 			)}

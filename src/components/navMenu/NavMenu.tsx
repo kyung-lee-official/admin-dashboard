@@ -1,56 +1,93 @@
 "use client";
 
-import React from "react";
-
-import { MenuKey, SubMenuItem, useSidebarStore } from "@/stores/sidebar";
+import React, { ReactNode } from "react";
+import { SubMenuItem, useSidebarStore } from "@/stores/sidebar";
 import Link from "next/link";
 import { Panel } from "../panel/Panel";
-import {
-	Crawler,
-	Home,
-	Manual,
-	PerformanceIcon,
-	SidebarIcon,
-} from "../icons/Icons";
+import { Crawler, Home, Manual, PerformanceIcon } from "../icons/Icons";
 import { ServerMenu } from "../serverMenu/ServerMenu";
+import { usePathname } from "next/navigation";
+import { flattenMenu, MenuKey } from "./menuItems";
 
-const Divider = () => {
-	return <div className="w-[50%] h-[3px] bg-neutral-400/50 rounded-sm" />;
+type NavMenuProps = {
+	menuKey: MenuKey;
+	text: string;
+	icon?: ReactNode;
+};
+
+export const NavMenu = ({ menuKey, text, icon }: NavMenuProps) => {
+	const pathname = usePathname();
+
+	const item = flattenMenu.find((item) => {
+		return item.menuKey === menuKey;
+	});
+	if (item) {
+		return (
+			<div className="px-3">
+				<Link
+					href={item.link}
+					className={`flex items-center h-7 px-2 gap-2.5
+					${pathname === item.link ? "text-neutral-200" : "text-neutral-400/80"}
+					hover:bg-neutral-400/5
+					rounded-lg`}
+					title={text}
+				>
+					<div className="w-5">{icon}</div>
+					<div className="min-w-0 text-ellipsis whitespace-nowrap overflow-hidden">
+						{text}
+					</div>
+				</Link>
+			</div>
+		);
+	} else {
+		return null;
+	}
 };
 
 export const Sidebar = () => {
 	return (
-		<div
-			className="flex-none w-[4.5rem] h-screen
-			flex flex-col items-center
-			bg-neutral-300 text-secondary shadow-lg
-			dark:bg-neutral-900
+		<nav
+			className="flex flex-col w-56 h-svh
+			font-semibold
+			border-r-[1px] border-white/5
 			z-10"
 		>
-			<SidebarIcon
-				icon={<Home size="28" />}
-				menuKey={MenuKey.HOME}
-				text={"Home"}
-			/>
-			<Divider />
-			<div>
-				<SidebarIcon
-					icon={<Manual size="28" />}
-					menuKey={MenuKey.CHITUBOX_DOCS_ANALYTICS}
-					text={"CHITUBOX Docs Analytics"}
-				/>
-				<SidebarIcon
-					icon={<PerformanceIcon size="28" />}
-					menuKey={MenuKey.KPI}
-					text={"KPI"}
-				/>
-				<SidebarIcon
-					icon={<Crawler size="28" />}
-					menuKey={MenuKey.SNS_CRAWLER}
-					text={"SNS Crawler"}
-				/>
+			<div className="flex-[1_1_52px]">
+				<div
+					className=" flex flex-col gap-y-1
+					text-sm text-neutral-400/80"
+				>
+					<div className="py-3">
+						<NavMenu
+							menuKey={MenuKey.HOME}
+							text="CHITUBOX Docs"
+							icon={<Home size="20" />}
+						/>
+					</div>
+					<hr className="border-[1px] border-white/5" />
+					<div className="flex flex-col py-3 gap-1">
+						<NavMenu
+							menuKey={MenuKey.CHITUBOX_DOCS_ANALYTICS}
+							text="CHITUBOX Docs Analytics"
+							icon={<Manual size="20" />}
+						/>
+						<NavMenu
+							menuKey={MenuKey.KPI}
+							text="KPI"
+							icon={<PerformanceIcon size="20" />}
+						/>
+						<NavMenu
+							menuKey={MenuKey.SNS_CRAWLER}
+							icon={<Crawler size="20" />}
+							text="SNS Crawler"
+						/>
+					</div>
+				</div>
 			</div>
-		</div>
+			<div className="flex-[0_0_56px]">
+				<Panel />
+			</div>
+		</nav>
 	);
 };
 
@@ -82,7 +119,6 @@ export const SubSidebar = () => {
 					}
 				})}
 			</div>
-			<Panel />
 		</div>
 	);
 };

@@ -4,7 +4,7 @@ import { MenuKey, useSidebarStore } from "@/stores/sidebar";
 import { usePathname } from "next/navigation";
 import React, { useEffect } from "react";
 
-const Index = () => {
+const Page = () => {
 	const pathname = usePathname();
 	const setSelectedMenu = useSidebarStore((state) => state.setSelectedMenu);
 	const setSelectedSubMenu = useSidebarStore(
@@ -19,4 +19,4 @@ const Index = () => {
 	return <div>Home</div>;
 };
 
-export default Index;
+export default Page;

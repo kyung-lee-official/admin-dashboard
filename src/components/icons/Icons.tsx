@@ -1,46 +1,6 @@
 "use client";
 
-import { MenuKey, useSidebarStore } from "@/stores/sidebar";
-import classNames from "classnames";
-import Link from "next/link";
 import React from "react";
-
-type SidebarIconProps = {
-	icon: any;
-	menuKey: MenuKey;
-	text?: string;
-};
-
-export const SidebarIcon = ({ icon, menuKey, text }: SidebarIconProps) => {
-	let sidebarIcon;
-	const selectedMenu = useSidebarStore((state) => state.selectedMenu);
-	if (selectedMenu === menuKey) {
-		sidebarIcon = classNames("sidebar-icon-active");
-	} else {
-		sidebarIcon = classNames("sidebar-icon");
-	}
-	const menus = useSidebarStore((state) => state.menus);
-	const menu = menus.find((menu) => {
-		return menu.menuKey === menuKey;
-	});
-	if (menu) {
-		return (
-			<Link
-				href={menu.subMenu[0].link}
-				className={`${sidebarIcon} group`}
-			>
-				{icon}
-				{text ? (
-					<span className="sidebar-tooltip group-hover:scale-100">
-						{text}
-					</span>
-				) : null}
-			</Link>
-		);
-	} else {
-		return null;
-	}
-};
 
 export const Home = ({ size, fill }: any) => {
 	return (
