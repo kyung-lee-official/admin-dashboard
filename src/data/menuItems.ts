@@ -17,7 +17,7 @@ export type MenuItem = {
 export const menuItems: MenuItem[] = [
 	{
 		menuKey: MenuKey.HOME,
-		title: "Home Page",
+		title: "Home",
 		link: "/home",
 	},
 	{

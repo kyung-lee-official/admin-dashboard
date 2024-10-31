@@ -1,6 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
-import { useSidebarStore } from "@/stores/sidebar";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useAuthStore } from "@/stores/auth";
@@ -40,7 +39,6 @@ export const Sacl = (props: any) => {
 	const setTencentCosTempCredential = useAuthStore(
 		(state) => state.setTencentCosTempCredential
 	);
-	// const selectedSubMenu = useSidebarStore((state) => state.selectedSubMenu);
 	const enableRefetch: boolean = !saclRoutes.includes(pathname);
 	const refetchIntervalMs = enableRefetch && 10000;
 

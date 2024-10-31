@@ -1,25 +1,26 @@
 "use client";
 
-import React from "react";
+import { flattenMenu } from "@/data/menuItems";
+import { usePathname } from "next/navigation";
+import React, { ReactNode } from "react";
 
-export const Content = (props: any) => {
-	const { heading, children } = props;
+export const Content = (props: { children: ReactNode }) => {
+	const { children } = props;
+	const pathname = usePathname();
+	const item = flattenMenu.find((item) => {
+		return item.link === pathname;
+	});
+
 	return (
-		<div
-			className="flex-auto h-screen
-			flex flex-col
-			bg-neutral-100
-			dark:bg-neutral-700 dark:text-neutral-500"
-		>
+		<div className="w-full h-svh">
 			<h2
-				className="px-6 py-3
-				text-xl font-bold
-				text-neutral-600 dark:text-neutral-200
-				border-b-2 border-neutral-300 dark:border-neutral-800"
+				className="flex items-center h-14 p-3
+				text-sm font-semibold dark:text-white/40
+				border-b-[1px] dark:border-white/5"
 			>
-				{heading}
+				{item?.title}
 			</h2>
-			<div className="overflow-y-scroll scrollbar">{children}</div>
+			<div className="scrollbar overflow-y-auto">{children}</div>
 		</div>
 	);
 };

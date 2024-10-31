@@ -1,20 +1,8 @@
 "use client";
 
-import { MenuKey, useSidebarStore } from "@/stores/sidebar";
-import { usePathname } from "next/navigation";
-import React, { useEffect } from "react";
+import React from "react";
 
 const Index = () => {
-	const pathname = usePathname();
-	const setSelectedMenu = useSidebarStore((state) => state.setSelectedMenu);
-	const setSelectedSubMenu = useSidebarStore(
-		(state) => state.setSelectedSubMenu
-	);
-
-	useEffect(() => {
-		setSelectedMenu(MenuKey.SNS_CRAWLER);
-		setSelectedSubMenu(MenuKey.SNS_CRAWLER, pathname);
-	}, [setSelectedMenu, setSelectedSubMenu]);
 	return (
 		<div
 			className="flex flex-col justify-center items-center gap-20

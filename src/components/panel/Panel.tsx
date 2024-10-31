@@ -41,10 +41,17 @@ export const Panel = () => {
 	return (
 		<div
 			className="flex-none flex items-center p-3
-			text-white/70
+			text-white/90
 			border-t-[1px] dark:border-white/5"
 		>
-			<div className="flex justify-between items-center w-full px-1 py-0.5">
+			<button
+				className="flex justify-between items-center w-full px-2 py-1
+				dark:hover:bg-white/5
+				rounded-lg"
+				onClick={() => {
+					setShowMemberSettings(true);
+				}}
+			>
 				<div className="flex items-center gap-3">
 					<div
 						className="flex justify-center items-center w-6 h-6
@@ -79,18 +86,7 @@ export const Panel = () => {
 						{myInfoQuery.data?.nickname}
 					</div>
 				</div>
-				<button
-					className="flex justify-between items-center
-						hover:bg-neutral-300 dark:hover:bg-neutral-800
-						cursor-pointer rounded-md transition-all duration-300"
-					onClick={() => {
-						setShowMemberSettings(true);
-					}}
-				>
-					<div className="hover:rotate-90 duration-300">
-						<SettingsIcon size={20} />
-					</div>
-				</button>
+				<SettingsIcon size={20} />
 				<AnimatePresence mode="wait">
 					{showMemberSettings && (
 						<SettingsMask key={"memberSettingsMask"}>
@@ -101,7 +97,7 @@ export const Panel = () => {
 						</SettingsMask>
 					)}
 				</AnimatePresence>
-			</div>
+			</button>
 		</div>
 	);
 };

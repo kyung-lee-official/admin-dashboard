@@ -1,6 +1,5 @@
 "use client";
 
-import { MenuKey, useSidebarStore } from "@/stores/sidebar";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { useAuthStore } from "@/stores/auth";
@@ -14,11 +13,8 @@ import { DateRangePicker } from "@/components/datepicker/DateRangePicker";
 
 const Index = () => {
 	const pathname = usePathname();
-	const setSelectedMenu = useSidebarStore((state) => state.setSelectedMenu);
-	const setSelectedSubMenu = useSidebarStore(
-		(state) => state.setSelectedSubMenu
-	);
-	const { accessToken } = useAuthStore();
+
+	const { jwt } = useAuthStore();
 	const [isEndBeforeStart, setIsEndBeforeStart] = useState<boolean>(false);
 	const [startDate, setStartDate] = useState<dayjs.Dayjs>(
 		dayjs().startOf("month")
@@ -26,12 +22,12 @@ const Index = () => {
 	const [endDate, setEndDate] = useState<dayjs.Dayjs>(dayjs().endOf("month"));
 
 	const feedbacksQuery = useQuery<any, AxiosError>({
-		queryKey: ["feedbacksQuery", accessToken],
+		queryKey: ["feedbacksQuery", jwt],
 		queryFn: async () => {
 			const feedbacks = await getChituboxManualFeedbacks(
 				startDate,
 				endDate,
-				accessToken
+				jwt
 			);
 			return feedbacks;
 		},
@@ -57,10 +53,10 @@ const Index = () => {
 		feedbacksQuery.refetch();
 	};
 
-	useEffect(() => {
-		setSelectedMenu(MenuKey.CHITUBOX_DOCS_ANALYTICS);
-		setSelectedSubMenu(MenuKey.CHITUBOX_DOCS_ANALYTICS, pathname);
-	}, [setSelectedMenu, setSelectedSubMenu]);
+	// useEffect(() => {
+	// 	setSelectedMenu(MenuKey.CHITUBOX_DOCS_ANALYTICS);
+	// 	setSelectedSubMenu(MenuKey.CHITUBOX_DOCS_ANALYTICS, pathname);
+	// }, [setSelectedMenu, setSelectedSubMenu]);
 
 	return (
 		<div
