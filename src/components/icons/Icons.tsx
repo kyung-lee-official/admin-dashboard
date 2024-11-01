@@ -203,6 +203,27 @@ export const SettingsIcon = ({ size, fill }: any) => {
 	);
 };
 
+export const ReturnIcon = ({ size, fill }: any) => {
+	return (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			width="15"
+			height="15"
+			fill="none"
+		>
+			<g
+				stroke="currentColor"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				strokeWidth="1.5"
+			>
+				<path d="M1.5 5.056h8.667a3.333 3.333 0 0 1 0 6.666H6.833"></path>
+				<path d="M4.611 8.167 1.5 5.056l3.111-3.112"></path>
+			</g>
+		</svg>
+	);
+};
+
 export const CloseIcon = ({ size, fill }: any) => {
 	return (
 		<svg

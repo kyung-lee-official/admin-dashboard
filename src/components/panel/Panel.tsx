@@ -10,10 +10,13 @@ import { SettingsIcon } from "../icons/Icons";
 import { Settings } from "../settings/Settings";
 import { SettingsMask } from "../settings/SettingsMask";
 import { metaData } from "../settings/memberSettings/metaData";
+import { useRouter } from "next/navigation";
 
 export const Panel = () => {
 	const [showMemberSettings, setShowMemberSettings] =
 		useState<boolean>(false);
+
+	const router = useRouter();
 	const jwt = useAuthStore((state) => state.jwt);
 	const tencentCosTempCredential = useAuthStore(
 		(state) => state.tencentCosTempCredential
@@ -49,7 +52,7 @@ export const Panel = () => {
 				dark:hover:bg-white/5
 				rounded-lg"
 				onClick={() => {
-					setShowMemberSettings(true);
+					router.push("/settings");
 				}}
 			>
 				<div className="flex items-center gap-3">
@@ -87,6 +90,13 @@ export const Panel = () => {
 					</div>
 				</div>
 				<SettingsIcon size={20} />
+			</button>
+			<button
+				onClick={() => {
+					setShowMemberSettings(true);
+				}}
+			>
+				old settings
 			</button>
 			<AnimatePresence mode="wait">
 				{showMemberSettings && (

@@ -4,18 +4,24 @@ import React, { ReactNode } from "react";
 // import { SubMenuItem, useSidebarStore } from "@/stores/sidebar";
 import Link from "next/link";
 import { Panel } from "../panel/Panel";
-import { Crawler, Home, Manual, PerformanceIcon } from "../icons/Icons";
+import {
+	Crawler,
+	Home,
+	Manual,
+	PerformanceIcon,
+	ReturnIcon,
+} from "../icons/Icons";
 import { ServerMenu } from "../serverMenu/ServerMenu";
 import { usePathname } from "next/navigation";
 import { flattenMenu, MenuKey } from "@/data/menuItems";
 
-type NavMenuProps = {
+type NavMenuItemProps = {
 	menuKey: MenuKey;
 	text: string;
 	icon?: ReactNode;
 };
 
-export const NavMenu = ({ menuKey, text, icon }: NavMenuProps) => {
+export const NavMenuItem = ({ menuKey, text, icon }: NavMenuItemProps) => {
 	const pathname = usePathname();
 
 	const item = flattenMenu.find((item) => {
@@ -49,7 +55,63 @@ export const NavMenu = ({ menuKey, text, icon }: NavMenuProps) => {
 	}
 };
 
-export const Sidebar = () => {
+const AppMenu = () => {
+	return (
+		<>
+			<div className="py-3">
+				<NavMenuItem
+					menuKey={MenuKey.HOME}
+					text="Home"
+					icon={<Home size="20" />}
+				/>
+			</div>
+			<hr className="border-b-[1px] border-white/5 mx-3 border-dashed" />
+			<div className="flex flex-col py-3 gap-1">
+				<NavMenuItem
+					menuKey={MenuKey.CHITUBOX_DOCS_ANALYTICS}
+					text="CHITUBOX Docs Analytics"
+					icon={<Manual size="20" />}
+				/>
+				<NavMenuItem
+					menuKey={MenuKey.KPI}
+					text="KPI"
+					icon={<PerformanceIcon size="20" />}
+				/>
+				<NavMenuItem
+					menuKey={MenuKey.SNS_CRAWLER}
+					icon={<Crawler size="20" />}
+					text="SNS Crawler"
+				/>
+			</div>
+		</>
+	);
+};
+
+const SettingsMenu = () => {
+	return (
+		<>
+			<div className="py-3">
+				<NavMenuItem
+					menuKey={MenuKey.SETTINGS}
+					text="Settings"
+					icon={<ReturnIcon size="20" />}
+				/>
+			</div>
+			<hr className="border-b-[1px] border-white/5 mx-3 border-dashed" />
+			<div className="flex flex-col py-3 gap-1">
+				<NavMenuItem
+					menuKey={MenuKey.MY_ACCOUNT}
+					text="My Account"
+					icon={<ReturnIcon size="20" />}
+				/>
+			</div>
+		</>
+	);
+};
+
+export const NavMenu = () => {
+	const pathname = usePathname();
+
 	return (
 		<nav
 			className="flex flex-col w-56 h-svh
@@ -62,31 +124,11 @@ export const Sidebar = () => {
 					className="flex flex-col
 					text-sm text-neutral-400/80"
 				>
-					<div className="py-3">
-						<NavMenu
-							menuKey={MenuKey.HOME}
-							text="Home"
-							icon={<Home size="20" />}
-						/>
-					</div>
-					<hr className="border-b-[1px] border-white/5 mx-3 border-dashed" />
-					<div className="flex flex-col py-3 gap-1">
-						<NavMenu
-							menuKey={MenuKey.CHITUBOX_DOCS_ANALYTICS}
-							text="CHITUBOX Docs Analytics"
-							icon={<Manual size="20" />}
-						/>
-						<NavMenu
-							menuKey={MenuKey.KPI}
-							text="KPI"
-							icon={<PerformanceIcon size="20" />}
-						/>
-						<NavMenu
-							menuKey={MenuKey.SNS_CRAWLER}
-							icon={<Crawler size="20" />}
-							text="SNS Crawler"
-						/>
-					</div>
+					{pathname.startsWith("/settings") ? (
+						<SettingsMenu />
+					) : (
+						<AppMenu />
+					)}
 				</div>
 			</div>
 			<div className="flex-[0_0_56px]">
@@ -95,6 +137,8 @@ export const Sidebar = () => {
 		</nav>
 	);
 };
+
+export default NavMenu;
 
 // export const SubSidebar = () => {
 // 	const selectedMenu = useSidebarStore((state) => state.selectedMenu);

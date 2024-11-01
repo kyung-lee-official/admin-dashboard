@@ -8,7 +8,7 @@ export const Content = (props: { children: ReactNode }) => {
 	const { children } = props;
 	const pathname = usePathname();
 	const item = flattenMenu.find((item) => {
-		return item.link === pathname;
+		return item.pageUrl === pathname;
 	});
 
 	return (
