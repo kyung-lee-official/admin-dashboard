@@ -28,8 +28,13 @@ export const NavMenu = ({ menuKey, text, icon }: NavMenuProps) => {
 					href={item.link}
 					className={`flex items-center h-7 px-2 gap-2.5
 					${pathname === item.link ? "text-neutral-200" : "text-neutral-400/80"}
-					hover:bg-neutral-400/5
-					rounded-lg`}
+					${
+						pathname === item.link
+							? "dark:bg-neutral-400/10"
+							: "dark:hover:bg-neutral-400/5"
+					}
+					rounded-md
+					${pathname === item.link && "border-[1px] border-white/10 border-t-white/15"}`}
 					title={text}
 				>
 					<div className="w-5">{icon}</div>
