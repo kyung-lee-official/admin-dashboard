@@ -23,34 +23,34 @@ export const menuItems: MenuItem[] = [
 	{
 		menuKey: MenuKey.CHITUBOX_DOCS_ANALYTICS,
 		title: "CHITUBOX Docs Analytics",
-		link: "/chitubox-docs-analytics/chitubox-docs-user-feedback",
+		link: "/app/chitubox-docs-analytics/chitubox-docs-user-feedback",
 		subMenu: [
 			{
 				menuKey: MenuKey.CHITUBOX_DOCS_USER_FEEDBACK,
 				title: "CHITUBOX Docs User Feedback",
-				link: "/chitubox-docs-analytics/chitubox-docs-user-feedback",
+				link: "/app/chitubox-docs-analytics/chitubox-docs-user-feedback",
 			},
 			{
 				menuKey: MenuKey.CHITUBOX_DOCS_ADVERTISEMENT,
 				title: "CHITUBOX Docs Page Views",
-				link: "/chitubox-docs-analytics/chitubox-docs-page-views",
+				link: "/app/chitubox-docs-analytics/chitubox-docs-page-views",
 			},
 			{
 				menuKey: MenuKey.CHITUBOX_DOCS_ADVERTISEMENT,
 				title: "CHITUBOX Docs Ads",
-				link: "/chitubox-docs-analytics/chitubox-docs-advertisement",
+				link: "/app/chitubox-docs-analytics/chitubox-docs-advertisement",
 			},
 		],
 	},
 	{
 		menuKey: MenuKey.KPI,
 		title: "KPI",
-		link: "/kpi",
+		link: "/app/kpi",
 	},
 	{
 		menuKey: MenuKey.SNS_CRAWLER,
 		title: "SNS Crawler",
-		link: "/sns-crawler",
+		link: "/app/sns-crawler",
 	},
 ];
 
