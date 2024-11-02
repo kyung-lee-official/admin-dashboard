@@ -1,20 +1,10 @@
 "use client";
 
-import { MenuKey, useSidebarStore } from "@/stores/sidebar";
 import { usePathname } from "next/navigation";
-import React, { useEffect } from "react";
+import React from "react";
 
 const Index = () => {
 	const pathname = usePathname();
-	const setSelectedMenu = useSidebarStore((state) => state.setSelectedMenu);
-	const setSelectedSubMenu = useSidebarStore(
-		(state) => state.setSelectedSubMenu
-	);
-
-	useEffect(() => {
-		setSelectedMenu(MenuKey.CHITUBOX_DOCS_ANALYTICS);
-		setSelectedSubMenu(MenuKey.CHITUBOX_DOCS_ANALYTICS, pathname);
-	}, [setSelectedMenu, setSelectedSubMenu]);
 
 	return (
 		<div

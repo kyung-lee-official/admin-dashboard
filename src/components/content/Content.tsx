@@ -1,6 +1,6 @@
 "use client";
 
-import { flattenMenu } from "@/data/menuItems";
+import { flattenMenu } from "@/components/navMenu/MenuItems";
 import { usePathname } from "next/navigation";
 import React, { ReactNode } from "react";
 
