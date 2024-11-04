@@ -22,7 +22,7 @@ export const Server = (props: any) => {
 		useState<boolean>(false);
 
 	const getServerSettingsQuery = useQuery<any, AxiosError>({
-		queryKey: ["getServerSettings", jwt],
+		queryKey: ["get-server-settings", jwt],
 		queryFn: async () => {
 			const serverSettings = await getServerSettings(jwt);
 			return serverSettings;
@@ -37,7 +37,7 @@ export const Server = (props: any) => {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: ["getServerSettings", jwt],
+				queryKey: ["get-server-settings", jwt],
 			});
 			setShowSettingsChangedIndicator(false);
 		},

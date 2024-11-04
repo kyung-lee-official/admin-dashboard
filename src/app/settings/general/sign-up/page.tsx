@@ -1,7 +1,11 @@
-import React from "react";
+import { Content } from "./Content";
 
 const Page = () => {
-	return <div>Sign Up</div>;
+	return (
+		<div className="flex justify-center">
+			<Content />
+		</div>
+	);
 };
 
 export default Page;
