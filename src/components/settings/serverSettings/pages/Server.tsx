@@ -16,15 +16,15 @@ import { Toggle } from "@/components/toggle/Toggle";
 import { SettingsChangedIndicator } from "../../SettingsChangedIndicator";
 
 export const Server = (props: any) => {
-	const { accessToken } = useAuthStore();
+	const { jwt } = useAuthStore();
 	const [newData, setNewData] = useState<any>(null);
 	const [showSettingsChangedIndicator, setShowSettingsChangedIndicator] =
 		useState<boolean>(false);
 
 	const getServerSettingsQuery = useQuery<any, AxiosError>({
-		queryKey: ["getServerSettings", accessToken],
+		queryKey: ["getServerSettings", jwt],
 		queryFn: async () => {
-			const serverSettings = await getServerSettings(accessToken);
+			const serverSettings = await getServerSettings(jwt);
 			return serverSettings;
 		},
 		retry: false,
@@ -33,11 +33,11 @@ export const Server = (props: any) => {
 
 	const mutation = useMutation({
 		mutationFn: () => {
-			return updateServerSettings(newData, accessToken);
+			return updateServerSettings(newData, jwt);
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: ["getServerSettings", accessToken],
+				queryKey: ["getServerSettings", jwt],
 			});
 			setShowSettingsChangedIndicator(false);
 		},

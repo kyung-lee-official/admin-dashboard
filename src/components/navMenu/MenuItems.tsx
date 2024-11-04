@@ -94,19 +94,16 @@ export const settingsReturnMenuItem: MenuItem[] = [
 	},
 ];
 
-export const settingsMenuItems: MenuItem[] = [
-	// {
-	// 	menuKey: MenuKey.GENERAL,
-	// 	title: "General",
-	// 	link: "/settings/general",
-	// 	pageUrl: "/settings/general",
-	// },
-	// {
-	// 	menuKey: MenuKey.MY_ACCOUNT,
-	// 	title: "My Account",
-	// 	link: "/settings/my-account/profile",
-	// 	subMenu: [],
-	// },
+export const settingsGeneralMenuItems: MenuItem[] = [
+	{
+		menuKey: MenuKey.PROFILE,
+		title: "Sign Up",
+		link: "/settings/general/sign-up",
+		pageUrl: "/settings/general/sign-up",
+	},
+];
+
+export const settingsMyAccountMenuItems: MenuItem[] = [
 	{
 		menuKey: MenuKey.PROFILE,
 		title: "Profile",
@@ -130,5 +127,6 @@ export const flattenMenu = flatten(
 	homeMenuItem
 		.concat(menuItems)
 		.concat(settingsReturnMenuItem)
-		.concat(settingsMenuItems)
+		.concat(settingsGeneralMenuItems)
+		.concat(settingsMyAccountMenuItems)
 );

@@ -9,7 +9,8 @@ import {
 	homeMenuItem,
 	MenuItem,
 	menuItems,
-	settingsMenuItems,
+	settingsGeneralMenuItems,
+	settingsMyAccountMenuItems,
 } from "@/components/navMenu/MenuItems";
 
 export const NavMenuItem = (props: { menu: MenuItem[] }) => {
@@ -141,6 +142,10 @@ export const NavMenu = () => {
 									</Link>
 								</div>
 							</div>
+							<hr
+								className="mx-3 my-2
+								border-dashed border-white/10"
+							/>
 							<div className="flex flex-col gap-2">
 								<div className="flex flex-col gap-2">
 									<div className="px-3">
@@ -151,10 +156,12 @@ export const NavMenu = () => {
 											General
 										</div>
 									</div>
-									{/* <NavMenuItem menu={settingsMenuItems} /> */}
+									<NavMenuItem
+										menu={settingsGeneralMenuItems}
+									/>
 								</div>
 								<hr
-									className="m-3
+									className="mx-3 my-2
 									border-dashed border-white/10"
 								/>
 								<div className="flex flex-col gap-2">
@@ -166,7 +173,9 @@ export const NavMenu = () => {
 											My Account
 										</div>
 									</div>
-									<NavMenuItem menu={settingsMenuItems} />
+									<NavMenuItem
+										menu={settingsMyAccountMenuItems}
+									/>
 								</div>
 							</div>
 						</>
@@ -176,7 +185,13 @@ export const NavMenu = () => {
 							<div className="py-3">
 								<NavMenuItem menu={homeMenuItem} />
 							</div>
-							<NavMenuItem menu={menuItems} />
+							<hr
+								className="mx-3 my-2
+								border-dashed border-white/10"
+							/>
+							<div className="py-3">
+								<NavMenuItem menu={menuItems} />
+							</div>
 						</>
 					)}
 				</div>

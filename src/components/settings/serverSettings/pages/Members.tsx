@@ -260,14 +260,14 @@ const Row = (props: {
 
 export const Members = (props: any) => {
 	const { setActivePath } = props;
-	const { accessToken } = useAuthStore();
+	const { jwt } = useAuthStore();
 
 	const [searchResults, setSearchResults] = useState<any[]>([]);
 
 	const membersQuery = useQuery<any, AxiosError>({
-		queryKey: ["getMembers", accessToken],
+		queryKey: ["getMembers", jwt],
 		queryFn: async () => {
-			const members = await getMembers(accessToken);
+			const members = await getMembers(jwt);
 			return members;
 		},
 		retry: false,

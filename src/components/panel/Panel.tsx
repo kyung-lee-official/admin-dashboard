@@ -52,7 +52,7 @@ export const Panel = () => {
 				dark:hover:bg-white/5
 				rounded-lg"
 				onClick={() => {
-					router.push("/settings");
+					router.push("/settings/general/sign-up");
 				}}
 			>
 				<div className="flex items-center gap-3">
