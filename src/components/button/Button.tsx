@@ -12,7 +12,8 @@ type ButtonProps = {
 		| "secondary"
 		| "success"
 		| "warning"
-		| "danger";
+		| "danger"
+		| "cancel";
 	size?: "sm" | "md" | "lg";
 	radius?: "none" | "sm" | "md" | "lg" | "full";
 	fullWidth?: boolean;
@@ -36,7 +37,8 @@ export const Button = ({
 	switch (color) {
 		case "default":
 			btnBgColor = `text-neutral-600 dark:text-neutral-50
-				bg-neutral-300 hover:bg-neutral-300/70 dark:bg-neutral-600 dark:hover:bg-neutral-600/70`;
+				bg-neutral-300 hover:bg-neutral-300/70 dark:bg-neutral-600 dark:hover:bg-neutral-600/70
+				border-[1px] border-white/10 border-t-white/15`;
 			break;
 		case "primary":
 			btnBgColor =
@@ -58,6 +60,11 @@ export const Button = ({
 			btnBgColor =
 				"bg-red-500 hover:bg-red-500/80 dark:bg-red-600 dark:hover:bg-red-600/80";
 			break;
+		case "cancel":
+			btnBgColor = `dark:text-neutral-50
+				dark:hover:bg-white/5
+				border-[1px] border-white/10 border-t-white/15`;
+			break;
 		default:
 			btnBgColor = `text-neutral-600 dark:text-neutral-50
 				bg-neutral-300 hover:bg-neutral-300/70 dark:bg-neutral-600 dark:hover:bg-neutral-600/70`;
@@ -67,7 +74,7 @@ export const Button = ({
 	let btnSize: string;
 	switch (size) {
 		case "sm":
-			btnSize = "py-[6px] px-[12px] text-sm";
+			btnSize = "py-1.5 px-3 text-sm leading-4";
 			break;
 		case "md":
 			btnSize = "py-2 px-4 text-base";
