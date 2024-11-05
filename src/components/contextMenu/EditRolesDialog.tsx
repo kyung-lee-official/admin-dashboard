@@ -17,12 +17,12 @@ export const EditRolesDialog = (props: {
 	setShowEditRolesDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
 	const { member, showEditRolesDialog, setShowEditRolesDialog } = props;
-	const accessToken = useAuthStore((state) => state.accessToken);
+	const jwt = useAuthStore((state) => state.jwt);
 
 	const rolesQuery = useQuery<any, AxiosError>({
-		queryKey: ["getRoles", accessToken],
+		queryKey: ["getRoles", jwt],
 		queryFn: async () => {
-			const roles = await getRoles(accessToken);
+			const roles = await getRoles(jwt);
 			return roles;
 		},
 		retry: false,
@@ -43,12 +43,12 @@ export const EditRolesDialog = (props: {
 			memberId: string;
 			roleIds: number[];
 		}) => {
-			return editMemberRoles(memberId, roleIds, accessToken);
+			return editMemberRoles(memberId, roleIds, jwt);
 		},
 		onSuccess: (data) => {
 			setShowEditRolesDialog(false);
 			queryClient.invalidateQueries({
-				queryKey: ["getMembers", accessToken],
+				queryKey: ["getMembers", jwt],
 			});
 		},
 	});

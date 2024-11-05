@@ -19,18 +19,7 @@ export const EditPanel = (props: {
 				flex justify-end
 				overflow-hidden"
 			>
-				{/* panel */}
-				<motion.div
-					initial={{ x: "100%" }}
-					animate={{ x: "0%" }}
-					transition={{ duration: 0.1 }}
-					className="flex flex-col h-[calc(100svh-16px)] w-full max-w-[560px] m-2
-					text-white/90
-					bg-neutral-900
-					rounded-lg border-[1px] border-neutral-700 border-t-neutral-600"
-				>
-					<EditContent setEdit={setEdit} />
-				</motion.div>
+				<EditContent setEdit={setEdit} />
 			</motion.div>
 		);
 	} else {

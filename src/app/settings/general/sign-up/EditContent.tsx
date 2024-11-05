@@ -8,14 +8,20 @@ import {
 import { queryClient } from "@/utils/react-query/react-query";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { EditProps } from "./Content";
 import { Button } from "@/components/button/Button";
+import { motion } from "framer-motion";
+import { UnsavedDialog } from "../../UnsavedDialog";
 
 export const EditContent = (props: {
 	setEdit: Dispatch<SetStateAction<EditProps>>;
 }) => {
 	const { setEdit } = props;
+
+	const panelRef = useRef<HTMLDivElement>(null);
+
+	const unsavedDialogRef = useRef<HTMLDialogElement>(null);
 
 	const { jwt } = useAuthStore();
 	const [newData, setNewData] = useState<any>(null);
@@ -68,8 +74,43 @@ export const EditContent = (props: {
 		}
 	}, [newData]);
 
+	function quit() {
+		if (isChanged) {
+			if (unsavedDialogRef.current) {
+				unsavedDialogRef.current.showModal();
+			}
+		} else {
+			setEdit({ show: false, id: "sign-up" });
+		}
+	}
+
+	useEffect(() => {
+		function handleClickOutside(event: any) {
+			if (!panelRef.current) {
+				return;
+			}
+			if (!panelRef.current.contains(event.target)) {
+				quit();
+			}
+		}
+
+		document.addEventListener("click", handleClickOutside);
+		return () => {
+			document.removeEventListener("click", handleClickOutside);
+		};
+	}, [panelRef, isChanged]);
+
 	return (
-		<>
+		<motion.div
+			ref={panelRef}
+			initial={{ x: "100%" }}
+			animate={{ x: "0%" }}
+			transition={{ duration: 0.1 }}
+			className="flex flex-col h-[calc(100svh-16px)] w-full max-w-[560px] m-2
+			text-white/90
+			bg-neutral-900
+			rounded-lg border-[1px] border-neutral-700 border-t-neutral-600"
+		>
 			<div
 				className="flex-[0_0_61px] flex justify-between px-6 py-4
 				font-semibold text-lg
@@ -81,7 +122,7 @@ export const EditContent = (props: {
 					text-white/50
 					hover:bg-white/10 rounded-md"
 					onClick={() => {
-						setEdit({ show: false, id: "sign-up" });
+						quit();
 					}}
 				>
 					<CloseIcon size={15} />
@@ -129,11 +170,25 @@ export const EditContent = (props: {
 				</table>
 			</div>
 			<div className="flex-[0_0_61px] flex justify-end px-6 py-4 gap-1.5">
-				<Button color="cancel" size="sm">
+				<Button
+					color="cancel"
+					size="sm"
+					onClick={() => {
+						quit();
+					}}
+				>
 					Cancel
 				</Button>
-				<Button size="sm">Save</Button>
+				<Button
+					size="sm"
+					onClick={() => {
+						onSave();
+					}}
+				>
+					Save
+				</Button>
 			</div>
-		</>
+			<UnsavedDialog ref={unsavedDialogRef} setEdit={setEdit} />
+		</motion.div>
 	);
 };
