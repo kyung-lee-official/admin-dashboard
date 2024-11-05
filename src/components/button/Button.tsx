@@ -119,7 +119,7 @@ export const Button = ({
 			${isDisabled && "cursor-not-allowed"}
 			${isDisabled ? "bg-neutral-400" : btnBgColor}
 			${isDisabled ? "text-neutral-500" : "text-neutral-50"}
-			transition-all duration-150
+			transition-all duration-150 outline-none
 			${className}`}
 			disabled={isDisabled || isLoading}
 			{...rest}
