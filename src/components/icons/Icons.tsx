@@ -227,28 +227,18 @@ export const ReturnIcon = ({ size, fill }: any) => {
 export const CloseIcon = ({ size, fill }: any) => {
 	return (
 		<svg
-			viewBox="0 0 512 512"
-			height="48"
-			width="48"
-			focusable="false"
-			role="img"
-			fill="currentColor"
+			viewBox="0 0 15 15"
+			width={size}
+			height={size}
+			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
 		>
 			<path
-				fill="none"
-				stroke="currentColor"
-				strokeMiterlimit="10"
-				strokeWidth="32"
-				d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z"
-			></path>
-			<path
-				fill="none"
 				stroke="currentColor"
 				strokeLinecap="round"
 				strokeLinejoin="round"
-				strokeWidth="32"
-				d="M320 320 192 192m0 128 128-128"
+				strokeWidth="1.5"
+				d="m11.25 3.75-7.5 7.5M3.75 3.75l7.5 7.5"
 			></path>
 		</svg>
 	);
