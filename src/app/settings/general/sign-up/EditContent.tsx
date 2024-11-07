@@ -53,9 +53,7 @@ export const EditContent = (props: {
 			});
 			setIsChanged(false);
 		},
-		onError: () => {
-			// setShowSettingsChangedIndicator(true);
-		},
+		onError: () => {},
 	});
 
 	function onSave() {
