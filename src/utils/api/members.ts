@@ -39,12 +39,12 @@ export const verifyMember = async (
 
 export const updateProfile = async (
 	memberId: string,
-	nickname: string,
+	name: string,
 	accessToken?: string | null
 ): Promise<any> => {
 	const res = await axios.patch(
 		`/members/profile/${memberId}`,
-		{ nickname: nickname },
+		{ name: name },
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
 			headers: {

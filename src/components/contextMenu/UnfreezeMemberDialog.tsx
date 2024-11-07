@@ -66,7 +66,7 @@ export const UnfreezeMemberDialog = (props: {
 						Are you sure you want to unfreeze member
 					</p>
 					<p>
-						<strong>{member.nickname}</strong>({member.email})?
+						<strong>{member.name}</strong>({member.email})?
 					</p>
 				</div>
 				<div className="flex gap-6">

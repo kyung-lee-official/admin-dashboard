@@ -16,21 +16,21 @@ import { GoogleIcon } from "@/components/icons/Icons";
 
 interface IFormInput {
 	email: string;
-	nickname: string;
+	name: string;
 	password: string;
 	confirmPassword: string;
 }
 
 type Data = {
 	email: string;
-	nickname: string;
+	name: string;
 	password: string;
 };
 
 const schema = z
 	.object({
 		email: z.string().email({ message: "Invalid email address" }),
-		nickname: z.string().min(1, { message: "Required" }),
+		name: z.string().min(1, { message: "Required" }),
 		password: z
 			.string()
 			.min(1, { message: "Required" })
@@ -173,12 +173,12 @@ const Seed = () => {
 							<div className="input-wrapper-text">
 								<input
 									className="input text-base"
-									{...register("nickname")}
-									placeholder="Nickname"
+									{...register("name")}
+									placeholder="Name"
 									disabled={mutation.isPending}
 								/>
 								<AnimatePresence>
-									{formState.errors.nickname && (
+									{formState.errors.name && (
 										<motion.div
 											className="text-base text-red-400 font-bold"
 											initial={{
@@ -199,7 +199,7 @@ const Seed = () => {
 												originY: 0,
 											}}
 										>
-											{formState.errors.nickname.message}
+											{formState.errors.name.message}
 										</motion.div>
 									)}
 								</AnimatePresence>

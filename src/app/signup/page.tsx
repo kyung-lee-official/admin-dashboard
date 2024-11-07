@@ -14,21 +14,21 @@ import { Button } from "@/components/button/Button";
 
 interface IFormInput {
 	email: string;
-	nickname: string;
+	name: string;
 	password: string;
 	confirmPassword: string;
 }
 
 type Data = {
 	email: string;
-	nickname: string;
+	name: string;
 	password: string;
 };
 
 const schema = z
 	.object({
 		email: z.string().email({ message: "Invalid email address" }),
-		nickname: z.string().min(1, { message: "Required" }),
+		name: z.string().min(1, { message: "Required" }),
 		password: z
 			.string()
 			.min(1, { message: "Required" })
@@ -157,12 +157,12 @@ const SignUp = () => {
 							<div className="input-wrapper-text">
 								<input
 									className="input text-base"
-									{...register("nickname")}
-									placeholder="Nickname"
+									{...register("name")}
+									placeholder="Name"
 									disabled={mutation.isPending}
 								/>
 								<AnimatePresence>
-									{formState.errors.nickname && (
+									{formState.errors.name && (
 										<motion.div
 											className="text-base text-red-400 font-bold"
 											initial={{
@@ -183,7 +183,7 @@ const SignUp = () => {
 												originY: 0,
 											}}
 										>
-											{formState.errors.nickname.message}
+											{formState.errors.name.message}
 										</motion.div>
 									)}
 								</AnimatePresence>

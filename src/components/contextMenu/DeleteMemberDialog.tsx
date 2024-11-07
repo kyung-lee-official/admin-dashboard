@@ -66,7 +66,7 @@ export const DeleteMemberDialog = (props: {
 						Are you sure you want to delete member
 					</p>
 					<p>
-						<strong>{member.nickname}</strong>({member.email}) ?
+						<strong>{member.name}</strong>({member.email}) ?
 					</p>
 				</div>
 				<div className="flex gap-6">

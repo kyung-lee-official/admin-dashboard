@@ -74,7 +74,7 @@ export const DeleteMemberFromGroupDialog = (props: {
 			>
 				<h1 className="text-lg">Remove Member</h1>
 				<div className="font-normal">
-					Remove <strong>{member.nickname}</strong> ({member.email}) from
+					Remove <strong>{member.name}</strong> ({member.email}) from
 					group <strong>{activeGroup.name}</strong>?
 				</div>
 				<div className="flex gap-6">

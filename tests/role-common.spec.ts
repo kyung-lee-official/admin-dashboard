@@ -3,9 +3,9 @@ import "dotenv/config";
 
 const {
 	E2E_TEST_MEMBER_1_EMAIL,
-	E2E_TEST_MEMBER_1_NICKNAME,
+	E2E_TEST_MEMBER_1_NAME,
 	E2E_TEST_MEMBER_2_EMAIL,
-	E2E_TEST_MEMBER_2_NICKNAME,
+	E2E_TEST_MEMBER_2_NAME,
 } = process.env;
 
 test.describe("Test Common Role", () => {

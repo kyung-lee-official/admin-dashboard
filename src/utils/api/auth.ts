@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const seed = async (body: {
 	email: string;
-	nickname: string;
+	name: string;
 	password: string;
 }): Promise<any> => {
 	const res = await axios.post("/member-auth/seed", body, {
@@ -33,7 +33,7 @@ export const signIn = async (body: {
 
 export const signUp = async (body: {
 	email: string;
-	nickname: string;
+	name: string;
 	password: string;
 }): Promise<any> => {
 	const res = await axios.post("/member-auth/signup", body, {

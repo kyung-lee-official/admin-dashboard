@@ -10,19 +10,19 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import z from "zod";
 
 interface IFormInput {
-	nickname: string;
+	name: string;
 }
 
 const schema = z.object({
-	nickname: z.string().trim().min(1, { message: "Required" }),
+	name: z.string().trim().min(1, { message: "Required" }),
 });
 
-export const ChangeNicknameDialog = (props: {
+export const ChangeNameDialog = (props: {
 	member: any;
-	showChangeNicknameDialog: boolean;
-	setShowChangeNicknameDialog: React.Dispatch<React.SetStateAction<boolean>>;
+	showChangeNameDialog: boolean;
+	setShowChangeNameDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-	const { member, showChangeNicknameDialog, setShowChangeNicknameDialog } =
+	const { member, showChangeNameDialog, setShowChangeNameDialog } =
 		props;
 	const accessToken = useAuthStore((state) => state.accessToken);
 
@@ -31,19 +31,19 @@ export const ChangeNicknameDialog = (props: {
 		resolver: zodResolver(schema),
 	});
 
-	const changeNicknameDialogRef = useRef<HTMLDialogElement | null>(null);
+	const changeNameDialogRef = useRef<HTMLDialogElement | null>(null);
 
-	const changeNicknameMutation = useMutation<
+	const changeNameMutation = useMutation<
 		any,
 		AxiosError<any>,
 		IFormInput
 	>({
 		mutationFn: async (data: IFormInput) => {
-			const { nickname } = data;
-			return updateProfile(member.id, nickname, accessToken);
+			const { name } = data;
+			return updateProfile(member.id, name, accessToken);
 		},
 		onSuccess: (data) => {
-			setShowChangeNicknameDialog(false);
+			setShowChangeNameDialog(false);
 			queryClient.invalidateQueries({
 				queryKey: ["my-info", jwt],
 			});
@@ -51,27 +51,27 @@ export const ChangeNicknameDialog = (props: {
 	});
 
 	const onSubmit: SubmitHandler<IFormInput> = async (data: IFormInput) => {
-		changeNicknameMutation.reset();
-		changeNicknameMutation.mutate(data);
+		changeNameMutation.reset();
+		changeNameMutation.mutate(data);
 	};
 
 	useEffect(() => {
-		if (showChangeNicknameDialog) {
-			changeNicknameDialogRef.current!.showModal();
+		if (showChangeNameDialog) {
+			changeNameDialogRef.current!.showModal();
 		}
 	}, []);
 
 	useEffect(() => {
-		if (showChangeNicknameDialog) {
-			changeNicknameDialogRef.current!.showModal();
+		if (showChangeNameDialog) {
+			changeNameDialogRef.current!.showModal();
 		} else {
-			changeNicknameDialogRef.current!.close();
+			changeNameDialogRef.current!.close();
 		}
-	}, [showChangeNicknameDialog]);
+	}, [showChangeNameDialog]);
 
 	return (
 		<motion.dialog
-			ref={changeNicknameDialogRef}
+			ref={changeNameDialogRef}
 			initial={{ opacity: 0, scale: 0.9 }}
 			animate={{ opacity: 1, scale: 1 }}
 			className="w-[440px]
@@ -79,19 +79,19 @@ export const ChangeNicknameDialog = (props: {
 			shadow-lg rounded-md backdrop:bg-black/80 backdrop:[backdrop-filter:blur(2px)]"
 			onCancel={(e: React.SyntheticEvent<HTMLDialogElement, Event>) => {
 				e.preventDefault();
-				setShowChangeNicknameDialog(false);
+				setShowChangeNameDialog(false);
 			}}
 		>
 			<div
 				className="flex flex-col justify-center items-center p-6 gap-8
 				text-neutral-600"
 			>
-				<h1 className="text-lg">Change Nickname</h1>
+				<h1 className="text-lg">Change Name</h1>
 				<h1 className="flex justify-center text-base text-neutral-500">
-					Enter your new nickname
+					Enter your new name
 				</h1>
 				<form
-					id="changeNicknameForm"
+					id="changeNameForm"
 					method="dialog"
 					className="flex flex-col gap-6"
 					onSubmit={handleSubmit(onSubmit)}
@@ -99,11 +99,11 @@ export const ChangeNicknameDialog = (props: {
 					<div className="flex flex-col gap-2">
 						<input
 							type="text"
-							defaultValue={member.nickname}
+							defaultValue={member.name}
 							className={`h-10 p-2 bg-slate-300 rounded outline-0`}
-							{...register("nickname")}
+							{...register("name")}
 						/>
-						{formState.errors.nickname && (
+						{formState.errors.name && (
 							<motion.div
 								className="text-base text-red-400 font-bold"
 								initial={{
@@ -118,10 +118,10 @@ export const ChangeNicknameDialog = (props: {
 									height: "auto",
 								}}
 							>
-								{formState.errors.nickname.message}
+								{formState.errors.name.message}
 							</motion.div>
 						)}
-						{changeNicknameMutation.isError && (
+						{changeNameMutation.isError && (
 							<motion.div
 								className="text-base text-red-400 font-semibold"
 								initial={{
@@ -146,7 +146,7 @@ export const ChangeNicknameDialog = (props: {
 					>
 						<button
 							className={
-								changeNicknameMutation.isPending
+								changeNameMutation.isPending
 									? `flex justify-center items-center w-20 h-8
 							text-neutral-700/60
 							bg-neutral-300/60 rounded outline-none cursor-wait`
@@ -155,7 +155,7 @@ export const ChangeNicknameDialog = (props: {
 							bg-neutral-300 hover:bg-neutral-400 rounded outline-none`
 							}
 							onClick={() => {
-								setShowChangeNicknameDialog(false);
+								setShowChangeNameDialog(false);
 							}}
 						>
 							Cancel
@@ -163,7 +163,7 @@ export const ChangeNicknameDialog = (props: {
 						<button
 							type="submit"
 							className={
-								changeNicknameMutation.isPending
+								changeNameMutation.isPending
 									? `flex justify-center items-center w-20 h-8
 									text-neutral-100
 									bg-blue-500/60 rounded cursor-wait`
@@ -177,7 +177,7 @@ export const ChangeNicknameDialog = (props: {
 							}
 							disabled={
 								!formState.isValid ||
-								changeNicknameMutation.isPending
+								changeNameMutation.isPending
 							}
 						>
 							Confirm

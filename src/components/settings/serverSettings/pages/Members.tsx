@@ -109,7 +109,7 @@ const Row = (props: {
 									member.isFrozen ? "text-neutral-400" : ""
 								}
 							>
-								{member.nickname}
+								{member.name}
 							</div>
 							{member.memberRoles.some(
 								(role: any) => role.name === "admin"
@@ -281,7 +281,7 @@ export const Members = (props: any) => {
 	const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (membersQuery.data) {
 			const results = membersQuery.data.filter((member: any) =>
-				member.nickname
+				member.name
 					.toLowerCase()
 					.includes(e.target.value.toLowerCase())
 			);

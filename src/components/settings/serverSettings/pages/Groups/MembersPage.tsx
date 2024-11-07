@@ -30,7 +30,7 @@ const MemberRow = (props: {
 					className="w-6 h-6 rounded-full bg-sky-400"
 				/>
 				<div className="flex gap-2">
-					<div className="text-sm">{member.nickname}</div>
+					<div className="text-sm">{member.name}</div>
 					<div className="text-neutral-500 text-sm font-normal">
 						{member.email}
 					</div>
@@ -81,7 +81,7 @@ export const MembersPage = (props: any) => {
 	const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (activeGroup) {
 			const results = activeGroup.members.filter((member: any) =>
-				member.nickname
+				member.name
 					.toLowerCase()
 					.includes(e.target.value.toLowerCase())
 			);

@@ -14,10 +14,10 @@ import { ChangePasswordDialog } from "./ChangePasswordDialog";
 import { ChangeAvatarDialog } from "./ChangeAvatarDialog";
 import { Button } from "@/components/button/Button";
 import { SettingsHeading } from "@/components/settings/ContentRegion";
-import { ChangeNicknameDialog } from "./ChangeNicknameDialog";
 import { ChangeEmailDialog } from "./ChangeEmailDialog";
 import { useSpring } from "framer-motion";
 import { Copied } from "./Copied";
+import { ChangeNameDialog } from "./ChangeNameDialog";
 
 const Row = (props: {
 	children: ReactNode;
@@ -55,7 +55,7 @@ const InfoPanel = (props: any) => {
 
 	const myAvatar = queryClient.getQueryData<any>(["myAvatar", jwt]);
 
-	const [showChangeNicknameDialog, setShowChangeNicknameDialog] =
+	const [showChangeNameDialog, setShowChangeNameDialog] =
 		useState<boolean>(false);
 	const [showChangeEmailDialog, setShowChangeEmailDialog] =
 		useState<boolean>(false);
@@ -101,12 +101,12 @@ const InfoPanel = (props: any) => {
 								text-6xl text-neutral-300
 								bg-slate-600 border-4 border-neutral-400 rounded-full"
 							>
-								{myInfo.nickname[0]}
+								{myInfo.name[0]}
 							</div>
 						)}
 					</div>
 					<div className="p-2 text-neutral-600 font-bold text-xl">
-						{myInfo.nickname}
+						{myInfo.name}
 					</div>
 					<ChangeAvatarDialog
 						avatarInputRef={avatarInputRef}
@@ -121,13 +121,13 @@ const InfoPanel = (props: any) => {
 					rounded-lg"
 				>
 					<Row
-						title="NICKNAME"
+						title="NAME"
 						btnText="Edit"
 						btnOnClick={() => {
-							setShowChangeNicknameDialog(true);
+							setShowChangeNameDialog(true);
 						}}
 					>
-						{myInfo.nickname}
+						{myInfo.name}
 					</Row>
 					<Row
 						title="MEMBER ID"
@@ -262,12 +262,12 @@ const InfoPanel = (props: any) => {
 						)}
 					</div> */}
 				</div>
-				{showChangeNicknameDialog && (
-					<ChangeNicknameDialog
+				{showChangeNameDialog && (
+					<ChangeNameDialog
 						member={myInfo}
-						showChangeNicknameDialog={showChangeNicknameDialog}
-						setShowChangeNicknameDialog={
-							setShowChangeNicknameDialog
+						showChangeNameDialog={showChangeNameDialog}
+						setShowChangeNameDialog={
+							setShowChangeNameDialog
 						}
 					/>
 				)}

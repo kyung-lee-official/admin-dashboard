@@ -88,7 +88,7 @@ export const AddMemberToRoleDialog = (props: {
 				return !originalRoleMemberIds.includes(member.id);
 			});
 			const results = selectableMembers.filter((member: any) =>
-				member.nickname
+				member.name
 					.toLowerCase()
 					.includes(e.target.value.toLowerCase())
 			);
@@ -134,7 +134,7 @@ export const AddMemberToRoleDialog = (props: {
 					allOptions={searchResults}
 					newSelectedOptions={newlySelectedRoleMembers}
 					setNewSelectedOptions={setNewlySelectedRoleMembers}
-					itemKey="nickname"
+					itemKey="name"
 				/>
 				<div className="flex gap-6">
 					<button

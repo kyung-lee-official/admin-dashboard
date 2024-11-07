@@ -62,9 +62,9 @@ export const Panel = () => {
 						bg-slate-600 rounded-full"
 					>
 						{myAvatarQuery.isLoading ? (
-							myInfoQuery.data?.nickname[0]
+							myInfoQuery.data?.name[0]
 						) : myAvatarQuery.isError ? (
-							myInfoQuery.data?.nickname[0]
+							myInfoQuery.data?.name[0]
 						) : myAvatarQuery.isSuccess ? (
 							myAvatarQuery.data ? (
 								<img
@@ -75,10 +75,10 @@ export const Panel = () => {
 									className="rounded-full"
 								/>
 							) : (
-								<div>{myInfoQuery.data.nickname[0]}</div>
+								<div>{myInfoQuery.data.name[0]}</div>
 							)
 						) : (
-							myInfoQuery.data?.nickname[0]
+							myInfoQuery.data?.name[0]
 						)}
 					</div>
 					<div
@@ -86,7 +86,7 @@ export const Panel = () => {
 						overflow-hidden whitespace-nowrap text-ellipsis
 						cursor-pointer"
 					>
-						{myInfoQuery.data?.nickname}
+						{myInfoQuery.data?.name}
 					</div>
 				</div>
 				<SettingsIcon size={20} />

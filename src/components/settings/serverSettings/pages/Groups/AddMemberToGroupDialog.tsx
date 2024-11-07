@@ -88,7 +88,7 @@ const AddMemberToGroupDialog = (props: {
 				return !originalGroupMemberIds.includes(member.id);
 			});
 			const results = selectableMembers.filter((member: any) =>
-				member.nickname
+				member.name
 					.toLowerCase()
 					.includes(e.target.value.toLowerCase())
 			);
@@ -134,7 +134,7 @@ const AddMemberToGroupDialog = (props: {
 					allOptions={searchResults}
 					newSelectedOptions={newlySelectedGroupMembers}
 					setNewSelectedOptions={setNewlySelectedGroupMembers}
-					itemKey="nickname"
+					itemKey="name"
 				/>
 				<div className="flex gap-6">
 					<button

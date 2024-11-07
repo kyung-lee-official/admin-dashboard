@@ -51,9 +51,9 @@ export const VerifyAccount = (props: any) => {
 				<h2 className="text-lg">
 					{emailSent ? (
 						"Verification email sent, please check your inbox."
-					) : myInfo.nickname ? (
+					) : myInfo.name ? (
 						<span>
-							Hi <strong>{myInfo.nickname}</strong>, please verify
+							Hi <strong>{myInfo.name}</strong>, please verify
 							your account first.
 						</span>
 					) : (

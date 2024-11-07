@@ -62,7 +62,7 @@ export const VerifyMemberDialog = (props: {
 				<div className="flex flex-col items-center gap-2  font-normal">
 					<p className="px-4 text-center">
 						Are you sure you want to verify member{" "}
-						<strong>{member.nickname}</strong> ({member.email})
+						<strong>{member.name}</strong> ({member.email})
 						manually?
 					</p>
 				</div>

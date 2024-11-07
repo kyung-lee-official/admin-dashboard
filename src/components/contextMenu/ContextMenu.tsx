@@ -129,7 +129,7 @@ export const ContextMenu = (props: {
 						setShowVerifyMemberDialog(true);
 					}}
 				>
-					<Item type="warning">Verify {member.nickname}</Item>
+					<Item type="warning">Verify {member.name}</Item>
 				</button>
 			)}
 			{!isAdmin &&
@@ -141,7 +141,7 @@ export const ContextMenu = (props: {
 							setShowUnfreezeMemberDialog(true);
 						}}
 					>
-						<Item type="danger">Unfreeze {member.nickname}</Item>
+						<Item type="danger">Unfreeze {member.name}</Item>
 					</button>
 				) : (
 					<button
@@ -150,7 +150,7 @@ export const ContextMenu = (props: {
 							setShowFreezeMemberDialog(true);
 						}}
 					>
-						<Item type="danger">Freeze {member.nickname}</Item>
+						<Item type="danger">Freeze {member.name}</Item>
 					</button>
 				))}
 			{!isAdmin && !isMe && (
@@ -160,7 +160,7 @@ export const ContextMenu = (props: {
 						setShowDeleteMemberDialog(true);
 					}}
 				>
-					<Item type="danger">Delete {member.nickname}</Item>
+					<Item type="danger">Delete {member.name}</Item>
 				</button>
 			)}
 			<hr className="w-full my-1 border-neutral-300" />

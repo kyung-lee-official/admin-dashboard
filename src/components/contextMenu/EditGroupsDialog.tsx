@@ -106,7 +106,7 @@ export const EditGroupsDialog = (props: {
 				<h1 className="text-lg">Edit Groups</h1>
 				<div className="font-normal">
 					You&apos;re editing the groups of{" "}
-					<strong>{member.nickname}</strong> ({member.email})
+					<strong>{member.name}</strong> ({member.email})
 				</div>
 				<div className="flex w-full font-normal">
 					<input

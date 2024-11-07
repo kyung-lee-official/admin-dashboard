@@ -66,7 +66,7 @@ export const FreezeMemberDialog = (props: {
 						Are you sure you want to freeze member
 					</p>
 					<p>
-						<strong>{member.nickname}</strong>({member.email})?
+						<strong>{member.name}</strong>({member.email})?
 					</p>
 				</div>
 				<img

@@ -79,7 +79,7 @@ export const TransferOwnershipDialog = (props: {
 					<span className="p-[2px] text-neutral-700 bg-neutral-300 rounded">
 						everyone
 					</span>{" "}
-					group to <strong>{member.nickname}</strong> ({member.email}).
+					group to <strong>{member.name}</strong> ({member.email}).
 					This cannot be undone!
 				</div>
 				<div className="flex gap-6">
