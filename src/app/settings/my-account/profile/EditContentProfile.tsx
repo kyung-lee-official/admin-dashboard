@@ -1,22 +1,19 @@
 import { CloseIcon } from "@/components/icons/Icons";
-import { Toggle } from "@/components/toggle/Toggle";
 import { useAuthStore } from "@/stores/auth";
-import {
-	getServerSettings,
-	updateServerSettings,
-} from "@/utils/api/server-settings";
 import { queryClient } from "@/utils/react-query/react-query";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
-import { EditProps } from "./Content";
+import { EditProps } from "../../general/sign-up/Content";
 import { Button } from "@/components/button/Button";
 import { motion } from "framer-motion";
 import { UnsavedDialog } from "../../UnsavedDialog";
+import { getMyInfo, updateProfile } from "@/utils/api/members";
 
-export const EditContent = (props: {
+export const EditContentProfile = (props: {
 	setEdit: Dispatch<SetStateAction<EditProps>>;
 }) => {
+	const editId = "profile";
 	const { setEdit } = props;
 
 	const panelRef = useRef<HTMLDivElement>(null);
@@ -27,31 +24,32 @@ export const EditContent = (props: {
 	const [newData, setNewData] = useState<any>(null);
 	const [isChanged, setIsChanged] = useState(false);
 
-	const getServerSettingsQuery = useQuery<any, AxiosError>({
-		queryKey: ["get-server-settings", jwt],
+	const myInfoQuery = useQuery<any, AxiosError>({
+		queryKey: ["my-info", jwt],
 		queryFn: async () => {
-			const serverSettings = await getServerSettings(jwt);
-			return serverSettings;
+			const isSignedIn = await getMyInfo(jwt);
+			return isSignedIn;
 		},
 		retry: false,
 		refetchOnWindowFocus: false,
 	});
 
 	useEffect(() => {
-		if (getServerSettingsQuery.isSuccess) {
-			setNewData(getServerSettingsQuery.data);
+		if (myInfoQuery.isSuccess) {
+			setNewData(myInfoQuery.data);
 		}
-	}, [getServerSettingsQuery.isSuccess]);
+	}, [myInfoQuery.isSuccess]);
 
 	const mutation = useMutation({
 		mutationFn: () => {
-			return updateServerSettings(newData, jwt);
+			return updateProfile(newData, jwt);
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: ["get-server-settings", jwt],
+				queryKey: ["my-info", jwt],
 			});
 			setIsChanged(false);
+			setEdit({ show: false, id: editId });
 		},
 		onError: () => {},
 	});
@@ -63,8 +61,7 @@ export const EditContent = (props: {
 	useEffect(() => {
 		if (
 			newData &&
-			JSON.stringify(newData) !==
-				JSON.stringify(getServerSettingsQuery.data)
+			JSON.stringify(newData) !== JSON.stringify(myInfoQuery.data)
 		) {
 			setIsChanged(true);
 		} else {
@@ -78,7 +75,7 @@ export const EditContent = (props: {
 				unsavedDialogRef.current.showModal();
 			}
 		} else {
-			setEdit({ show: false, id: "sign-up" });
+			setEdit({ show: false, id: editId });
 		}
 	}
 
@@ -114,7 +111,7 @@ export const EditContent = (props: {
 				font-semibold text-lg
 				border-b-[1px] border-white/10"
 			>
-				<div>Sign Up</div>
+				<div>Edit Profile</div>
 				<button
 					className="flex justify-center items-center w-7 h-7
 					text-white/50
@@ -126,66 +123,47 @@ export const EditContent = (props: {
 					<CloseIcon size={15} />
 				</button>
 			</div>
-			<div
-				className="flex-[1_0_100px] px-6 py-4
-				border-b-[1px] border-white/10"
-			>
-				<table className="text-sm">
-					<tbody className="[&_>_tr_>_td]:py-4">
-						<tr>
-							<td className="w-full">Allow public sign up</td>
-							<td>
-								<Toggle
-									isOn={newData?.allowPublicSignUp}
-									isAllowed={true}
-									onClick={() => {
-										setNewData({
-											...newData,
-											allowPublicSignUp:
-												!newData.allowPublicSignUp,
-										});
-									}}
-								/>
-							</td>
-						</tr>
-						<tr>
-							<td>Allow Google sign up</td>
-							<td>
-								<Toggle
-									isOn={newData?.allowGoogleSignIn}
-									isAllowed={true}
-									onClick={() => {
-										setNewData({
-											...newData,
-											allowGoogleSignIn:
-												!newData.allowGoogleSignIn,
-										});
-									}}
-								/>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<div className="flex-[0_0_61px] flex justify-end px-6 py-4 gap-1.5">
-				<Button
-					color="cancel"
-					size="sm"
-					onClick={() => {
-						quit();
-					}}
+			<form action={onSave} className="flex-[1_0_100px] flex flex-col">
+				<div
+					className="flex-[1_0_100px] flex flex-col px-6 py-4
+					border-b-[1px] border-white/10"
 				>
-					Cancel
-				</Button>
-				<Button
-					size="sm"
-					onClick={() => {
-						onSave();
-					}}
-				>
-					Save
-				</Button>
-			</div>
+					<div
+						className="flex flex-col gap-1.5
+						text-sm"
+					>
+						Name
+						<input
+							type="text"
+							className="px-2 py-1.5
+							bg-white/10
+							rounded-md outline-none
+							border-[1px] border-white/10"
+							defaultValue={myInfoQuery.data?.name}
+							onChange={(e) => {
+								setNewData({
+									...newData,
+									name: e.target.value,
+								});
+							}}
+						/>
+					</div>
+				</div>
+				<div className="flex-[0_0_61px] flex justify-end px-6 py-4 gap-1.5">
+					<Button
+						color="cancel"
+						size="sm"
+						onClick={() => {
+							quit();
+						}}
+					>
+						Cancel
+					</Button>
+					<Button type="submit" size="sm">
+						Save
+					</Button>
+				</div>
+			</form>
 			<UnsavedDialog ref={unsavedDialogRef} setEdit={setEdit} />
 		</motion.div>
 	);

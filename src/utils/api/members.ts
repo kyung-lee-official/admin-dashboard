@@ -1,36 +1,33 @@
 import axios, { AxiosError } from "axios";
 
-export const getMyInfo = async (accessToken?: string | null): Promise<any> => {
+export const getMyInfo = async (jwt: string) => {
 	const res = await axios.get("/members/me", {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
-			Authorization: accessToken,
+			Authorization: jwt,
 		},
 	});
 	return res.data;
 };
 
-export const getMembers = async (accessToken?: string | null): Promise<any> => {
+export const getMembers = async (jwt: string) => {
 	const res = await axios.post("/members/find", null, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
-			Authorization: accessToken,
+			Authorization: jwt,
 		},
 	});
 	return res.data;
 };
 
-export const verifyMember = async (
-	memberId: string,
-	accessToken?: string | null
-): Promise<any> => {
+export const verifyMember = async (id: string, jwt: string) => {
 	const res = await axios.patch(
-		`/members/member-verification/${memberId}`,
+		`/members/member-verification/${id}`,
 		{},
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
 			headers: {
-				Authorization: accessToken,
+				Authorization: jwt,
 			},
 		}
 	);
@@ -38,17 +35,19 @@ export const verifyMember = async (
 };
 
 export const updateProfile = async (
-	memberId: string,
-	name: string,
-	accessToken?: string | null
-): Promise<any> => {
+	newData: {
+		id: string;
+		name: string;
+	},
+	jwt: string
+) => {
 	const res = await axios.patch(
-		`/members/profile/${memberId}`,
-		{ name: name },
+		`/members/${newData.id}/profile`,
+		{ name: newData.name },
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
 			headers: {
-				Authorization: accessToken,
+				Authorization: jwt,
 			},
 		}
 	);
@@ -56,23 +55,20 @@ export const updateProfile = async (
 };
 
 export const changePassword = async (
-	memberId: string,
+	id: string,
 	body: { oldPassword: string; newPassword: string },
-	accessToken?: string | null
-): Promise<any> => {
-	const res = await axios.patch(`/members/password/${memberId}`, body, {
+	jwt: string
+) => {
+	const res = await axios.patch(`/members/password/${id}`, body, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
-			Authorization: accessToken,
+			Authorization: jwt,
 		},
 	});
 	return res.data;
 };
 
-export const uploadMyAvatar = async (
-	blob: Blob,
-	accessToken?: string | null
-) => {
+export const uploadMyAvatar = async (blob: Blob, jwt: string) => {
 	const fileFromBlob = new File([blob], "avatar.png", { type: "image/png" });
 	const res = await axios.put(
 		"/members/updateAvatar",
@@ -80,7 +76,7 @@ export const uploadMyAvatar = async (
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
 			headers: {
-				Authorization: accessToken,
+				Authorization: jwt,
 				"Content-Type": "multipart/form-data",
 			},
 		}
@@ -89,17 +85,17 @@ export const uploadMyAvatar = async (
 };
 
 export const editMemberRoles = async (
-	memberId: string,
+	id: string,
 	roleIds: number[],
-	accessToken?: string | null
+	jwt: string
 ) => {
 	const res = await axios.patch(
-		`/members/roles/${memberId}`,
+		`/members/roles/${id}`,
 		{ roleIds },
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
 			headers: {
-				Authorization: accessToken,
+				Authorization: jwt,
 			},
 		}
 	);
@@ -107,32 +103,29 @@ export const editMemberRoles = async (
 };
 
 export const editMemberGroups = async (
-	memberId: string,
+	id: string,
 	groupIds: number[],
-	accessToken?: string | null
+	jwt: string
 ) => {
 	const res = await axios.patch(
-		`/members/groups/${memberId}`,
+		`/members/groups/${id}`,
 		{ groupIds },
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
 			headers: {
-				Authorization: accessToken,
+				Authorization: jwt,
 			},
 		}
 	);
 	return res.data;
 };
 
-export const downloadAvatar = async (
-	memberId: string,
-	accessToken?: string | null
-) => {
+export const downloadAvatar = async (id: string, jwt: string) => {
 	try {
-		const res = await axios.get(`/members/downloadAvatar/${memberId}`, {
+		const res = await axios.get(`/members/downloadAvatar/${id}`, {
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
 			headers: {
-				Authorization: accessToken,
+				Authorization: jwt,
 			},
 			responseType: "blob",
 		});
@@ -150,17 +143,14 @@ export const downloadAvatar = async (
 	}
 };
 
-export const transferOwnership = async (
-	memberId: string,
-	accessToken?: string | null
-): Promise<any> => {
+export const transferOwnership = async (id: string, jwt: string) => {
 	const res = await axios.patch(
-		`/members/transferOwnership/${memberId}`,
+		`/members/transferOwnership/${id}`,
 		{},
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
 			headers: {
-				Authorization: accessToken,
+				Authorization: jwt,
 			},
 		}
 	);
@@ -168,33 +158,30 @@ export const transferOwnership = async (
 };
 
 export const setIsFrozenMemberById = async (
-	memberId: string,
+	id: string,
 	isFrozen: boolean,
-	accessToken?: string | null
-): Promise<any> => {
+	jwt: string
+) => {
 	const res = await axios.patch(
-		`/members/freeze/${memberId}`,
+		`/members/freeze/${id}`,
 		{
 			isFrozen: isFrozen,
 		},
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
 			headers: {
-				Authorization: accessToken,
+				Authorization: jwt,
 			},
 		}
 	);
 	return res.data;
 };
 
-export const deleteMemberById = async (
-	memberId: string,
-	accessToken?: string | null
-): Promise<any> => {
-	const res = await axios.delete(`/members/${memberId}`, {
+export const deleteMemberById = async (id: string, jwt: string) => {
+	const res = await axios.delete(`/members/${id}`, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
-			Authorization: accessToken,
+			Authorization: jwt,
 		},
 	});
 	return res.data;

@@ -17,6 +17,7 @@ import { UnsavedDialog } from "../../UnsavedDialog";
 export const EditContentSignUp = (props: {
 	setEdit: Dispatch<SetStateAction<EditProps>>;
 }) => {
+	const editId = "sign-up";
 	const { setEdit } = props;
 
 	const panelRef = useRef<HTMLDivElement>(null);
@@ -52,7 +53,7 @@ export const EditContentSignUp = (props: {
 				queryKey: ["get-server-settings", jwt],
 			});
 			setIsChanged(false);
-			setEdit({ show: false, id: "sign-up" });
+			setEdit({ show: false, id: editId });
 		},
 		onError: () => {},
 	});
@@ -79,7 +80,7 @@ export const EditContentSignUp = (props: {
 				unsavedDialogRef.current.showModal();
 			}
 		} else {
-			setEdit({ show: false, id: "sign-up" });
+			setEdit({ show: false, id: editId });
 		}
 	}
 
