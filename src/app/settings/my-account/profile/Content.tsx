@@ -1,12 +1,11 @@
 "use client";
 
-import { EditIcon } from "@/components/icons/Icons";
+import { CopyIcon, EditIcon } from "@/components/icons/Icons";
 import { useAuthStore } from "@/stores/auth";
 import { getMyInfo } from "@/utils/api/members";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useState } from "react";
-// import { EditPanel } from "../../EditPanel";
 import { createPortal } from "react-dom";
 import { EditPanel } from "../../EditPanel";
 import { OneRowSkeleton } from "@/components/skeleton/OneRowSkeleton";
@@ -57,7 +56,8 @@ export const Content = () => {
 							<td>
 								<button
 									className="flex justify-center items-center w-7 h-7
-									text-white/50"
+									text-white/50
+									hover:bg-white/10 rounded-md"
 									onClick={() => {
 										setEdit({ show: true, id: "profile" });
 									}}
@@ -77,7 +77,18 @@ export const Content = () => {
 							</td>
 							<td>
 								<div className="w-7 h-7">
-									{/* placeholder */}
+									<button
+										className="flex justify-center items-center w-7 h-7
+										text-white/50
+										hover:bg-white/10 rounded-md"
+										onClick={() => {
+											navigator.clipboard.writeText(
+												myInfoQuery.data.id
+											);
+										}}
+									>
+										<CopyIcon size={15} />
+									</button>
 								</div>
 							</td>
 						</tr>
@@ -126,7 +137,8 @@ export const Content = () => {
 							<td>
 								<button
 									className="flex justify-center items-center w-7 h-7
-									text-white/50"
+									text-white/50
+									hover:bg-white/10 rounded-md"
 									onClick={() => {
 										setEdit({ show: true, id: "sign-up" });
 									}}
@@ -137,23 +149,12 @@ export const Content = () => {
 						</tr>
 						<tr>
 							<td>Change Password</td>
-							<td>
-								{/* <Toggle
-									isOn={newData?.allowGoogleSignIn}
-									isAllowed={true}
-									onClick={() => {
-										setNewData({
-											...newData,
-											allowGoogleSignIn:
-												!newData.allowGoogleSignIn,
-										});
-									}}
-								/> */}
-							</td>
+							<td>{/* placeholder */}</td>
 							<td>
 								<button
 									className="flex justify-center items-center w-7 h-7
-									text-white/50"
+									text-white/50
+									hover:bg-white/10 rounded-md"
 									onClick={() => {
 										setEdit({ show: true, id: "sign-up" });
 									}}

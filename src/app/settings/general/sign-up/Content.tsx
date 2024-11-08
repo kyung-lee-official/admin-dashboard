@@ -24,7 +24,8 @@ export const Content = () => {
 					<div className="text-lg font-semibold">Sign Up</div>
 					<button
 						className="flex justify-center items-center w-7 h-7
-						text-white/50"
+						text-white/50
+						hover:bg-white/10 rounded-md"
 						onClick={() => {
 							setEdit({ show: true, id: "sign-up" });
 						}}

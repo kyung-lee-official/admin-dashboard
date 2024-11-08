@@ -299,14 +299,37 @@ export const CopyIcon = ({ size, fill }: any) => {
 		<svg
 			height={size}
 			width={size}
-			viewBox="0 0 24 24"
-			focusable="false"
-			role="img"
-			fill="currentColor"
+			viewBox="0 0 15 15"
+			fill="transparent"
 			xmlns="http://www.w3.org/2000/svg"
 		>
-			<path d="M20 2H10c-1.103 0-2 .897-2 2v4H4c-1.103 0-2 .897-2 2v10c0 1.103.897 2 2 2h10c1.103 0 2-.897 2-2v-4h4c1.103 0 2-.897 2-2V4c0-1.103-.897-2-2-2zM4 20V10h10l.002 10H4zm16-6h-4v-4c0-1.103-.897-2-2-2h-4V4h10v10z"></path>
+			<g
+				stroke="currentColor"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				strokeWidth="1.5"
+				// clipPath="url(#a)"
+			>
+				<path d="M12.167 4.167H5.944c-.981 0-1.777.796-1.777 1.777v6.223c0 .982.796 1.777 1.777 1.777h6.223c.982 0 1.777-.796 1.777-1.777V5.944c0-.981-.796-1.777-1.777-1.777"></path>
+				<path d="M1.99 10.165 1.075 4.01a1.78 1.78 0 0 1 1.497-2.02l6.155-.914a1.78 1.78 0 0 1 1.909 1.092"></path>
+			</g>
+			{/* <defs>
+				<clipPath id="a">
+					<path fill="#fff" d="M0 0h15v15H0z"></path>
+				</clipPath>
+			</defs> */}
 		</svg>
+		// <svg
+		// 	height={size}
+		// 	width={size}
+		// 	viewBox="0 0 24 24"
+		// 	focusable="false"
+		// 	role="img"
+		// 	fill="currentColor"
+		// 	xmlns="http://www.w3.org/2000/svg"
+		// >
+		// 	<path d="M20 2H10c-1.103 0-2 .897-2 2v4H4c-1.103 0-2 .897-2 2v10c0 1.103.897 2 2 2h10c1.103 0 2-.897 2-2v-4h4c1.103 0 2-.897 2-2V4c0-1.103-.897-2-2-2zM4 20V10h10l.002 10H4zm16-6h-4v-4c0-1.103-.897-2-2-2h-4V4h10v10z"></path>
+		// </svg>
 	);
 };
 
