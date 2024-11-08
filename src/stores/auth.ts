@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
 type State = {
-	jwt: string | undefined | null;
+	jwt: string;
 	tencentCosTempCredential: any;
 };
 
@@ -15,7 +15,7 @@ export const useAuthStore = create<State & Action>()(
 	devtools(
 		persist(
 			(set) => ({
-				jwt: undefined,
+				jwt: "",
 				setAccessToken: (newAccessToken) => {
 					return set((state) => {
 						if (newAccessToken) {
