@@ -128,73 +128,73 @@ export const Sacl = (props: any) => {
 	});
 
 	useEffect(() => {
-		if (isSeededQuery.isSuccess) {
-			/* Response received */
-			if (isSeededQuery.data?.isSeeded) {
-				/* Seeded */
-				if (isSignedInQuery.isLoading) {
-					/* Loading */
-				} else if (isSignedInQuery.isError) {
-					/* Error */
-					if (
-						isSignedInQuery.error.response?.status === 400 ||
-						isSignedInQuery.error.response?.status === 401
-					) {
-						/* Unauthorized, not signed in */
-						switch (pathname) {
-							case "/sign-in":
-								setShowLoading(false);
-								break;
-							case "/signup":
-								setShowLoading(false);
-								break;
-							default:
-								const timer = setTimeout(() => {
-									router.push("/sign-in");
-								}, 1500);
-								return () => clearTimeout(timer);
-								break;
-						}
-					} else {
-						/* Network Error, corresponding UI should be returned */
-					}
-				} else {
-					/* Signed In */
-					if (myInfoQuery.isLoading) {
-						/* Loading */
-					} else {
-						if (myInfoQuery.isSuccess) {
-							if (myInfoQuery.data.isFrozen) {
-								/* Frozen, corresponding UI should be returned */
-							} else {
-								if (myInfoQuery.data.isVerified) {
-									if (saclRoutes.includes(pathname)) {
-										router.push("/home");
-									} else {
-										setShowLoading(false);
-									}
-								} else {
-									/* Not verified, corresponding UI should be returned */
-								}
-							}
-						} else {
-							/* Error */
-						}
-					}
+		if (!isSeededQuery.isSuccess) {
+			/* Fetching data or no response received */
+			return;
+		}
+
+		/* Response received */
+		if (!isSeededQuery.data.isSeeded) {
+			/* Not Seededs */
+			if (pathname !== "/seed") {
+				const timer = setTimeout(() => {
+					router.push("/seed");
+				}, 1500);
+				return () => clearTimeout(timer);
+			} else {
+				setShowLoading(false);
+			}
+		}
+
+		/* Seeded */
+		if (isSignedInQuery.isLoading) {
+			/* Fetching data */
+			return;
+		}
+
+		if (isSignedInQuery.isError) {
+			/* Error */
+			if (
+				isSignedInQuery.error.response?.status === 400 ||
+				isSignedInQuery.error.response?.status === 401
+			) {
+				/* Unauthorized, not signed in */
+				switch (pathname) {
+					case "/sign-in":
+						setShowLoading(false);
+						break;
+					case "/signup":
+						setShowLoading(false);
+						break;
+					default:
+						const timer = setTimeout(() => {
+							router.push("/sign-in");
+						}, 1500);
+						return () => clearTimeout(timer);
+						break;
 				}
 			} else {
-				/* Not Seededs */
-				if (pathname !== "/seed") {
-					const timer = setTimeout(() => {
-						router.push("/seed");
-					}, 1500);
-					return () => clearTimeout(timer);
-				} else {
-					setShowLoading(false);
-				}
+				/* Network Error, corresponding UI should be returned */
 			}
 		} else {
-			/* Loading or no response received */
+			/* Signed In */
+			if (myInfoQuery.isLoading) {
+				/* Loading */
+			} else {
+				if (myInfoQuery.isSuccess) {
+					if (myInfoQuery.data.isFrozen) {
+						/* Frozen, corresponding UI should be returned */
+					} else {
+						if (saclRoutes.includes(pathname)) {
+							router.push("/home");
+						} else {
+							setShowLoading(false);
+						}
+					}
+				} else {
+					/* Error */
+				}
+			}
 		}
 	}, [
 		isSeededQuery.status,
@@ -228,9 +228,9 @@ export const Sacl = (props: any) => {
 		return <IsFrozen />;
 	}
 
-	if (myInfoQuery.data?.isVerified === false) {
-		return <VerifyAccount myInfo={myInfoQuery.data} jwt={jwt} />;
-	}
+	// if (myInfoQuery.data?.isVerified === false) {
+	// 	return <VerifyAccount myInfo={myInfoQuery.data} jwt={jwt} />;
+	// }
 
 	/**
 	 * Pages are separated into SACL pages and regular pages to support page-switching animations.
