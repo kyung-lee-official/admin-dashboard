@@ -26,7 +26,7 @@ const schema = z.object({
 
 const SignIn = () => {
 	const router = useRouter();
-	const setAccessToken = useAuthStore((state) => state.setAccessToken);
+	const setJwt = useAuthStore((state) => state.setJwt);
 
 	const { register, handleSubmit, formState } = useForm<IFormInput>({
 		mode: "onChange",
@@ -46,7 +46,7 @@ const SignIn = () => {
 
 	useEffect(() => {
 		if (mutation.isSuccess) {
-			setAccessToken(mutation.data.jwt);
+			setJwt(mutation.data.jwt);
 		}
 	}, [mutation]);
 

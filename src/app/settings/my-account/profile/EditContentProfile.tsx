@@ -139,7 +139,7 @@ export const EditContentProfile = (props: {
 							bg-white/10
 							rounded-md outline-none
 							border-[1px] border-white/10"
-							defaultValue={myInfoQuery.data?.name}
+							defaultValue={myInfoQuery.data.name}
 							onChange={(e) => {
 								setNewData({
 									...newData,

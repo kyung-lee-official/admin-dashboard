@@ -11,7 +11,7 @@ import { createRole } from "@/utils/api/roles";
 import { ArrowBackIcon, PlusIcon } from "@/components/icons/Icons";
 
 export const Edit = (props: any) => {
-	const { rolesQuery, activeRoleId, setActiveRoleId, setPage, accessToken } =
+	const { rolesQuery, activeRoleId, setActiveRoleId, setPage, jwt } =
 		props;
 
 	return (
@@ -21,7 +21,7 @@ export const Edit = (props: any) => {
 				setPage={setPage}
 				activeRoleId={activeRoleId}
 				setActiveRoleId={setActiveRoleId}
-				accessToken={accessToken}
+				jwt={jwt}
 			/>
 			<EditContent rolesQuery={rolesQuery} activeRoleId={activeRoleId} />
 		</div>
@@ -29,16 +29,16 @@ export const Edit = (props: any) => {
 };
 
 const EditSidebar = (props: any) => {
-	const { rolesQuery, setPage, activeRoleId, setActiveRoleId, accessToken } =
+	const { rolesQuery, setPage, activeRoleId, setActiveRoleId, jwt } =
 		props;
 
 	const createRoleMutation = useMutation({
 		mutationFn: async () => {
-			return createRole(accessToken);
+			return createRole(jwt);
 		},
 		onSuccess: async (role) => {
 			await queryClient.invalidateQueries({
-				queryKey: ["getRoles", accessToken],
+				queryKey: ["getRoles", jwt],
 			});
 			setActiveRoleId(role.id);
 		},

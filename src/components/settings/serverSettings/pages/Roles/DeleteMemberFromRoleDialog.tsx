@@ -21,7 +21,7 @@ export const DeleteMemberFromRoleDialog = (props: {
 		setShowDeleteMemberDialog,
 	} = props;
 
-	const accessToken = useAuthStore((state) => state.accessToken);
+	const jwt = useAuthStore((state) => state.jwt);
 
 	const deleteMemberFromRoleDialogRef = useRef<HTMLDialogElement | null>(
 		null
@@ -36,12 +36,12 @@ export const DeleteMemberFromRoleDialog = (props: {
 			return updateRoleById(
 				{ memberIds: newMemberIds },
 				activeRoleId,
-				accessToken
+				jwt
 			);
 		},
 		onSuccess: (data) => {
 			queryClient.invalidateQueries({
-				queryKey: ["getRoles", accessToken],
+				queryKey: ["getRoles", jwt],
 			});
 			setShowDeleteMemberDialog(false);
 		},

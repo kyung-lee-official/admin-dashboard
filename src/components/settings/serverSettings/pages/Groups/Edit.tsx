@@ -15,7 +15,7 @@ export const Edit = (props: any) => {
 		activeGroupId,
 		setActiveGroupId,
 		setPage,
-		accessToken,
+		jwt,
 	} = props;
 
 	return (
@@ -25,7 +25,7 @@ export const Edit = (props: any) => {
 				setPage={setPage}
 				activeGroupId={activeGroupId}
 				setActiveGroupId={setActiveGroupId}
-				accessToken={accessToken}
+				jwt={jwt}
 			/>
 			<EditContent
 				groupsQuery={groupsQuery}
@@ -41,16 +41,16 @@ const EditSidebar = (props: any) => {
 		setPage,
 		activeGroupId,
 		setActiveGroupId,
-		accessToken,
+		jwt,
 	} = props;
 
 	const createGroupMutation = useMutation({
 		mutationFn: async () => {
-			return createGroup(accessToken);
+			return createGroup(jwt);
 		},
 		onSuccess: async (group) => {
 			await queryClient.invalidateQueries({
-				queryKey: ["getGroups", accessToken],
+				queryKey: ["getGroups", jwt],
 			});
 			setActiveGroupId(group.id);
 		},

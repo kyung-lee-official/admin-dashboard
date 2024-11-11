@@ -13,18 +13,18 @@ export const UnfreezeMemberDialog = (props: {
 	setShowUnfreezeMemberDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
 	const { member, showUnfreezeMemberDialog, setShowUnfreezeMemberDialog } = props;
-	const accessToken = useAuthStore((state) => state.accessToken);
+	const jwt = useAuthStore((state) => state.jwt);
 
 	const unfreezeMemberDialogRef = useRef<HTMLDialogElement | null>(null);
 
 	const freezeMemberMutation = useMutation({
 		mutationFn: async (memberId: string) => {
-			return setIsFrozenMemberById(memberId, false, accessToken);
+			return setIsFrozenMemberById(memberId, false, jwt);
 		},
 		onSuccess: (data) => {
 			setShowUnfreezeMemberDialog(false);
 			queryClient.invalidateQueries({
-				queryKey: ["getMembers", accessToken],
+				queryKey: ["getMembers", jwt],
 			});
 		},
 	});

@@ -21,18 +21,18 @@ export const TransferOwnershipDialog = (props: {
 		setShowTransferOwnershipDialog,
 		setActivePath,
 	} = props;
-	const accessToken = useAuthStore((state) => state.accessToken);
+	const jwt = useAuthStore((state) => state.jwt);
 
 	const transferOwnershipDialogRef = useRef<HTMLDialogElement | null>(null);
 
 	const transferOwnershipMutation = useMutation({
 		mutationFn: async (memberId: string) => {
-			return transferOwnership(memberId, accessToken);
+			return transferOwnership(memberId, jwt);
 		},
 		onSuccess: (data) => {
 			setShowTransferOwnershipDialog(false);
 			queryClient.invalidateQueries({
-				queryKey: ["getMembers", accessToken],
+				queryKey: ["getMembers", jwt],
 			});
 			queryClient.invalidateQueries({
 				queryKey: ["my-info", jwt],

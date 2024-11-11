@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { motion } from "framer-motion";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import z from "zod";
 
@@ -23,7 +23,7 @@ export const ChangeEmailDialog = (props: {
 	setShowChangeEmailDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
 	const { member, showChangeEmailDialog, setShowChangeEmailDialog } = props;
-	const accessToken = useAuthStore((state) => state.accessToken);
+	const jwt = useAuthStore((state) => state.jwt);
 
 	const { register, handleSubmit, formState } = useForm<IFormInput>({
 		mode: "onChange",
@@ -35,7 +35,7 @@ export const ChangeEmailDialog = (props: {
 	const changeEmailMutation = useMutation<any, AxiosError<any>, IFormInput>({
 		mutationFn: async (data: IFormInput) => {
 			const { newEmail } = data;
-			return sendUpdateEmailVerificationRequest(newEmail, accessToken);
+			return sendUpdateEmailVerificationRequest(newEmail, jwt);
 		},
 		onSuccess: (data) => {
 			setShowChangeEmailDialog(false);

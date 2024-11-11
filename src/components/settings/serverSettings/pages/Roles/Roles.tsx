@@ -11,12 +11,12 @@ import { getRoles } from "@/utils/api/roles";
 export const Roles = () => {
 	const [page, setPage] = useState<"main" | "edit" | "error">("main");
 	const [activeRoleId, setActiveRoleId] = useState<number | null>(null);
-	const { accessToken } = useAuthStore();
+	const { jwt } = useAuthStore();
 
 	const rolesQuery = useQuery<any, AxiosError>({
-		queryKey: ["getRoles", accessToken],
+		queryKey: ["getRoles", jwt],
 		queryFn: async () => {
-			const roles = await getRoles(accessToken);
+			const roles = await getRoles(jwt);
 			return roles;
 		},
 		retry: false,
@@ -37,7 +37,7 @@ export const Roles = () => {
 				rolesQuery={rolesQuery}
 				setPage={setPage}
 				setActiveRoleId={setActiveRoleId}
-				accessToken={accessToken}
+				jwt={jwt}
 			/>
 		);
 	} else if (page === "edit") {
@@ -47,7 +47,7 @@ export const Roles = () => {
 				setPage={setPage}
 				activeRoleId={activeRoleId}
 				setActiveRoleId={setActiveRoleId}
-				accessToken={accessToken}
+				jwt={jwt}
 			/>
 		);
 	} else {

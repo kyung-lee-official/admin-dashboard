@@ -1,27 +1,27 @@
 import axios from "axios";
 
-export const createRole = async (accessToken?: string | null): Promise<any> => {
+export const createRole = async (jwt?: string | null): Promise<any> => {
 	const res = await axios.post(
 		"/member-roles",
 		{},
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
 			headers: {
-				Authorization: accessToken,
+				Authorization: jwt,
 			},
 		}
 	);
 	return res.data;
 };
 
-export const getRoles = async (accessToken?: string | null): Promise<any> => {
+export const getRoles = async (jwt?: string | null): Promise<any> => {
 	const res = await axios.post(
 		"/member-roles/find",
 		{ roleIds: [] },
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
 			headers: {
-				Authorization: accessToken,
+				Authorization: jwt,
 			},
 		}
 	);
@@ -31,12 +31,12 @@ export const getRoles = async (accessToken?: string | null): Promise<any> => {
 export const updateRoleById = async (
 	body: any,
 	roleId: number,
-	accessToken?: string | null
+	jwt?: string | null
 ): Promise<any> => {
 	const res = await axios.patch(`/member-roles/${roleId}`, body, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
-			Authorization: accessToken,
+			Authorization: jwt,
 		},
 	});
 	return res.data;
@@ -44,12 +44,12 @@ export const updateRoleById = async (
 
 export const deleteRoleById = async (
 	roleId: number,
-	accessToken?: string | null
+	jwt?: string | null
 ): Promise<any> => {
 	const res = await axios.delete(`/member-roles/${roleId}`, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
-			Authorization: accessToken,
+			Authorization: jwt,
 		},
 	});
 	return res.data;

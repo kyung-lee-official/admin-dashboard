@@ -39,7 +39,7 @@ const Row = (props: any) => {
 };
 
 export const Main = (props: any) => {
-	const { groupsQuery, setPage, setActiveGroupId, accessToken } = props;
+	const { groupsQuery, setPage, setActiveGroupId, jwt } = props;
 	const [searchResult, setSearchResult] = useState([]);
 	const [groupToDelete, setGroupToDelete] = useState<any>(null);
 	const [showSeeMore, setShowSeeMore] = useState<boolean>(false);
@@ -48,11 +48,11 @@ export const Main = (props: any) => {
 
 	const createGroupMutation = useMutation({
 		mutationFn: async () => {
-			return createGroup(accessToken);
+			return createGroup(jwt);
 		},
 		onSuccess: async (group) => {
 			await queryClient.invalidateQueries({
-				queryKey: ["getGroups", accessToken],
+				queryKey: ["getGroups", jwt],
 			});
 			setActiveGroupId(group.id);
 			setPage("edit");
@@ -61,11 +61,11 @@ export const Main = (props: any) => {
 
 	const deleteGroupMutation = useMutation({
 		mutationFn: async (groupId: number) => {
-			return deleteGroupById(groupId, accessToken);
+			return deleteGroupById(groupId, jwt);
 		},
 		onSuccess: (data) => {
 			queryClient.invalidateQueries({
-				queryKey: ["getGroups", accessToken],
+				queryKey: ["getGroups", jwt],
 			});
 			deleteDialogRef.current!.close();
 		},

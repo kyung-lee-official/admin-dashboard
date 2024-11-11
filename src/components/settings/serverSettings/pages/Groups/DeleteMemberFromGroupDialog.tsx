@@ -21,7 +21,7 @@ export const DeleteMemberFromGroupDialog = (props: {
 		setShowDeleteMemberDialog,
 	} = props;
 
-	const accessToken = useAuthStore((state) => state.accessToken);
+	const jwt = useAuthStore((state) => state.jwt);
 
 	const deleteMemberFromGroupDialogRef = useRef<HTMLDialogElement | null>(
 		null
@@ -36,12 +36,12 @@ export const DeleteMemberFromGroupDialog = (props: {
 			return updateGroupById(
 				{ memberIds: newMemberIds },
 				activeGroupId,
-				accessToken
+				jwt
 			);
 		},
 		onSuccess: (data) => {
 			queryClient.invalidateQueries({
-				queryKey: ["getGroups", accessToken],
+				queryKey: ["getGroups", jwt],
 			});
 			setShowDeleteMemberDialog(false);
 		},

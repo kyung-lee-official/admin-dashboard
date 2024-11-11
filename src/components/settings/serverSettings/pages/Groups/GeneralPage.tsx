@@ -14,7 +14,7 @@ export const GeneralPage = (props: any) => {
 		(group: any) => group.id === activeGroupId
 	);
 
-	const { accessToken } = useAuthStore();
+	const { jwt } = useAuthStore();
 	const [newGroupName, setNewGroupName] = useState<string>(activeGroup.name);
 	const [showSettingsChangedIndicator, setShowSettingsChangedIndicator] =
 		useState<boolean>(false);
@@ -24,12 +24,12 @@ export const GeneralPage = (props: any) => {
 			return updateGroupById(
 				{ name: newGroupName },
 				activeGroupId,
-				accessToken
+				jwt
 			);
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: ["getGroups", accessToken],
+				queryKey: ["getGroups", jwt],
 			});
 			setShowSettingsChangedIndicator(false);
 		},

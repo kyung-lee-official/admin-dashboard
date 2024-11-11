@@ -167,7 +167,7 @@ export const PermissionsPage = (props: any) => {
 	});
 	const currentPermissions = activeRole.permissions;
 
-	const { accessToken } = useAuthStore();
+	const { jwt } = useAuthStore();
 	const [newValues, setNewValues] = useState<string[]>([]);
 	const [showSettingsChangedIndicator, setShowSettingsChangedIndicator] =
 		useState<boolean>(false);
@@ -178,12 +178,12 @@ export const PermissionsPage = (props: any) => {
 			return updateRoleById(
 				{ permissions: newValues },
 				activeRoleId,
-				accessToken
+				jwt
 			);
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: ["getRoles", accessToken],
+				queryKey: ["getRoles", jwt],
 			});
 			setShowSettingsChangedIndicator(false);
 		},

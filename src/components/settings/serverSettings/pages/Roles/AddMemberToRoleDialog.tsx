@@ -17,7 +17,7 @@ export const AddMemberToRoleDialog = (props: {
 	setShowAddMemberDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
 	const { activeRole, showAddMemberDialog, setShowAddMemberDialog } = props;
-	const accessToken = useAuthStore((state) => state.accessToken);
+	const jwt = useAuthStore((state) => state.jwt);
 	const [originalRoleMembers, setOriginalRoleMembers] = useState<unknown[]>(
 		[]
 	);
@@ -29,9 +29,9 @@ export const AddMemberToRoleDialog = (props: {
 	const addMemberToRoleDialogRef = useRef<HTMLDialogElement | null>(null);
 
 	const membersQuery = useQuery<any, AxiosError>({
-		queryKey: ["getMembers", accessToken],
+		queryKey: ["getMembers", jwt],
 		queryFn: async () => {
-			const members = await getMembers(accessToken);
+			const members = await getMembers(jwt);
 			return members;
 		},
 		retry: false,
@@ -47,13 +47,13 @@ export const AddMemberToRoleDialog = (props: {
 			return updateRoleById(
 				{ memberIds: newRoleMemberIds },
 				activeRole.id,
-				accessToken
+				jwt
 			);
 		},
 		onSuccess: (data) => {
 			setShowAddMemberDialog(false);
 			queryClient.invalidateQueries({
-				queryKey: ["getRoles", accessToken],
+				queryKey: ["getRoles", jwt],
 			});
 		},
 	});

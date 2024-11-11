@@ -11,18 +11,18 @@ export const VerifyMemberDialog = (props: {
 	setShowVerifyMemberDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
 	const { member, showVerifyMemberDialog, setShowVerifyMemberDialog } = props;
-	const accessToken = useAuthStore((state) => state.accessToken);
+	const jwt = useAuthStore((state) => state.jwt);
 
 	const verifyMemberDialogRef = useRef<HTMLDialogElement | null>(null);
 
 	const verifyMemberMutation = useMutation({
 		mutationFn: async (memberId: string) => {
-			return verifyMember(memberId, accessToken);
+			return verifyMember(memberId, jwt);
 		},
 		onSuccess: (data) => {
 			setShowVerifyMemberDialog(false);
 			queryClient.invalidateQueries({
-				queryKey: ["getMembers", accessToken],
+				queryKey: ["getMembers", jwt],
 			});
 		},
 	});

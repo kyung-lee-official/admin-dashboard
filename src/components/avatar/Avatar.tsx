@@ -6,12 +6,12 @@ import React, { useEffect, useState } from "react";
 
 export const Avatar = (props: { member: any; className?: string }) => {
 	const { member, className } = props;
-	const accessToken = useAuthStore((state) => state.accessToken);
+	const jwt = useAuthStore((state) => state.jwt);
 	const [avatar, setAvatar] = useState<Blob | null>(null);
 
 	useEffect(() => {
 		const getAvatar = async () => {
-			const avatar = await downloadAvatar(member.id, accessToken);
+			const avatar = await downloadAvatar(member.id, jwt);
 			setAvatar(avatar);
 		};
 		getAvatar();

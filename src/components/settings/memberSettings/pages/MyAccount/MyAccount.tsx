@@ -292,7 +292,7 @@ const Divider = () => {
 export const MyAccount = () => {
 	const router = useRouter();
 	const jwt = useAuthStore((state) => state.jwt);
-	const setAccessToken = useAuthStore((state) => state.setAccessToken);
+	const setJwt = useAuthStore((state) => state.setJwt);
 	const setTencentCosTempCredential = useAuthStore(
 		(state) => state.setTencentCosTempCredential
 	);
@@ -330,7 +330,7 @@ export const MyAccount = () => {
 			<div>
 				<Button
 					onClick={() => {
-						setAccessToken(null);
+						setJwt(null);
 						setTencentCosTempCredential(null);
 						router.push("/sign-in");
 					}}

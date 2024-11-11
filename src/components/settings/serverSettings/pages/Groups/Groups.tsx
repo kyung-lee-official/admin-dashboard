@@ -11,12 +11,12 @@ import { getGroups } from "@/utils/api/groups";
 export const Groups = () => {
 	const [page, setPage] = useState<"main" | "edit" | "error">("main");
 	const [activeGroupId, setActiveGroupId] = useState<number | null>(null);
-	const { accessToken } = useAuthStore();
+	const { jwt } = useAuthStore();
 
 	const groupsQuery = useQuery<any, AxiosError>({
-		queryKey: ["getGroups", accessToken],
+		queryKey: ["getGroups", jwt],
 		queryFn: async () => {
-			const groups = await getGroups(accessToken);
+			const groups = await getGroups(jwt);
 			return groups;
 		},
 		retry: false,
@@ -37,7 +37,7 @@ export const Groups = () => {
 				groupsQuery={groupsQuery}
 				setPage={setPage}
 				setActiveGroupId={setActiveGroupId}
-				accessToken={accessToken}
+				jwt={jwt}
 			/>
 		);
 	} else if (page === "edit") {
@@ -47,7 +47,7 @@ export const Groups = () => {
 				setPage={setPage}
 				activeGroupId={activeGroupId}
 				setActiveGroupId={setActiveGroupId}
-				accessToken={accessToken}
+				jwt={jwt}
 			/>
 		);
 	} else {

@@ -14,7 +14,7 @@ export const GeneralPage = (props: any) => {
 		(role: any) => role.id === activeRoleId
 	);
 
-	const { accessToken } = useAuthStore();
+	const { jwt } = useAuthStore();
 	const [newRoleName, setNewRoleName] = useState<string>(activeRole.name);
 	const [showSettingsChangedIndicator, setShowSettingsChangedIndicator] =
 		useState<boolean>(false);
@@ -24,12 +24,12 @@ export const GeneralPage = (props: any) => {
 			return updateRoleById(
 				{ name: newRoleName },
 				activeRoleId,
-				accessToken
+				jwt
 			);
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: ["getRoles", accessToken],
+				queryKey: ["getRoles", jwt],
 			});
 			setShowSettingsChangedIndicator(false);
 		},

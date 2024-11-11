@@ -24,7 +24,7 @@ export const ChangeNameDialog = (props: {
 }) => {
 	const { member, showChangeNameDialog, setShowChangeNameDialog } =
 		props;
-	const accessToken = useAuthStore((state) => state.accessToken);
+	const jwt = useAuthStore((state) => state.jwt);
 
 	const { register, handleSubmit, formState } = useForm<IFormInput>({
 		mode: "onChange",
@@ -40,7 +40,7 @@ export const ChangeNameDialog = (props: {
 	>({
 		mutationFn: async (data: IFormInput) => {
 			const { name } = data;
-			return updateProfile(member.id, name, accessToken);
+			return updateProfile(member.id, name, jwt);
 		},
 		onSuccess: (data) => {
 			setShowChangeNameDialog(false);

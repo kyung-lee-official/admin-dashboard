@@ -47,7 +47,7 @@ const Row = (props: any) => {
 };
 
 export const Main = (props: any) => {
-	const { rolesQuery, setPage, setActiveRoleId, accessToken } = props;
+	const { rolesQuery, setPage, setActiveRoleId, jwt } = props;
 	const [searchResult, setSearchResult] = useState([]);
 	const [roleToDelete, setRoleToDelete] = useState<any>(null);
 
@@ -55,11 +55,11 @@ export const Main = (props: any) => {
 
 	const createRoleMutation = useMutation({
 		mutationFn: async () => {
-			return createRole(accessToken);
+			return createRole(jwt);
 		},
 		onSuccess: async (role) => {
 			await queryClient.invalidateQueries({
-				queryKey: ["getRoles", accessToken],
+				queryKey: ["getRoles", jwt],
 			});
 			setActiveRoleId(role.id);
 			setPage("edit");
@@ -68,11 +68,11 @@ export const Main = (props: any) => {
 
 	const deleteRoleMutation = useMutation({
 		mutationFn: async (roleId: number) => {
-			return deleteRoleById(roleId, accessToken);
+			return deleteRoleById(roleId, jwt);
 		},
 		onSuccess: (data) => {
 			queryClient.invalidateQueries({
-				queryKey: ["getRoles", accessToken],
+				queryKey: ["getRoles", jwt],
 			});
 			deleteDialogRef.current!.close();
 		},

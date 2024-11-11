@@ -26,17 +26,17 @@ const PanelContainer = ({ children }: { children: React.ReactNode }) => {
 const Content = () => {
 	const router = useRouter();
 	const searchParams = useSearchParams();
-	const accessToken = searchParams.get("accessToken");
+	const jwt = searchParams.get("jwt");
 	const isNewMember =
 		searchParams.get("isNewMember") === "true" ? true : false;
 	const isSeedMember =
 		searchParams.get("isSeedMember") === "true" ? true : false;
-	const setAccessToken = useAuthStore((state) => state.setAccessToken);
+	const setJwt = useAuthStore((state) => state.setJwt);
 
 	const isValidToken = useQuery<any, AxiosError>({
-		queryKey: ["isValidToken", accessToken],
+		queryKey: ["isValidToken", jwt],
 		queryFn: async () => {
-			const isSignedIn = await getIsSignedIn("Bearer " + accessToken);
+			const isSignedIn = await getIsSignedIn("Bearer " + jwt);
 			return isSignedIn;
 		},
 		retry: false,
@@ -63,7 +63,7 @@ const Content = () => {
 				}
 			}
 		}
-	}, [isValidToken, accessToken, countDown]);
+	}, [isValidToken, jwt, countDown]);
 
 	if (isValidToken.isLoading) {
 		return (
@@ -95,7 +95,7 @@ const Content = () => {
 	}
 
 	if (isValidToken.data.isSignedIn) {
-		setAccessToken(accessToken);
+		setJwt(jwt);
 		if (isNewMember) {
 			if (isSeedMember) {
 				return (

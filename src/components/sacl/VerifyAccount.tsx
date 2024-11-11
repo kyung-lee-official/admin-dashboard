@@ -8,10 +8,10 @@ import { useAuthStore } from "@/stores/auth";
 import { AuthMask } from "./AuthMask";
 
 export const VerifyAccount = (props: any) => {
-	const { myInfo, accessToken } = props;
+	const { myInfo, jwt } = props;
 
 	const router = useRouter();
-	const setAccessToken = useAuthStore((state) => state.setAccessToken);
+	const setJwt = useAuthStore((state) => state.setJwt);
 	const setTencentCosTempCredential = useAuthStore(
 		(state) => state.setTencentCosTempCredential
 	);
@@ -25,7 +25,7 @@ export const VerifyAccount = (props: any) => {
 		AxiosError,
 		string | null | undefined
 	>({
-		mutationKey: ["sendVerificationEmail", accessToken],
+		mutationKey: ["send-verification-email", jwt],
 		mutationFn: sendVerificationEmail,
 		onSuccess: () => {
 			setEmailSent(true);
@@ -65,7 +65,7 @@ export const VerifyAccount = (props: any) => {
 					text-2xl
 					bg-white hover:bg-neutral-100 rounded-md shadow-sm"
 					onClick={() => {
-						sendVerificationEmailMutation.mutate(accessToken);
+						sendVerificationEmailMutation.mutate(jwt);
 					}}
 					disabled={
 						sendVerificationEmailMutation.isPending ||
@@ -101,7 +101,7 @@ export const VerifyAccount = (props: any) => {
 				</button>
 				<Button
 					onClick={() => {
-						setAccessToken(null);
+						setJwt(null);
 						setTencentCosTempCredential(null);
 						router.push("/sign-in");
 					}}

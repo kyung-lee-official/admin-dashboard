@@ -32,7 +32,7 @@ export const Sacl = (props: any) => {
 	const saclRoutes = ["/", "/sign-in", "/signup", "/seed"];
 	const [showLoading, setShowLoading] = useState(true);
 	const jwt = useAuthStore((state) => state.jwt);
-	const setAccessToken = useAuthStore((state) => state.setAccessToken);
+	const setJwt = useAuthStore((state) => state.setJwt);
 	const tencentCosTempCredential = useAuthStore(
 		(state) => state.tencentCosTempCredential
 	);
@@ -76,7 +76,7 @@ export const Sacl = (props: any) => {
 						if (timeLeft < ms("2h")) {
 							/* Token is about to expire. */
 							const res = await refreshJwt(jwt);
-							setAccessToken(res.jwt);
+							setJwt(res.jwt);
 							return res.jwt;
 						} else {
 							/* Ample time left. */

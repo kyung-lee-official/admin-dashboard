@@ -13,18 +13,18 @@ export const DeleteMemberDialog = (props: {
 	setShowDeleteMemberDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
 	const { member, showDeleteMemberDialog, setShowDeleteMemberDialog } = props;
-	const accessToken = useAuthStore((state) => state.accessToken);
+	const jwt = useAuthStore((state) => state.jwt);
 
 	const deleteMemberDialogRef = useRef<HTMLDialogElement | null>(null);
 
 	const deleteMemberMutation = useMutation({
 		mutationFn: async (memberId: string) => {
-			return deleteMemberById(memberId, accessToken);
+			return deleteMemberById(memberId, jwt);
 		},
 		onSuccess: (data) => {
 			setShowDeleteMemberDialog(false);
 			queryClient.invalidateQueries({
-				queryKey: ["getMembers", accessToken],
+				queryKey: ["getMembers", jwt],
 			});
 		},
 	});

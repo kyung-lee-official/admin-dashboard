@@ -17,12 +17,12 @@ export const EditGroupsDialog = (props: {
 	setShowEditGroupsDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
 	const { member, showEditGroupsDialog, setShowEditGroupsDialog } = props;
-	const accessToken = useAuthStore((state) => state.accessToken);
+	const jwt = useAuthStore((state) => state.jwt);
 
 	const groupsQuery = useQuery<any, AxiosError>({
-		queryKey: ["getGroups", accessToken],
+		queryKey: ["getGroups", jwt],
 		queryFn: async () => {
-			const groups = await getGroups(accessToken);
+			const groups = await getGroups(jwt);
 			return groups;
 		},
 		retry: false,
@@ -43,12 +43,12 @@ export const EditGroupsDialog = (props: {
 			memberId: string;
 			groupIds: number[];
 		}) => {
-			return editMemberGroups(memberId, groupIds, accessToken);
+			return editMemberGroups(memberId, groupIds, jwt);
 		},
 		onSuccess: (data) => {
 			setShowEditGroupsDialog(false);
 			queryClient.invalidateQueries({
-				queryKey: ["getMembers", accessToken],
+				queryKey: ["getMembers", jwt],
 			});
 		},
 	});

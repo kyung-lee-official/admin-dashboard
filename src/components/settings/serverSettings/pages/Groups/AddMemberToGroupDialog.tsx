@@ -17,7 +17,7 @@ const AddMemberToGroupDialog = (props: {
 	setShowAddMemberDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
 	const { activeGroup, showAddMemberDialog, setShowAddMemberDialog } = props;
-	const accessToken = useAuthStore((state) => state.accessToken);
+	const jwt = useAuthStore((state) => state.jwt);
 	const [originalGroupMembers, setOriginalGroupMembers] = useState<unknown[]>(
 		[]
 	);
@@ -29,9 +29,9 @@ const AddMemberToGroupDialog = (props: {
 	const addMemberToGroupDialogRef = useRef<HTMLDialogElement | null>(null);
 
 	const membersQuery = useQuery<any, AxiosError>({
-		queryKey: ["getMembers", accessToken],
+		queryKey: ["getMembers", jwt],
 		queryFn: async () => {
-			const members = await getMembers(accessToken);
+			const members = await getMembers(jwt);
 			return members;
 		},
 		retry: false,
@@ -47,13 +47,13 @@ const AddMemberToGroupDialog = (props: {
 			return updateGroupById(
 				{ memberIds: newGroupMemberIds },
 				activeGroup.id,
-				accessToken
+				jwt
 			);
 		},
 		onSuccess: (data) => {
 			setShowAddMemberDialog(false);
 			queryClient.invalidateQueries({
-				queryKey: ["getGroups", accessToken],
+				queryKey: ["getGroups", jwt],
 			});
 		},
 	});

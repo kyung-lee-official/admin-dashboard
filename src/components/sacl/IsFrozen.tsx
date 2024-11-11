@@ -6,7 +6,7 @@ import { AuthMask } from "./AuthMask";
 
 export const IsFrozen = () => {
 	const router = useRouter();
-	const setAccessToken = useAuthStore((state) => state.setAccessToken);
+	const setJwt = useAuthStore((state) => state.setJwt);
 	const setTencentCosTempCredential = useAuthStore(
 		(state) => state.setTencentCosTempCredential
 	);
@@ -25,7 +25,7 @@ export const IsFrozen = () => {
 				</h2>
 				<Button
 					onClick={() => {
-						setAccessToken(null);
+						setJwt(null);
 						setTencentCosTempCredential(null);
 						router.push("/sign-in");
 					}}
