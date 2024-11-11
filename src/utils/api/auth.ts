@@ -11,11 +11,11 @@ export const seed = async (body: {
 	return res.data;
 };
 
-export const getIsSignedIn = async (accessToken?: string | null) => {
+export const getIsSignedIn = async (jwt: string) => {
 	const res = await axios.get("/authentication/is-signed-in", {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
-			Authorization: accessToken,
+			Authorization: jwt,
 		},
 	});
 	return res.data;
@@ -42,57 +42,12 @@ export const signUp = async (body: {
 	return res.data;
 };
 
-export const refreshJwt = async (accessToken?: string | null) => {
+export const refreshJwt = async (jwt: string) => {
 	const res = await axios.get("/authentication/refresh-jwt", {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
-			Authorization: accessToken,
+			Authorization: jwt,
 		},
-	});
-	return res.data;
-};
-
-export const sendVerificationEmail = async (accessToken?: string | null) => {
-	const res = await axios.post("/member-auth/sendVerificationEmail", null, {
-		baseURL: process.env.NEXT_PUBLIC_API_HOST,
-		headers: {
-			Authorization: accessToken,
-		},
-	});
-	return res.data;
-};
-
-export const verifyEmail = async (body: {
-	verificationToken: string;
-}): Promise<any> => {
-	const res = await axios.post("/member-auth/verifyEmail", body, {
-		baseURL: process.env.NEXT_PUBLIC_API_HOST,
-	});
-	return res.data;
-};
-
-export const sendUpdateEmailVerificationRequest = async (
-	newEmail: string,
-	accessToken?: string | null
-): Promise<any> => {
-	const res = await axios.patch(
-		"/member-auth/update-email-request",
-		{ newEmail: newEmail },
-		{
-			baseURL: process.env.NEXT_PUBLIC_API_HOST,
-			headers: {
-				Authorization: accessToken,
-			},
-		}
-	);
-	return res;
-};
-
-export const verifyNewEmail = async (body: {
-	verificationToken: string;
-}): Promise<any> => {
-	const res = await axios.patch("/member-auth/verifyNewEmail", body, {
-		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 	});
 	return res.data;
 };
@@ -117,12 +72,12 @@ export const resetPassword = async (body: {
 /* Tencent COS */
 
 export const getTencentCosTempCredential = async (
-	accessToken?: string | null
+	jwt: string
 ): Promise<any> => {
 	const res = await axios.get("/member-auth/tencentCosTempCredential", {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
-			Authorization: accessToken,
+			Authorization: jwt,
 		},
 	});
 	return res.data;

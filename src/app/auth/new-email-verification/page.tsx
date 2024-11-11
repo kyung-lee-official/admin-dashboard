@@ -1,7 +1,11 @@
 import { Content } from "./Content";
 
 const Page = () => {
-	return <Content />;
+	return (
+		<div className="flex justify-center">
+			<Content />
+		</div>
+	);
 };
 
 export default Page;

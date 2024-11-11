@@ -7,7 +7,7 @@ type State = {
 };
 
 type Action = {
-	setJwt: (newAccessToken: string | null) => void;
+	setJwt: (newJwt: string | null) => void;
 	setTencentCosTempCredential: (newTencentCosTempCredential: any) => void;
 };
 
@@ -16,10 +16,10 @@ export const useAuthStore = create<State & Action>()(
 		persist(
 			(set) => ({
 				jwt: "",
-				setJwt: (newAccessToken) => {
+				setJwt: (newJwt) => {
 					return set((state) => {
-						if (newAccessToken) {
-							return { jwt: `Bearer ${newAccessToken}` };
+						if (newJwt) {
+							return { jwt: `Bearer ${newJwt}` };
 						} else {
 							return { jwt: undefined };
 						}

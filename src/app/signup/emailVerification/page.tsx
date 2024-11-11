@@ -19,7 +19,7 @@ const Index = () => {
 	}
 
 	const [verificationState, setVerificationState] = useState<
-		"verifying" | "invalid-token" | "varification-failed" | "verified"
+		"verifying" | "invalid-token" | "verification-failed" | "verified"
 	>("verifying");
 
 	const isVerifiedQuery = useQuery<any, AxiosError>({
@@ -39,12 +39,12 @@ const Index = () => {
 		if (isVerifiedQuery.isLoading) {
 			setVerificationState("verifying");
 		} else if (isVerifiedQuery.isError) {
-			setVerificationState("varification-failed");
+			setVerificationState("verification-failed");
 		} else if (isVerifiedQuery.isSuccess) {
 			if (isVerifiedQuery.data?.isVerified) {
 				setVerificationState("verified");
 			} else {
-				setVerificationState("varification-failed");
+				setVerificationState("verification-failed");
 			}
 		}
 	}, [isVerifiedQuery.status]);
@@ -106,13 +106,13 @@ const Index = () => {
 						<div>❌</div>
 					</motion.div>
 				)}
-				{verificationState === "varification-failed" && (
+				{verificationState === "verification-failed" && (
 					<motion.div
 						className="flex flex-col items-center w-96 px-10 py-6 gap-6
 						text-3xl text-neutral-600
 						bg-neutral-200
 						rounded-3xl shadow-lg"
-						key="varification-failed"
+						key="verification-failed"
 						initial={{ opacity: 0, y: -20 }}
 						animate={{ opacity: 1, y: 0 }}
 						exit={{ opacity: 0, y: 20 }}

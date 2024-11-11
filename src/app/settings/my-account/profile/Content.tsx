@@ -129,7 +129,17 @@ export const Content = () => {
 							<td className="w-1/2">Email</td>
 							<td className="w-1/2">
 								{myInfoQuery.isSuccess ? (
-									myInfoQuery.data.email
+									<div className="flex items-center gap-2">
+										<div>{myInfoQuery.data.email}</div>
+										<div>
+											{myInfoQuery.data
+												.isVerified ? null : (
+												<div className="border-[1px] border-white/20 px-1.5 rounded-md">
+													Unverified
+												</div>
+											)}
+										</div>
+									</div>
 								) : (
 									<OneRowSkeleton />
 								)}
@@ -140,7 +150,7 @@ export const Content = () => {
 									text-white/50
 									hover:bg-white/10 rounded-md"
 									onClick={() => {
-										setEdit({ show: true, id: "sign-up" });
+										setEdit({ show: true, id: "email" });
 									}}
 								>
 									<EditIcon size={15} />
@@ -156,7 +166,10 @@ export const Content = () => {
 									text-white/50
 									hover:bg-white/10 rounded-md"
 									onClick={() => {
-										setEdit({ show: true, id: "sign-up" });
+										setEdit({
+											show: true,
+											id: "change-password",
+										});
 									}}
 								>
 									<EditIcon size={15} />
