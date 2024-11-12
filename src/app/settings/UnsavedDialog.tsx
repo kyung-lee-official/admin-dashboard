@@ -7,7 +7,7 @@ import {
 	Dispatch,
 	SetStateAction,
 } from "react";
-import { EditProps } from "./general/sign-up/Content";
+import { EditProps } from "./EditPanel";
 
 export const UnsavedDialog = forwardRef(function UnsavedDialog(
 	props: { setEdit: Dispatch<SetStateAction<EditProps>> },

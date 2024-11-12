@@ -1,5 +1,5 @@
 import { useAuthStore } from "@/stores/auth";
-import { sendUpdateEmailVerificationRequest } from "@/utils/api/auth";
+import { sendUpdateEmailVerificationRequest } from "@/utils/api/authentication";
 import { queryClient } from "@/utils/react-query/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";

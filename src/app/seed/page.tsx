@@ -10,7 +10,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import lottieFiles from "@/components/lottie-animations/animation_congratulations.json";
 import { useMutation } from "@tanstack/react-query";
-import { googleConsentScreen, seed } from "@/utils/api/auth";
+import { googleConsentScreen, seed } from "@/utils/api/authentication";
 import { Button } from "@/components/button/Button";
 import { GoogleIcon } from "@/components/icons/Icons";
 

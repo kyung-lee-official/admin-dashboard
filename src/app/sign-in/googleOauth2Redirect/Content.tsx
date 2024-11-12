@@ -8,7 +8,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import lottieFiles from "@/components/lottie-animations/animation_congratulations.json";
-import { getIsSignedIn } from "@/utils/api/auth";
+import { getIsSignedIn } from "@/utils/api/authentication";
 
 const PanelContainer = ({ children }: { children: React.ReactNode }) => {
 	return (

@@ -9,10 +9,10 @@ import { queryClient } from "@/utils/react-query/react-query";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
-import { EditProps } from "./Content";
 import { Button } from "@/components/button/Button";
 import { motion } from "framer-motion";
 import { UnsavedDialog } from "../../UnsavedDialog";
+import { EditProps } from "../../EditPanel";
 
 export const EditContentSignUp = (props: {
 	setEdit: Dispatch<SetStateAction<EditProps>>;

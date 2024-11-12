@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { verifyEmail } from "@/utils/api/auth";
+import { verifyEmail } from "@/utils/api/email";
 import { Button } from "@/components/button/Button";
 
 const Index = () => {

@@ -4,11 +4,11 @@ import { queryClient } from "@/utils/react-query/react-query";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
-import { EditProps } from "../../general/sign-up/Content";
 import { Button } from "@/components/button/Button";
 import { motion } from "framer-motion";
 import { UnsavedDialog } from "../../UnsavedDialog";
 import { getMyInfo, updateProfile } from "@/utils/api/members";
+import { EditProps } from "../../EditPanel";
 
 export const EditContentProfile = (props: {
 	setEdit: Dispatch<SetStateAction<EditProps>>;

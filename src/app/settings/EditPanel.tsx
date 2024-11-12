@@ -1,9 +1,16 @@
 import { motion } from "framer-motion";
 import { EditContentSignUp } from "./general/sign-up/EditContentSignUp";
 import { Dispatch, ReactNode, SetStateAction } from "react";
-import { EditProps } from "./general/sign-up/Content";
 import { EditContentProfile } from "./my-account/profile/EditContentProfile";
 import { EditContentEmail } from "./my-account/profile/EditContentEmail";
+import { EditContentPassword } from "./my-account/profile/EditContentPassword";
+
+type EditId = "" | "sign-up" | "profile" | "email" | "change-password";
+
+export type EditProps = {
+	show: boolean;
+	id: EditId;
+};
 
 const DarkenMask = (props: { children: ReactNode }) => {
 	const { children } = props;
@@ -44,6 +51,12 @@ export const EditPanel = (props: {
 				return (
 					<DarkenMask>
 						<EditContentEmail setEdit={setEdit} />
+					</DarkenMask>
+				);
+			case "change-password":
+				return (
+					<DarkenMask>
+						<EditContentPassword setEdit={setEdit} />
 					</DarkenMask>
 				);
 			default:

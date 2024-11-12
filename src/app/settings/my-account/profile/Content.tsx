@@ -7,13 +7,8 @@ import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import { EditPanel } from "../../EditPanel";
+import { EditPanel, EditProps } from "../../EditPanel";
 import { OneRowSkeleton } from "@/components/skeleton/OneRowSkeleton";
-
-export type EditProps = {
-	show: boolean;
-	id: string;
-};
 
 export const Content = () => {
 	const jwt = useAuthStore((state) => state.jwt);

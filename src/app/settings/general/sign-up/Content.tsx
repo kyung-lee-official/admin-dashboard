@@ -2,13 +2,8 @@
 
 import { EditIcon } from "@/components/icons/Icons";
 import { useState } from "react";
-import { EditPanel } from "../../EditPanel";
+import { EditPanel, EditProps } from "../../EditPanel";
 import { createPortal } from "react-dom";
-
-export type EditProps = {
-	show: boolean;
-	id: string;
-};
 
 export const Content = () => {
 	const [edit, setEdit] = useState<EditProps>({ show: false, id: "sign-up" });

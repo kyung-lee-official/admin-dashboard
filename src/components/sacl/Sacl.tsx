@@ -10,7 +10,7 @@ import {
 	getIsSignedIn,
 	getTencentCosTempCredential,
 	refreshJwt,
-} from "@/utils/api/auth";
+} from "@/utils/api/authentication";
 import { Layout } from "../layout/Layout";
 import { getMyInfo } from "@/utils/api/members";
 import { NetworkError } from "./NetworkError";
