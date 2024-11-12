@@ -59,6 +59,19 @@ export const forgetPassword = async (body: { email: string }): Promise<any> => {
 	return res.data;
 };
 
+export const changePassword = async (
+	body: { oldPassword: string; newPassword: string },
+	jwt: string
+) => {
+	const res = await axios.patch(`/authentication/my-password`, body, {
+		baseURL: process.env.NEXT_PUBLIC_API_HOST,
+		headers: {
+			Authorization: jwt,
+		},
+	});
+	return res.data;
+};
+
 export const resetPassword = async (body: {
 	password: string;
 	resetPasswordToken: string | null;

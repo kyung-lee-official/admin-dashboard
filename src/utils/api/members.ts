@@ -54,20 +54,6 @@ export const updateProfile = async (
 	return res.data;
 };
 
-export const changePassword = async (
-	id: string,
-	body: { oldPassword: string; newPassword: string },
-	jwt: string
-) => {
-	const res = await axios.patch(`/members/password/${id}`, body, {
-		baseURL: process.env.NEXT_PUBLIC_API_HOST,
-		headers: {
-			Authorization: jwt,
-		},
-	});
-	return res.data;
-};
-
 export const uploadMyAvatar = async (blob: Blob, jwt: string) => {
 	const fileFromBlob = new File([blob], "avatar.png", { type: "image/png" });
 	const res = await axios.put(

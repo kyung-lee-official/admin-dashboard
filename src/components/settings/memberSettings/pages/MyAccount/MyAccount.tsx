@@ -14,7 +14,6 @@ import { ChangePasswordDialog } from "./ChangePasswordDialog";
 import { ChangeAvatarDialog } from "./ChangeAvatarDialog";
 import { Button } from "@/components/button/Button";
 import { SettingsHeading } from "@/components/settings/ContentRegion";
-import { ChangeEmailDialog } from "./ChangeEmailDialog";
 import { useSpring } from "framer-motion";
 import { Copied } from "./Copied";
 import { ChangeNameDialog } from "./ChangeNameDialog";
@@ -269,13 +268,6 @@ const InfoPanel = (props: any) => {
 						setShowChangeNameDialog={
 							setShowChangeNameDialog
 						}
-					/>
-				)}
-				{showChangeEmailDialog && (
-					<ChangeEmailDialog
-						member={myInfo}
-						showChangeEmailDialog={showChangeEmailDialog}
-						setShowChangeEmailDialog={setShowChangeEmailDialog}
 					/>
 				)}
 			</div>
