@@ -8,7 +8,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { AxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
-import { googleConsentScreen, signIn } from "@/utils/api/auth";
+import { googleConsentScreen, signIn } from "@/utils/api/authentication";
 import { Button } from "@/components/button/Button";
 import { GoogleIcon } from "@/components/icons/Icons";
 import { Input } from "@/components/input/Input";
@@ -87,7 +87,7 @@ export const Content = () => {
 							/>
 							{mutation.isError &&
 								mutation.error.response?.status === 401 && (
-									<div className="text-base text-red-400 font-bold">
+									<div className="text-base text-red-500/90">
 										Account or password is incorrect
 									</div>
 								)}
