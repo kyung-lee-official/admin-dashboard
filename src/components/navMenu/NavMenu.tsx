@@ -2,7 +2,6 @@
 
 import React from "react";
 import Link from "next/link";
-import { Panel } from "../panel/Panel";
 import { ReturnIcon } from "../icons/Icons";
 import { usePathname } from "next/navigation";
 import {
@@ -12,6 +11,7 @@ import {
 	settingsGeneralMenuItems,
 	settingsMyAccountMenuItems,
 } from "@/components/navMenu/MenuItems";
+import { MoreMenu } from "../moreMenu/MoreMenu";
 
 export const NavMenuItem = (props: { menu: MenuItem[] }) => {
 	const pathname = usePathname();
@@ -107,7 +107,7 @@ export const NavMenu = () => {
 
 	return (
 		<nav
-			className="flex flex-col w-56 h-svh
+			className="flex-[0_0_224px] flex flex-col max-w-[224px] h-svh
 			font-semibold
 			border-r-[1px] border-white/5
 			z-10"
@@ -197,7 +197,7 @@ export const NavMenu = () => {
 				</div>
 			</div>
 			<div className="flex-[0_0_56px]">
-				<Panel />
+				<MoreMenu />
 			</div>
 		</nav>
 	);

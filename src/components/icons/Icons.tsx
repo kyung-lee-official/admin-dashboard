@@ -432,6 +432,25 @@ export const CrownIcon = ({ size, fill }: any) => {
 	);
 };
 
+export const MoreIcon = ({ size, fill }: any) => {
+	return (
+		<svg
+			height={size}
+			width={size}
+			viewBox="0 0 15 15"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<path
+				fill="currentColor"
+				fillRule="evenodd"
+				d="M6.306 7.5a1.194 1.194 0 1 1 2.389 0 1.194 1.194 0 0 1-2.39 0M1.194 7.5a1.194 1.194 0 1 1 2.39 0 1.194 1.194 0 0 1-2.39 0M11.417 7.5a1.194 1.194 0 1 1 2.389 0 1.194 1.194 0 0 1-2.39 0"
+				clipRule="evenodd"
+			></path>
+		</svg>
+	);
+};
+
 export const MoreVerticalOutlineIcon = ({ size, fill }: any) => {
 	return (
 		<svg
@@ -443,8 +462,8 @@ export const MoreVerticalOutlineIcon = ({ size, fill }: any) => {
 			fill="currentColor"
 			xmlns="http://www.w3.org/2000/svg"
 		>
-			<g data-name="Layer 2">
-				<g data-name="more-vertical">
+			<g>
+				<g>
 					<circle cx="12" cy="12" r="2"></circle>
 					<circle cx="12" cy="5" r="2"></circle>
 					<circle cx="12" cy="19" r="2"></circle>

@@ -12,7 +12,7 @@ export const Content = (props: { children: ReactNode }) => {
 	});
 
 	return (
-		<div className="flex flex-col w-full h-svh">
+		<div className="flex-[1_1_100%] flex flex-col h-svh">
 			<h2
 				className="flex-[0_0_56px] flex items-center p-3
 				text-sm font-semibold dark:text-white/40

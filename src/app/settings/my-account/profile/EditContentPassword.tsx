@@ -10,7 +10,7 @@ import { z } from "zod";
 import { changePassword } from "@/utils/api/authentication";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { DevTool } from "@hookform/devtools";
+// import { DevTool } from "@hookform/devtools";
 import { AxiosError } from "axios";
 
 interface IFormInput {
@@ -260,7 +260,7 @@ export const EditContentPassword = (props: {
 				</div>
 			</form>
 			{/* set up the dev tool */}
-			<DevTool control={control} />
+			{/* <DevTool control={control} /> */}
 			<UnsavedDialog ref={unsavedDialogRef} setEdit={setEdit} />
 		</motion.div>
 	);
