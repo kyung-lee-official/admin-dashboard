@@ -153,7 +153,8 @@ export const EditContentProfile = (props: {
 					<Button
 						color="cancel"
 						size="sm"
-						onClick={() => {
+						onClick={(e) => {
+							e.preventDefault();
 							quit();
 						}}
 					>
