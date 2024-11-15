@@ -174,7 +174,8 @@ export const EditContentSignUp = (props: {
 					<Button
 						color="cancel"
 						size="sm"
-						onClick={() => {
+						onClick={(e) => {
+							e.preventDefault();
 							quit();
 						}}
 					>
