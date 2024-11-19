@@ -7,3 +7,7 @@ export function scale(
 ) {
 	return ((number - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
 }
+
+export function clamp(number: number, min: number, max: number) {
+	return Math.min(Math.max(number, min), max);
+}

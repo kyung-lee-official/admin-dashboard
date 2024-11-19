@@ -57,7 +57,7 @@ export const updateProfile = async (
 export const uploadMyAvatar = async (blob: Blob, jwt: string) => {
 	const fileFromBlob = new File([blob], "avatar.png", { type: "image/png" });
 	const res = await axios.put(
-		"/members/updateAvatar",
+		"/members/update-avatar",
 		{ file: fileFromBlob },
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
@@ -108,7 +108,7 @@ export const editMemberGroups = async (
 
 export const downloadAvatar = async (id: string, jwt: string) => {
 	try {
-		const res = await axios.get(`/members/downloadAvatar/${id}`, {
+		const res = await axios.get(`/members/download-avatar/${id}`, {
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
 			headers: {
 				Authorization: jwt,

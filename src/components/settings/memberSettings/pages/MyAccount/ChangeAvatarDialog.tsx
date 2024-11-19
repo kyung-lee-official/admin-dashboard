@@ -26,8 +26,7 @@ export const ChangeAvatarDialog = (props: {
 	 * Set the translation of the image.
 	 * Initially, the image is centered in the draggable area
 	 * and the translation is [0, 0].
-	 * If imageTranslation[0] is positive, the image will move to the right, and
-	 * vice versa.
+	 * If imageTranslation[0] is positive, the image will move to the right, and vice versa.
 	 * If imageTranslation[1] is positive, the image will move down, and vice versa.
 	 */
 	const [imageTranslation, setImageTranslation] = useState<number[]>([0, 0]);
@@ -52,7 +51,7 @@ export const ChangeAvatarDialog = (props: {
 			if (dialogRef.current) {
 				dialogRef.current.close();
 				queryClient.invalidateQueries({
-					queryKey: ["myAvatar", jwt],
+					queryKey: ["my-avatar", jwt],
 				});
 			}
 			/* Tencent COS response */
@@ -60,7 +59,7 @@ export const ChangeAvatarDialog = (props: {
 			// 		dialogRef.current.close();
 			// 		queryClient.invalidateQueries({
 			// 			queryKey: [
-			// 				"myAvatar",
+			// 				"my-avatar",
 			// 				jwt,
 			// 			],
 			// 		});

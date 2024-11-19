@@ -3,18 +3,10 @@
 import { queryClient } from "@/utils/react-query/react-query";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "next/navigation";
-import {
-	ReactNode,
-	useEffect,
-	useRef,
-	useState,
-	MouseEventHandler,
-} from "react";
-import { ChangePasswordDialog } from "./ChangePasswordDialog";
+import { ReactNode, useRef, useState, MouseEventHandler } from "react";
 import { ChangeAvatarDialog } from "./ChangeAvatarDialog";
 import { Button } from "@/components/button/Button";
 import { SettingsHeading } from "@/components/settings/ContentRegion";
-import { useSpring } from "framer-motion";
 import { Copied } from "./Copied";
 import { ChangeNameDialog } from "./ChangeNameDialog";
 
@@ -50,14 +42,8 @@ const Row = (props: {
 const InfoPanel = (props: any) => {
 	const { myInfo, jwt } = props;
 	const avatarInputRef = useRef<HTMLInputElement>(null);
-	const copiedRef = useRef<any>(null);
 
-	const myAvatar = queryClient.getQueryData<any>(["myAvatar", jwt]);
-
-	const [showChangeNameDialog, setShowChangeNameDialog] =
-		useState<boolean>(false);
-	const [showChangeEmailDialog, setShowChangeEmailDialog] =
-		useState<boolean>(false);
+	const myAvatar = queryClient.getQueryData<any>(["my-avatar", jwt]);
 
 	const onAvatarInputChange = (e: any) => {
 		const file = e.target.files[0];
@@ -113,163 +99,6 @@ const InfoPanel = (props: any) => {
 						jwt={jwt}
 					/>
 				</div>
-				<div
-					className="flex flex-col gap-5
-					p-4
-					bg-neutral-100
-					rounded-lg"
-				>
-					<Row
-						title="NAME"
-						btnText="Edit"
-						btnOnClick={() => {
-							setShowChangeNameDialog(true);
-						}}
-					>
-						{myInfo.name}
-					</Row>
-					<Row
-						title="MEMBER ID"
-						btnText="Copy"
-						btnOnClick={() => {
-							navigator.clipboard.writeText(myInfo.id);
-							copiedRef.current?.trigger();
-						}}
-					>
-						<div className="flex gap-4">
-							<div>{myInfo.id}</div>
-							<Copied ref={copiedRef} />
-						</div>
-					</Row>
-					<Row
-						title="EMAIL"
-						btnText="Edit"
-						btnOnClick={() => {
-							setShowChangeEmailDialog(true);
-						}}
-					>
-						{myInfo.email}
-					</Row>
-					<Row title="ROLES">
-						<div className="flex flex-wrap gap-2">
-							{myInfo.memberRoles?.map((role: any) => {
-								if (role.name === "admin") {
-									return (
-										<div
-											key={role.id}
-											className="px-1
-											text-yellow-500 font-normal text-base
-											bg-zinc-800 rounded"
-										>
-											{role.name}
-										</div>
-									);
-								}
-								return (
-									<div
-										key={role.id}
-										className="px-1 
-										text-neutral-600 font-normal text-base
-										bg-neutral-300 rounded"
-									>
-										{role.name}
-									</div>
-								);
-							})}
-						</div>
-					</Row>
-					{/* <Row title="GROUPS">
-						<div className="flex flex-wrap gap-2">
-							{myInfo.memberGroups.length > 0 ? (
-								myInfo.memberGroups?.map((group: any) => {
-									if (group.name === "everyone") {
-										return (
-											<div
-												key={group.id}
-												className="px-1
-												text-neutral-600 font-normal text-base
-												bg-neutral-300 rounded"
-											>
-												{group.name}
-											</div>
-										);
-									}
-									return (
-										<div
-											key={group.id}
-											className="text-neutral-600 font-normal text-base"
-										>
-											{group.name}
-										</div>
-									);
-								})
-							) : (
-								<div className="text-neutral-600 font-normal text-base">
-									No Groups
-								</div>
-							)}
-						</div>
-					</Row>
-					<Row title="OWNED GROUPS">
-						<div className="flex flex-wrap gap-2">
-							{myInfo.ownedGroups.length > 0 ? (
-								myInfo.ownedGroups?.map((ownedGroups: any) => {
-									return (
-										<div
-											key={ownedGroups.id}
-											className="px-1
-											text-neutral-600 font-normal text-base
-											bg-neutral-300 rounded"
-										>
-											{ownedGroups.name}
-										</div>
-									);
-								})
-							) : (
-								<div className="text-neutral-600 font-normal text-base">
-									No Owned Groups
-								</div>
-							)}
-						</div>
-					</Row> */}
-					{/* <div className="flex flex-col gap-2">
-						<div className="text-neutral-600 font-bold text-sm select-none">
-							VERIFICATION
-						</div>
-						{myInfo.isVerified ? (
-							<div
-								className="flex 
-								text-neutral-600 font-normal text-base"
-							>
-								<div
-									className="flex justify-center items-center px-1 gap-2
-									text-neutral-50 bg-lime-500 rounded-md"
-								>
-									<div>Verified</div>
-									<VerifiedIcon size={18} />
-								</div>
-							</div>
-						) : (
-							<div
-								className="flex gap-4
-								text-neutral-600 font-normal text-base"
-							>
-								<div className="px-2 text-neutral-50 bg-orange-400 rounded-md">
-									Unverified
-								</div>
-							</div>
-						)}
-					</div> */}
-				</div>
-				{showChangeNameDialog && (
-					<ChangeNameDialog
-						member={myInfo}
-						showChangeNameDialog={showChangeNameDialog}
-						setShowChangeNameDialog={
-							setShowChangeNameDialog
-						}
-					/>
-				)}
 			</div>
 		);
 	} else {
@@ -310,14 +139,6 @@ export const MyAccount = () => {
 					Change Password
 				</Button>
 			</div>
-			{showChangePasswordDialog && (
-				<ChangePasswordDialog
-					memberId={myInfo.id}
-					jwt={jwt}
-					showChangePasswordDialog={showChangePasswordDialog}
-					setShowChangePasswordDialog={setShowChangePasswordDialog}
-				/>
-			)}
 			<Divider />
 			<div>
 				<Button

@@ -39,7 +39,8 @@ export const MoreMenu = () => {
 			const avatar = await downloadAvatar(myInfoQuery.data.id, jwt);
 			return avatar;
 		},
-		enabled: !!tencentCosTempCredential && myInfoQuery.isSuccess,
+		// enabled: !!tencentCosTempCredential && myInfoQuery.isSuccess,
+		enabled: myInfoQuery.isSuccess,
 	});
 
 	const handleClick = useCallback((e: any) => {

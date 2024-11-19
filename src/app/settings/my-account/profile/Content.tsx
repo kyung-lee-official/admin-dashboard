@@ -2,87 +2,17 @@
 
 import { CopyIcon, EditIcon } from "@/components/icons/Icons";
 import { useAuthStore } from "@/stores/auth";
-import { downloadAvatar, getMyInfo } from "@/utils/api/members";
+import { getMyInfo } from "@/utils/api/members";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { createPortal } from "react-dom";
 import { EditPanel, EditProps } from "../../EditPanel";
 import { OneRowSkeleton } from "@/components/skeleton/OneRowSkeleton";
-import { queryClient } from "@/utils/react-query/react-query";
-import { EditContentAvatar } from "./EditContentAvatar";
-
-const InfoPanel = (props: any) => {
-	const { myInfo, jwt } = props;
-	const avatarInputRef = useRef<HTMLInputElement>(null);
-
-	const myAvatar = queryClient.getQueryData<any>(["my-avatar", jwt]);
-
-	const onAvatarInputChange = (e: any) => {
-		const file = e.target.files[0];
-	};
-
-	if (myInfo) {
-		return (
-			<div
-				className="flex flex-col p-4 gap-3
-				bg-neutral-300 
-				rounded-lg"
-			>
-				<div className="flex justify-start items-center gap-2 select-none">
-					<div className="relative flex justify-center items-center">
-						<div
-							className="absolute flex justify-center items-center top-0 right-0 bottom-0 left-0
-							text-neutral-100 text-sm font-bold
-							bg-neutral-500/40 opacity-0 hover:opacity-100
-							rounded-full cursor-pointer"
-							onClick={() => {
-								avatarInputRef.current?.click();
-							}}
-						>
-							CHANGE
-							<br />
-							AVATAR
-						</div>
-						{myAvatar ? (
-							<div className="w-[88px] h-[88px] border-4 border-neutral-400 rounded-full">
-								<img
-									src={URL.createObjectURL(myAvatar)}
-									alt="avatar"
-									className="rounded-full"
-								/>
-							</div>
-						) : (
-							<div
-								className="flex justify-center items-center w-[88px] h-[88px]
-								text-6xl text-neutral-300
-								bg-slate-600 border-4 border-neutral-400 rounded-full"
-							>
-								{myInfo.name[0]}
-							</div>
-						)}
-					</div>
-					<div className="p-2 text-neutral-600 font-bold text-xl">
-						{myInfo.name}
-					</div>
-					<EditContentAvatar
-						avatarInputRef={avatarInputRef}
-						myInfo={myInfo}
-						jwt={jwt}
-					/>
-				</div>
-			</div>
-		);
-	} else {
-		return null;
-	}
-};
+import { MyAvatar } from "./edit-content-avatar/MyAvatar";
 
 export const Content = () => {
 	const jwt = useAuthStore((state) => state.jwt);
-	const tencentCosTempCredential = useAuthStore(
-		(state) => state.tencentCosTempCredential
-	);
 
 	const myInfoQuery = useQuery<any, AxiosError>({
 		queryKey: ["my-info", jwt],
@@ -92,14 +22,6 @@ export const Content = () => {
 		},
 		retry: false,
 		refetchOnWindowFocus: false,
-	});
-	const myAvatarQuery = useQuery<any, AxiosError>({
-		queryKey: ["my-avatar", jwt],
-		queryFn: async () => {
-			const avatar = await downloadAvatar(myInfoQuery.data.id, jwt);
-			return avatar;
-		},
-		enabled: !!tencentCosTempCredential && myInfoQuery.isSuccess,
 	});
 
 	const [edit, setEdit] = useState<EditProps>({ show: false, id: "" });
@@ -122,33 +44,7 @@ export const Content = () => {
 					>
 						<tr>
 							<td className="w-1/2">
-								<div
-									className="flex justify-center items-center w-8 h-8
-									text-neutral-50 font-bold select-none
-									bg-slate-600 rounded-full"
-								>
-									{myAvatarQuery.isLoading ? (
-										myInfoQuery.data?.name[0]
-									) : myAvatarQuery.isError ? (
-										myInfoQuery.data?.name[0]
-									) : myAvatarQuery.isSuccess ? (
-										myAvatarQuery.data ? (
-											<img
-												alt="avatar"
-												src={URL.createObjectURL(
-													myAvatarQuery.data
-												)}
-												className="rounded-full"
-											/>
-										) : (
-											<div>
-												{myInfoQuery.data.name[0]}
-											</div>
-										)
-									) : (
-										myInfoQuery.data?.name[0]
-									)}
-								</div>
+								<MyAvatar />
 							</td>
 							<td className="w-1/2">
 								<div className="w-7 h-7">
@@ -161,7 +57,7 @@ export const Content = () => {
 									text-white/50
 									hover:bg-white/10 rounded-md"
 									onClick={() => {
-										setEdit({ show: true, id: "profile" });
+										setEdit({ show: true, id: "avatar" });
 									}}
 								>
 									<EditIcon size={15} />
