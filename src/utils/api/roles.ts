@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const createRole = async (jwt?: string | null): Promise<any> => {
 	const res = await axios.post(
-		"/member-roles",
+		"/internal/roles",
 		{},
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
@@ -16,7 +16,7 @@ export const createRole = async (jwt?: string | null): Promise<any> => {
 
 export const getRoles = async (jwt?: string | null): Promise<any> => {
 	const res = await axios.post(
-		"/member-roles/find",
+		"/internal/roles/find",
 		{ roleIds: [] },
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
@@ -33,7 +33,7 @@ export const updateRoleById = async (
 	roleId: number,
 	jwt?: string | null
 ): Promise<any> => {
-	const res = await axios.patch(`/member-roles/${roleId}`, body, {
+	const res = await axios.patch(`/internal/roles/${roleId}`, body, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: jwt,
@@ -46,7 +46,7 @@ export const deleteRoleById = async (
 	roleId: number,
 	jwt?: string | null
 ): Promise<any> => {
-	const res = await axios.delete(`/member-roles/${roleId}`, {
+	const res = await axios.delete(`/internal/roles/${roleId}`, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: jwt,

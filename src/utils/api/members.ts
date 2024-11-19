@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 
 export const getMyInfo = async (jwt: string) => {
-	const res = await axios.get("/members/me", {
+	const res = await axios.get("/internal/members/me", {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: jwt,
@@ -11,7 +11,7 @@ export const getMyInfo = async (jwt: string) => {
 };
 
 export const getMembers = async (jwt: string) => {
-	const res = await axios.post("/members/find", null, {
+	const res = await axios.post("/internal/members/find", null, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: jwt,
@@ -22,7 +22,7 @@ export const getMembers = async (jwt: string) => {
 
 export const verifyMember = async (id: string, jwt: string) => {
 	const res = await axios.patch(
-		`/members/member-verification/${id}`,
+		`/internal/members/member-verification/${id}`,
 		{},
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
@@ -42,7 +42,7 @@ export const updateProfile = async (
 	jwt: string
 ) => {
 	const res = await axios.patch(
-		`/members/${newData.id}/profile`,
+		`/internal/members/${newData.id}/profile`,
 		{ name: newData.name },
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
@@ -57,7 +57,7 @@ export const updateProfile = async (
 export const uploadMyAvatar = async (blob: Blob, jwt: string) => {
 	const fileFromBlob = new File([blob], "avatar.png", { type: "image/png" });
 	const res = await axios.put(
-		"/members/update-avatar",
+		"/internal/members/update-avatar",
 		{ file: fileFromBlob },
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
@@ -76,7 +76,7 @@ export const editMemberRoles = async (
 	jwt: string
 ) => {
 	const res = await axios.patch(
-		`/members/roles/${id}`,
+		`/internal/members/roles/${id}`,
 		{ roleIds },
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
@@ -94,7 +94,7 @@ export const editMemberGroups = async (
 	jwt: string
 ) => {
 	const res = await axios.patch(
-		`/members/groups/${id}`,
+		`/internal/members/groups/${id}`,
 		{ groupIds },
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
@@ -108,7 +108,7 @@ export const editMemberGroups = async (
 
 export const downloadAvatar = async (id: string, jwt: string) => {
 	try {
-		const res = await axios.get(`/members/download-avatar/${id}`, {
+		const res = await axios.get(`/internal/members/download-avatar/${id}`, {
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
 			headers: {
 				Authorization: jwt,
@@ -131,7 +131,7 @@ export const downloadAvatar = async (id: string, jwt: string) => {
 
 export const transferOwnership = async (id: string, jwt: string) => {
 	const res = await axios.patch(
-		`/members/transferOwnership/${id}`,
+		`/internal/members/transferOwnership/${id}`,
 		{},
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
@@ -149,7 +149,7 @@ export const setIsFrozenMemberById = async (
 	jwt: string
 ) => {
 	const res = await axios.patch(
-		`/members/freeze/${id}`,
+		`/internal/members/freeze/${id}`,
 		{
 			isFrozen: isFrozen,
 		},
@@ -164,7 +164,7 @@ export const setIsFrozenMemberById = async (
 };
 
 export const deleteMemberById = async (id: string, jwt: string) => {
-	const res = await axios.delete(`/members/${id}`, {
+	const res = await axios.delete(`/internal/members/${id}`, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: jwt,
