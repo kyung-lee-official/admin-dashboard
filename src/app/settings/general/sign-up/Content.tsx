@@ -6,7 +6,7 @@ import { EditPanel, EditProps } from "../../EditPanel";
 import { createPortal } from "react-dom";
 
 export const Content = () => {
-	const [edit, setEdit] = useState<EditProps>({ show: false, id: "sign-up" });
+	const [edit, setEdit] = useState<EditProps>({ show: false, id: "" });
 
 	return (
 		<div className="w-full max-w-[1600px] p-3">
