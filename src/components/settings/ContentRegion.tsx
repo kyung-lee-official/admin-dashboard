@@ -1,12 +1,8 @@
 "use client";
 
 import { CloseIcon } from "../icons/Icons";
-import { Groups } from "./serverSettings/pages/Groups/Groups";
 import { Members } from "./serverSettings/pages/Members";
-import { Overview } from "./serverSettings/pages/Overview";
 import { Roles } from "./serverSettings/pages/Roles/Roles";
-import { Server } from "./serverSettings/pages/Server";
-import { Appearance } from "./memberSettings/pages/Appearance";
 
 export const SettingsHeading = (props: any) => {
 	const { children } = props;
@@ -21,30 +17,14 @@ export const SettingsSubHeading = (props: any) => {
 };
 
 const ActiveComponent = (props: any) => {
-	const { activeItem, setActivePath } = props;
+	const { activeItem } = props;
 	switch (activeItem.path) {
-		case "/serverSettings/overview":
-			return <Overview />;
-			break;
-
-		case "/serverSettings/server":
-			return <Server />;
-			break;
-
 		case "/memberManagement/roles":
 			return <Roles />;
 			break;
 
-		case "/memberManagement/groups":
-			return <Groups />;
-			break;
-
 		case "/memberManagement/members":
-			return <Members setActivePath={setActivePath} />;
-			break;
-
-		case "/appSettings/appearance":
-			return <Appearance />;
+			return <Members />;
 			break;
 
 		default:
@@ -54,11 +34,7 @@ const ActiveComponent = (props: any) => {
 };
 
 export const ContentRegion = (props: any) => {
-	const { metaData, setShowSettings, activePath, setActivePath } = props;
-	const flattenItems = metaData.map((section: any) => section.items).flat();
-	const activeItem = flattenItems.find(
-		(page: any) => page.path === activePath
-	);
+	const { metaData, setShowSettings } = props;
 
 	return (
 		<div
@@ -68,23 +44,8 @@ export const ContentRegion = (props: any) => {
 		>
 			<div className="relative w-[740px] px-10">
 				<div className="h-12" />
-				<ActiveComponent
-					activeItem={activeItem}
-					setActivePath={setActivePath}
-				/>
+				<ActiveComponent activeItem={"/memberManagement/roles"} />
 				<div className="h-12" />
-			</div>
-			<div
-				className="sticky top-12 right-0 h-12 w-12 flex justify-center items-center
-				text-neutral-500"
-			>
-				<button
-					onClick={() => {
-						setShowSettings(false);
-					}}
-				>
-					<CloseIcon />
-				</button>
 			</div>
 		</div>
 	);

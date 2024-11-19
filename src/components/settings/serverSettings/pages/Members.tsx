@@ -33,11 +33,8 @@ const Divider = () => {
 	return <div className="w-full h-[1px] my-2 bg-slate-200" />;
 };
 
-const Row = (props: {
-	member: any;
-	setActivePath: Dispatch<SetStateAction<string>>;
-}) => {
-	const { member, setActivePath } = props;
+const Row = (props: { member: any }) => {
+	const { member } = props;
 	const [showMoreIcon, setShowMoreIcon] = useState<boolean>(false);
 	const [showContextMenu, setShowContextMenu] = useState<boolean>(false);
 	const [contextMenuPos, setContextMenuPos] = useState<{
@@ -249,7 +246,6 @@ const Row = (props: {
 						setShowTransferOwnershipDialog={
 							setShowTransferOwnershipDialog
 						}
-						setActivePath={setActivePath}
 					/>
 				)}
 			</div>
@@ -259,7 +255,6 @@ const Row = (props: {
 };
 
 export const Members = (props: any) => {
-	const { setActivePath } = props;
 	const { jwt } = useAuthStore();
 
 	const [searchResults, setSearchResults] = useState<any[]>([]);
@@ -281,9 +276,7 @@ export const Members = (props: any) => {
 	const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (membersQuery.data) {
 			const results = membersQuery.data.filter((member: any) =>
-				member.name
-					.toLowerCase()
-					.includes(e.target.value.toLowerCase())
+				member.name.toLowerCase().includes(e.target.value.toLowerCase())
 			);
 			setSearchResults(results);
 		}
@@ -326,13 +319,7 @@ export const Members = (props: any) => {
 			) : (
 				<div>
 					{searchResults.map((member: any) => {
-						return (
-							<Row
-								key={member.id}
-								member={member}
-								setActivePath={setActivePath}
-							/>
-						);
+						return <Row key={member.id} member={member} />;
 					})}
 				</div>
 			)}

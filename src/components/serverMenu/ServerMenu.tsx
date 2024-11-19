@@ -120,9 +120,6 @@ export const ServerMenu = () => {
 				}
 			}
 
-			metaDataClone = metaDataClone.filter((section: any) => {
-				return section.items.length > 0;
-			});
 			setFilteredMetaData(metaDataClone);
 		}
 	}, [myInfoQuery.data]);
@@ -153,30 +150,11 @@ export const ServerMenu = () => {
 	}, [menuContentRef]);
 
 	return (
-		<div className="relative">
-			<motion.div
-				className="home-drop-down-menu cursor-pointer"
-				onClick={onClick}
-				animate={{ rotateZ: showMenu ? -180 : 0 }}
-			>
-				<ChevronDownOutline size={24} />
-			</motion.div>
-			{showMenu && (
-				<MenuContent
-					ref={menuContentRef}
-					setShowServerSettings={setShowServerSettings}
-				/>
-			)}
-			<AnimatePresence mode="wait">
-				{showServerSettings && (
-					<SettingsMask key={"serverSettingsMask"}>
-						<Settings
-							metaData={filteredMetaData}
-							setShowSettings={setShowServerSettings}
-						/>
-					</SettingsMask>
-				)}
-			</AnimatePresence>
-		</div>
+		<SettingsMask key={"serverSettingsMask"}>
+			<Settings
+				metaData={filteredMetaData}
+				setShowSettings={setShowServerSettings}
+			/>
+		</SettingsMask>
 	);
 };

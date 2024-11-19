@@ -13,13 +13,11 @@ export const TransferOwnershipDialog = (props: {
 	setShowTransferOwnershipDialog: React.Dispatch<
 		React.SetStateAction<boolean>
 	>;
-	setActivePath: React.Dispatch<React.SetStateAction<string>>;
 }) => {
 	const {
 		member,
 		showTransferOwnershipDialog,
 		setShowTransferOwnershipDialog,
-		setActivePath,
 	} = props;
 	const jwt = useAuthStore((state) => state.jwt);
 
@@ -37,7 +35,7 @@ export const TransferOwnershipDialog = (props: {
 			queryClient.invalidateQueries({
 				queryKey: ["my-info", jwt],
 			});
-			setActivePath("/serverSettings/overview");
+			// setActivePath("/serverSettings/overview");
 		},
 	});
 
