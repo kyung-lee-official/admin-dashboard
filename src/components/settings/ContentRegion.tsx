@@ -7,7 +7,6 @@ import { Overview } from "./serverSettings/pages/Overview";
 import { Roles } from "./serverSettings/pages/Roles/Roles";
 import { Server } from "./serverSettings/pages/Server";
 import { Appearance } from "./memberSettings/pages/Appearance";
-import { MyAccount } from "./memberSettings/pages/MyAccount/MyAccount";
 
 export const SettingsHeading = (props: any) => {
 	const { children } = props;
@@ -42,10 +41,6 @@ const ActiveComponent = (props: any) => {
 
 		case "/memberManagement/members":
 			return <Members setActivePath={setActivePath} />;
-			break;
-
-		case "/memberSettings/myAccount":
-			return <MyAccount />;
 			break;
 
 		case "/appSettings/appearance":
