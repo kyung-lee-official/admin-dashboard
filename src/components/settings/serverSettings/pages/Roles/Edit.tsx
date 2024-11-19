@@ -38,7 +38,7 @@ const EditSidebar = (props: any) => {
 		},
 		onSuccess: async (role) => {
 			await queryClient.invalidateQueries({
-				queryKey: ["getRoles", jwt],
+				queryKey: ["get-roles", jwt],
 			});
 			setActiveRoleId(role.id);
 		},

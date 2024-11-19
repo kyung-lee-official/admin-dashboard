@@ -16,7 +16,7 @@ export const createRole = async (jwt?: string | null): Promise<any> => {
 
 export const getRoles = async (jwt?: string | null): Promise<any> => {
 	const res = await axios.post(
-		"/internal/roles/find",
+		"/internal/roles/find-roles-by-ids",
 		{ roleIds: [] },
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,

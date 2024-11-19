@@ -53,7 +53,7 @@ export const AddMemberToRoleDialog = (props: {
 		onSuccess: (data) => {
 			setShowAddMemberDialog(false);
 			queryClient.invalidateQueries({
-				queryKey: ["getRoles", jwt],
+				queryKey: ["get-roles", jwt],
 			});
 		},
 	});

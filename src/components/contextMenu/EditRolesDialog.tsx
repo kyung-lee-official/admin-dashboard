@@ -20,7 +20,7 @@ export const EditRolesDialog = (props: {
 	const jwt = useAuthStore((state) => state.jwt);
 
 	const rolesQuery = useQuery<any, AxiosError>({
-		queryKey: ["getRoles", jwt],
+		queryKey: ["get-roles", jwt],
 		queryFn: async () => {
 			const roles = await getRoles(jwt);
 			return roles;

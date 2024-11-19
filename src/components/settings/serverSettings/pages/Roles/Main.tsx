@@ -59,7 +59,7 @@ export const Main = (props: any) => {
 		},
 		onSuccess: async (role) => {
 			await queryClient.invalidateQueries({
-				queryKey: ["getRoles", jwt],
+				queryKey: ["get-roles", jwt],
 			});
 			setActiveRoleId(role.id);
 			setPage("edit");
@@ -72,7 +72,7 @@ export const Main = (props: any) => {
 		},
 		onSuccess: (data) => {
 			queryClient.invalidateQueries({
-				queryKey: ["getRoles", jwt],
+				queryKey: ["get-roles", jwt],
 			});
 			deleteDialogRef.current!.close();
 		},

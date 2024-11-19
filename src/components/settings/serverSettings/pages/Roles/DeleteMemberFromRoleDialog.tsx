@@ -41,7 +41,7 @@ export const DeleteMemberFromRoleDialog = (props: {
 		},
 		onSuccess: (data) => {
 			queryClient.invalidateQueries({
-				queryKey: ["getRoles", jwt],
+				queryKey: ["get-roles", jwt],
 			});
 			setShowDeleteMemberDialog(false);
 		},

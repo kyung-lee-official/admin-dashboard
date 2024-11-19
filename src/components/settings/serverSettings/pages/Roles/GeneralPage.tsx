@@ -29,7 +29,7 @@ export const GeneralPage = (props: any) => {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: ["getRoles", jwt],
+				queryKey: ["get-roles", jwt],
 			});
 			setShowSettingsChangedIndicator(false);
 		},
