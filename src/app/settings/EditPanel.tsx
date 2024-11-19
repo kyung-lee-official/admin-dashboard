@@ -5,10 +5,12 @@ import { EditContentProfile } from "./my-account/profile/EditContentProfile";
 import { EditContentEmail } from "./my-account/profile/EditContentEmail";
 import { EditContentPassword } from "./my-account/profile/EditContentPassword";
 import { EditContentAvatar } from "./my-account/profile/edit-content-avatar/EditContentAvatar";
+import { EditContentRoles } from "./general/roles/EditContentRoles";
 
 type EditId =
 	| ""
 	| "sign-up"
+	| "roles"
 	| "profile"
 	| "avatar"
 	| "email"
@@ -17,6 +19,7 @@ type EditId =
 export type EditProps = {
 	show: boolean;
 	id: EditId;
+	auxData?: any;
 };
 
 const DarkenMask = (props: { children: ReactNode }) => {
@@ -41,6 +44,8 @@ const EditContent = (props: {
 	switch (edit.id) {
 		case "sign-up":
 			return <EditContentSignUp edit={edit} setEdit={setEdit} />;
+		case "roles":
+			return <EditContentRoles edit={edit} setEdit={setEdit} />;
 		case "profile":
 			return <EditContentProfile edit={edit} setEdit={setEdit} />;
 		case "avatar":

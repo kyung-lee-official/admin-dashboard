@@ -16,6 +16,8 @@ export const enum MenuKey {
 	SETTINGS,
 	GENERAL,
 	MY_ACCOUNT,
+	SIGN_UP,
+	ROLES,
 	PROFILE,
 }
 
@@ -96,10 +98,16 @@ export const settingsReturnMenuItem: MenuItem[] = [
 
 export const settingsGeneralMenuItems: MenuItem[] = [
 	{
-		menuKey: MenuKey.PROFILE,
+		menuKey: MenuKey.SIGN_UP,
 		title: "Sign Up",
 		link: "/settings/general/sign-up",
 		pageUrl: "/settings/general/sign-up",
+	},
+	{
+		menuKey: MenuKey.ROLES,
+		title: "Roles",
+		link: "/settings/general/roles",
+		pageUrl: "/settings/general/roles",
 	},
 ];
 
