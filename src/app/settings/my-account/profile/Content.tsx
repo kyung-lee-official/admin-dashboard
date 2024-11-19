@@ -36,7 +36,6 @@ export const Content = () => {
 				<div className="flex justify-between items-center px-6 py-4">
 					<div className="text-lg font-semibold">Profile</div>
 				</div>
-				{/* <InfoPanel myInfo={myInfoQuery.data} jwt={jwt} /> */}
 				<table className="text-sm text-white/50 font-semibold">
 					<tbody
 						className="[&_>_tr_>_td]:py-3 [&_>_tr_>_td]:px-6
