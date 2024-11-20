@@ -11,7 +11,7 @@ import {
 	settingsGeneralMenuItems,
 	settingsMyAccountMenuItems,
 } from "@/components/navMenu/MenuItems";
-import { MoreMenu } from "../moreMenu/MoreMenu";
+import { MoreMenu } from "./moreMenu/MoreMenu";
 
 export const NavMenuItem = (props: { menu: MenuItem[] }) => {
 	const pathname = usePathname();

@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useAuthStore } from "@/stores/auth";
 import { downloadAvatar, getMyInfo } from "@/utils/api/members";
-import { MoreIcon } from "../icons/Icons";
+import { MoreIcon } from "../../icons/Icons";
 import { useRouter } from "next/navigation";
 
 export const MoreMenu = () => {
