@@ -6,11 +6,13 @@ import { EditContentEmail } from "./my-account/profile/EditContentEmail";
 import { EditContentPassword } from "./my-account/profile/EditContentPassword";
 import { EditContentAvatar } from "./my-account/profile/edit-content-avatar/EditContentAvatar";
 import { EditContentRoles } from "./general/roles/EditContentRoles";
+import { EditContentAddRole } from "./general/roles/EditContentAddRole";
 
 type EditId =
 	| ""
 	| "sign-up"
 	| "roles"
+	| "add-role"
 	| "profile"
 	| "avatar"
 	| "email"
@@ -46,6 +48,8 @@ const EditContent = (props: {
 			return <EditContentSignUp edit={edit} setEdit={setEdit} />;
 		case "roles":
 			return <EditContentRoles edit={edit} setEdit={setEdit} />;
+		case "add-role":
+			return <EditContentAddRole edit={edit} setEdit={setEdit} />;
 		case "profile":
 			return <EditContentProfile edit={edit} setEdit={setEdit} />;
 		case "avatar":

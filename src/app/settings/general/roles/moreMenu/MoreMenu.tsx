@@ -5,8 +5,11 @@ import {
 	useCallback,
 	useEffect,
 	useRef,
+	useState,
 } from "react";
-import { MoreIcon } from "../../../../../components/icons/Icons";
+import { EditIcon, MoreIcon } from "@/components/icons/Icons";
+import { createPortal } from "react-dom";
+import { EditPanel, EditProps } from "@/app/settings/EditPanel";
 
 type MoreMenuProps = {
 	show: boolean;
@@ -17,6 +20,8 @@ export const MoreMenu = forwardRef(function MoreMenu(
 	props: MoreMenuProps,
 	ref
 ) {
+	const [edit, setEdit] = useState<EditProps>({ show: false, id: "" });
+
 	const { show, setShow } = props;
 	const entryRef = ref as React.MutableRefObject<HTMLButtonElement>;
 	const menuRef = useRef<HTMLDivElement>(null);
@@ -70,20 +75,32 @@ export const MoreMenu = forwardRef(function MoreMenu(
 				<div
 					ref={menuRef}
 					className="absolute top-9 right-0
-					flex flex-col p-1
+					flex flex-col min-w-52 p-1
+					text-sm
 					bg-neutral-800
 					rounded-md shadow-md border-[1px] border-white/10 border-t-white/15"
 				>
-					<button className="px-2 py-1.5">Keep</button>
 					<button
-						className="px-2 py-1.5"
+						className="flex items-center px-2 py-1.5 gap-2
+						whitespace-nowrap"
 						onClick={() => {
+							setEdit({
+								show: true,
+								id: "add-role",
+							});
 							setShow(false);
 						}}
 					>
-						Hide
+						<div className="text-white/40">
+							<EditIcon size={15} />
+						</div>
+						Add a role
 					</button>
 				</div>
+			)}
+			{createPortal(
+				<EditPanel edit={edit} setEdit={setEdit} />,
+				document.body
 			)}
 		</div>
 	);
