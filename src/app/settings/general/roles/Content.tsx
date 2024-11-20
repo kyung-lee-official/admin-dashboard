@@ -1,17 +1,21 @@
 "use client";
 
 import { EditIcon } from "@/components/icons/Icons";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { EditPanel, EditProps } from "../../EditPanel";
 import { createPortal } from "react-dom";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { getRoles } from "@/utils/api/roles";
 import { useAuthStore } from "@/stores/auth";
+import { MoreMenu } from "@/app/settings/general/roles/moreMenu/MoreMenu";
 
 export const Content = () => {
-	const [edit, setEdit] = useState<EditProps>({ show: false, id: "" });
 	const jwt = useAuthStore((state) => state.jwt);
+	const [edit, setEdit] = useState<EditProps>({ show: false, id: "" });
+
+	const [showMore, setShowMore] = useState(false);
+	const entryRef = useRef<HTMLButtonElement>(null);
 
 	const rolesQuery = useQuery<any, AxiosError>({
 		queryKey: ["get-roles", jwt],
@@ -30,18 +34,13 @@ export const Content = () => {
 				bg-white/5
 				rounded-md border-[1px] border-white/10 border-t-white/15"
 			>
-				<div className="flex justify-between items-center px-6 py-4">
+				<div className="relative flex justify-between items-center px-6 py-4">
 					<div className="text-lg font-semibold">Roles</div>
-					<button
-						className="flex justify-center items-center w-7 h-7
-						text-white/50
-						hover:bg-white/10 rounded-md"
-						onClick={() => {
-							setEdit({ show: true, id: "roles" });
-						}}
-					>
-						<EditIcon size={15} />
-					</button>
+					<MoreMenu
+						show={showMore}
+						setShow={setShowMore}
+						ref={entryRef}
+					/>
 				</div>
 				<div
 					className="flex justify-end items-center px-6 py-4
