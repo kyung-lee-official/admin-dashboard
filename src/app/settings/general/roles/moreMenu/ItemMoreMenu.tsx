@@ -1,30 +1,29 @@
 import {
 	Dispatch,
-	forwardRef,
 	SetStateAction,
 	useCallback,
 	useEffect,
 	useRef,
 	useState,
 } from "react";
-import { EditIcon, MoreIcon } from "@/components/icons/Icons";
-import { createPortal } from "react-dom";
-import { EditPanel, EditProps } from "@/app/settings/EditPanel";
+import { EditIcon, MoreIcon, DeleteIcon } from "@/components/icons/Icons";
+import { DeleteConfirmDialog } from "../../../DeleteConfirmDialog";
+import { EditProps } from "@/app/settings/EditPanel";
 
-type MoreMenuProps = {
-	show: boolean;
-	setShow: Dispatch<SetStateAction<boolean>>;
+type ItemMoreMenuProps = {
+	roleId: string;
+	edit: EditProps;
+	setEdit: Dispatch<SetStateAction<EditProps>>;
 };
 
-export const MoreMenu = forwardRef(function MoreMenu(
-	props: MoreMenuProps,
-	ref
-) {
-	const [edit, setEdit] = useState<EditProps>({ show: false, id: "" });
+export const ItemMoreMenu = (props: ItemMoreMenuProps) => {
+	const { roleId, edit, setEdit } = props;
 
-	const { show, setShow } = props;
-	const entryRef = ref as React.MutableRefObject<HTMLButtonElement>;
+	const [show, setShow] = useState(false);
+	const entryRef = useRef<HTMLButtonElement>(null);
 	const menuRef = useRef<HTMLDivElement>(null);
+
+	const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
 	const handleClick = useCallback((e: any) => {
 		if (entryRef.current) {
@@ -76,17 +75,19 @@ export const MoreMenu = forwardRef(function MoreMenu(
 					ref={menuRef}
 					className="absolute top-9 right-0
 					flex flex-col min-w-52 p-1
-					text-sm
+					text-sm text-white/90
 					bg-neutral-800
-					rounded-md shadow-md border-[1px] border-white/10 border-t-white/15"
+					rounded-md shadow-md border-[1px] border-white/10 border-t-white/15
+					z-20"
 				>
 					<button
 						className="flex items-center px-2 py-1.5 gap-2
-						whitespace-nowrap"
+						hover:bg-white/5
+						rounded whitespace-nowrap"
 						onClick={() => {
 							setEdit({
 								show: true,
-								id: "add-role",
+								id: "edit-role",
 							});
 							setShow(false);
 						}}
@@ -94,14 +95,34 @@ export const MoreMenu = forwardRef(function MoreMenu(
 						<div className="text-white/40">
 							<EditIcon size={15} />
 						</div>
-						Add a role
+						Edit Role
+					</button>
+					<hr className="-m-1 my-1 border-white/10" />
+					<button
+						className="flex items-center px-2 py-1.5 gap-2
+						hover:bg-white/5
+						rounded whitespace-nowrap"
+						onClick={() => {
+							// setEdit({
+							// 	show: true,
+							// 	id: "remove-role",
+							// });
+							setShow(false);
+							setShowDeleteConfirmation(true);
+						}}
+					>
+						<div className="text-white/40">
+							<DeleteIcon size={15} />
+						</div>
+						Remove Role
 					</button>
 				</div>
 			)}
-			{createPortal(
-				<EditPanel edit={edit} setEdit={setEdit} />,
-				document.body
-			)}
+			<DeleteConfirmDialog
+				show={showDeleteConfirmation}
+				setShow={setShowDeleteConfirmation}
+				roleId={roleId}
+			/>
 		</div>
 	);
-});
+};

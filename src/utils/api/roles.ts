@@ -46,7 +46,7 @@ export const updateRoleById = async (
 };
 
 export const deleteRoleById = async (
-	roleId: number,
+	roleId: string,
 	jwt: string
 ): Promise<any> => {
 	const res = await axios.delete(`/internal/roles/${roleId}`, {

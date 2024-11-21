@@ -27,7 +27,7 @@ export const Content = () => {
 	const [edit, setEdit] = useState<EditProps>({ show: false, id: "" });
 
 	return (
-		<div className="flex flex-col w-full max-w-[1600px] p-3 gap-y-3">
+		<div className="flex flex-col w-full max-w-[1600px] min-h-[calc(100svh-56px)] p-3 gap-y-3">
 			<div
 				className="text-white/90
 				bg-white/5
