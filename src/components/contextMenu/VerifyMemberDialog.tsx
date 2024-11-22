@@ -22,7 +22,7 @@ export const VerifyMemberDialog = (props: {
 		onSuccess: (data) => {
 			setShowVerifyMemberDialog(false);
 			queryClient.invalidateQueries({
-				queryKey: ["getMembers", jwt],
+				queryKey: ["get-members", jwt],
 			});
 		},
 	});

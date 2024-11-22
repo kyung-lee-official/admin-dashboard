@@ -11,13 +11,13 @@ import { DeleteConfirmDialog } from "../../../DeleteConfirmDialog";
 import { EditProps } from "@/app/settings/EditPanel";
 
 type ItemMoreMenuProps = {
-	roleId: string;
 	edit: EditProps;
 	setEdit: Dispatch<SetStateAction<EditProps>>;
 };
 
 export const ItemMoreMenu = (props: ItemMoreMenuProps) => {
-	const { roleId, edit, setEdit } = props;
+	const { edit, setEdit } = props;
+	const { roleId } = edit.auxData;
 
 	const [show, setShow] = useState(false);
 	const entryRef = useRef<HTMLButtonElement>(null);
@@ -88,6 +88,7 @@ export const ItemMoreMenu = (props: ItemMoreMenuProps) => {
 							setEdit({
 								show: true,
 								id: "edit-role",
+								auxData: edit.auxData,
 							});
 							setShow(false);
 						}}
@@ -103,10 +104,6 @@ export const ItemMoreMenu = (props: ItemMoreMenuProps) => {
 						hover:bg-white/5
 						rounded whitespace-nowrap"
 						onClick={() => {
-							// setEdit({
-							// 	show: true,
-							// 	id: "remove-role",
-							// });
 							setShow(false);
 							setShowDeleteConfirmation(true);
 						}}

@@ -24,7 +24,7 @@ export const FreezeMemberDialog = (props: {
 		onSuccess: (data) => {
 			setShowFreezeMemberDialog(false);
 			queryClient.invalidateQueries({
-				queryKey: ["getMembers", jwt],
+				queryKey: ["get-members", jwt],
 			});
 		},
 	});

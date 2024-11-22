@@ -6,7 +6,7 @@ import { EditContentEmail } from "./my-account/profile/EditContentEmail";
 import { EditContentPassword } from "./my-account/profile/EditContentPassword";
 import { EditContentAvatar } from "./my-account/profile/edit-content-avatar/EditContentAvatar";
 import { EditContentAddRole } from "./general/roles/EditContentAddRole";
-import { EditContentEditRole } from "./general/roles/EditContentEditRole";
+import { EditContentEditRole } from "./general/roles/edit-content-edit-role.tsx/EditContentEditRole";
 
 type EditId =
 	| ""

@@ -17,10 +17,20 @@ export const createRole = async (body: any, jwt: string): Promise<any> => {
 	return res.data;
 };
 
-export const getRoles = async (jwt: string): Promise<any> => {
+export const getRoleById = async (jwt: string, id: string): Promise<any> => {
+	const res = await axios.get(`/internal/roles/${id}`, {
+		baseURL: process.env.NEXT_PUBLIC_API_HOST,
+		headers: {
+			Authorization: jwt,
+		},
+	});
+	return res.data;
+};
+
+export const getRoles = async (jwt: string, ids: string[]): Promise<any> => {
 	const res = await axios.post(
 		"/internal/roles/find-roles-by-ids",
-		{ roleIds: [] },
+		{ roleIds: ids },
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
 			headers: {

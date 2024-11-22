@@ -22,7 +22,7 @@ export const EditRolesDialog = (props: {
 	const rolesQuery = useQuery<any, AxiosError>({
 		queryKey: ["get-roles", jwt],
 		queryFn: async () => {
-			const roles = await getRoles(jwt);
+			const roles = await getRoles(jwt, []);
 			return roles;
 		},
 		retry: false,
@@ -48,7 +48,7 @@ export const EditRolesDialog = (props: {
 		onSuccess: (data) => {
 			setShowEditRolesDialog(false);
 			queryClient.invalidateQueries({
-				queryKey: ["getMembers", jwt],
+				queryKey: ["get-members", jwt],
 			});
 		},
 	});

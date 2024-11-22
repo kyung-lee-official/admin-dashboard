@@ -24,7 +24,7 @@ export const DeleteMemberDialog = (props: {
 		onSuccess: (data) => {
 			setShowDeleteMemberDialog(false);
 			queryClient.invalidateQueries({
-				queryKey: ["getMembers", jwt],
+				queryKey: ["get-members", jwt],
 			});
 		},
 	});

@@ -1,7 +1,6 @@
 "use client";
 
-import { EditIcon, MoreIcon } from "@/components/icons/Icons";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { EditPanel, EditProps } from "../../EditPanel";
 import { createPortal } from "react-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -18,7 +17,7 @@ export const Content = () => {
 	const rolesQuery = useQuery<any, AxiosError>({
 		queryKey: ["get-roles", jwt],
 		queryFn: async () => {
-			const roles = await getRoles(jwt);
+			const roles = await getRoles(jwt, []);
 			return roles;
 		},
 		retry: false,
@@ -65,8 +64,12 @@ export const Content = () => {
 										<td className="w-1/2">{role.id}</td>
 										<td>
 											<ItemMoreMenu
-												roleId={role.id}
-												edit={edit}
+												edit={{
+													...edit,
+													auxData: {
+														roleId: role.id,
+													},
+												}}
 												setEdit={setEdit}
 											/>
 										</td>

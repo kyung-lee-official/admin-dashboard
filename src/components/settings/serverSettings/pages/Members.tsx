@@ -260,7 +260,7 @@ export const Members = (props: any) => {
 	const [searchResults, setSearchResults] = useState<any[]>([]);
 
 	const membersQuery = useQuery<any, AxiosError>({
-		queryKey: ["getMembers", jwt],
+		queryKey: ["get-members", jwt],
 		queryFn: async () => {
 			const members = await getMembers(jwt);
 			return members;

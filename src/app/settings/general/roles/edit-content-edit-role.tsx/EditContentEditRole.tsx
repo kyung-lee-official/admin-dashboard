@@ -1,27 +1,73 @@
 import { CloseIcon } from "@/components/icons/Icons";
 import { useAuthStore } from "@/stores/auth";
-import { updateServerSettings } from "@/utils/api/server-settings";
 import { queryClient } from "@/utils/react-query/react-query";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/button/Button";
 import { motion } from "framer-motion";
-import { UnsavedDialog } from "../../UnsavedDialog";
-import { EditProps } from "../../EditPanel";
+import { UnsavedDialog } from "../../../UnsavedDialog";
+import { EditProps } from "../../../EditPanel";
+import { getRoleById, updateRoleById } from "@/utils/api/roles";
+import { AxiosError } from "axios";
+import { EditMembers } from "./EditMembers";
+import { sortByMemberName } from "./data";
 
-export const EditContentRoles = (props: {
+export type Member = {
+	id: string;
+	email: string;
+	name: string;
+};
+
+export type EditRoleData = {
+	id: string;
+	name: string;
+	members: Member[];
+};
+
+export const EditContentEditRole = (props: {
 	edit: EditProps;
 	setEdit: Dispatch<SetStateAction<EditProps>>;
 }) => {
-	const editId = "roles";
+	const editId = "edit-role";
 	const { edit, setEdit } = props;
-	const { auxData: oldData } = edit;
+	const { roleId } = edit.auxData;
 
 	const listenerRef = useRef<HTMLDivElement>(null);
 	const panelRef = useRef<HTMLDivElement>(null);
 
 	const { jwt } = useAuthStore();
-	const [newData, setNewData] = useState<any>(oldData);
+	const [oldData, setOldData] = useState<EditRoleData>({
+		id: "",
+		name: "",
+		members: [],
+	});
+	const [newData, setNewData] = useState<EditRoleData>({
+		id: "",
+		name: "",
+		members: [],
+	});
+
+	const roleQuery = useQuery<EditRoleData, AxiosError>({
+		queryKey: ["get-role-by-id", jwt],
+		queryFn: async () => {
+			const role = await getRoleById(jwt, roleId);
+			return role;
+		},
+		retry: false,
+		refetchOnWindowFocus: false,
+	});
+
+	useEffect(() => {
+		if (roleQuery.isSuccess) {
+			const sortedData = {
+				id: roleQuery.data.id,
+				name: roleQuery.data.name,
+				members: sortByMemberName(roleQuery.data.members),
+			};
+			setOldData(sortedData);
+			setNewData(sortedData);
+		}
+	}, [roleQuery.data]);
 
 	const [isChanged, setIsChanged] = useState(false);
 	const isChangedRef = useRef(isChanged);
@@ -33,11 +79,16 @@ export const EditContentRoles = (props: {
 
 	const mutation = useMutation({
 		mutationFn: () => {
-			return updateServerSettings(newData, jwt);
+			const body = {
+				id: newData.id,
+				name: newData.name,
+				ids: newData.members.map((member) => member.id),
+			};
+			return updateRoleById(body, roleId, jwt);
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: ["get-server-settings", jwt],
+				queryKey: ["get-roles", jwt],
 			});
 			setIsChanged(false);
 			setEdit({ show: false, id: editId });
@@ -50,7 +101,13 @@ export const EditContentRoles = (props: {
 	}
 
 	useEffect(() => {
-		if (newData && JSON.stringify(newData) !== JSON.stringify(oldData)) {
+		if (
+			JSON.stringify({
+				id: newData.id,
+				name: newData.name,
+				members: sortByMemberName(newData.members),
+			}) !== JSON.stringify(oldData)
+		) {
 			_setIsChanged(true);
 		} else {
 			_setIsChanged(false);
@@ -104,12 +161,13 @@ export const EditContentRoles = (props: {
 					font-semibold text-lg
 					border-b-[1px] border-white/10"
 				>
-					<div>Roles</div>
+					<div>Edit Role</div>
 					<button
 						className="flex justify-center items-center w-7 h-7
 						text-white/50
 						hover:bg-white/10 rounded-md"
-						onClick={() => {
+						onClick={(e) => {
+							e.preventDefault();
 							quit();
 						}}
 					>
@@ -135,11 +193,12 @@ export const EditContentRoles = (props: {
 								bg-white/10
 								rounded-md outline-none
 								border-[1px] border-white/10"
-								defaultValue={oldData.id}
+								value={roleQuery.data?.id ?? ""}
 								onChange={(e) => {
 									setNewData({
-										...newData,
 										id: e.target.value,
+										name: newData.name,
+										members: newData.members,
 									});
 								}}
 							/>
@@ -155,11 +214,12 @@ export const EditContentRoles = (props: {
 								bg-white/10
 								rounded-md outline-none
 								border-[1px] border-white/10"
-								defaultValue={oldData.name}
+								value={roleQuery.data?.name ?? ""}
 								onChange={(e) => {
 									setNewData({
-										...newData,
+										id: newData.id,
 										name: e.target.value,
+										members: newData.members,
 									});
 								}}
 							/>
@@ -169,53 +229,10 @@ export const EditContentRoles = (props: {
 							text-sm"
 						>
 							Members
-							{/* <div className="flex flex-col w-full">
-								{newData.members.map((m: any, i: number) => {
-									return (
-										<div
-											key={m.id}
-											className="flex justify-between items-center
-											px-2 py-1.5
-											bg-white/10
-											rounded-md outline-none
-											border-[1px] border-white/10"
-										>
-											<div>{m.name}</div>
-											<button
-												className="w-5 h-5
-												text-white/50
-												hover:bg-white/10 rounded-md"
-												onClick={() => {
-													// setNewData({
-													// 	...newData,
-													// 	members:
-													// 		newData.members.filter(
-													// 			(m: any) =>
-													// 				m !== m
-													// 		),
-													// });
-												}}
-											>
-												<CloseIcon size={15} />
-											</button>
-										</div>
-									);
-								})}
-							</div> */}
-							{/* <input
-								type="checkbox"
-								className="px-2 py-1.5
-								bg-white/10
-								rounded-md outline-none
-								border-[1px] border-white/10"
-								defaultValue={oldData.name}
-								onChange={(e) => {
-									setNewData({
-										...newData,
-										name: e.target.value,
-									});
-								}}
-							/> */}
+							<EditMembers
+								newData={newData}
+								setNewData={setNewData}
+							/>
 						</div>
 					</div>
 					<div className="flex-[0_0_61px] flex justify-end px-6 py-4 gap-1.5">

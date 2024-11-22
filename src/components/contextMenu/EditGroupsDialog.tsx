@@ -48,7 +48,7 @@ export const EditGroupsDialog = (props: {
 		onSuccess: (data) => {
 			setShowEditGroupsDialog(false);
 			queryClient.invalidateQueries({
-				queryKey: ["getMembers", jwt],
+				queryKey: ["get-members", jwt],
 			});
 		},
 	});

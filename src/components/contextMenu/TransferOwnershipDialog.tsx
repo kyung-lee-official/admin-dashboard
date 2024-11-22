@@ -30,7 +30,7 @@ export const TransferOwnershipDialog = (props: {
 		onSuccess: (data) => {
 			setShowTransferOwnershipDialog(false);
 			queryClient.invalidateQueries({
-				queryKey: ["getMembers", jwt],
+				queryKey: ["get-members", jwt],
 			});
 			queryClient.invalidateQueries({
 				queryKey: ["my-info", jwt],
