@@ -47,7 +47,7 @@ export const EditContentEmail = (props: {
 		if (myInfoQuery.isSuccess) {
 			setNewData(myInfoQuery.data);
 		}
-	}, [myInfoQuery.isSuccess]);
+	}, [myInfoQuery.data]);
 
 	const mutation = useMutation({
 		mutationFn: () => {

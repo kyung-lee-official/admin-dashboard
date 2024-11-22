@@ -49,7 +49,7 @@ export const EditContentSignUp = (props: {
 		if (getServerSettingsQuery.isSuccess) {
 			setNewData(getServerSettingsQuery.data);
 		}
-	}, [getServerSettingsQuery.isSuccess]);
+	}, [getServerSettingsQuery.data]);
 
 	const mutation = useMutation({
 		mutationFn: () => {
