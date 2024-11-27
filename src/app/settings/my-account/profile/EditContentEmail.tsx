@@ -10,6 +10,7 @@ import { UnsavedDialog } from "../../UnsavedDialog";
 import { getMyInfo } from "@/utils/api/members";
 import { changeEmail, sendVerificationEmail } from "@/utils/api/email";
 import { EditProps } from "../../EditPanel";
+import { MyInfo } from "./Content";
 
 export const EditContentEmail = (props: {
 	edit: EditProps;
@@ -22,7 +23,16 @@ export const EditContentEmail = (props: {
 
 	const jwt = useAuthStore((state) => state.jwt);
 	const setJwt = useAuthStore((state) => state.setJwt);
-	const [newData, setNewData] = useState<any>(null);
+	const [newData, setNewData] = useState<MyInfo>({
+		id: "",
+		email: "",
+		name: "",
+		isVerified: false,
+		isFrozen: false,
+		createdAt: "",
+		updatedAt: "",
+		memberRoles: [],
+	});
 
 	const listenerRef = useRef<HTMLDivElement>(null);
 	const [isChanged, setIsChanged] = useState(false);
@@ -33,7 +43,7 @@ export const EditContentEmail = (props: {
 	};
 	const [showUnsaved, setShowUnsaved] = useState(false);
 
-	const myInfoQuery = useQuery<any, AxiosError>({
+	const myInfoQuery = useQuery<MyInfo, AxiosError>({
 		queryKey: ["my-info", jwt],
 		queryFn: async () => {
 			const isSignedIn = await getMyInfo(jwt);
@@ -121,107 +131,109 @@ export const EditContentEmail = (props: {
 		},
 	});
 
-	return (
-		<div
-			ref={listenerRef}
-			className="w-full h-svh
-			flex justify-end items-center"
-		>
-			<motion.div
-				ref={panelRef}
-				initial={{ x: "100%" }}
-				animate={{ x: "0%" }}
-				transition={{ duration: 0.1 }}
-				className="flex flex-col h-[calc(100svh-16px)] w-full max-w-[560px] m-2
-				text-white/90
-				bg-neutral-900
-				rounded-lg border-[1px] border-neutral-700 border-t-neutral-600"
+	if (myInfoQuery.data) {
+		return (
+			<div
+				ref={listenerRef}
+				className="w-full h-svh
+				flex justify-end items-center"
 			>
-				<div
-					className="flex-[0_0_61px] flex justify-between px-6 py-4
-					font-semibold text-lg
-					border-b-[1px] border-white/10"
-				>
-					<div>Email</div>
-					<button
-						className="flex justify-center items-center w-7 h-7
-						text-white/50
-						hover:bg-white/10 rounded-md"
-						onClick={() => {
-							quit();
-						}}
-					>
-						<CloseIcon size={15} />
-					</button>
-				</div>
-				<form
-					action={onSave}
-					className="flex-[1_0_100px] flex flex-col"
+				<motion.div
+					ref={panelRef}
+					initial={{ x: "100%" }}
+					animate={{ x: "0%" }}
+					transition={{ duration: 0.1 }}
+					className="flex flex-col h-[calc(100svh-16px)] w-full max-w-[560px] m-2
+					text-white/90
+					bg-neutral-900
+					rounded-lg border-[1px] border-neutral-700 border-t-neutral-600"
 				>
 					<div
-						className="flex-[1_0_100px] flex flex-col px-6 py-4 gap-6
+						className="flex-[0_0_61px] flex justify-between px-6 py-4
+						font-semibold text-lg
 						border-b-[1px] border-white/10"
 					>
-						<div
-							className="flex flex-col gap-1.5
-							text-sm"
+						<div>Email</div>
+						<button
+							className="flex justify-center items-center w-7 h-7
+							text-white/50
+							hover:bg-white/10 rounded-md"
+							onClick={() => {
+								quit();
+							}}
 						>
-							Email
-							<input
-								type="text"
-								className="px-2 py-1.5
-								bg-white/10
-								rounded-md outline-none
-								border-[1px] border-white/10"
-								defaultValue={myInfoQuery.data.email}
-								onChange={(e) => {
-									setNewData({
-										...newData,
-										email: e.target.value,
-									});
-								}}
-							/>
-						</div>
-						{!myInfoQuery.data.isVerified && (
+							<CloseIcon size={15} />
+						</button>
+					</div>
+					<form
+						action={onSave}
+						className="flex-[1_0_100px] flex flex-col"
+					>
+						<div
+							className="flex-[1_0_100px] flex flex-col px-6 py-4 gap-6
+							border-b-[1px] border-white/10"
+						>
 							<div
 								className="flex flex-col gap-1.5
 								text-sm"
 							>
-								<Button
-									size="sm"
-									onClick={(e) => {
-										e.preventDefault();
-										sendEmailMutation.mutate(jwt);
+								Email
+								<input
+									type="text"
+									className="px-2 py-1.5
+									bg-white/10
+									rounded-md outline-none
+									border-[1px] border-white/10"
+									value={newData.email}
+									onChange={(e) => {
+										setNewData({
+											...newData,
+											email: e.target.value,
+										});
 									}}
-								>
-									Send verification email
-								</Button>
+								/>
 							</div>
-						)}
-					</div>
-					<div className="flex-[0_0_61px] flex justify-end px-6 py-4 gap-1.5">
-						<Button
-							color="cancel"
-							size="sm"
-							onClick={(e) => {
-								e.preventDefault();
-								quit();
-							}}
-						>
-							Cancel
-						</Button>
-						<Button type="submit" size="sm">
-							Save
-						</Button>
-					</div>
-				</form>
-				<UnsavedDialog
-					edit={edit}
-					setEdit={setEdit}
-					showUnsaved={showUnsaved}
-					setShowUnsaved={setShowUnsaved}
-				/>
-			</motion.div>
-		</div>
-	);
+							{!myInfoQuery.data.isVerified && (
+								<div
+									className="flex flex-col gap-1.5
+									text-sm"
+								>
+									<Button
+										size="sm"
+										onClick={(e) => {
+											e.preventDefault();
+											sendEmailMutation.mutate(jwt);
+										}}
+									>
+										Send verification email
+									</Button>
+								</div>
+							)}
+						</div>
+						<div className="flex-[0_0_61px] flex justify-end px-6 py-4 gap-1.5">
+							<Button
+								color="cancel"
+								size="sm"
+								onClick={(e) => {
+									e.preventDefault();
+									quit();
+								}}
+							>
+								Cancel
+							</Button>
+							<Button type="submit" size="sm">
+								Save
+							</Button>
+						</div>
+					</form>
+					<UnsavedDialog
+						edit={edit}
+						setEdit={setEdit}
+						showUnsaved={showUnsaved}
+						setShowUnsaved={setShowUnsaved}
+					/>
+				</motion.div>
+			</div>
+		);
+	}
 };

@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import { UnsavedDialog } from "../../UnsavedDialog";
 import { getMyInfo, updateProfile } from "@/utils/api/members";
 import { EditProps } from "../../EditPanel";
+import { MyInfo } from "./Content";
 
 export const EditContentProfile = (props: {
 	edit: EditProps;
@@ -20,7 +21,16 @@ export const EditContentProfile = (props: {
 	const panelRef = useRef<HTMLDivElement>(null);
 
 	const { jwt } = useAuthStore();
-	const [newData, setNewData] = useState<any>(null);
+	const [newData, setNewData] = useState<MyInfo>({
+		id: "",
+		email: "",
+		name: "",
+		isVerified: false,
+		isFrozen: false,
+		createdAt: "",
+		updatedAt: "",
+		memberRoles: [],
+	});
 
 	const listenerRef = useRef<HTMLDivElement>(null);
 	const [isChanged, setIsChanged] = useState(false);
@@ -31,7 +41,7 @@ export const EditContentProfile = (props: {
 	};
 	const [showUnsaved, setShowUnsaved] = useState(false);
 
-	const myInfoQuery = useQuery<any, AxiosError>({
+	const myInfoQuery = useQuery<MyInfo, AxiosError>({
 		queryKey: ["my-info", jwt],
 		queryFn: async () => {
 			const isSignedIn = await getMyInfo(jwt);
@@ -154,7 +164,7 @@ export const EditContentProfile = (props: {
 								bg-white/10
 								rounded-md outline-none
 								border-[1px] border-white/10"
-								defaultValue={myInfoQuery.data.name}
+								value={newData.name}
 								onChange={(e) => {
 									setNewData({
 										...newData,

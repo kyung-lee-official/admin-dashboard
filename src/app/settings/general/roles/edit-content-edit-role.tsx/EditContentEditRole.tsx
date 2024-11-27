@@ -193,7 +193,7 @@ export const EditContentEditRole = (props: {
 								bg-white/10
 								rounded-md outline-none
 								border-[1px] border-white/10"
-								value={roleQuery.data?.id ?? ""}
+								value={newData.id}
 								onChange={(e) => {
 									setNewData({
 										id: e.target.value,
@@ -214,7 +214,7 @@ export const EditContentEditRole = (props: {
 								bg-white/10
 								rounded-md outline-none
 								border-[1px] border-white/10"
-								value={roleQuery.data?.name ?? ""}
+								value={newData.name}
 								onChange={(e) => {
 									setNewData({
 										id: newData.id,
