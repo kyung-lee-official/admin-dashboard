@@ -114,13 +114,23 @@ export const Content = () => {
 						<tr>
 							<td>Roles</td>
 							<td>
-								{myInfoQuery.isSuccess ? (
-									myInfoQuery.data.memberRoles.map(
-										(role: any) => role.name
-									)
-								) : (
-									<OneRowSkeleton />
-								)}
+								<div className="flex gap-1.5">
+									{myInfoQuery.isSuccess ? (
+										myInfoQuery.data.memberRoles.map(
+											(role: any) => (
+												<div
+													key={role.id}
+													className="px-1
+													rounded border-[1px] border-white/20"
+												>
+													{role.name}
+												</div>
+											)
+										)
+									) : (
+										<OneRowSkeleton />
+									)}
+								</div>
 							</td>
 							<td>
 								<div className="w-7 h-7">
@@ -153,7 +163,10 @@ export const Content = () => {
 										<div>
 											{myInfoQuery.data
 												.isVerified ? null : (
-												<div className="border-[1px] border-white/20 px-1.5 rounded-md">
+												<div
+													className="px-1
+													border-[1px] border-white/20 rounded"
+												>
 													Unverified
 												</div>
 											)}

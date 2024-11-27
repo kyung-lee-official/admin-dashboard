@@ -228,10 +228,6 @@ export const Sacl = (props: any) => {
 		return <IsFrozen />;
 	}
 
-	// if (myInfoQuery.data?.isVerified === false) {
-	// 	return <VerifyAccount myInfo={myInfoQuery.data} jwt={jwt} />;
-	// }
-
 	/**
 	 * Pages are separated into SACL pages and regular pages to support page-switching animations.
 	 */
