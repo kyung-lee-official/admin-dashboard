@@ -1,4 +1,16 @@
 import axios from "axios";
+import qs from "qs";
+
+export const getPermissions = async (jwt: string): Promise<any> => {
+	const query = qs.stringify({}, { encodeValuesOnly: true });
+	const res = await axios.get("/internal/roles/permissions", {
+		baseURL: process.env.NEXT_PUBLIC_API_HOST,
+		headers: {
+			Authorization: jwt,
+		},
+	});
+	return res.data;
+};
 
 export const createRole = async (body: any, jwt: string): Promise<any> => {
 	const res = await axios.post(

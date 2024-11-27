@@ -9,7 +9,7 @@ import { getPermissions } from "@/utils/api/server-settings";
 import { useAuthStore } from "@/stores/auth";
 import { Forbidden } from "@/components/page-authorization/Forbidden";
 import { Loading } from "@/components/page-authorization/Loading";
-import { Error } from "@/components/page-authorization/Error";
+import { Exception } from "@/components/page-authorization/Exception";
 
 export const Content = () => {
 	const [edit, setEdit] = useState<EditProps>({ show: false, id: "" });
@@ -62,9 +62,9 @@ export const Content = () => {
 					</div>
 				);
 			default:
-				return <Error />;
+				return <Exception />;
 		}
 	} else {
-		return <Error />;
+		return <Exception />;
 	}
 };
