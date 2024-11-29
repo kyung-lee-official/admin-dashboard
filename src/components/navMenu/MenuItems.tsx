@@ -11,7 +11,7 @@ export const enum MenuKey {
 	CHITUBOX_DOCS_ANALYTICS,
 	CHITUBOX_DOCS_USER_FEEDBACK,
 	CHITUBOX_DOCS_ADVERTISEMENT,
-	KPI,
+	PERFORMANCE,
 	SNS_CRAWLER,
 	SETTINGS,
 	GENERAL,
@@ -71,10 +71,10 @@ export const menuItems: MenuItem[] = [
 		],
 	},
 	{
-		menuKey: MenuKey.KPI,
-		title: "KPI",
-		link: "/app/kpi",
-		pageUrl: "/app/kpi",
+		menuKey: MenuKey.PERFORMANCE,
+		title: "Performance",
+		link: "/app/performance",
+		pageUrl: "/app/performance",
 		icon: <PerformanceIcon size="20" />,
 	},
 	{
