@@ -2,7 +2,7 @@ import { Content } from "./Content";
 
 const Page = () => {
 	return (
-		<div className="flex justify-center">
+		<div className="p-4">
 			<Content />
 		</div>
 	);
