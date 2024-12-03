@@ -1,6 +1,17 @@
 import axios from "axios";
 import qs from "qs";
 
+export const seed = async (body: {
+	email: string;
+	name: string;
+	password: string;
+}): Promise<any> => {
+	const res = await axios.post("/internal/server/seed", body, {
+		baseURL: process.env.NEXT_PUBLIC_API_HOST,
+	});
+	return res.data;
+};
+
 export const getPermissions = async (jwt: string): Promise<any> => {
 	const query = qs.stringify({}, { encodeValuesOnly: true });
 	const res = await axios.get("/internal/server/permissions", {

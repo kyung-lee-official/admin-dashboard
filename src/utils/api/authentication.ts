@@ -1,16 +1,5 @@
 import axios from "axios";
 
-export const seed = async (body: {
-	email: string;
-	name: string;
-	password: string;
-}): Promise<any> => {
-	const res = await axios.post("/member-auth/seed", body, {
-		baseURL: process.env.NEXT_PUBLIC_API_HOST,
-	});
-	return res.data;
-};
-
 export const getIsSignedIn = async (jwt: string) => {
 	const res = await axios.get("/authentication/is-signed-in", {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
