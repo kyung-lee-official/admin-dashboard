@@ -16,7 +16,6 @@ import { getMyInfo } from "@/utils/api/members";
 import { NetworkError } from "./NetworkError";
 import { UnknownError } from "./UnknownError";
 import { IsFrozen } from "./IsFrozen";
-import { VerifyAccount } from "./VerifyAccount";
 import { AuthMask } from "./AuthMask";
 import { getIsSeeded } from "@/utils/api/server-settings";
 
@@ -135,7 +134,7 @@ export const Sacl = (props: any) => {
 
 		/* Response received */
 		if (!isSeededQuery.data.isSeeded) {
-			/* Not Seededs */
+			/* Not Seeded */
 			if (pathname !== "/seed") {
 				const timer = setTimeout(() => {
 					router.push("/seed");
@@ -143,6 +142,7 @@ export const Sacl = (props: any) => {
 				return () => clearTimeout(timer);
 			} else {
 				setShowLoading(false);
+				return;
 			}
 		}
 
