@@ -12,6 +12,9 @@ export const enum MenuKey {
 	CHITUBOX_DOCS_USER_FEEDBACK,
 	CHITUBOX_DOCS_ADVERTISEMENT,
 	PERFORMANCE,
+	PERFORMANCE_EVENTS,
+	PERFORMANCE_EVENT_TEMPLATES,
+	PERFORMANCE_STATS,
 	SNS_CRAWLER,
 	SETTINGS,
 	GENERAL,
@@ -24,8 +27,8 @@ export const enum MenuKey {
 export type MenuItem = {
 	menuKey: MenuKey;
 	title: string;
-	link: string;
-	pageUrl?: string;
+	link: string /* where to go when clicked */;
+	pageUrl?: string /* the url of current page, should be ignored if page does not exist */;
 	icon?: JSX.Element;
 	subMenu?: MenuItem[];
 };
@@ -73,9 +76,28 @@ export const menuItems: MenuItem[] = [
 	{
 		menuKey: MenuKey.PERFORMANCE,
 		title: "Performance",
-		link: "/app/performance",
-		pageUrl: "/app/performance",
+		link: "/app/performance/stats",
 		icon: <PerformanceIcon size="20" />,
+		subMenu: [
+			{
+				menuKey: MenuKey.PERFORMANCE_STATS,
+				title: "Peformance Stats",
+				link: "/app/performance/stats",
+				pageUrl: "/app/performance/stats",
+			},
+			{
+				menuKey: MenuKey.PERFORMANCE_EVENT_TEMPLATES,
+				title: "Performance Event Templates",
+				link: "/app/performance/event-templates",
+				pageUrl: "/app/performance/event-templates",
+			},
+			{
+				menuKey: MenuKey.PERFORMANCE_EVENTS,
+				title: "Performance Events",
+				link: "/app/performance/events",
+				pageUrl: "/app/performance/events",
+			},
+		],
 	},
 	{
 		menuKey: MenuKey.SNS_CRAWLER,
