@@ -51,11 +51,7 @@ export const Content = () => {
 			</div>
 
 			<div className="flex justify-start items-end gap-3 w-full">
-				<DateRangePicker
-					// onChange={onDateRangeChange}
-					range={range}
-					setRange={setRange}
-				/>
+				<DateRangePicker range={range} setRange={setRange} />
 				<Button
 					size="sm"
 					disabled={isEndBeforeStart}

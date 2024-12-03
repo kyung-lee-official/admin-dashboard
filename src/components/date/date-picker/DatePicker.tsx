@@ -67,6 +67,7 @@ export const DatePicker = (props: DatePickerProps) => {
 				className="px-2 py-1
 				text-white/70
 				bg-neutral-700
+				border-[1px] border-white/10 border-t-white/15
 				rounded"
 			>
 				{date.format("MMM DD, YYYY")}
@@ -75,6 +76,7 @@ export const DatePicker = (props: DatePickerProps) => {
 				<div
 					ref={calendarRef}
 					className="absolute top-8 w-64
+					border-[1px] border-white/10 border-t-white/15
 					rounded overflow-hidden"
 				>
 					<Calendar date={date} setDate={setDate} setShow={setShow} />

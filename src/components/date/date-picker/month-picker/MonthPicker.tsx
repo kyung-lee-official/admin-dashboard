@@ -1,22 +1,9 @@
-import dayjs from "dayjs";
-import {
-	Dispatch,
-	SetStateAction,
-	useCallback,
-	useEffect,
-	useRef,
-	useState,
-} from "react";
-import { DateRange } from "./Content";
-import { Calendar } from "./Calendar";
+import { useState, useRef, useCallback, useEffect } from "react";
+import { MonthCalendar } from "./MonthCalendar";
+import { DatePickerProps } from "../DatePicker";
 
-export type RangePickerProps = {
-	range: DateRange;
-	setRange: Dispatch<SetStateAction<DateRange>>;
-};
-
-export const DateRangePicker = (props: RangePickerProps) => {
-	const { range, setRange } = props;
+export const MonthPicker = (props: DatePickerProps) => {
+	const { date, setDate } = props;
 
 	const [show, setShow] = useState<boolean>(false);
 
@@ -65,14 +52,13 @@ export const DateRangePicker = (props: RangePickerProps) => {
 		>
 			<button
 				ref={entryRef}
-				className="px-2 py-1
+				className="w-32 px-2 py-1
 				text-white/70
 				bg-neutral-700
 				border-[1px] border-white/10 border-t-white/15
 				rounded"
 			>
-				{range.start.format("MMM DD, YYYY")} -{" "}
-				{range.end.format("MMM DD, YYYY")}
+				{date.format("MMMM, YYYY")}
 			</button>
 			{show && (
 				<div
@@ -81,9 +67,9 @@ export const DateRangePicker = (props: RangePickerProps) => {
 					border-[1px] border-white/10 border-t-white/15
 					rounded overflow-hidden"
 				>
-					<Calendar
-						range={range}
-						setRange={setRange}
+					<MonthCalendar
+						date={date}
+						setDate={setDate}
 						setShow={setShow}
 					/>
 				</div>
