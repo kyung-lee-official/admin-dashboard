@@ -54,7 +54,6 @@ export const Content = () => {
 		<motion.div
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
-			exit={{ opacity: 0 }}
 			className="flex justify-center items-center w-full h-svh"
 		>
 			<div className="flex flex-col items-center w-full max-w-[280px] m-4 gap-6">
