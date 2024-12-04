@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { EditIcon, MoreIcon } from "@/components/icons/Icons";
 import { createPortal } from "react-dom";
-import { EditPanel, EditProps } from "@/app/settings/EditPanel";
+import { EditPanel, EditProps } from "@/components/edit-panel/EditPanel";
 
 export const TitleMoreMenu = () => {
 	const [edit, setEdit] = useState<EditProps>({ show: false, id: "" });

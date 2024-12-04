@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 import { UnsavedDialog } from "../../UnsavedDialog";
 import { getMyInfo } from "@/utils/api/members";
 import { changeEmail, sendVerificationEmail } from "@/utils/api/email";
-import { EditProps } from "../../EditPanel";
+import { EditProps } from "../../../../components/edit-panel/EditPanel";
 import { MyInfo } from "./Content";
 
 export const EditContentEmail = (props: {

@@ -1,12 +1,12 @@
 import { motion } from "framer-motion";
-import { EditContentSignUp } from "./general/sign-up/EditContentSignUp";
+import { EditContentSignUp } from "../../app/settings/general/sign-up/EditContentSignUp";
 import { Dispatch, ReactNode, SetStateAction } from "react";
-import { EditContentProfile } from "./my-account/profile/EditContentProfile";
-import { EditContentEmail } from "./my-account/profile/EditContentEmail";
-import { EditContentPassword } from "./my-account/profile/EditContentPassword";
-import { EditContentAvatar } from "./my-account/profile/edit-content-avatar/EditContentAvatar";
-import { EditContentAddRole } from "./general/roles/EditContentAddRole";
-import { EditContentEditRole } from "./general/roles/edit-content-edit-role.tsx/EditContentEditRole";
+import { EditContentProfile } from "../../app/settings/my-account/profile/EditContentProfile";
+import { EditContentEmail } from "../../app/settings/my-account/profile/EditContentEmail";
+import { EditContentPassword } from "../../app/settings/my-account/profile/EditContentPassword";
+import { EditContentAvatar } from "../../app/settings/my-account/profile/edit-content-avatar/EditContentAvatar";
+import { EditContentAddRole } from "../../app/settings/general/roles/EditContentAddRole";
+import { EditContentEditRole } from "../../app/settings/general/roles/edit-content-edit-role.tsx/EditContentEditRole";
 
 type EditId =
 	| ""

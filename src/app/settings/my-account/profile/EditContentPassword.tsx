@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/button/Button";
 import { motion } from "framer-motion";
 import { UnsavedDialog } from "../../UnsavedDialog";
-import { EditProps } from "../../EditPanel";
+import { EditProps } from "../../../../components/edit-panel/EditPanel";
 import { z } from "zod";
 import { changePassword } from "@/utils/api/authentication";
 import { useForm } from "react-hook-form";

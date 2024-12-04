@@ -8,7 +8,7 @@ import {
 } from "react";
 import { EditIcon, MoreIcon, DeleteIcon } from "@/components/icons/Icons";
 import { DeleteConfirmDialog } from "../../../DeleteConfirmDialog";
-import { EditProps } from "@/app/settings/EditPanel";
+import { EditProps } from "@/components/edit-panel/EditPanel";
 
 type ItemMoreMenuProps = {
 	edit: EditProps;

@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import { EditPanel, EditProps } from "../../EditPanel";
+import { EditPanel, EditProps } from "../../../../components/edit-panel/EditPanel";
 import { OneRowSkeleton } from "@/components/skeleton/OneRowSkeleton";
 import { MyAvatar } from "./edit-content-avatar/MyAvatar";
 

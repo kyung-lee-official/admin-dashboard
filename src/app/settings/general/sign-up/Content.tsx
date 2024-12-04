@@ -2,7 +2,7 @@
 
 import { EditIcon } from "@/components/icons/Icons";
 import { useState } from "react";
-import { EditPanel, EditProps } from "../../EditPanel";
+import { EditPanel, EditProps } from "../../../../components/edit-panel/EditPanel";
 import { createPortal } from "react-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getPermissions } from "@/utils/api/server-settings";

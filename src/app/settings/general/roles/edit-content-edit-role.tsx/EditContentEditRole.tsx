@@ -6,7 +6,7 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/button/Button";
 import { motion } from "framer-motion";
 import { UnsavedDialog } from "../../../UnsavedDialog";
-import { EditProps } from "../../../EditPanel";
+import { EditProps } from "../../../../../components/edit-panel/EditPanel";
 import { getRoleById, updateRoleById } from "@/utils/api/roles";
 import { AxiosError } from "axios";
 import { EditMembers } from "./EditMembers";
