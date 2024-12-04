@@ -4,7 +4,6 @@ import { useMutation } from "@tanstack/react-query";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/button/Button";
 import { motion } from "framer-motion";
-import { UnsavedDialog } from "../../UnsavedDialog";
 import { EditProps } from "../../../../components/edit-panel/EditPanel";
 import { z } from "zod";
 import { changePassword } from "@/utils/api/authentication";
@@ -12,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 // import { DevTool } from "@hookform/devtools";
 import { AxiosError } from "axios";
+import { UnsavedDialog } from "@/components/edit-panel/UnsavedDialog";
 
 interface IFormInput {
 	oldPassword: string;

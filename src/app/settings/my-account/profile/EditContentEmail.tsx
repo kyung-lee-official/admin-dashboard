@@ -6,11 +6,11 @@ import { AxiosError } from "axios";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/button/Button";
 import { motion } from "framer-motion";
-import { UnsavedDialog } from "../../UnsavedDialog";
 import { getMyInfo } from "@/utils/api/members";
 import { changeEmail, sendVerificationEmail } from "@/utils/api/email";
 import { EditProps } from "../../../../components/edit-panel/EditPanel";
 import { MyInfo } from "./Content";
+import { UnsavedDialog } from "@/components/edit-panel/UnsavedDialog";
 
 export const EditContentEmail = (props: {
 	edit: EditProps;

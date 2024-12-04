@@ -9,6 +9,7 @@ import { EditContentAddRole } from "../../app/settings/general/roles/EditContent
 import { EditContentEditRole } from "../../app/settings/general/roles/edit-content-edit-role.tsx/EditContentEditRole";
 
 type EditId =
+	/* settings */
 	| ""
 	| "sign-up"
 	| "add-role"
@@ -16,7 +17,9 @@ type EditId =
 	| "profile"
 	| "avatar"
 	| "email"
-	| "change-password";
+	| "change-password"
+	/* app/performance */
+	| "add-stat";
 
 export type EditProps = {
 	show: boolean;
@@ -58,6 +61,8 @@ const EditContent = (props: {
 			return <EditContentEmail edit={edit} setEdit={setEdit} />;
 		case "change-password":
 			return <EditContentPassword edit={edit} setEdit={setEdit} />;
+		case "add-stat":
+			return null;
 		default:
 			return null;
 	}

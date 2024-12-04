@@ -8,10 +8,10 @@ import { uploadMyAvatar } from "@/utils/api/members";
 import { EditProps } from "@/components/edit-panel/EditPanel";
 import { useAuthStore } from "@/stores/auth";
 import { Button } from "@/components/button/Button";
-import { UnsavedDialog } from "@/app/settings/UnsavedDialog";
 import { CloseIcon } from "@/components/icons/Icons";
 import { ClippingArea } from "./ClippingArea";
 import { Canvas } from "./Canvas";
+import { UnsavedDialog } from "@/components/edit-panel/UnsavedDialog";
 // import { Debug } from "./Debug";
 
 export type CanvasSize = {
@@ -283,7 +283,6 @@ export const EditContentAvatar = (props: {
 					</div>
 				</div>
 			</div>
-
 			<UnsavedDialog
 				edit={edit}
 				setEdit={setEdit}

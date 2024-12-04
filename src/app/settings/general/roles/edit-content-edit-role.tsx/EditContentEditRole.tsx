@@ -5,12 +5,12 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/button/Button";
 import { motion } from "framer-motion";
-import { UnsavedDialog } from "../../../UnsavedDialog";
 import { EditProps } from "../../../../../components/edit-panel/EditPanel";
 import { getRoleById, updateRoleById } from "@/utils/api/roles";
 import { AxiosError } from "axios";
 import { EditMembers } from "./EditMembers";
 import { sortByMemberName } from "./data";
+import { UnsavedDialog } from "@/components/edit-panel/UnsavedDialog";
 
 export type Member = {
 	id: string;
