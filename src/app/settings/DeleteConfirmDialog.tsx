@@ -50,7 +50,7 @@ export const DeleteConfirmDialog = (props: {
 						</div>
 						<div className="text-sm text-white/50">
 							Members that only belong to this role will be moved
-							to 'default' role.
+							to &apos;default&apos; role.
 						</div>
 					</div>
 					<div
