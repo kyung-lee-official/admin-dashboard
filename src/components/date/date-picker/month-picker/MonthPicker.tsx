@@ -57,6 +57,9 @@ export const MonthPicker = (props: DatePickerProps) => {
 				bg-neutral-700
 				border-[1px] border-white/10 border-t-white/15
 				rounded"
+				onClick={(e) => {
+					e.preventDefault();
+				}}
 			>
 				{date.format("MMMM, YYYY")}
 			</button>
