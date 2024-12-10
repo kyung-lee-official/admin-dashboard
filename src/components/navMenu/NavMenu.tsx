@@ -20,21 +20,27 @@ import { MoreMenu } from "./moreMenu/MoreMenu";
  */
 function updateIsActive(m: HierarchicalMenuItem[]) {
 	const pathname = usePathname();
-	function checkRecursively(m: HierarchicalMenuItem[]) {
+	function checkRecursively(m: HierarchicalMenuItem[]): any {
+		let result = false;
 		for (const item of m) {
 			if (item.pageUrlReg) {
 				/* has pageUrlReg */
 				item.isActive = item.pageUrlReg.test(pathname);
+				if (item.isActive) {
+					result = true;
+				}
 			} else {
 				/* no pageUrlReg */
 				if (item.subMenu) {
 					/* has subMenu */
-					const result = checkRecursively(item.subMenu);
+					result = checkRecursively(item.subMenu);
+					item.isActive = result;
 				} else {
-					/* no subMenu */
+					/* no subMenu, do nothing */
 				}
 			}
 		}
+		return result;
 	}
 	checkRecursively(m);
 }
