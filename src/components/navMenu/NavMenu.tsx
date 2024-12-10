@@ -1,44 +1,68 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
 import { ReturnIcon } from "../icons/Icons";
 import { usePathname } from "next/navigation";
 import {
 	homeMenuItem,
-	MenuItem,
+	HierarchicalMenuItem,
 	menuItems,
 	settingsGeneralMenuItems,
 	settingsMyAccountMenuItems,
 } from "@/components/navMenu/MenuItems";
 import { MoreMenu } from "./moreMenu/MoreMenu";
 
-export const NavMenuItem = (props: { menu: MenuItem[] }) => {
+/**
+ * check if the current page is or belongs to the menu by checking its pageUrlReg
+ * used to highlight the first two levels of the menu
+ * @param m menu
+ * @returns boolean
+ */
+function updateIsActive(m: HierarchicalMenuItem[]) {
+	const pathname = usePathname();
+	function checkRecursively(m: HierarchicalMenuItem[]) {
+		for (const item of m) {
+			if (item.pageUrlReg) {
+				/* has pageUrlReg */
+				item.isActive = item.pageUrlReg.test(pathname);
+			} else {
+				/* no pageUrlReg */
+				if (item.subMenu) {
+					/* has subMenu */
+					const result = checkRecursively(item.subMenu);
+				} else {
+					/* no subMenu */
+				}
+			}
+		}
+	}
+	checkRecursively(m);
+}
+
+export const NavMenuItem = (props: { menu: HierarchicalMenuItem[] }) => {
 	const pathname = usePathname();
 
 	const { menu } = props;
 
+	updateIsActive(menu);
+
 	return (
 		<div>
 			{menu.map((item, i) => {
-				const isSubMenuItem =
-					item.subMenu &&
-					item.subMenu.some((item) => item.link === pathname);
-
 				return (
 					<div key={i} className="px-3">
 						<Link
 							href={item.link}
 							className={`flex justify-start items-center h-7 px-2 gap-2.5
-							${pathname === item.pageUrl ? "text-neutral-200" : "text-neutral-400/80"}
+							${item.pageUrlReg?.test(pathname) ? "text-neutral-200" : "text-neutral-400/80"}
 							${
-								pathname === item.pageUrl
+								item.pageUrlReg?.test(pathname)
 									? "dark:bg-neutral-400/10"
 									: "dark:hover:bg-neutral-400/5"
 							}
 							rounded-md
 							${
-								pathname === item.pageUrl &&
+								item.pageUrlReg?.test(pathname) &&
 								"border-[1px] border-white/10 border-t-white/15"
 							}`}
 							title={item.title}
@@ -52,9 +76,10 @@ export const NavMenuItem = (props: { menu: MenuItem[] }) => {
 								{item.title}
 							</div>
 						</Link>
-						{item.subMenu && isSubMenuItem && (
-							<NavSubMenuItem menu={item.subMenu} />
-						)}
+						{item.subMenu &&
+							item.subMenu.some(
+								(subItem) => subItem.link === pathname
+							) && <NavSubMenuItem menu={item.subMenu} />}
 					</div>
 				);
 			})}
@@ -62,7 +87,7 @@ export const NavMenuItem = (props: { menu: MenuItem[] }) => {
 	);
 };
 
-const NavSubMenuItem = (props: { menu: MenuItem[] }) => {
+const NavSubMenuItem = (props: { menu: HierarchicalMenuItem[] }) => {
 	const pathname = usePathname();
 	const { menu } = props;
 
