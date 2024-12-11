@@ -6,7 +6,8 @@ import { EditContentEmail } from "../../app/settings/my-account/profile/EditCont
 import { EditContentPassword } from "../../app/settings/my-account/profile/EditContentPassword";
 import { EditContentAvatar } from "../../app/settings/my-account/profile/edit-content-avatar/EditContentAvatar";
 import { EditContentAddRole } from "../../app/settings/general/roles/EditContentAddRole";
-import { EditContentEditRole } from "../../app/settings/general/roles/edit-content-edit-role.tsx/EditContentEditRole";
+import { EditContentEditRole } from "../../app/settings/general/roles/edit-content-edit-role/EditContentEditRole";
+import { EditContentAddStat } from "@/app/app/performance/stats/edit-content-add-stat/EditContentAddStat";
 
 type EditId =
 	/* settings */
@@ -62,7 +63,7 @@ const EditContent = (props: {
 		case "change-password":
 			return <EditContentPassword edit={edit} setEdit={setEdit} />;
 		case "add-stat":
-			return null;
+			return <EditContentAddStat edit={edit} setEdit={setEdit} />;
 		default:
 			return null;
 	}
