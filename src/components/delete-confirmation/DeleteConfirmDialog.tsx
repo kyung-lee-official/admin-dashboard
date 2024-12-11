@@ -1,34 +1,14 @@
 import { Dispatch, SetStateAction } from "react";
 import { Button } from "@/components/button/Button";
-import { useMutation } from "@tanstack/react-query";
-import { deleteRoleById } from "@/utils/api/roles";
-import { queryClient } from "@/utils/react-query/react-query";
-import { useAuthStore } from "@/stores/auth";
 
 export const DeleteConfirmDialog = (props: {
 	show: boolean;
 	setShow: Dispatch<SetStateAction<boolean>>;
-	roleId: string;
+	question: string;
+	description?: string;
+	onDelete: () => void;
 }) => {
-	const { show, setShow, roleId } = props;
-	const { jwt } = useAuthStore();
-
-	const mutation = useMutation({
-		mutationFn: () => {
-			return deleteRoleById(roleId, jwt);
-		},
-		onSuccess: () => {
-			queryClient.invalidateQueries({
-				queryKey: ["get-roles", jwt],
-			});
-			setShow(false);
-		},
-		onError: () => {},
-	});
-
-	function onDelete() {
-		mutation.mutate();
-	}
+	const { show, setShow, question, description, onDelete } = props;
 
 	if (show) {
 		return (
@@ -45,12 +25,9 @@ export const DeleteConfirmDialog = (props: {
 					shadow-lg rounded-md backdrop:bg-black/50 outline-none"
 				>
 					<div className="flex flex-col pt-6 px-6 gap-1.5">
-						<div className="font-semibold">
-							Are you sure you want to delete this role?
-						</div>
+						<div className="font-semibold">{question}</div>
 						<div className="text-sm text-white/50">
-							Members that only belong to this role will be moved
-							to &apos;default&apos; role.
+							{description}
 						</div>
 					</div>
 					<div

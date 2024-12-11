@@ -29,3 +29,13 @@ export const getStatById = async (id: number, jwt: string) => {
 	});
 	return res.data;
 };
+
+export const deleteStatById = async (id: number, jwt: string) => {
+	const res = await axios.delete(`/performance/stats/${id}`, {
+		baseURL: process.env.NEXT_PUBLIC_API_HOST,
+		headers: {
+			Authorization: jwt,
+		},
+	});
+	return res.data;
+};

@@ -8,11 +8,11 @@ import {
 } from "react";
 import { EditIcon, MoreIcon, DeleteIcon } from "@/components/icons/Icons";
 import { EditProps } from "@/components/edit-panel/EditPanel";
+import { DeleteConfirmDialog } from "@/components/delete-confirmation/DeleteConfirmDialog";
 import { useMutation } from "@tanstack/react-query";
-import { deleteRoleById } from "@/utils/api/roles";
+import { deleteStatById } from "@/utils/api/app/performance";
 import { queryClient } from "@/utils/react-query/react-query";
 import { useAuthStore } from "@/stores/auth";
-import { DeleteConfirmDialog } from "@/components/delete-confirmation/DeleteConfirmDialog";
 
 type ItemMoreMenuProps = {
 	edit: EditProps;
@@ -21,7 +21,7 @@ type ItemMoreMenuProps = {
 
 export const ItemMoreMenu = (props: ItemMoreMenuProps) => {
 	const { edit, setEdit } = props;
-	const { roleId } = edit.auxData;
+	const { statId } = edit.auxData;
 	const { jwt } = useAuthStore();
 
 	const [show, setShow] = useState(false);
@@ -67,11 +67,11 @@ export const ItemMoreMenu = (props: ItemMoreMenuProps) => {
 
 	const mutation = useMutation({
 		mutationFn: () => {
-			return deleteRoleById(roleId, jwt);
+			return deleteStatById(parseInt(statId), jwt);
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: ["get-roles", jwt],
+				queryKey: ["get-stats", jwt],
 			});
 			setShow(false);
 		},
@@ -140,10 +140,7 @@ export const ItemMoreMenu = (props: ItemMoreMenuProps) => {
 			<DeleteConfirmDialog
 				show={showDeleteConfirmation}
 				setShow={setShowDeleteConfirmation}
-				question={"Are you sure you want to delete this role?"}
-				description={
-					"Members that only belong to this role will be moved to 'default' role."
-				}
+				question={"Are you sure you want to delete this stat?"}
 				onDelete={onDelete}
 			/>
 		</div>
