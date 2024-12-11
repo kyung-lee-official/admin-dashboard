@@ -189,6 +189,50 @@ export const menuItems: HierarchicalMenuItem[] = [
 								},
 								pageUrlReg:
 									/^\/app\/performance\/stats\/[0-9]\/section\/[0-9]*$/,
+								subMenu: [
+									{
+										menuKey: MenuKey.PERFORMANCE_EVENT,
+										isActive: false,
+										breadcrumbs: (props: {
+											statId: number;
+											sectionId: number;
+											eventId: number;
+										}) => {
+											const {
+												statId,
+												sectionId,
+												eventId,
+											} = props;
+											return (
+												<div className="flex items-center gap-2 flex-wrap">
+													<Link href="/app/performance/stats">
+														Peformance Stats
+													</Link>
+													<ArrowRight size={15} />
+													<Link
+														href={`/app/performance/stats/${statId}`}
+													>
+														Stat
+													</Link>
+													<ArrowRight size={15} />
+													<Link
+														href={`/app/performance/stats/${statId}/section/${sectionId}`}
+													>
+														Section
+													</Link>
+													<ArrowRight size={15} />
+													<Link
+														href={`/app/performance/stats/${statId}/section/${sectionId}/event/${eventId}`}
+													>
+														Event
+													</Link>
+												</div>
+											);
+										},
+										pageUrlReg:
+											/^\/app\/performance\/stats\/[0-9]\/section\/[0-9]\/event\/[0-9]*$/,
+									},
+								],
 							},
 						],
 					},
