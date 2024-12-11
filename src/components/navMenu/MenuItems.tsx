@@ -33,7 +33,7 @@ export const enum MenuKey {
 export type HierarchicalMenuItem = {
 	menuKey: MenuKey /* key used to highlight the current menu item */;
 	isActive: boolean;
-	link: string /* where to go when clicked */;
+	link?: string /* where to go when clicked, can be ignored if it is not a menu item. */;
 	pageUrlReg?: RegExp /* the regex of url of current page. if the item is a sub-menu (without page), should be ignored */;
 	title?: string;
 	breadcrumbs?: (props: any) => JSX.Element;
@@ -141,7 +141,6 @@ export const menuItems: HierarchicalMenuItem[] = [
 					{
 						menuKey: MenuKey.PERFORMANCE_STAT,
 						isActive: false,
-						link: "/app/performance/stats",
 						breadcrumbs: (props: { statId: number }) => {
 							const { statId } = props;
 							return (
@@ -159,6 +158,39 @@ export const menuItems: HierarchicalMenuItem[] = [
 							);
 						},
 						pageUrlReg: /^\/app\/performance\/stats\/[0-9]*$/,
+						subMenu: [
+							{
+								menuKey: MenuKey.PERFORMANCE_SECTION,
+								isActive: false,
+								breadcrumbs: (props: {
+									statId: number;
+									sectionId: number;
+								}) => {
+									const { statId, sectionId } = props;
+									return (
+										<div className="flex items-center gap-2 flex-wrap">
+											<Link href="/app/performance/stats">
+												Peformance Stats
+											</Link>
+											<ArrowRight size={15} />
+											<Link
+												href={`/app/performance/stats/${statId}`}
+											>
+												Stat
+											</Link>
+											<ArrowRight size={15} />
+											<Link
+												href={`/app/performance/stats/${statId}/section/${sectionId}`}
+											>
+												Section
+											</Link>
+										</div>
+									);
+								},
+								pageUrlReg:
+									/^\/app\/performance\/stats\/[0-9]\/section\/[0-9]*$/,
+							},
+						],
 					},
 				],
 			},

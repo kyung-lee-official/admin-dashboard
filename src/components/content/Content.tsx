@@ -1,18 +1,13 @@
 "use client";
 
-import {
-	HierarchicalMenuItem,
-	menu,
-	MenuKey,
-} from "@/components/navMenu/MenuItems";
-import { useParams, usePathname } from "next/navigation";
+import { HierarchicalMenuItem, menu } from "@/components/navMenu/MenuItems";
+import { usePathname } from "next/navigation";
 import { ReactNode } from "react";
+import { HeaderNav } from "../navMenu/HeaderNav";
 
 export const Content = (props: { children: ReactNode }) => {
 	const { children } = props;
 	const pathname = usePathname();
-	const params = useParams();
-	const { statId, sectionId, eventId } = params;
 
 	function recursiveFind(
 		menu: HierarchicalMenuItem[]
@@ -34,37 +29,9 @@ export const Content = (props: { children: ReactNode }) => {
 
 	const item = recursiveFind(menu);
 
-	if (item?.breadcrumbs) {
-		switch (item.menuKey) {
-			case MenuKey.PERFORMANCE_STAT:
-				return (
-					<div className="flex-[1_1_100%] flex flex-col h-svh">
-						<h2
-							className="flex-[0_0_56px] flex items-center p-3
-							text-sm font-semibold dark:text-white/40
-							border-b-[1px] dark:border-white/5"
-						>
-							<item.breadcrumbs statId={statId} />
-						</h2>
-						<div className="scrollbar overflow-y-auto">
-							{children}
-						</div>
-					</div>
-				);
-			default:
-				break;
-		}
-	}
-
 	return (
 		<div className="flex-[1_1_100%] flex flex-col h-svh">
-			<nav
-				className="flex-[0_0_56px] flex items-center p-3
-				text-sm font-semibold dark:text-white/40
-				border-b-[1px] dark:border-white/5"
-			>
-				{item?.title}
-			</nav>
+			<HeaderNav item={item} />
 			<div className="scrollbar overflow-y-auto">{children}</div>
 		</div>
 	);

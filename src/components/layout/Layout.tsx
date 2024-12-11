@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { Content } from "../content/Content";
 import { NavMenu } from "../navMenu/NavMenu";
 

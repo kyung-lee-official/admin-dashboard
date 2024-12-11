@@ -13,25 +13,39 @@ import {
 } from "@/components/navMenu/MenuItems";
 import { MoreMenu } from "./moreMenu/MoreMenu";
 
-export const NavMenuItem = (props: { menu: HierarchicalMenuItem[] }) => {
+function findDescendantActive(m: HierarchicalMenuItem[]): boolean {
+	for (const item of m) {
+		if (item.isActive) {
+			return true;
+		}
+		if (item.subMenu) {
+			const result = findDescendantActive(item.subMenu);
+			if (result) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+export const NavMenuItems = (props: { menu: HierarchicalMenuItem[] }) => {
 	const { menu } = props;
 	updateIsActive(menu);
-
-	console.log(menu);
 
 	return (
 		<div>
 			{menu.map((item, i) => {
-				const isChildActive = item.subMenu?.some(
-					(subItem) => subItem.isActive
+				/* if any of recursive subMenu is active */
+				const isDescendantActive = findDescendantActive(
+					item.subMenu ?? []
 				);
 				const isActive = item.isActive;
-				if (isChildActive) {
+				if (isDescendantActive) {
 					/* has subMenu and one of the subMenu items is active */
 					return (
 						<div key={i} className="px-3">
 							<Link
-								href={item.link}
+								href={item.link ?? "/"}
 								className="flex justify-start items-center h-7 px-2 gap-2.5
 								text-neutral-200"
 								title={item.title}
@@ -49,7 +63,7 @@ export const NavMenuItem = (props: { menu: HierarchicalMenuItem[] }) => {
 								/* has subMenu and one of the subMenu is active */
 								item.subMenu.some(
 									(subItem) => subItem.isActive
-								) && <NavSubMenuItem menu={item.subMenu} />}
+								) && <NavSubMenuItems menu={item.subMenu} />}
 						</div>
 					);
 				} else if (isActive) {
@@ -57,7 +71,7 @@ export const NavMenuItem = (props: { menu: HierarchicalMenuItem[] }) => {
 					return (
 						<div key={i} className="px-3">
 							<Link
-								href={item.link}
+								href={item.link ?? "/"}
 								className="flex justify-start items-center h-7 px-2 gap-2.5
 								text-neutral-200
 								bg-neutral-400/10
@@ -77,7 +91,7 @@ export const NavMenuItem = (props: { menu: HierarchicalMenuItem[] }) => {
 								/* has subMenu and one of the subMenu is active */
 								item.subMenu.some(
 									(subItem) => subItem.isActive
-								) && <NavSubMenuItem menu={item.subMenu} />}
+								) && <NavSubMenuItems menu={item.subMenu} />}
 						</div>
 					);
 				} else {
@@ -85,7 +99,7 @@ export const NavMenuItem = (props: { menu: HierarchicalMenuItem[] }) => {
 					return (
 						<div key={i} className="px-3">
 							<Link
-								href={item.link}
+								href={item.link ?? "/"}
 								className="flex justify-start items-center h-7 px-2 gap-2.5
 								text-neutral-400/80
 								hover:bg-neutral-400/5"
@@ -104,7 +118,7 @@ export const NavMenuItem = (props: { menu: HierarchicalMenuItem[] }) => {
 								/* has subMenu and one of the subMenu is active */
 								item.subMenu.some(
 									(subItem) => subItem.isActive
-								) && <NavSubMenuItem menu={item.subMenu} />}
+								) && <NavSubMenuItems menu={item.subMenu} />}
 						</div>
 					);
 				}
@@ -113,26 +127,33 @@ export const NavMenuItem = (props: { menu: HierarchicalMenuItem[] }) => {
 	);
 };
 
-const NavSubMenuItem = (props: { menu: HierarchicalMenuItem[] }) => {
-	const pathname = usePathname();
+const NavSubMenuItems = (props: { menu: HierarchicalMenuItem[] }) => {
 	const { menu } = props;
 
 	return (
 		<div>
 			{menu.map((item, i) => {
+				const isDescendantActive = findDescendantActive(
+					item.subMenu ?? []
+				);
+				const isActive = item.isActive;
+
 				return (
 					<Link
 						key={i}
-						href={item.link}
+						href={item.link ?? "/"}
 						className={`flex justify-start items-center h-7 px-2 gap-2.5
-						${pathname === item.link ? "text-neutral-200" : "text-neutral-400/50"}
+						${isDescendantActive || isActive ? "text-neutral-200" : "text-neutral-400/50"}
 						${
-							pathname === item.link
+							isDescendantActive || isActive
 								? "dark:bg-neutral-400/10"
 								: "dark:hover:bg-neutral-400/5"
 						}
 						rounded-md
-						${pathname === item.link && "border-[1px] border-white/10 border-t-white/15"}`}
+						${
+							(isDescendantActive || isActive) &&
+							"border-[1px] border-white/10 border-t-white/15"
+						}`}
 						title={item.title}
 					>
 						{item.icon ? (
@@ -207,7 +228,7 @@ export const NavMenu = () => {
 											General
 										</div>
 									</div>
-									<NavMenuItem
+									<NavMenuItems
 										menu={settingsGeneralMenuItems}
 									/>
 								</div>
@@ -224,7 +245,7 @@ export const NavMenu = () => {
 											My Account
 										</div>
 									</div>
-									<NavMenuItem
+									<NavMenuItems
 										menu={settingsMyAccountMenuItems}
 									/>
 								</div>
@@ -234,14 +255,14 @@ export const NavMenu = () => {
 						/* main menu */
 						<>
 							<div className="py-3">
-								<NavMenuItem menu={homeMenuItem} />
+								<NavMenuItems menu={homeMenuItem} />
 							</div>
 							<hr
 								className="mx-3 my-2
 								border-dashed border-white/10"
 							/>
 							<div className="py-3">
-								<NavMenuItem menu={menuItems} />
+								<NavMenuItems menu={menuItems} />
 							</div>
 						</>
 					)}
@@ -253,5 +274,3 @@ export const NavMenu = () => {
 		</nav>
 	);
 };
-
-export default NavMenu;
