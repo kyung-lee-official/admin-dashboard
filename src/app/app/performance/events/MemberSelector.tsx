@@ -1,5 +1,5 @@
-import { sortByMemberName } from "@/app/settings/general/roles/edit-content-edit-role.tsx/data";
-import { Member } from "@/app/settings/general/roles/edit-content-edit-role.tsx/EditContentEditRole";
+import { sortByMemberName } from "@/app/settings/general/roles/edit-content-edit-role/data";
+import { Member } from "@/utils/types/internal";
 import { SearchOutlineIcon } from "@/components/icons/Icons";
 import { useAuthStore } from "@/stores/auth";
 import { getMembers } from "@/utils/api/members";

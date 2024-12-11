@@ -1,4 +1,4 @@
-import { Content } from "../stats/Content";
+import { Content } from "./Content";
 
 const Page = () => {
 	return <Content />;
