@@ -14,11 +14,10 @@ import {
 import { MoreMenu } from "./moreMenu/MoreMenu";
 
 export const NavMenuItem = (props: { menu: HierarchicalMenuItem[] }) => {
-	const pathname = usePathname();
-
 	const { menu } = props;
-
 	updateIsActive(menu);
+
+	console.log(menu);
 
 	return (
 		<div>

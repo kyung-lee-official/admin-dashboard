@@ -56,6 +56,12 @@ export function updateIsActive(m: HierarchicalMenuItem[]) {
 				item.isActive = item.pageUrlReg.test(pathname);
 				if (item.isActive) {
 					result = true;
+				} else {
+					/* not matched, check its subMenu */
+					if (item.subMenu) {
+						result = checkRecursively(item.subMenu);
+						item.isActive = result;
+					}
 				}
 			} else {
 				/* no pageUrlReg */
