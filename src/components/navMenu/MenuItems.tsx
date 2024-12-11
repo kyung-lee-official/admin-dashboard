@@ -6,6 +6,8 @@ import {
 	ReturnIcon,
 } from "@/components/icons/Icons";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { ArrowRight } from "./ArrowRight";
 
 export const enum MenuKey {
 	HOME,
@@ -38,17 +40,38 @@ export type HierarchicalMenuItem = {
 	icon?: JSX.Element;
 	subMenu?: HierarchicalMenuItem[];
 };
-
-// export type FlattenMenuItem = {
-// 	menuKey: MenuKey;
-// 	level: number;
-// 	link: string /* where to go when clicked */;
-// 	pageUrlReg?: RegExp /* the regex of url of current page, should be ignored if page does not exist */;
-// 	title?: string;
-// 	breadcrumbs?: (props: any) => JSX.Element;
-// 	icon?: JSX.Element;
-// 	subMenu?: HierarchicalMenuItem[];
-// };
+/**
+ * check if the current page is or belongs to the menu by checking its pageUrlReg
+ * used to highlight the first two levels of the menu
+ * @param m menu
+ * @returns boolean
+ */
+export function updateIsActive(m: HierarchicalMenuItem[]) {
+	const pathname = usePathname();
+	function checkRecursively(m: HierarchicalMenuItem[]): any {
+		let result = false;
+		for (const item of m) {
+			if (item.pageUrlReg) {
+				/* has pageUrlReg */
+				item.isActive = item.pageUrlReg.test(pathname);
+				if (item.isActive) {
+					result = true;
+				}
+			} else {
+				/* no pageUrlReg */
+				if (item.subMenu) {
+					/* has subMenu */
+					result = checkRecursively(item.subMenu);
+					item.isActive = result;
+				} else {
+					/* no subMenu, do nothing */
+				}
+			}
+		}
+		return result;
+	}
+	checkRecursively(m);
+}
 
 export const homeMenuItem: HierarchicalMenuItem[] = [
 	{
@@ -110,17 +133,17 @@ export const menuItems: HierarchicalMenuItem[] = [
 				pageUrlReg: /^\/app\/performance\/stats$/,
 				subMenu: [
 					{
-						menuKey: MenuKey.PERFORMANCE_STATS,
+						menuKey: MenuKey.PERFORMANCE_STAT,
 						isActive: false,
 						link: "/app/performance/stats",
 						breadcrumbs: (props: { statId: number }) => {
 							const { statId } = props;
 							return (
-								<div>
+								<div className="flex items-center gap-2 flex-wrap">
 									<Link href="/app/performance/stats">
 										Peformance Stats
 									</Link>
-									&nbsp;&gt;&nbsp;
+									<ArrowRight size={15} />
 									<Link
 										href={`/app/performance/stats/${statId}`}
 									>
@@ -196,28 +219,6 @@ export const settingsMyAccountMenuItems: HierarchicalMenuItem[] = [
 		pageUrlReg: /^\/settings\/my-account\/profile$/,
 	},
 ];
-
-// const flatten = (
-// 	menuItems: HierarchicalMenuItem[],
-// 	prevLevel = 0
-// ): FlattenMenuItem[] => {
-// 	const result: FlattenMenuItem[] = [];
-// 	for (const i of menuItems) {
-// 		result.push({ ...i, level: prevLevel + 1 });
-// 		if (i.subMenu) {
-// 			result.push(...flatten(i.subMenu, prevLevel + 1));
-// 		}
-// 	}
-// 	return result;
-// };
-
-// export const flattenMenu = flatten(
-// 	homeMenuItem
-// 		.concat(menuItems)
-// 		.concat(settingsReturnMenuItem)
-// 		.concat(settingsGeneralMenuItems)
-// 		.concat(settingsMyAccountMenuItems)
-// );
 
 export const menu = homeMenuItem
 	.concat(menuItems)
