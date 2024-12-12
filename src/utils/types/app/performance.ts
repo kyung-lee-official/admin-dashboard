@@ -1,13 +1,13 @@
-export type Section = {
+export type CreateSectionData = {
 	weight: number;
 	title: string;
 	description?: string;
 };
 
-export type PerformanceStatData = {
+export type CreatePerformanceStatData = {
 	ownerId: string;
 	month: Date;
-	statSections: Section[];
+	statSections: CreateSectionData[];
 };
 
 export type EventResponse = {
@@ -22,6 +22,16 @@ export type EventResponse = {
 	attachments: [];
 };
 
+export type OwnerResponse = {
+	id: string;
+	email: string;
+	name: string;
+	isVerified: boolean;
+	isFrozen: boolean;
+	createdAt: string;
+	updatedAt: string;
+};
+
 export type SectionResponse = {
 	id: number;
 	weight: number;
@@ -34,5 +44,6 @@ export type PerformanceStatResponse = {
 	id: number;
 	ownerId: string;
 	month: string;
+	owner: OwnerResponse;
 	statSections: SectionResponse[];
 };
