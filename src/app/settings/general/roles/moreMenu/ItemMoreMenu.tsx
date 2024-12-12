@@ -9,7 +9,7 @@ import {
 import { EditIcon, MoreIcon, DeleteIcon } from "@/components/icons/Icons";
 import { EditProps } from "@/components/edit-panel/EditPanel";
 import { useMutation } from "@tanstack/react-query";
-import { deleteRoleById } from "@/utils/api/roles";
+import { deleteRoleById, RolesQK } from "@/utils/api/roles";
 import { queryClient } from "@/utils/react-query/react-query";
 import { useAuthStore } from "@/stores/auth";
 import { DeleteConfirmDialog } from "@/components/delete-confirmation/DeleteConfirmDialog";
@@ -22,7 +22,7 @@ type ItemMoreMenuProps = {
 export const ItemMoreMenu = (props: ItemMoreMenuProps) => {
 	const { edit, setEdit } = props;
 	const { roleId } = edit.auxData;
-	const { jwt } = useAuthStore();
+	const jwt = useAuthStore((state) => state.jwt);
 
 	const [show, setShow] = useState(false);
 	const entryRef = useRef<HTMLButtonElement>(null);
@@ -71,7 +71,7 @@ export const ItemMoreMenu = (props: ItemMoreMenuProps) => {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: ["get-roles", jwt],
+				queryKey: [RolesQK.GET_ROLES_BY_IDS, jwt],
 			});
 			setShow(false);
 		},

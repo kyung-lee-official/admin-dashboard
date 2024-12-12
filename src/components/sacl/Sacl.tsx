@@ -7,17 +7,18 @@ import ms from "ms";
 import { usePathname, useRouter } from "next/navigation";
 import { Loading } from "./Loading";
 import {
+	AuthenticationQK,
 	getIsSignedIn,
 	getTencentCosTempCredential,
 	refreshJwt,
 } from "@/utils/api/authentication";
 import { Layout } from "../layout/Layout";
-import { getMyInfo } from "@/utils/api/members";
+import { getMyInfo, MembersQK } from "@/utils/api/members";
 import { NetworkError } from "./NetworkError";
 import { UnknownError } from "./UnknownError";
 import { IsFrozen } from "./IsFrozen";
 import { AuthMask } from "./AuthMask";
-import { getIsSeeded } from "@/utils/api/server-settings";
+import { getIsSeeded, ServerSettingQK } from "@/utils/api/server-settings";
 
 /**
  * SACL (Seed and Auth Checking Layer) UI
@@ -42,7 +43,7 @@ export const Sacl = (props: any) => {
 	const refetchIntervalMs = enableRefetch && 10000;
 
 	const tencentCosTempCredentialQuery = useQuery<any, AxiosError>({
-		queryKey: ["tencentCosTempCredential"],
+		queryKey: [AuthenticationQK.GET_TENCENT_COS_TEMP_CREDENTIAL],
 		queryFn: async () => {
 			const tempCredential = await getTencentCosTempCredential(jwt);
 			return tempCredential;
@@ -61,7 +62,7 @@ export const Sacl = (props: any) => {
 	}, [tencentCosTempCredentialQuery]);
 
 	const refreshJwtQuery = useQuery<any, AxiosError>({
-		queryKey: ["refresh-jwt"],
+		queryKey: [AuthenticationQK.REFRESH_JWT],
 		queryFn: async () => {
 			if (jwt) {
 				if (jwt.split(".")[1]) {
@@ -96,14 +97,14 @@ export const Sacl = (props: any) => {
 	});
 
 	const isSeededQuery = useQuery<any, AxiosError>({
-		queryKey: ["is-seeded"],
+		queryKey: [ServerSettingQK.IS_SEEDED],
 		queryFn: getIsSeeded,
 		retry: false,
 		refetchOnWindowFocus: false,
 	});
 
 	const isSignedInQuery = useQuery<any, AxiosError>({
-		queryKey: ["is-signed-in", jwt],
+		queryKey: [AuthenticationQK.GET_IS_SIGNED_IN, jwt],
 		queryFn: async () => {
 			const isSignedIn = await getIsSignedIn(jwt);
 			return isSignedIn;
@@ -115,7 +116,7 @@ export const Sacl = (props: any) => {
 	});
 
 	const myInfoQuery = useQuery<any, AxiosError>({
-		queryKey: ["my-info", jwt],
+		queryKey: [MembersQK.GET_MY_INFO, jwt],
 		queryFn: async () => {
 			const isSignedIn = await getMyInfo(jwt);
 			return isSignedIn;

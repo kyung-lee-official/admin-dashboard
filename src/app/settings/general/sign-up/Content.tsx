@@ -2,10 +2,13 @@
 
 import { EditIcon } from "@/components/icons/Icons";
 import { useState } from "react";
-import { EditPanel, EditProps } from "../../../../components/edit-panel/EditPanel";
+import {
+	EditPanel,
+	EditProps,
+} from "../../../../components/edit-panel/EditPanel";
 import { createPortal } from "react-dom";
 import { useQuery } from "@tanstack/react-query";
-import { getPermissions } from "@/utils/api/server-settings";
+import { getPermissions, ServerSettingQK } from "@/utils/api/server-settings";
 import { useAuthStore } from "@/stores/auth";
 import { Forbidden } from "@/components/page-authorization/Forbidden";
 import { Loading } from "@/components/page-authorization/Loading";
@@ -16,7 +19,7 @@ export const Content = () => {
 	const jwt = useAuthStore((state) => state.jwt);
 
 	const serverPermQuery = useQuery({
-		queryKey: ["server-permissions"],
+		queryKey: [ServerSettingQK.GET_MY_SERVER_PERMISSIONS],
 		queryFn: async () => {
 			const data = await getPermissions(jwt);
 			return data;

@@ -1,6 +1,13 @@
 import axios from "axios";
 import qs from "qs";
 
+export enum ServerSettingQK {
+	IS_SEEDED = "is-seeded",
+	GET_MY_SERVER_PERMISSIONS = "get-my-server-permissions",
+	GET_SERVER_SETTINGS = "get-server-settings",
+	GET_IS_SIGN_UP_AVAILABLE = "get-is-sign-up-available",
+}
+
 export const seed = async (body: {
 	email: string;
 	name: string;

@@ -1,5 +1,11 @@
 import axios from "axios";
 
+export enum AuthenticationQK {
+	GET_IS_SIGNED_IN = "get-is-signed-in",
+	GET_TENCENT_COS_TEMP_CREDENTIAL = "get-tencent-cos-temp-credential",
+	REFRESH_JWT = "refresh-jwt",
+}
+
 export const getIsSignedIn = async (jwt: string) => {
 	const res = await axios.get("/authentication/is-signed-in", {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,

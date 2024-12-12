@@ -6,7 +6,7 @@ import { AxiosError } from "axios";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/button/Button";
 import { motion } from "framer-motion";
-import { getMyInfo, updateProfile } from "@/utils/api/members";
+import { getMyInfo, MembersQK, updateProfile } from "@/utils/api/members";
 import { EditProps } from "../../../../components/edit-panel/EditPanel";
 import { MyInfo } from "./Content";
 import { UnsavedDialog } from "@/components/edit-panel/UnsavedDialog";
@@ -20,7 +20,7 @@ export const EditContentProfile = (props: {
 
 	const panelRef = useRef<HTMLDivElement>(null);
 
-	const { jwt } = useAuthStore();
+	const jwt = useAuthStore((state) => state.jwt);
 	const [newData, setNewData] = useState<MyInfo>({
 		id: "",
 		email: "",
@@ -42,7 +42,7 @@ export const EditContentProfile = (props: {
 	const [showUnsaved, setShowUnsaved] = useState(false);
 
 	const myInfoQuery = useQuery<MyInfo, AxiosError>({
-		queryKey: ["my-info", jwt],
+		queryKey: [MembersQK.GET_MY_INFO, jwt],
 		queryFn: async () => {
 			const isSignedIn = await getMyInfo(jwt);
 			return isSignedIn;
@@ -63,7 +63,7 @@ export const EditContentProfile = (props: {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: ["my-info", jwt],
+				queryKey: [MembersQK.GET_MY_INFO, jwt],
 			});
 			_setIsChanged(false);
 			setEdit({ show: false, id: editId });

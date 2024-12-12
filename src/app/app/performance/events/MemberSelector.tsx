@@ -2,7 +2,7 @@ import { sortByMemberName } from "@/app/settings/general/roles/edit-content-edit
 import { Member } from "@/utils/types/internal";
 import { SearchOutlineIcon } from "@/components/icons/Icons";
 import { useAuthStore } from "@/stores/auth";
-import { getMembers } from "@/utils/api/members";
+import { getMembers, MembersQK } from "@/utils/api/members";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import {
@@ -63,7 +63,7 @@ export const MemberSelector = (props: MemberSelectorProps) => {
 	const jwt = useAuthStore((state) => state.jwt);
 
 	const membersQuery = useQuery<Member[], AxiosError>({
-		queryKey: ["get-members", jwt],
+		queryKey: [MembersQK.GET_MEMBERS, jwt],
 		queryFn: async () => {
 			const members = await getMembers(jwt);
 			return members;

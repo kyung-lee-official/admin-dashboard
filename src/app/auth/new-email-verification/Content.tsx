@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/button/Button";
-import { verifyNewEmail } from "@/utils/api/email";
+import { EmailQK, verifyNewEmail } from "@/utils/api/email";
 
 type VerificationState =
 	| "verifying"
@@ -93,7 +93,7 @@ export const Content = () => {
 		useState<VerificationState>("verifying");
 
 	const isNewEmailVerifiedQuery = useQuery<any, AxiosError>({
-		queryKey: ["is-new-email-verified", verificationToken],
+		queryKey: [EmailQK.IS_NEW_EMAIL_VERIFIED, verificationToken],
 		queryFn: async () => {
 			const data = await verifyNewEmail({
 				verificationToken: verificationToken as string,

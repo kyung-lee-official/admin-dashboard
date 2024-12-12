@@ -1,11 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { EditPanel, EditProps } from "../../../../components/edit-panel/EditPanel";
+import {
+	EditPanel,
+	EditProps,
+} from "../../../../components/edit-panel/EditPanel";
 import { createPortal } from "react-dom";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { getPermissions, getRoles } from "@/utils/api/roles";
+import { getPermissions, getRolesByIds, RolesQK } from "@/utils/api/roles";
 import { useAuthStore } from "@/stores/auth";
 import { TitleMoreMenu } from "@/app/settings/general/roles/moreMenu/TitleMoreMenu";
 import { ItemMoreMenu } from "./moreMenu/ItemMoreMenu";
@@ -18,7 +21,7 @@ export const Content = () => {
 	const [edit, setEdit] = useState<EditProps>({ show: false, id: "" });
 
 	const rolePermQuery = useQuery({
-		queryKey: ["role-permissions"],
+		queryKey: [RolesQK.GET_MY_ROLE_PERMISSIONS],
 		queryFn: async () => {
 			const data = await getPermissions(jwt);
 			return data;
@@ -26,9 +29,9 @@ export const Content = () => {
 	});
 
 	const rolesQuery = useQuery<any, AxiosError>({
-		queryKey: ["get-roles", jwt],
+		queryKey: [RolesQK.GET_ROLES_BY_IDS, jwt],
 		queryFn: async () => {
-			const roles = await getRoles(jwt, []);
+			const roles = await getRolesByIds(jwt, []);
 			return roles;
 		},
 		enabled: rolePermQuery.isSuccess,

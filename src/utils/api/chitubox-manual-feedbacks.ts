@@ -2,6 +2,10 @@ import dayjs from "dayjs";
 import axios, { AxiosError } from "axios";
 import qs from "qs";
 
+export enum ChituboxDocsAnalysisQK {
+	GET_DOCS_FEEDBACKS = "get-docs-feedbacks",
+}
+
 export const getChituboxManualFeedbacks = async (
 	start: dayjs.Dayjs,
 	end: dayjs.Dayjs,

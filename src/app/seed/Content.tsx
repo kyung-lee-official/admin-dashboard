@@ -12,7 +12,7 @@ import { googleConsentScreen } from "@/utils/api/authentication";
 import { Button } from "@/components/button/Button";
 import { GoogleIcon } from "@/components/icons/Icons";
 import { Input } from "@/components/input/Input";
-import { seed } from "@/utils/api/server-settings";
+import { seed, ServerSettingQK } from "@/utils/api/server-settings";
 
 interface IFormInput {
 	email: string;
@@ -97,7 +97,7 @@ const Seed = () => {
 						size="sm"
 						onClick={() => {
 							queryClient.invalidateQueries({
-								queryKey: ["is-seeded"],
+								queryKey: [ServerSettingQK.IS_SEEDED],
 							});
 						}}
 					>

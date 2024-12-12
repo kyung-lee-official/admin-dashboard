@@ -1,5 +1,5 @@
 import { useAuthStore } from "@/stores/auth";
-import { getStats } from "@/utils/api/app/performance";
+import { getStats, PerformanceQK } from "@/utils/api/app/performance";
 import { PerformanceStatResponse } from "@/utils/types/app/performance";
 import { Member } from "@/utils/types/internal";
 import { useQuery } from "@tanstack/react-query";
@@ -13,7 +13,7 @@ export const StatList = (props: { member?: Member; year: dayjs.Dayjs }) => {
 	const jwt = useAuthStore((state) => state.jwt);
 
 	const statsQuery = useQuery<PerformanceStatResponse[], AxiosError>({
-		queryKey: ["get-performance-stats", member, jwt],
+		queryKey: [PerformanceQK.GET_PERFORMANCE_STATS, member, jwt],
 		queryFn: async () => {
 			const stats = await getStats(member?.id as string, jwt);
 			return stats;

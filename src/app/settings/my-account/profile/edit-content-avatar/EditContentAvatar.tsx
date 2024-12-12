@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import COS from "cos-js-sdk-v5";
 import { queryClient } from "@/utils/react-query/react-query";
 import { useMutation } from "@tanstack/react-query";
-import { uploadMyAvatar } from "@/utils/api/members";
+import { MembersQK, uploadMyAvatar } from "@/utils/api/members";
 import { EditProps } from "@/components/edit-panel/EditPanel";
 import { useAuthStore } from "@/stores/auth";
 import { Button } from "@/components/button/Button";
@@ -117,7 +117,7 @@ export const EditContentAvatar = (props: {
 				// panelRef.current.close();
 				setEdit({ show: false, id: editId });
 				queryClient.invalidateQueries({
-					queryKey: ["my-avatar", jwt],
+					queryKey: [MembersQK.GET_AVATAR_BY_ID, jwt],
 				});
 			}
 			/* Tencent COS response */
@@ -125,7 +125,7 @@ export const EditContentAvatar = (props: {
 			// 		panelRef.current.close();
 			// 		queryClient.invalidateQueries({
 			// 			queryKey: [
-			// 				"my-avatar",
+			// 				MembersQK.GET_AVATAR_BY_ID,
 			// 				jwt,
 			// 			],
 			// 		});

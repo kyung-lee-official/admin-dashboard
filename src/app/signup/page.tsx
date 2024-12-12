@@ -9,7 +9,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { signUp } from "@/utils/api/authentication";
-import { getIsSignUpAvailable } from "@/utils/api/server-settings";
+import {
+	getIsSignUpAvailable,
+	ServerSettingQK,
+} from "@/utils/api/server-settings";
 import { Button } from "@/components/button/Button";
 
 interface IFormInput {
@@ -292,7 +295,7 @@ const SignUpNotAvailable = () => {
 
 const Index = () => {
 	const isSignUpAvailableQuery = useQuery<any, AxiosError>({
-		queryKey: ["isSignUpAvailable"],
+		queryKey: [ServerSettingQK.GET_IS_SIGN_UP_AVAILABLE],
 		queryFn: getIsSignUpAvailable,
 		retry: false,
 		refetchOnWindowFocus: false,

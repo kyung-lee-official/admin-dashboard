@@ -6,7 +6,7 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/button/Button";
 import { motion } from "framer-motion";
 import { EditProps } from "../../../../../components/edit-panel/EditPanel";
-import { getRoleById, updateRoleById } from "@/utils/api/roles";
+import { getRoleById, RolesQK, updateRoleById } from "@/utils/api/roles";
 import { AxiosError } from "axios";
 import { EditMembers } from "./EditMembers";
 import { sortByMemberName } from "./data";
@@ -30,7 +30,7 @@ export const EditContentEditRole = (props: {
 	const listenerRef = useRef<HTMLDivElement>(null);
 	const panelRef = useRef<HTMLDivElement>(null);
 
-	const { jwt } = useAuthStore();
+	const jwt = useAuthStore((state) => state.jwt);
 	const [oldData, setOldData] = useState<EditRoleData>({
 		id: "",
 		name: "",
@@ -43,7 +43,7 @@ export const EditContentEditRole = (props: {
 	});
 
 	const roleQuery = useQuery<EditRoleData, AxiosError>({
-		queryKey: ["get-role-by-id", jwt],
+		queryKey: [RolesQK.GET_ROLE_BY_ID, jwt],
 		queryFn: async () => {
 			const role = await getRoleById(jwt, roleId);
 			return role;
@@ -83,7 +83,7 @@ export const EditContentEditRole = (props: {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: ["get-roles", jwt],
+				queryKey: [RolesQK.GET_ROLES_BY_IDS, jwt],
 			});
 			setIsChanged(false);
 			setEdit({ show: false, id: editId });

@@ -6,7 +6,7 @@ import { AxiosError } from "axios";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/button/Button";
 import { motion } from "framer-motion";
-import { getMyInfo } from "@/utils/api/members";
+import { getMyInfo, MembersQK } from "@/utils/api/members";
 import { changeEmail, sendVerificationEmail } from "@/utils/api/email";
 import { EditProps } from "../../../../components/edit-panel/EditPanel";
 import { MyInfo } from "./Content";
@@ -44,7 +44,7 @@ export const EditContentEmail = (props: {
 	const [showUnsaved, setShowUnsaved] = useState(false);
 
 	const myInfoQuery = useQuery<MyInfo, AxiosError>({
-		queryKey: ["my-info", jwt],
+		queryKey: [MembersQK.GET_MY_INFO, jwt],
 		queryFn: async () => {
 			const isSignedIn = await getMyInfo(jwt);
 			return isSignedIn;
@@ -66,7 +66,7 @@ export const EditContentEmail = (props: {
 		onSuccess: (data) => {
 			setJwt(data.jwt);
 			queryClient.invalidateQueries({
-				queryKey: ["my-info", data.jwt],
+				queryKey: [MembersQK.GET_MY_INFO, data.jwt],
 			});
 			_setIsChanged(false);
 			setEdit({ show: false, id: editId });

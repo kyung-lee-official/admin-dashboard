@@ -3,7 +3,7 @@ import { EditProps } from "@/components/edit-panel/EditPanel";
 import { UnsavedDialog } from "@/components/edit-panel/UnsavedDialog";
 import { CloseIcon } from "@/components/icons/Icons";
 import { useAuthStore } from "@/stores/auth";
-import { createStat } from "@/utils/api/app/performance";
+import { createStat, PerformanceQK } from "@/utils/api/app/performance";
 import { queryClient } from "@/utils/react-query/react-query";
 import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
@@ -20,7 +20,10 @@ import { MemberSelector } from "./MemberSelector";
 import { MonthPicker } from "@/components/date/date-picker/month-picker/MonthPicker";
 import { Member } from "@/utils/types/internal";
 import { Sections } from "./Sections";
-import { PerformanceStatData, Section } from "@/utils/types/app/performance";
+import {
+	CreatePerformanceStatData,
+	CreateSectionData,
+} from "@/utils/types/app/performance";
 
 export const EditContentAddStat = (props: {
 	edit: EditProps;
@@ -32,11 +35,11 @@ export const EditContentAddStat = (props: {
 	const listenerRef = useRef<HTMLDivElement>(null);
 	const panelRef = useRef<HTMLDivElement>(null);
 
-	const { jwt } = useAuthStore();
+	const jwt = useAuthStore((state) => state.jwt);
 
 	const curr = dayjs();
 
-	const oldData: PerformanceStatData = useMemo(
+	const oldData: CreatePerformanceStatData = useMemo(
 		() => ({
 			ownerId: "",
 			month: curr.toDate(),
@@ -51,7 +54,7 @@ export const EditContentAddStat = (props: {
 		[]
 	);
 
-	const [newData, setNewData] = useState<PerformanceStatData>(oldData);
+	const [newData, setNewData] = useState<CreatePerformanceStatData>(oldData);
 
 	const [isChanged, setIsChanged] = useState(false);
 	const isChangedRef = useRef(isChanged);
@@ -67,7 +70,7 @@ export const EditContentAddStat = (props: {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: ["get-stats", jwt],
+				queryKey: [PerformanceQK.GET_PERFORMANCE_STATS, jwt],
 			});
 			setIsChanged(false);
 			setEdit({ show: false, id: editId });
@@ -115,7 +118,9 @@ export const EditContentAddStat = (props: {
 
 	const [member, setMember] = useState<Member>();
 	const [month, setMonth] = useState<dayjs.Dayjs>(curr);
-	const [sections, setSections] = useState<Section[]>(newData.statSections);
+	const [sections, setSections] = useState<CreateSectionData[]>(
+		newData.statSections
+	);
 	useEffect(() => {
 		setNewData({
 			ownerId: member?.id ?? "",

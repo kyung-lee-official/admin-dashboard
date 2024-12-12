@@ -6,7 +6,7 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/button/Button";
 import { motion } from "framer-motion";
 import { EditProps } from "../../../../components/edit-panel/EditPanel";
-import { createRole } from "@/utils/api/roles";
+import { createRole, RolesQK } from "@/utils/api/roles";
 import { UnsavedDialog } from "@/components/edit-panel/UnsavedDialog";
 
 export const EditContentAddRole = (props: {
@@ -19,7 +19,7 @@ export const EditContentAddRole = (props: {
 	const listenerRef = useRef<HTMLDivElement>(null);
 	const panelRef = useRef<HTMLDivElement>(null);
 
-	const { jwt } = useAuthStore();
+	const jwt = useAuthStore((state) => state.jwt);
 	const oldData = {
 		id: "",
 		name: "",
@@ -40,7 +40,7 @@ export const EditContentAddRole = (props: {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: ["get-roles", jwt],
+				queryKey: [RolesQK.GET_ROLES_BY_IDS, jwt],
 			});
 			setIsChanged(false);
 			setEdit({ show: false, id: editId });

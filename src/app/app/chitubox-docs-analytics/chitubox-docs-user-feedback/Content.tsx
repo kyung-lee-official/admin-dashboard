@@ -7,14 +7,17 @@ import { Geo } from "@/components/geo/Geo";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { usePathname } from "next/navigation";
-import { getChituboxManualFeedbacks } from "@/utils/api/chitubox-manual-feedbacks";
+import {
+	ChituboxDocsAnalysisQK,
+	getChituboxManualFeedbacks,
+} from "@/utils/api/chitubox-manual-feedbacks";
 import { Button } from "@/components/button/Button";
 import { DateRangePicker } from "@/components/date/date-range-picker/DateRangePicker";
 
 export const Content = () => {
 	const pathname = usePathname();
 
-	const { jwt } = useAuthStore();
+	const jwt = useAuthStore((state) => state.jwt);
 	const [isEndBeforeStart, setIsEndBeforeStart] = useState<boolean>(false);
 
 	const [range, setRange] = useState({
@@ -23,7 +26,7 @@ export const Content = () => {
 	});
 
 	const feedbacksQuery = useQuery<any, AxiosError>({
-		queryKey: ["feedbacksQuery", jwt],
+		queryKey: [ChituboxDocsAnalysisQK.GET_DOCS_FEEDBACKS, jwt],
 		queryFn: async () => {
 			const feedbacks = await getChituboxManualFeedbacks(
 				range.start,

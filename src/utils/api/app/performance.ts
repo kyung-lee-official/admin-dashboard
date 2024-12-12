@@ -1,5 +1,10 @@
 import axios from "axios";
 
+export enum PerformanceQK {
+	GET_PERFORMANCE_STATS = "get-performance-stats",
+	GET_PERFORMANCE_STAT_BY_ID = "get-performance-stat-by-id",
+}
+
 export const createStat = async (newData: any, jwt: string) => {
 	const res = await axios.post("/performance/stats", newData, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,

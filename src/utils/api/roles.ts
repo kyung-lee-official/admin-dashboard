@@ -1,6 +1,12 @@
 import axios from "axios";
 import qs from "qs";
 
+export enum RolesQK {
+	GET_MY_ROLE_PERMISSIONS = "get-my-role-permissions",
+	GET_ROLE_BY_ID = "get-role-by-id",
+	GET_ROLES_BY_IDS = "get-roles-by-ids",
+}
+
 export const getPermissions = async (jwt: string): Promise<any> => {
 	const query = qs.stringify({}, { encodeValuesOnly: true });
 	const res = await axios.get("/internal/roles/permissions", {
@@ -39,7 +45,10 @@ export const getRoleById = async (jwt: string, id: string): Promise<any> => {
 	return res.data;
 };
 
-export const getRoles = async (jwt: string, ids: string[]): Promise<any> => {
+export const getRolesByIds = async (
+	jwt: string,
+	ids: string[]
+): Promise<any> => {
 	const res = await axios.post(
 		"/internal/roles/find-roles-by-ids",
 		{ roleIds: ids },

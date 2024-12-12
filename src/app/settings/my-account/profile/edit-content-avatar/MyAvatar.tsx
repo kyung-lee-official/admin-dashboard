@@ -1,5 +1,9 @@
 import { useAuthStore } from "@/stores/auth";
-import { downloadAvatar, getMyInfo } from "@/utils/api/members";
+import {
+	downloadAvatar,
+	getMyInfo,
+	MembersQK,
+} from "@/utils/api/members";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
@@ -10,7 +14,7 @@ export const MyAvatar = () => {
 	// );
 
 	const myInfoQuery = useQuery<any, AxiosError>({
-		queryKey: ["my-info", jwt],
+		queryKey: [MembersQK.GET_MY_INFO, jwt],
 		queryFn: async () => {
 			const isSignedIn = await getMyInfo(jwt);
 			return isSignedIn;
@@ -20,7 +24,7 @@ export const MyAvatar = () => {
 	});
 
 	const myAvatarQuery = useQuery<any, AxiosError>({
-		queryKey: ["my-avatar", jwt],
+		queryKey: [MembersQK.GET_AVATAR_BY_ID, jwt],
 		queryFn: async () => {
 			const avatar = await downloadAvatar(myInfoQuery.data.id, jwt);
 			return avatar;

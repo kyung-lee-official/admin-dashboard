@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { getMembers } from "@/utils/api/members";
+import { getMembers, MembersQK } from "@/utils/api/members";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useAuthStore } from "@/stores/auth";
@@ -47,7 +47,7 @@ export const EditMembers = (props: {
 	const jwt = useAuthStore((state) => state.jwt);
 
 	const membersQuery = useQuery<Member[], AxiosError>({
-		queryKey: ["get-members", jwt],
+		queryKey: [MembersQK.GET_MEMBERS, jwt],
 		queryFn: async () => {
 			const members = await getMembers(jwt);
 			return members;

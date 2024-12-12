@@ -1,5 +1,11 @@
 import axios, { AxiosError } from "axios";
 
+export enum MembersQK {
+	GET_MY_INFO = "get-my-info",
+	GET_AVATAR_BY_ID = "get-avatar-by-id",
+	GET_MEMBERS = "get-members",
+}
+
 export const getMyInfo = async (jwt: string) => {
 	const res = await axios.get("/internal/members/me", {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,

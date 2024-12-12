@@ -1,5 +1,9 @@
 import axios from "axios";
 
+export enum EmailQK {
+	IS_NEW_EMAIL_VERIFIED = "is-new-email-verified",
+}
+
 export const sendVerificationEmail = async (jwt: string) => {
 	const res = await axios.post("/email/send-verification-email", null, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,

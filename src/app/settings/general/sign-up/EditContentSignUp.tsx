@@ -3,6 +3,7 @@ import { Toggle } from "@/components/toggle/Toggle";
 import { useAuthStore } from "@/stores/auth";
 import {
 	getServerSettings,
+	ServerSettingQK,
 	updateServerSettings,
 } from "@/utils/api/server-settings";
 import { queryClient } from "@/utils/react-query/react-query";
@@ -24,7 +25,7 @@ export const EditContentSignUp = (props: {
 	const listenerRef = useRef<HTMLDivElement>(null);
 	const panelRef = useRef<HTMLDivElement>(null);
 
-	const { jwt } = useAuthStore();
+	const jwt = useAuthStore((state) => state.jwt);
 	const [newData, setNewData] = useState<any>(null);
 
 	const [isChanged, setIsChanged] = useState(false);
@@ -36,7 +37,7 @@ export const EditContentSignUp = (props: {
 	const [showUnsaved, setShowUnsaved] = useState(false);
 
 	const getServerSettingsQuery = useQuery<any, AxiosError>({
-		queryKey: ["get-server-settings", jwt],
+		queryKey: [ServerSettingQK.GET_SERVER_SETTINGS, jwt],
 		queryFn: async () => {
 			const serverSettings = await getServerSettings(jwt);
 			return serverSettings;
@@ -57,7 +58,7 @@ export const EditContentSignUp = (props: {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: ["get-server-settings", jwt],
+				queryKey: [ServerSettingQK.GET_SERVER_SETTINGS, jwt],
 			});
 			setIsChanged(false);
 			setEdit({ show: false, id: editId });

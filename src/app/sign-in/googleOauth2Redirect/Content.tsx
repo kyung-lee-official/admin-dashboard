@@ -8,7 +8,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import lottieFiles from "@/components/lottie-animations/animation_congratulations.json";
-import { getIsSignedIn } from "@/utils/api/authentication";
+import { AuthenticationQK, getIsSignedIn } from "@/utils/api/authentication";
 
 const PanelContainer = ({ children }: { children: React.ReactNode }) => {
 	return (
@@ -34,7 +34,7 @@ const Content = () => {
 	const setJwt = useAuthStore((state) => state.setJwt);
 
 	const isValidToken = useQuery<any, AxiosError>({
-		queryKey: ["isValidToken", jwt],
+		queryKey: [AuthenticationQK.GET_IS_SIGNED_IN, jwt],
 		queryFn: async () => {
 			const isSignedIn = await getIsSignedIn("Bearer " + jwt);
 			return isSignedIn;

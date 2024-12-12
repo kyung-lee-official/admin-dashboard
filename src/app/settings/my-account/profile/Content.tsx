@@ -2,12 +2,15 @@
 
 import { CopyIcon, EditIcon } from "@/components/icons/Icons";
 import { useAuthStore } from "@/stores/auth";
-import { getMyInfo } from "@/utils/api/members";
+import { getMyInfo, MembersQK } from "@/utils/api/members";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import { EditPanel, EditProps } from "../../../../components/edit-panel/EditPanel";
+import {
+	EditPanel,
+	EditProps,
+} from "../../../../components/edit-panel/EditPanel";
 import { OneRowSkeleton } from "@/components/skeleton/OneRowSkeleton";
 import { MyAvatar } from "./edit-content-avatar/MyAvatar";
 
@@ -34,7 +37,7 @@ export const Content = () => {
 	const jwt = useAuthStore((state) => state.jwt);
 
 	const myInfoQuery = useQuery<MyInfo, AxiosError>({
-		queryKey: ["my-info", jwt],
+		queryKey: [MembersQK.GET_MY_INFO, jwt],
 		queryFn: async () => {
 			const isSignedIn = await getMyInfo(jwt);
 			return isSignedIn;
