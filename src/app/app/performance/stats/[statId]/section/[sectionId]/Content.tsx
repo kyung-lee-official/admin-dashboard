@@ -2,7 +2,7 @@
 
 import { Loading } from "@/components/page-authorization/Loading";
 import { useAuthStore } from "@/stores/auth";
-import { getStatById } from "@/utils/api/app/performance";
+import { getStatById, PerformanceQK } from "@/utils/api/app/performance";
 import {
 	EventResponse,
 	PerformanceStatResponse,
@@ -18,7 +18,11 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 	const jwt = useAuthStore((state) => state.jwt);
 
 	const statsQuery = useQuery<PerformanceStatResponse, AxiosError>({
-		queryKey: ["get-performance-stat-by-id", parseInt(statId), jwt],
+		queryKey: [
+			PerformanceQK.GET_PERFORMANCE_STAT_BY_ID,
+			parseInt(statId),
+			jwt,
+		],
 		queryFn: async () => {
 			const stats = await getStatById(parseInt(statId), jwt);
 			return stats;
@@ -66,7 +70,6 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 					<div className="flex justify-between w-full">
 						<div>{section.title}</div>
 						<div>Weight {section.weight}</div>
-						<div>Edit</div>
 					</div>
 					<div className="w-full">{section.description}</div>
 				</div>
@@ -102,18 +105,11 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 									<td className="w-1/2">{ev.description}</td>
 									<td className="w-1/2">{ev.score}</td>
 									<td>
-										<Link href={`${section.id}/event/${ev.id}`}>
+										<Link
+											href={`${section.id}/event/${ev.id}`}
+										>
 											Edit
 										</Link>
-										{/* <ItemMoreMenu
-												edit={{
-													...edit,
-													auxData: {
-														roleId: role.id,
-													},
-												}}
-												setEdit={setEdit}
-											/> */}
 									</td>
 								</tr>
 							);

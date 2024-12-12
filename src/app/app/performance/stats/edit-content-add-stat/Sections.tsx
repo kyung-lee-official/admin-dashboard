@@ -1,10 +1,10 @@
 import { Dispatch, SetStateAction } from "react";
 import { Button } from "@/components/button/Button";
-import { Section } from "@/utils/types/app/performance";
+import { CreateSectionData } from "@/utils/types/app/performance";
 
 type SectionProps = {
-	sections: Section[];
-	setSections: Dispatch<SetStateAction<Section[]>>;
+	sections: CreateSectionData[];
+	setSections: Dispatch<SetStateAction<CreateSectionData[]>>;
 };
 
 export const Sections = (props: SectionProps) => {

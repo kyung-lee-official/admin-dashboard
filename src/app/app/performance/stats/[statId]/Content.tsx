@@ -2,7 +2,7 @@
 
 import { Loading } from "@/components/page-authorization/Loading";
 import { useAuthStore } from "@/stores/auth";
-import { getStatById } from "@/utils/api/app/performance";
+import { getStatById, PerformanceQK } from "@/utils/api/app/performance";
 import { PerformanceStatResponse } from "@/utils/types/app/performance";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
@@ -17,7 +17,11 @@ export const Content = (props: { statId: string }) => {
 	const router = useRouter();
 
 	const statsQuery = useQuery<PerformanceStatResponse, AxiosError>({
-		queryKey: ["get-performance-stat-by-id", parseInt(statId), jwt],
+		queryKey: [
+			PerformanceQK.GET_PERFORMANCE_STAT_BY_ID,
+			parseInt(statId),
+			jwt,
+		],
 		queryFn: async () => {
 			const stats = await getStatById(parseInt(statId), jwt);
 			return stats;

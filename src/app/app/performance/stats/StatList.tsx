@@ -13,7 +13,7 @@ export const StatList = (props: { member?: Member; year: dayjs.Dayjs }) => {
 	const jwt = useAuthStore((state) => state.jwt);
 
 	const statsQuery = useQuery<PerformanceStatResponse[], AxiosError>({
-		queryKey: [PerformanceQK.GET_PERFORMANCE_STATS, member, jwt],
+		queryKey: [PerformanceQK.GET_PERFORMANCE_STATS],
 		queryFn: async () => {
 			const stats = await getStats(member?.id as string, jwt);
 			return stats;
@@ -28,7 +28,8 @@ export const StatList = (props: { member?: Member; year: dayjs.Dayjs }) => {
 			className="flex flex-col
 			text-white/50"
 		>
-			{statsQuery.isSuccess &&
+			{member &&
+				statsQuery.isSuccess &&
 				statsQuery.data
 					.sort((a, b) => {
 						return dayjs(a.month).isBefore(dayjs(b.month)) ? 1 : -1;
