@@ -8,8 +8,9 @@ import { EditContentAvatar } from "../../app/settings/my-account/profile/edit-co
 import { EditContentAddRole } from "../../app/settings/general/roles/EditContentAddRole";
 import { EditContentEditRole } from "../../app/settings/general/roles/edit-content-edit-role/EditContentEditRole";
 import { EditContentAddStat } from "@/app/app/performance/stats/edit-content-add-stat/EditContentAddStat";
+import { EditContentEditStat } from "@/app/app/performance/stats/[statId]/edit-content-edit-stat/EditContentEditStat";
 
-type EditId =
+export type EditId =
 	/* settings */
 	| ""
 	| "sign-up"
@@ -20,7 +21,8 @@ type EditId =
 	| "email"
 	| "change-password"
 	/* app/performance */
-	| "add-stat";
+	| "add-stat"
+	| "edit-stat";
 
 export type EditProps = {
 	show: boolean;
@@ -64,6 +66,8 @@ const EditContent = (props: {
 			return <EditContentPassword edit={edit} setEdit={setEdit} />;
 		case "add-stat":
 			return <EditContentAddStat edit={edit} setEdit={setEdit} />;
+		case "edit-stat":
+			return <EditContentEditStat edit={edit} setEdit={setEdit} />;
 		default:
 			return null;
 	}

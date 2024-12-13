@@ -1,4 +1,3 @@
-import { CloseIcon } from "@/components/icons/Icons";
 import { Toggle } from "@/components/toggle/Toggle";
 import { useAuthStore } from "@/stores/auth";
 import {
@@ -10,10 +9,9 @@ import { queryClient } from "@/utils/react-query/react-query";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
-import { Button } from "@/components/button/Button";
-import { motion } from "framer-motion";
-import { EditProps } from "../../../../components/edit-panel/EditPanel";
+import { EditProps } from "@/components/edit-panel/EditPanel";
 import { UnsavedDialog } from "@/components/edit-panel/UnsavedDialog";
+import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
 
 export const EditContentSignUp = (props: {
 	edit: EditProps;
@@ -109,108 +107,61 @@ export const EditContentSignUp = (props: {
 	}, [isChanged]);
 
 	return (
-		<div
-			ref={listenerRef}
-			className="w-full h-svh
-			flex justify-end items-center"
+		<EditContentRegular
+			title="Sign Up"
+			editId={editId}
+			edit={edit}
+			setEdit={setEdit}
+			onSave={onSave}
+			newData={newData}
+			oldData={getServerSettingsQuery.data}
 		>
-			<motion.div
-				ref={panelRef}
-				initial={{ x: "100%" }}
-				animate={{ x: "0%" }}
-				transition={{ duration: 0.1 }}
-				className="flex flex-col h-[calc(100svh-16px)] w-full max-w-[560px] m-2
-				text-white/90
-				bg-neutral-900
-				rounded-lg border-[1px] border-neutral-700 border-t-neutral-600"
-			>
-				<div
-					className="flex-[0_0_61px] flex justify-between px-6 py-4
-					font-semibold text-lg
-					border-b-[1px] border-white/10"
-				>
-					<div>Sign Up</div>
-					<button
-						className="flex justify-center items-center w-7 h-7
-						text-white/50
-						hover:bg-white/10 rounded-md"
-						onClick={() => {
-							quit();
-						}}
-					>
-						<CloseIcon size={15} />
-					</button>
+			<form className="flex-[1_0_100px] flex flex-col">
+				<div className="flex-[1_0_100px] flex flex-col px-6 py-4">
+					<table className="text-sm">
+						<tbody className="[&_>_tr_>_td]:py-4">
+							<tr>
+								<td className="w-full">Allow public sign up</td>
+								<td>
+									<Toggle
+										isOn={newData?.allowPublicSignUp}
+										isAllowed={true}
+										onClick={() => {
+											setNewData({
+												...newData,
+												allowPublicSignUp:
+													!newData.allowPublicSignUp,
+											});
+										}}
+									/>
+								</td>
+							</tr>
+							<tr>
+								<td>Allow Google sign up</td>
+								<td>
+									<Toggle
+										isOn={newData?.allowGoogleSignIn}
+										isAllowed={true}
+										onClick={() => {
+											setNewData({
+												...newData,
+												allowGoogleSignIn:
+													!newData.allowGoogleSignIn,
+											});
+										}}
+									/>
+								</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
-				<form
-					action={onSave}
-					className="flex-[1_0_100px] flex flex-col"
-				>
-					<div
-						className="flex-[1_0_100px] flex flex-col px-6 py-4
-						border-b-[1px] border-white/10"
-					>
-						<table className="text-sm">
-							<tbody className="[&_>_tr_>_td]:py-4">
-								<tr>
-									<td className="w-full">
-										Allow public sign up
-									</td>
-									<td>
-										<Toggle
-											isOn={newData?.allowPublicSignUp}
-											isAllowed={true}
-											onClick={() => {
-												setNewData({
-													...newData,
-													allowPublicSignUp:
-														!newData.allowPublicSignUp,
-												});
-											}}
-										/>
-									</td>
-								</tr>
-								<tr>
-									<td>Allow Google sign up</td>
-									<td>
-										<Toggle
-											isOn={newData?.allowGoogleSignIn}
-											isAllowed={true}
-											onClick={() => {
-												setNewData({
-													...newData,
-													allowGoogleSignIn:
-														!newData.allowGoogleSignIn,
-												});
-											}}
-										/>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-					<div className="flex-[0_0_61px] flex justify-end px-6 py-4 gap-1.5">
-						<Button
-							color="cancel"
-							size="sm"
-							onClick={(e) => {
-								e.preventDefault();
-								quit();
-							}}
-						>
-							Cancel
-						</Button>
-						<Button type="submit" size="sm">
-							Save
-						</Button>
-					</div>
-				</form>
-				<UnsavedDialog
-					edit={edit}
-					setEdit={setEdit}
-					showUnsaved={showUnsaved}
-					setShowUnsaved={setShowUnsaved}
-				/>
-			</motion.div>
-		</div>
+			</form>
+			<UnsavedDialog
+				edit={edit}
+				setEdit={setEdit}
+				showUnsaved={showUnsaved}
+				setShowUnsaved={setShowUnsaved}
+			/>
+		</EditContentRegular>
 	);
 };

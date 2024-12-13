@@ -38,7 +38,7 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 	if (!statsQuery.data) {
 		return null;
 	}
-	const { month, statSections } = statsQuery.data!;
+	const { month, owner, statSections } = statsQuery.data!;
 
 	const section = statSections.find((s) => s.id === parseInt(sectionId));
 	if (!section) {
@@ -53,26 +53,63 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 				border-[1px] border-white/10 border-t-white/15
 				rounded-md"
 			>
-				<div className="relative flex justify-between items-center px-6 py-4">
-					<div className="flex flex-col">
-						<div className="text-lg font-semibold">Stat</div>
-						<div className="text-sm text-white/50">
-							{dayjs(month).format("MMMM YYYY")}
-						</div>
-					</div>
+				<div className="flex justify-between items-center w-full px-6 py-4">
+					<div className="text-lg font-semibold">Stat</div>
 					{/* <TitleMoreMenu /> */}
 				</div>
-				<div
-					className="flex flex-col items-center px-6 py-4 gap-3
-					text-sm text-white/50
-					rounded-md border-t-[1px] border-white/10"
+				<table
+					className="w-full
+					text-sm text-white/50"
 				>
-					<div className="flex justify-between w-full">
-						<div>{section.title}</div>
-						<div>Weight {section.weight}</div>
-					</div>
-					<div className="w-full">{section.description}</div>
+					<tbody
+						className="[&_>_tr_>_td]:px-6 [&_>_tr_>_td]:py-3
+						[&_>_tr_>_td]:border-t-[1px] [&_>_tr_>_td]:border-white/10"
+					>
+						<tr>
+							<td>Month</td>
+							<td>{dayjs(month).format("MMMM YYYY")}</td>
+						</tr>
+						<tr>
+							<td>Owner</td>
+							<td>
+								{owner.name} ({owner.email})
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div
+				className="text-white/50
+				bg-white/5
+				border-[1px] border-white/10 border-t-white/15
+				rounded-md"
+			>
+				<div className="flex justify-between items-center w-full px-6 py-4">
+					<div className="text-lg font-semibold">Section</div>
+					{/* <TitleMoreMenu /> */}
 				</div>
+				<table
+					className="w-full
+					text-sm text-white/50"
+				>
+					<tbody
+						className="[&_>_tr_>_td]:px-6 [&_>_tr_>_td]:py-3
+						[&_>_tr_>_td]:border-t-[1px] [&_>_tr_>_td]:border-white/10"
+					>
+						<tr>
+							<td>Section Title</td>
+							<td>{section.title}</td>
+						</tr>
+						<tr>
+							<td>Section Weight</td>
+							<td>{section.weight}</td>
+						</tr>
+						<tr>
+							<td>Section Description</td>
+							<td>{section.description}</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 			<div
 				className="text-white/50
