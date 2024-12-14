@@ -188,7 +188,7 @@ export const menuItems: HierarchicalMenuItem[] = [
 									);
 								},
 								pageUrlReg:
-									/^\/app\/performance\/stats\/[0-9]\/section\/[0-9]*$/,
+									/^\/app\/performance\/stats\/[0-9]*\/section\/[0-9]*$/,
 								subMenu: [
 									{
 										menuKey: MenuKey.PERFORMANCE_EVENT,
