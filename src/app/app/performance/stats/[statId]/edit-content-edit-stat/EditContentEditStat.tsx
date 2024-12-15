@@ -23,6 +23,7 @@ export const EditContentEditStat = (props: {
 	setEdit: Dispatch<SetStateAction<EditProps>>;
 }) => {
 	const editId = "edit-stat";
+	const title = "Edit Stat";
 	const { edit, setEdit } = props;
 	const { statId } = edit.auxData;
 
@@ -83,7 +84,7 @@ export const EditContentEditStat = (props: {
 
 	return (
 		<EditContentRegular
-			title={"Edit Stat"}
+			title={title}
 			editId={editId}
 			edit={edit}
 			setEdit={setEdit}

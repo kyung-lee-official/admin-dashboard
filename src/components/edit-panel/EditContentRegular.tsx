@@ -18,7 +18,7 @@ export const EditContentRegular = (props: {
 	editId: EditId;
 	edit: EditProps;
 	setEdit: Dispatch<SetStateAction<EditProps>>;
-	onSave: () => any;
+	onSave: Function;
 	newData: any;
 	oldData: any;
 }) => {
