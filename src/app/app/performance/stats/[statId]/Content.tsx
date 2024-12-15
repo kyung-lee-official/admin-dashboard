@@ -99,7 +99,7 @@ export const Content = (props: { statId: string }) => {
 							[&_>_tr_>_th]:border-t-[1px] [&_>_tr_>_th]:border-white/10"
 						>
 							<tr>
-								<th className="w-2/12">Section Title</th>
+								<th className="w-2/12">Title</th>
 								<th className="w-2/12">Weight</th>
 								<th className="w-8/12">Description</th>
 							</tr>
