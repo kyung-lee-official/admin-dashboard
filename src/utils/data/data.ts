@@ -9,9 +9,9 @@ export function uniq(array: any[]) {
 
 /**
  * sort by property
- * @param object the object to sort
- * @param prop the property to sort by
+ * @param arr the arr to sort
+ * @param k the property key to sort by
  */
-export function sortByProp(object: any, prop: string) {
-	return object.sort((a: any, b: any) => a[prop].localeCompare(b[prop]));
+export function sortByProp<T>(arr: T[], k: keyof T) {
+	return arr.sort((a: T, b: T) => String(a[k]).localeCompare(String(b[k])));
 }
