@@ -17,7 +17,7 @@ import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
 export const TitleMoreMenuItems = () => {
 	const [edit, setEdit] = useState<EditProps>({
 		show: false,
-		id: EditId.EDIT_STAT,
+		id: EditId.ADD_TEMPLATE,
 	});
 
 	const params = useParams();
@@ -48,16 +48,13 @@ export const TitleMoreMenuItems = () => {
 			<TitleMoreMenu
 				items={[
 					{
-						text: "Edit Stat",
+						text: "Add Template",
 						hideMenuOnClick: true,
 						icon: <EditIcon size={15} />,
 						onClick: () => {
 							setEdit({
 								show: true,
-								id: EditId.EDIT_STAT,
-								auxData: {
-									statId: statId,
-								},
+								id: EditId.ADD_TEMPLATE,
 							});
 						},
 					},

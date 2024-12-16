@@ -55,7 +55,6 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 			>
 				<div className="flex justify-between items-center w-full px-6 py-4">
 					<div className="text-lg font-semibold">Stat</div>
-					{/* <TitleMoreMenu /> */}
 				</div>
 				<table
 					className="w-full
@@ -86,7 +85,6 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 			>
 				<div className="flex justify-between items-center w-full px-6 py-4">
 					<div className="text-lg font-semibold">Section</div>
-					{/* <TitleMoreMenu /> */}
 				</div>
 				<table
 					className="w-full

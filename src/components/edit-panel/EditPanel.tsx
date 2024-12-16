@@ -9,6 +9,7 @@ import { EditContentAddRole } from "../../app/settings/general/roles/EditContent
 import { EditContentEditRole } from "../../app/settings/general/roles/edit-content-edit-role/EditContentEditRole";
 import { EditContentAddStat } from "@/app/app/performance/stats/edit-content-add-stat/EditContentAddStat";
 import { EditContentEditStat } from "@/app/app/performance/stats/[statId]/edit-content-edit-stat/EditContentEditStat";
+import { EditContentAddTemplate } from "@/app/app/performance/event-templates/edit-content-add-template/EditContentAddTemplate";
 
 export enum EditId {
 	/* settings */
@@ -22,6 +23,7 @@ export enum EditId {
 	/* app/performance */
 	ADD_STAT = "add-stat",
 	EDIT_STAT = "edit-stat",
+	ADD_TEMPLATE = "add-template",
 }
 
 export type EditProps = {
@@ -68,6 +70,8 @@ const EditContent = (props: {
 			return <EditContentAddStat edit={edit} setEdit={setEdit} />;
 		case EditId.EDIT_STAT:
 			return <EditContentEditStat edit={edit} setEdit={setEdit} />;
+		case EditId.ADD_TEMPLATE:
+			return <EditContentAddTemplate edit={edit} setEdit={setEdit} />;
 		default:
 			return null;
 	}
