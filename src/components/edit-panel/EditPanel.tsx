@@ -10,19 +10,19 @@ import { EditContentEditRole } from "../../app/settings/general/roles/edit-conte
 import { EditContentAddStat } from "@/app/app/performance/stats/edit-content-add-stat/EditContentAddStat";
 import { EditContentEditStat } from "@/app/app/performance/stats/[statId]/edit-content-edit-stat/EditContentEditStat";
 
-export type EditId =
+export enum EditId {
 	/* settings */
-	| ""
-	| "sign-up"
-	| "add-role"
-	| "edit-role"
-	| "profile"
-	| "avatar"
-	| "email"
-	| "change-password"
+	SIGN_UP = "sign-up",
+	ADD_ROLE = "add-role",
+	EDIT_ROLE = "edit-role",
+	PROFILE = "profile",
+	AVATAR = "avatar",
+	EMAIL = "email",
+	CHANGE_PASSWORD = "change-password",
 	/* app/performance */
-	| "add-stat"
-	| "edit-stat";
+	ADD_STAT = "add-stat",
+	EDIT_STAT = "edit-stat",
+}
 
 export type EditProps = {
 	show: boolean;
@@ -50,23 +50,23 @@ const EditContent = (props: {
 }) => {
 	const { edit, setEdit } = props;
 	switch (edit.id) {
-		case "sign-up":
+		case EditId.SIGN_UP:
 			return <EditContentSignUp edit={edit} setEdit={setEdit} />;
-		case "add-role":
+		case EditId.ADD_ROLE:
 			return <EditContentAddRole edit={edit} setEdit={setEdit} />;
-		case "edit-role":
+		case EditId.EDIT_ROLE:
 			return <EditContentEditRole edit={edit} setEdit={setEdit} />;
-		case "profile":
+		case EditId.PROFILE:
 			return <EditContentProfile edit={edit} setEdit={setEdit} />;
-		case "avatar":
+		case EditId.AVATAR:
 			return <EditContentAvatar edit={edit} setEdit={setEdit} />;
-		case "email":
+		case EditId.EMAIL:
 			return <EditContentEmail edit={edit} setEdit={setEdit} />;
-		case "change-password":
+		case EditId.CHANGE_PASSWORD:
 			return <EditContentPassword edit={edit} setEdit={setEdit} />;
-		case "add-stat":
+		case EditId.ADD_STAT:
 			return <EditContentAddStat edit={edit} setEdit={setEdit} />;
-		case "edit-stat":
+		case EditId.EDIT_STAT:
 			return <EditContentEditStat edit={edit} setEdit={setEdit} />;
 		default:
 			return null;

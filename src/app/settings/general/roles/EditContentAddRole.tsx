@@ -2,7 +2,7 @@ import { useAuthStore } from "@/stores/auth";
 import { queryClient } from "@/utils/react-query/react-query";
 import { useMutation } from "@tanstack/react-query";
 import { Dispatch, SetStateAction, useState } from "react";
-import { EditProps } from "../../../../components/edit-panel/EditPanel";
+import { EditId, EditProps } from "@/components/edit-panel/EditPanel";
 import { createRole, RolesQK } from "@/utils/api/roles";
 import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
 
@@ -10,7 +10,7 @@ export const EditContentAddRole = (props: {
 	edit: EditProps;
 	setEdit: Dispatch<SetStateAction<EditProps>>;
 }) => {
-	const editId = "add-role";
+	const editId = EditId.ADD_ROLE;
 	const title = "Add Role";
 	const { edit, setEdit } = props;
 

@@ -8,9 +8,10 @@ import { AxiosError } from "axios";
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import {
+	EditId,
 	EditPanel,
 	EditProps,
-} from "../../../../components/edit-panel/EditPanel";
+} from "@/components/edit-panel/EditPanel";
 import { OneRowSkeleton } from "@/components/skeleton/OneRowSkeleton";
 import { MyAvatar } from "./edit-content-avatar/MyAvatar";
 
@@ -81,7 +82,7 @@ export const Content = () => {
 										onClick={() => {
 											setEdit({
 												show: true,
-												id: "avatar",
+												id: EditId.AVATAR,
 											});
 										}}
 									>
@@ -106,7 +107,7 @@ export const Content = () => {
 										onClick={() => {
 											setEdit({
 												show: true,
-												id: "profile",
+												id: EditId.PROFILE,
 											});
 										}}
 									>
@@ -213,7 +214,7 @@ export const Content = () => {
 										onClick={() => {
 											setEdit({
 												show: true,
-												id: "email",
+												id: EditId.EMAIL,
 											});
 										}}
 									>
@@ -232,7 +233,7 @@ export const Content = () => {
 										onClick={() => {
 											setEdit({
 												show: true,
-												id: "change-password",
+												id: EditId.CHANGE_PASSWORD,
 											});
 										}}
 									>

@@ -5,7 +5,7 @@ import COS from "cos-js-sdk-v5";
 import { queryClient } from "@/utils/react-query/react-query";
 import { useMutation } from "@tanstack/react-query";
 import { MembersQK, uploadMyAvatar } from "@/utils/api/members";
-import { EditProps } from "@/components/edit-panel/EditPanel";
+import { EditId, EditProps } from "@/components/edit-panel/EditPanel";
 import { useAuthStore } from "@/stores/auth";
 import { Button } from "@/components/button/Button";
 import { CloseIcon } from "@/components/icons/Icons";
@@ -40,7 +40,7 @@ export const EditContentAvatar = (props: {
 	edit: EditProps;
 	setEdit: Dispatch<SetStateAction<EditProps>>;
 }) => {
-	const editId = "avatar";
+	const editId = EditId.AVATAR;
 	const { edit, setEdit } = props;
 
 	const jwt = useAuthStore((state) => state.jwt);

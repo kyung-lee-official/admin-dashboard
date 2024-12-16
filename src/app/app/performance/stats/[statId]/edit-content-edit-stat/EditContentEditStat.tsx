@@ -1,4 +1,4 @@
-import { EditProps } from "@/components/edit-panel/EditPanel";
+import { EditId, EditProps } from "@/components/edit-panel/EditPanel";
 import { useAuthStore } from "@/stores/auth";
 import {
 	getStatById,
@@ -22,7 +22,7 @@ export const EditContentEditStat = (props: {
 	edit: EditProps;
 	setEdit: Dispatch<SetStateAction<EditProps>>;
 }) => {
-	const editId = "edit-stat";
+	const editId = EditId.EDIT_STAT;
 	const title = "Edit Stat";
 	const { edit, setEdit } = props;
 	const { statId } = edit.auxData;

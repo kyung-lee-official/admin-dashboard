@@ -7,7 +7,7 @@ import {
 	useState,
 } from "react";
 import { EditIcon, MoreIcon, DeleteIcon } from "@/components/icons/Icons";
-import { EditProps } from "@/components/edit-panel/EditPanel";
+import { EditId, EditProps } from "@/components/edit-panel/EditPanel";
 import { useMutation } from "@tanstack/react-query";
 import { deleteRoleById, RolesQK } from "@/utils/api/roles";
 import { queryClient } from "@/utils/react-query/react-query";
@@ -109,7 +109,7 @@ export const ItemMoreMenu = (props: ItemMoreMenuProps) => {
 						onClick={() => {
 							setEdit({
 								show: true,
-								id: "edit-role",
+								id: EditId.EDIT_ROLE,
 								auxData: edit.auxData,
 							});
 							setShow(false);

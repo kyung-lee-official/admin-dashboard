@@ -10,11 +10,11 @@ import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { getPermissions, getRolesByIds, RolesQK } from "@/utils/api/roles";
 import { useAuthStore } from "@/stores/auth";
-import { TitleMoreMenu } from "@/app/settings/general/roles/moreMenu/TitleMoreMenu";
 import { ItemMoreMenu } from "./moreMenu/ItemMoreMenu";
 import { Loading } from "@/components/page-authorization/Loading";
 import { Forbidden } from "@/components/page-authorization/Forbidden";
 import { Exception } from "@/components/page-authorization/Exception";
+import { TitleMoreMenuItems } from "./moreMenu/TitleMoreMenuItems";
 
 export const Content = () => {
 	const jwt = useAuthStore((state) => state.jwt);
@@ -59,7 +59,7 @@ export const Content = () => {
 								<div className="text-lg font-semibold">
 									Roles
 								</div>
-								<TitleMoreMenu />
+								<TitleMoreMenuItems />
 							</div>
 							<div
 								className="flex justify-end items-center px-6 py-4

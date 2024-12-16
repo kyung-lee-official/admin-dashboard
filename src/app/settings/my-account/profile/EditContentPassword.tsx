@@ -1,7 +1,7 @@
 import { useAuthStore } from "@/stores/auth";
 import { useMutation } from "@tanstack/react-query";
 import { Dispatch, SetStateAction, useState } from "react";
-import { EditProps } from "../../../../components/edit-panel/EditPanel";
+import { EditId, EditProps } from "@/components/edit-panel/EditPanel";
 import { z } from "zod";
 import { changePassword } from "@/utils/api/authentication";
 import { useForm } from "react-hook-form";
@@ -43,7 +43,7 @@ export const EditContentPassword = (props: {
 	edit: EditProps;
 	setEdit: Dispatch<SetStateAction<EditProps>>;
 }) => {
-	const editId = "change-password";
+	const editId = EditId.CHANGE_PASSWORD;
 	const title = "Change Password";
 	const { edit, setEdit } = props;
 

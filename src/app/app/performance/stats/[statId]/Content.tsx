@@ -8,7 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
-import { TitleMoreMenu } from "./moreMenu/TitleMoreMenu";
+import { TitleMoreMenuItems } from "./moreMenu/TitleMoreMenuItems";
 
 export const Content = (props: { statId: string }) => {
 	const { statId } = props;
@@ -53,7 +53,7 @@ export const Content = (props: { statId: string }) => {
 				>
 					<div className="flex justify-between items-center w-full px-6 py-4">
 						<div className="text-lg font-semibold">Stat</div>
-						<TitleMoreMenu />
+						<TitleMoreMenuItems />
 					</div>
 					<table
 						className="w-full

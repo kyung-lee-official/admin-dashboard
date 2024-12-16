@@ -2,7 +2,7 @@ import { useAuthStore } from "@/stores/auth";
 import { queryClient } from "@/utils/react-query/react-query";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { EditProps } from "@/components/edit-panel/EditPanel";
+import { EditId, EditProps } from "@/components/edit-panel/EditPanel";
 import { getRoleById, RolesQK, updateRoleById } from "@/utils/api/roles";
 import { AxiosError } from "axios";
 import { EditMembers } from "./EditMembers";
@@ -20,7 +20,7 @@ export const EditContentEditRole = (props: {
 	edit: EditProps;
 	setEdit: Dispatch<SetStateAction<EditProps>>;
 }) => {
-	const editId = "edit-role";
+	const editId = EditId.EDIT_ROLE;
 	const title = "Edit Role";
 	const { edit, setEdit } = props;
 	const { roleId } = edit.auxData;

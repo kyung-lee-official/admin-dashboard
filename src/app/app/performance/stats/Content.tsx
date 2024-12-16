@@ -2,11 +2,11 @@
 
 import { MemberSelector } from "../events/MemberSelector";
 import { useState } from "react";
-import { TitleMoreMenu } from "./moreMenu/TitleMoreMenu";
 import { Member } from "@/utils/types/internal";
 import { StatList } from "./StatList";
 import { YearPicker } from "@/components/date/date-picker/year-picker/YearPicker";
 import dayjs from "dayjs";
+import { TitleMoreMenuItems } from "./moreMenu/TitleMoreMenuItems";
 
 export const Content = () => {
 	const [member, setMember] = useState<Member>();
@@ -22,7 +22,7 @@ export const Content = () => {
 			>
 				<div className="relative flex justify-between items-center px-6 py-4">
 					<div className="text-lg font-semibold">Stats</div>
-					<TitleMoreMenu />
+					<TitleMoreMenuItems />
 				</div>
 				<div
 					className="flex items-center px-6 py-4 gap-6

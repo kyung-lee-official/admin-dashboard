@@ -1,10 +1,16 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { EditIcon, MoreIcon } from "@/components/icons/Icons";
-import { createPortal } from "react-dom";
-import { EditPanel, EditProps } from "@/components/edit-panel/EditPanel";
+import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import { MoreIcon } from "@/components/icons/Icons";
 
-export const TitleMoreMenu = () => {
-	const [edit, setEdit] = useState<EditProps>({ show: false, id: "" });
+export const TitleMoreMenu = (props: {
+	children?: any;
+	items: {
+		text: string;
+		hideMenuOnClick: boolean;
+		icon?: ReactNode;
+		onClick: Function;
+	}[];
+}) => {
+	const { items } = props;
 
 	const [show, setShow] = useState(false);
 	const entryRef = useRef<HTMLButtonElement>(null);
@@ -64,27 +70,29 @@ export const TitleMoreMenu = () => {
 					bg-neutral-800
 					rounded-md shadow-md border-[1px] border-white/10 border-t-white/15"
 				>
-					<button
-						className="flex items-center px-2 py-1.5 gap-2
-						whitespace-nowrap"
-						onClick={() => {
-							setEdit({
-								show: true,
-								id: "add-role",
-							});
-							setShow(false);
-						}}
-					>
-						<div className="text-white/40">
-							<EditIcon size={15} />
-						</div>
-						Add a role
-					</button>
+					{items.map((item, i) => {
+						return (
+							<button
+								key={i}
+								className="flex items-center px-2 py-1.5 gap-2
+								whitespace-nowrap"
+								onClick={() => {
+									item.onClick();
+									if (item.hideMenuOnClick) {
+										setShow(false);
+									}
+								}}
+							>
+								{item.icon && (
+									<div className="text-white/40">
+										{item.icon}
+									</div>
+								)}
+								<div>{item.text}</div>
+							</button>
+						);
+					})}
 				</div>
-			)}
-			{createPortal(
-				<EditPanel edit={edit} setEdit={setEdit} />,
-				document.body
 			)}
 		</div>
 	);

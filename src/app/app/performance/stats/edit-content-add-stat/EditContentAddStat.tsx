@@ -1,5 +1,5 @@
 import { Button } from "@/components/button/Button";
-import { EditProps } from "@/components/edit-panel/EditPanel";
+import { EditId, EditProps } from "@/components/edit-panel/EditPanel";
 import { UnsavedDialog } from "@/components/edit-panel/UnsavedDialog";
 import { CloseIcon } from "@/components/icons/Icons";
 import { useAuthStore } from "@/stores/auth";
@@ -29,7 +29,7 @@ export const EditContentAddStat = (props: {
 	edit: EditProps;
 	setEdit: Dispatch<SetStateAction<EditProps>>;
 }) => {
-	const editId = "add-stat";
+	const editId = EditId.ADD_STAT;
 	const { edit, setEdit } = props;
 
 	const listenerRef = useRef<HTMLDivElement>(null);

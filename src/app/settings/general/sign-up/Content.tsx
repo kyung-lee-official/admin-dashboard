@@ -3,9 +3,10 @@
 import { EditIcon } from "@/components/icons/Icons";
 import { useState } from "react";
 import {
+	EditId,
 	EditPanel,
 	EditProps,
-} from "../../../../components/edit-panel/EditPanel";
+} from "@/components/edit-panel/EditPanel";
 import { createPortal } from "react-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getPermissions, ServerSettingQK } from "@/utils/api/server-settings";
@@ -51,7 +52,10 @@ export const Content = () => {
 									text-white/50
 									hover:bg-white/10 rounded-md"
 									onClick={() => {
-										setEdit({ show: true, id: "sign-up" });
+										setEdit({
+											show: true,
+											id: EditId.SIGN_UP,
+										});
 									}}
 								>
 									<EditIcon size={15} />

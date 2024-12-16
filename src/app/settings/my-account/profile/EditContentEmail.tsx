@@ -6,7 +6,7 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/button/Button";
 import { getMyInfo, MembersQK } from "@/utils/api/members";
 import { changeEmail, sendVerificationEmail } from "@/utils/api/email";
-import { EditProps } from "@/components/edit-panel/EditPanel";
+import { EditId, EditProps } from "@/components/edit-panel/EditPanel";
 import { MyInfo } from "./Content";
 import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
 
@@ -14,7 +14,7 @@ export const EditContentEmail = (props: {
 	edit: EditProps;
 	setEdit: Dispatch<SetStateAction<EditProps>>;
 }) => {
-	const editId = "email";
+	const editId = EditId.EMAIL;
 	const title = "Edit Email";
 	const { edit, setEdit } = props;
 
