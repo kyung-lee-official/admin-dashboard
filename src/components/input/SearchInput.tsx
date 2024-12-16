@@ -19,6 +19,7 @@ export const SearchInput = <T, K extends StringKeys<T>>(props: {
 	setSelected: Dispatch<SetStateAction<T | undefined>>;
 	/* all options */
 	options: T[];
+	placeholder: string;
 	/**
 	 * label
 	 * format: primary (secondary)
