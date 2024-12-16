@@ -76,6 +76,7 @@ export const SearchInput = <T, K extends StringKeys<T>>(props: {
 		setSelected,
 		options,
 		labelProp: { primary, secondary },
+		placeholder,
 		sortBy,
 	} = props;
 
@@ -115,7 +116,7 @@ export const SearchInput = <T, K extends StringKeys<T>>(props: {
 				type="text"
 				value={searchTerm}
 				title={label}
-				placeholder="Select a member"
+				placeholder={placeholder}
 				className="px-2 py-1
 				text-sm
 				bg-white/10
