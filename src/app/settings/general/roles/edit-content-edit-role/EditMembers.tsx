@@ -4,8 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useAuthStore } from "@/stores/auth";
 import { EditRoleData } from "./EditContentEditRole";
-import { sortByMemberName } from "./data";
 import { Member } from "@/utils/types/internal";
+import { sortByProp } from "@/utils/data/data";
 
 const Checkbox = (props: { checked: boolean }) => {
 	const { checked } = props;
@@ -60,7 +60,7 @@ export const EditMembers = (props: {
 
 	useEffect(() => {
 		if (membersQuery.isSuccess) {
-			setSortedAllMembers(sortByMemberName(membersQuery.data));
+			setSortedAllMembers(sortByProp(membersQuery.data, "name"));
 		}
 	}, [membersQuery.data]);
 
@@ -99,10 +99,10 @@ export const EditMembers = (props: {
 										setNewData({
 											id: newData.id,
 											name: newData.name,
-											members: sortByMemberName([
-												...newData.members,
-												member,
-											]),
+											members: sortByProp(
+												[...newData.members, member],
+												"name"
+											),
 										});
 									}
 								}}

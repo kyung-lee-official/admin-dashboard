@@ -6,9 +6,9 @@ import { EditProps } from "@/components/edit-panel/EditPanel";
 import { getRoleById, RolesQK, updateRoleById } from "@/utils/api/roles";
 import { AxiosError } from "axios";
 import { EditMembers } from "./EditMembers";
-import { sortByMemberName } from "./data";
 import { Member } from "@/utils/types/internal";
 import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
+import { sortByProp } from "@/utils/data/data";
 
 export type EditRoleData = {
 	id: string;
@@ -49,7 +49,7 @@ export const EditContentEditRole = (props: {
 			const sortedData = {
 				id: roleQuery.data.id,
 				name: roleQuery.data.name,
-				members: sortByMemberName(roleQuery.data.members),
+				members: sortByProp(roleQuery.data.members, "name"),
 			};
 			setOldData(sortedData);
 			setNewData(sortedData);
@@ -106,7 +106,10 @@ export const EditContentEditRole = (props: {
 								setNewData({
 									id: e.target.value,
 									name: newData.name,
-									members: sortByMemberName(newData.members),
+									members: sortByProp(
+										newData.members,
+										"name"
+									),
 								});
 							}}
 						/>
@@ -127,7 +130,10 @@ export const EditContentEditRole = (props: {
 								setNewData({
 									id: newData.id,
 									name: e.target.value,
-									members: sortByMemberName(newData.members),
+									members: sortByProp(
+										newData.members,
+										"name"
+									),
 								});
 							}}
 						/>

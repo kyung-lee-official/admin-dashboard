@@ -1,4 +1,3 @@
-import { sortByMemberName } from "@/app/settings/general/roles/edit-content-edit-role/data";
 import { Member } from "@/utils/types/internal";
 import { SearchOutlineIcon } from "@/components/icons/Icons";
 import { useAuthStore } from "@/stores/auth";
@@ -13,6 +12,7 @@ import {
 	Dispatch,
 	SetStateAction,
 } from "react";
+import { sortByProp } from "@/utils/data/data";
 
 type MemberSelectorProps = {
 	member: Member | undefined;
@@ -107,20 +107,22 @@ export const MemberSelector = (props: MemberSelectorProps) => {
 					bg-neutral-800
 					rounded-md shadow-lg border-[1px] border-white/10 border-t-white/15"
 				>
-					{sortByMemberName(membersQuery.data).map((m, i) => {
-						return (
-							<button
-								key={m.id}
-								className="p-2 text-nowrap"
-								onClick={() => {
-									setMember(m);
-									setShow(false);
-								}}
-							>
-								{m.name} ({m.email})
-							</button>
-						);
-					})}
+					{sortByProp(membersQuery.data, "name").map(
+						(m: Member, i: number) => {
+							return (
+								<button
+									key={m.id}
+									className="p-2 text-nowrap"
+									onClick={() => {
+										setMember(m);
+										setShow(false);
+									}}
+								>
+									{m.name} ({m.email})
+								</button>
+							);
+						}
+					)}
 				</div>
 			)}
 		</div>
