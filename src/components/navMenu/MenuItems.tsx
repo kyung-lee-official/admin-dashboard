@@ -20,6 +20,7 @@ export const enum MenuKey {
 	PERFORMANCE_STATS,
 	PERFORMANCE_STAT,
 	PERFORMANCE_SECTION,
+	PERFORMANCE_CREATE_EVENT,
 	PERFORMANCE_EVENT,
 	SNS_CRAWLER,
 	SETTINGS,
@@ -191,6 +192,44 @@ export const menuItems: HierarchicalMenuItem[] = [
 									/^\/app\/performance\/stats\/[0-9]*\/section\/[0-9]*$/,
 								subMenu: [
 									{
+										menuKey:
+											MenuKey.PERFORMANCE_CREATE_EVENT,
+										isActive: false,
+										breadcrumbs: (props: {
+											statId: number;
+											sectionId: number;
+										}) => {
+											const { statId, sectionId } = props;
+											return (
+												<div className="flex items-center gap-2 flex-wrap">
+													<Link href="/app/performance/stats">
+														Peformance Stats
+													</Link>
+													<ArrowRight size={15} />
+													<Link
+														href={`/app/performance/stats/${statId}`}
+													>
+														Stat
+													</Link>
+													<ArrowRight size={15} />
+													<Link
+														href={`/app/performance/stats/${statId}/section/${sectionId}`}
+													>
+														Section
+													</Link>
+													<ArrowRight size={15} />
+													<Link
+														href={`/app/performance/stats/${statId}/section/${sectionId}/create-event`}
+													>
+														Create Event
+													</Link>
+												</div>
+											);
+										},
+										pageUrlReg:
+											/^\/app\/performance\/stats\/[0-9]*\/section\/[0-9]*\/create\-event$/,
+									},
+									{
 										menuKey: MenuKey.PERFORMANCE_EVENT,
 										isActive: false,
 										breadcrumbs: (props: {
@@ -230,7 +269,7 @@ export const menuItems: HierarchicalMenuItem[] = [
 											);
 										},
 										pageUrlReg:
-											/^\/app\/performance\/stats\/[0-9]\/section\/[0-9]\/event\/[0-9]*$/,
+											/^\/app\/performance\/stats\/[0-9]*\/section\/[0-9]*\/event\/[0-9]*$/,
 									},
 								],
 							},

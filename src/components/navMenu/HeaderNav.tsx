@@ -35,6 +35,19 @@ export const HeaderNav = (props: {
 						/>
 					</nav>
 				);
+			case MenuKey.PERFORMANCE_CREATE_EVENT:
+				return (
+					<nav
+						className="flex-[0_0_56px] flex items-center p-3
+							text-sm font-semibold dark:text-white/40
+							border-b-[1px] dark:border-white/5"
+					>
+						<item.breadcrumbs
+							statId={statId}
+							sectionId={sectionId}
+						/>
+					</nav>
+				);
 			case MenuKey.PERFORMANCE_EVENT:
 				return (
 					<nav
