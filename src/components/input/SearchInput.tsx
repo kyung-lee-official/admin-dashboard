@@ -9,6 +9,7 @@ import {
 } from "react";
 import { sortByProp } from "@/utils/data/data";
 
+/* get all string keys of an object */
 type StringKeys<T> = {
 	[K in keyof T]: T[K] extends string ? K : never;
 }[keyof T];
