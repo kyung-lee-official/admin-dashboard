@@ -84,6 +84,7 @@ export const MemberSelector = (props: MemberSelectorProps) => {
 				type="text"
 				value={member ? `${member.name} (${member.email})` : ""}
 				title={member ? `${member.name} (${member.email})` : ""}
+				placeholder="Select a member"
 				className="px-2 py-1
 				text-sm
 				bg-white/10
