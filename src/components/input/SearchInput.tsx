@@ -43,9 +43,7 @@ export const SearchInput = <T, K extends StringKeys<T>>(props: {
 				entryRef.current.contains(e.target)
 			) {
 				/* entry clicked */
-				setShow((state) => {
-					return !state;
-				});
+				setShow(true);
 			} else {
 				if (menuRef.current) {
 					/* menu clicked */
@@ -96,8 +94,10 @@ export const SearchInput = <T, K extends StringKeys<T>>(props: {
 				);
 			});
 			setFilteredOptions(filtered);
+		} else {
+			setFilteredOptions(options);
 		}
-	}, [searchTerm]);
+	}, [searchTerm, options]);
 
 	let label = "";
 	if (selected) {
