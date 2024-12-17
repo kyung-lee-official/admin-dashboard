@@ -33,6 +33,7 @@ export const EditContentAddStat = (props: {
 			month: curr.toDate(),
 			statSections: [
 				{
+					tempId: "",
 					weight: 100,
 					title: "New Section",
 					description: "",
