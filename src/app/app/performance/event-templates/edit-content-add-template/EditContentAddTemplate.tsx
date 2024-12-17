@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { EditId, EditProps } from "@/components/edit-panel/EditPanel";
 import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
 import { createTemplate, PerformanceQK } from "@/utils/api/app/performance";
-import { RoleSelector } from "../RoleSelector";
+import { RoleSelector } from "../../../../../components/input/selectors/RoleSelector";
 import { MemberRole } from "@/utils/types/internal";
 import { CreatePerformanceEventTemplate } from "@/utils/types/app/performance";
 

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { MemberRole } from "@/utils/types/internal";
-import { RoleSelector } from "./RoleSelector";
+import { RoleSelector } from "../../../../components/input/selectors/RoleSelector";
 import { TitleMoreMenuItems } from "./moreMenu/TitleMoreMenuItems";
 import { TemplateList } from "./TemplateList";
 

@@ -1,12 +1,12 @@
 "use client";
 
-import { MemberSelector } from "../events/MemberSelector";
 import { useState } from "react";
 import { Member } from "@/utils/types/internal";
 import { StatList } from "./StatList";
 import { YearPicker } from "@/components/date/date-picker/year-picker/YearPicker";
 import dayjs from "dayjs";
 import { TitleMoreMenuItems } from "./moreMenu/TitleMoreMenuItems";
+import { MemberSelector } from "@/components/input/selectors/MemberSelector";
 
 export const Content = () => {
 	const [member, setMember] = useState<Member>();

@@ -5,7 +5,7 @@ import { queryClient } from "@/utils/react-query/react-query";
 import { useMutation } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
-import { MemberSelector } from "./MemberSelector";
+import { MemberSelector } from "@/components/input/selectors/MemberSelector";
 import { MonthPicker } from "@/components/date/date-picker/month-picker/MonthPicker";
 import { Member } from "@/utils/types/internal";
 import { Sections } from "./Sections";
