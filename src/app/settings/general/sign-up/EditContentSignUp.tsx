@@ -9,14 +9,14 @@ import { queryClient } from "@/utils/react-query/react-query";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { EditProps } from "@/components/edit-panel/EditPanel";
+import { EditId, EditProps } from "@/components/edit-panel/EditPanel";
 import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
 
 export const EditContentSignUp = (props: {
 	edit: EditProps;
 	setEdit: Dispatch<SetStateAction<EditProps>>;
 }) => {
-	const editId = "sign-up";
+	const editId = EditId.SIGN_UP;
 	const title = "Edit Sign Up";
 	const { edit, setEdit } = props;
 

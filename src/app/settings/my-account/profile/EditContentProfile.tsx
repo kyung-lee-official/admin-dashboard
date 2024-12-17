@@ -4,7 +4,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { getMyInfo, MembersQK, updateProfile } from "@/utils/api/members";
-import { EditProps } from "@/components/edit-panel/EditPanel";
+import { EditId, EditProps } from "@/components/edit-panel/EditPanel";
 import { MyInfo } from "./Content";
 import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
 
@@ -12,7 +12,7 @@ export const EditContentProfile = (props: {
 	edit: EditProps;
 	setEdit: Dispatch<SetStateAction<EditProps>>;
 }) => {
-	const editId = "profile";
+	const editId = EditId.PROFILE;
 	const title = "Edit Profile";
 	const { edit, setEdit } = props;
 
