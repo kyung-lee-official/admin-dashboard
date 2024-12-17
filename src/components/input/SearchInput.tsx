@@ -139,6 +139,7 @@ export const SearchInput = <T, K extends StringKeys<T>>(props: {
 					ref={menuRef}
 					className="absolute top-10
 					flex flex-col
+					text-sm
 					bg-neutral-800
 					rounded-md shadow-lg border-[1px] border-white/10 border-t-white/15"
 				>
@@ -147,7 +148,7 @@ export const SearchInput = <T, K extends StringKeys<T>>(props: {
 							return (
 								<button
 									key={item.id}
-									className="p-2 text-nowrap"
+									className="flex w-full p-2 text-nowrap"
 									onClick={() => {
 										setSelected(item);
 										setSearchTerm(
