@@ -4,6 +4,7 @@ import { useState } from "react";
 import { MemberRole } from "@/utils/types/internal";
 import { RoleSelector } from "./RoleSelector";
 import { TitleMoreMenuItems } from "./moreMenu/TitleMoreMenuItems";
+import { TemplateList } from "./TemplateList";
 
 export const Content = () => {
 	const [role, setRole] = useState<MemberRole>();
@@ -27,6 +28,7 @@ export const Content = () => {
 				>
 					<RoleSelector role={role} setRole={setRole} />
 				</div>
+				<TemplateList role={role} />
 			</div>
 		</div>
 	);

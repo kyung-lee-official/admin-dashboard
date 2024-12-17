@@ -1,3 +1,5 @@
+import { MemberRole } from "../internal";
+
 export type CreateSectionData = {
 	weight: number;
 	title: string;
@@ -72,5 +74,7 @@ export type PerformanceEventTemplateResponse = {
 	id: number;
 	score: number;
 	description: string;
-	memberRoleId: string;
+	memberRole: MemberRole;
+	createdAt: string;
+	updatedAt: string;
 };

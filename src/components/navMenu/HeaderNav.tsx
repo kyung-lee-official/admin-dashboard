@@ -8,7 +8,7 @@ export const HeaderNav = (props: {
 	const { item } = props;
 
 	const params = useParams();
-	const { statId, sectionId, eventId } = params;
+	const { statId, sectionId, eventId, templateId } = params;
 
 	if (item?.breadcrumbs) {
 		switch (item.menuKey) {
@@ -60,6 +60,16 @@ export const HeaderNav = (props: {
 							sectionId={sectionId}
 							eventId={eventId}
 						/>
+					</nav>
+				);
+			case MenuKey.PERFORMANCE_EVENT_TEMPLATE:
+				return (
+					<nav
+						className="flex-[0_0_56px] flex items-center p-3
+								text-sm font-semibold dark:text-white/40
+								border-b-[1px] dark:border-white/5"
+					>
+						<item.breadcrumbs templateId={templateId} />
 					</nav>
 				);
 			default:

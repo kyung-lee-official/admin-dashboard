@@ -17,6 +17,7 @@ export const enum MenuKey {
 	PERFORMANCE,
 	PERFORMANCE_EVENTS,
 	PERFORMANCE_EVENT_TEMPLATES,
+	PERFORMANCE_EVENT_TEMPLATE,
 	PERFORMANCE_STATS,
 	PERFORMANCE_STAT,
 	PERFORMANCE_SECTION,
@@ -282,6 +283,30 @@ export const menuItems: HierarchicalMenuItem[] = [
 				isActive: false,
 				title: "Performance Event Templates",
 				link: "/app/performance/event-templates",
+				subMenu: [
+					{
+						menuKey: MenuKey.PERFORMANCE_EVENT_TEMPLATE,
+						isActive: false,
+						breadcrumbs: (props: { templateId: number }) => {
+							const { templateId } = props;
+							return (
+								<div className="flex items-center gap-2 flex-wrap">
+									<Link href="/app/performance/event-templates">
+										Performance Event Templates
+									</Link>
+									<ArrowRight size={15} />
+									<Link
+										href={`/app/performance/event-templates/${templateId}`}
+									>
+										Template
+									</Link>
+								</div>
+							);
+						},
+						pageUrlReg:
+							/^\/app\/performance\/event-templates\/[0-9]*$/,
+					},
+				],
 				pageUrlReg: /^\/app\/performance\/event-templates$/,
 			},
 			{
