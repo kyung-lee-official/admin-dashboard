@@ -57,7 +57,7 @@ export const deleteStatById = async (id: number, jwt: string) => {
 };
 
 export const createTemplate = async (newData: any, jwt: string) => {
-	const res = await axios.post("/performance/template", newData, {
+	const res = await axios.post("/performance/event-templates", newData, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: jwt,

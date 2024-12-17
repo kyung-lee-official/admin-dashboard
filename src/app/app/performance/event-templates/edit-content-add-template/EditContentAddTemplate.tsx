@@ -1,10 +1,13 @@
 import { useAuthStore } from "@/stores/auth";
 import { queryClient } from "@/utils/react-query/react-query";
 import { useMutation } from "@tanstack/react-query";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { EditId, EditProps } from "@/components/edit-panel/EditPanel";
 import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
 import { createTemplate, PerformanceQK } from "@/utils/api/app/performance";
+import { RoleSelector } from "../RoleSelector";
+import { MemberRole } from "@/utils/types/internal";
+import { CreatePerformanceEventTemplate } from "@/utils/types/app/performance";
 
 export const EditContentAddTemplate = (props: {
 	edit: EditProps;
@@ -29,11 +32,22 @@ export const EditContentAddTemplate = (props: {
 		onError: () => {},
 	});
 
-	const oldData = {
-		id: "",
-		name: "",
-	};
+	const [oldData, setOldData] = useState<CreatePerformanceEventTemplate>({
+		score: 0,
+		description: "",
+		memberRoleId: "",
+	});
 	const [newData, setNewData] = useState(oldData);
+	const [score, setScore] = useState<number>(oldData.score);
+	const [description, setDescription] = useState<string>(oldData.description);
+	const [role, setRole] = useState<MemberRole>();
+	useEffect(() => {
+		setNewData({
+			score: score,
+			description: description,
+			memberRoleId: role?.id ?? "",
+		});
+	}, [score, description, role]);
 
 	function onSave() {
 		mutation.mutate();
@@ -51,6 +65,7 @@ export const EditContentAddTemplate = (props: {
 		>
 			<form action={onSave} className="flex-[1_0_100px] flex flex-col">
 				<div className="flex-[1_0_100px] flex flex-col px-6 py-4 gap-6">
+					<RoleSelector role={role} setRole={setRole} />
 					<div
 						className="flex flex-col gap-1.5
 						text-sm"
@@ -64,10 +79,7 @@ export const EditContentAddTemplate = (props: {
 							border-[1px] border-white/10"
 							placeholder="integer only"
 							onChange={(e) => {
-								setNewData({
-									...newData,
-									id: e.target.value,
-								});
+								setScore(parseInt(e.target.value));
 							}}
 						/>
 					</div>
@@ -83,10 +95,7 @@ export const EditContentAddTemplate = (props: {
 							rounded-md outline-none
 							border-[1px] border-white/10"
 							onChange={(e) => {
-								setNewData({
-									...newData,
-									name: e.target.value,
-								});
+								setDescription(e.target.value);
 							}}
 						/>
 					</div>

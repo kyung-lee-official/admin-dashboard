@@ -61,3 +61,16 @@ export type PerformanceStatResponse = {
 	owner: OwnerResponse;
 	statSections: SectionResponse[];
 };
+
+export type CreatePerformanceEventTemplate = {
+	score: number;
+	description: string;
+	memberRoleId: string;
+};
+
+export type PerformanceEventTemplateResponse = {
+	id: number;
+	score: number;
+	description: string;
+	memberRoleId: string;
+};
