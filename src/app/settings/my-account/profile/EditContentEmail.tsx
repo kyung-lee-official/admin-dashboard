@@ -21,17 +21,11 @@ export const EditContentEmail = (props: {
 	const jwt = useAuthStore((state) => state.jwt);
 	const setJwt = useAuthStore((state) => state.setJwt);
 
-	const [oldData, setOldData] = useState<MyInfo>({
-		id: "",
-		email: "",
-		name: "",
-		isVerified: false,
-		isFrozen: false,
-		createdAt: "",
-		updatedAt: "",
-		memberRoles: [],
+	const [oldData, setOldData] = useState({
+		newEmail: "",
 	});
-	const [newData, setNewData] = useState<MyInfo>(oldData);
+	const [newData, setNewData] = useState(oldData);
+	const [newEmail, setNewEmail] = useState("");
 
 	const myInfoQuery = useQuery<MyInfo, AxiosError>({
 		queryKey: [MembersQK.GET_MY_INFO, jwt],
@@ -45,9 +39,20 @@ export const EditContentEmail = (props: {
 
 	useEffect(() => {
 		if (myInfoQuery.isSuccess) {
-			setNewData(myInfoQuery.data);
+			const initialData = {
+				newEmail: myInfoQuery.data.email,
+			};
+			setOldData(initialData);
+			setNewData(initialData);
+			setNewEmail(initialData.newEmail);
 		}
 	}, [myInfoQuery.data]);
+
+	useEffect(() => {
+		setNewData({
+			newEmail: newEmail,
+		});
+	}, [newEmail]);
 
 	const mutation = useMutation({
 		mutationFn: () => {
@@ -110,12 +115,9 @@ export const EditContentEmail = (props: {
 								bg-white/10
 								rounded-md outline-none
 								border-[1px] border-white/10"
-								value={newData.email}
+								value={newEmail}
 								onChange={(e) => {
-									setNewData({
-										...newData,
-										email: e.target.value,
-									});
+									setNewEmail(e.target.value);
 								}}
 							/>
 						</div>

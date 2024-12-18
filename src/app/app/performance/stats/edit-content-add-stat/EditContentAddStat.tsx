@@ -25,24 +25,36 @@ export const EditContentAddStat = (props: {
 
 	const jwt = useAuthStore((state) => state.jwt);
 
-	const curr = dayjs();
-
-	const oldData: CreatePerformanceStatData = useMemo(
-		() => ({
-			ownerId: "",
-			month: curr.toDate(),
-			statSections: [
-				{
-					tempId: "",
-					weight: 100,
-					title: "New Section",
-					description: "",
-				},
-			],
-		}),
-		[]
-	);
+	const [oldData, setOldData] = useState<CreatePerformanceStatData>({
+		member: {
+			id: "",
+			email: "",
+			name: "",
+		},
+		month: dayjs(),
+		statSections: [
+			{
+				tempId: "",
+				weight: 100,
+				title: "New Section",
+				description: "",
+			},
+		],
+	});
 	const [newData, setNewData] = useState<CreatePerformanceStatData>(oldData);
+	const [member, setMember] = useState<Member>(oldData.member);
+	const [month, setMonth] = useState<dayjs.Dayjs>(oldData.month);
+	const [statSections, setStatSections] = useState<CreateSectionData[]>(
+		oldData.statSections
+	);
+
+	useEffect(() => {
+		setNewData({
+			member: member,
+			month: month,
+			statSections: statSections,
+		});
+	}, [member, month, statSections]);
 
 	const mutation = useMutation({
 		mutationFn: () => {
@@ -60,19 +72,6 @@ export const EditContentAddStat = (props: {
 	function onSave() {
 		mutation.mutate();
 	}
-
-	const [member, setMember] = useState<Member>();
-	const [month, setMonth] = useState<dayjs.Dayjs>(curr);
-	const [sections, setSections] = useState<CreateSectionData[]>(
-		newData.statSections
-	);
-	useEffect(() => {
-		setNewData({
-			ownerId: member?.id ?? "",
-			month: month.toDate(),
-			statSections: sections,
-		});
-	}, [member, month, sections]);
 
 	return (
 		<EditContentRegular
@@ -105,8 +104,8 @@ export const EditContentAddStat = (props: {
 						text-sm"
 					>
 						<Sections
-							sections={sections}
-							setSections={setSections}
+							sections={statSections}
+							setSections={setStatSections}
 						/>
 					</div>
 				</div>

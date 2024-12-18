@@ -43,18 +43,32 @@ export const EditContentEditRole = (props: {
 		members: [],
 	});
 	const [newData, setNewData] = useState<EditRoleData>(oldData);
+	const [id, setId] = useState(oldData.id);
+	const [name, setName] = useState(oldData.name);
+	const [members, setMembers] = useState(oldData.members);
 
 	useEffect(() => {
 		if (roleQuery.isSuccess) {
-			const sortedData = {
+			const initialData = {
 				id: roleQuery.data.id,
 				name: roleQuery.data.name,
 				members: sortByProp(roleQuery.data.members, "name"),
 			};
-			setOldData(sortedData);
-			setNewData(sortedData);
+			setOldData(initialData);
+			setNewData(initialData);
+			setId(initialData.id);
+			setName(initialData.name);
+			setMembers(initialData.members);
 		}
 	}, [roleQuery.data]);
+
+	useEffect(() => {
+		setNewData({
+			id: id,
+			name: name,
+			members: sortByProp(members, "name"),
+		});
+	}, [id, name, members]);
 
 	const mutation = useMutation({
 		mutationFn: () => {
@@ -103,14 +117,7 @@ export const EditContentEditRole = (props: {
 							border-[1px] border-white/10"
 							value={newData.id}
 							onChange={(e) => {
-								setNewData({
-									id: e.target.value,
-									name: newData.name,
-									members: sortByProp(
-										newData.members,
-										"name"
-									),
-								});
+								setId(e.target.value);
 							}}
 						/>
 					</div>
@@ -127,14 +134,7 @@ export const EditContentEditRole = (props: {
 							border-[1px] border-white/10"
 							value={newData.name}
 							onChange={(e) => {
-								setNewData({
-									id: newData.id,
-									name: e.target.value,
-									members: sortByProp(
-										newData.members,
-										"name"
-									),
-								});
+								setName(e.target.value);
 							}}
 						/>
 					</div>
@@ -144,8 +144,8 @@ export const EditContentEditRole = (props: {
 					>
 						Members
 						<EditMembers
-							newData={newData}
-							setNewData={setNewData}
+							members={members}
+							setMembers={setMembers}
 						/>
 					</div>
 				</div>

@@ -1,7 +1,7 @@
 import { useAuthStore } from "@/stores/auth";
 import { queryClient } from "@/utils/react-query/react-query";
 import { useMutation } from "@tanstack/react-query";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { EditId, EditProps } from "@/components/edit-panel/EditPanel";
 import { createRole, RolesQK } from "@/utils/api/roles";
 import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
@@ -34,6 +34,15 @@ export const EditContentAddRole = (props: {
 		name: "",
 	};
 	const [newData, setNewData] = useState(oldData);
+	const [id, setId] = useState(oldData.id);
+	const [name, setName] = useState(oldData.name);
+
+	useEffect(() => {
+		setNewData({
+			id: id,
+			name: name,
+		});
+	}, [id, name]);
 
 	function onSave() {
 		mutation.mutate();
@@ -63,10 +72,7 @@ export const EditContentAddRole = (props: {
 							rounded-md outline-none
 							border-[1px] border-white/10"
 							onChange={(e) => {
-								setNewData({
-									...newData,
-									id: e.target.value,
-								});
+								setId(e.target.value);
 							}}
 						/>
 					</div>
@@ -82,10 +88,7 @@ export const EditContentAddRole = (props: {
 							rounded-md outline-none
 							border-[1px] border-white/10"
 							onChange={(e) => {
-								setNewData({
-									...newData,
-									name: e.target.value,
-								});
+								setName(e.target.value);
 							}}
 						/>
 					</div>

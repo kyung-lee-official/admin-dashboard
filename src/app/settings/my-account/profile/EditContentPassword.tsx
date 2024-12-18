@@ -1,6 +1,6 @@
 import { useAuthStore } from "@/stores/auth";
 import { useMutation } from "@tanstack/react-query";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { EditId, EditProps } from "@/components/edit-panel/EditPanel";
 import { z } from "zod";
 import { changePassword } from "@/utils/api/authentication";
@@ -55,13 +55,26 @@ export const EditContentPassword = (props: {
 		confirmNewPassword: "",
 	});
 	const [newData, setNewData] = useState(oldData);
+	const [currPassword, setCurrPassword] = useState(oldData.currentPassword);
+	const [newPassword, setNewPassword] = useState(oldData.newPassword);
+	const [confirmNewPassword, setConfirmNewPassword] = useState(
+		oldData.confirmNewPassword
+	);
 
-	const mutation = useMutation<any, AxiosError, IFormInput>({
-		mutationFn: (data: IFormInput) => {
+	useEffect(() => {
+		setNewData({
+			currentPassword: currPassword,
+			newPassword: newPassword,
+			confirmNewPassword: confirmNewPassword,
+		});
+	}, [currPassword, newPassword, confirmNewPassword]);
+
+	const mutation = useMutation<any, AxiosError>({
+		mutationFn: () => {
 			return changePassword(
 				{
-					oldPassword: data.oldPassword,
-					newPassword: data.newPassword,
+					oldPassword: newData.currentPassword,
+					newPassword: newData.newPassword,
 				},
 				jwt
 			);
@@ -71,8 +84,8 @@ export const EditContentPassword = (props: {
 		},
 	});
 
-	function onSave(data: IFormInput) {
-		mutation.mutate(data);
+	function onSave() {
+		mutation.mutate();
 	}
 
 	const { register, handleSubmit, formState, control } = useForm<IFormInput>({
@@ -111,11 +124,7 @@ export const EditContentPassword = (props: {
 							border-[1px] border-white/10"
 							{...register("oldPassword", {
 								onChange: (e) => {
-									mutation.reset();
-									setNewData({
-										...newData,
-										currentPassword: e.target.value,
-									});
+									setCurrPassword(e.target.value);
 								},
 							})}
 						/>
@@ -139,10 +148,7 @@ export const EditContentPassword = (props: {
 							border-[1px] border-white/10"
 							{...register("newPassword", {
 								onChange: (e) => {
-									setNewData({
-										...newData,
-										newPassword: e.target.value,
-									});
+									setNewPassword(e.target.value);
 								},
 							})}
 						/>
@@ -165,10 +171,7 @@ export const EditContentPassword = (props: {
 							border-[1px] border-white/10"
 							{...register("confirmNewPassword", {
 								onChange: (e) => {
-									setNewData({
-										...newData,
-										confirmNewPassword: e.target.value,
-									});
+									setConfirmNewPassword(e.target.value);
 								},
 							})}
 						/>

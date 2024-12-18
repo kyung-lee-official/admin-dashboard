@@ -1,4 +1,5 @@
-import { MemberRole } from "../internal";
+import dayjs from "dayjs";
+import { Member, MemberRole } from "../internal";
 
 export type CreateSectionData = {
 	tempId: string /* a nanoId for new sections, used for distinguishing newly added sections in frontend only, for example, identifying which one to delete */;
@@ -8,8 +9,8 @@ export type CreateSectionData = {
 };
 
 export type CreatePerformanceStatData = {
-	ownerId: string;
-	month: Date;
+	member: Member;
+	month: dayjs.Dayjs;
 	statSections: CreateSectionData[];
 };
 
@@ -23,7 +24,7 @@ export type EditSectionData = {
 
 export type EditPerformanceStatData = {
 	ownerId: string;
-	month: Date;
+	month: dayjs.Dayjs;
 	statSections: EditSectionData[];
 };
 
@@ -68,7 +69,7 @@ export type PerformanceStatResponse = {
 export type CreatePerformanceEventTemplate = {
 	score: number;
 	description: string;
-	memberRoleId: string;
+	memberRole: MemberRole;
 };
 
 export type PerformanceEventTemplateResponse = {

@@ -41,8 +41,8 @@ const CheckSquareFillIcon = () => {
 };
 
 export const EditMembers = (props: {
-	newData: EditRoleData;
-	setNewData: Dispatch<SetStateAction<EditRoleData>>;
+	members: Member[];
+	setMembers: Dispatch<SetStateAction<Member[]>>;
 }) => {
 	const jwt = useAuthStore((state) => state.jwt);
 
@@ -64,7 +64,7 @@ export const EditMembers = (props: {
 		}
 	}, [membersQuery.data]);
 
-	const { newData, setNewData } = props;
+	const { members, setMembers } = props;
 
 	return (
 		<ul
@@ -74,7 +74,7 @@ export const EditMembers = (props: {
 		>
 			{sortedAllMembers.length &&
 				sortedAllMembers.map((member: any) => {
-					const checked = newData.members.some(
+					const checked = members.some(
 						(m: Member) => m.id === member.id
 					);
 
@@ -86,24 +86,20 @@ export const EditMembers = (props: {
 								onClick={(e) => {
 									e.preventDefault();
 									if (checked) {
-										setNewData({
-											id: newData.id,
-											name: newData.name,
-											members: newData.members.filter(
+										setMembers(
+											members.filter(
 												(newDataMember: Member) =>
 													member.id !==
 													newDataMember.id
-											),
-										});
+											)
+										);
 									} else {
-										setNewData({
-											id: newData.id,
-											name: newData.name,
-											members: sortByProp(
-												[...newData.members, member],
+										setMembers(
+											sortByProp(
+												[...members, member],
 												"name"
-											),
-										});
+											)
+										);
 									}
 								}}
 							>

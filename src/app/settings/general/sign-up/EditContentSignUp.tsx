@@ -37,12 +37,34 @@ export const EditContentSignUp = (props: {
 		allowGoogleSignIn: false,
 	});
 	const [newData, setNewData] = useState<any>(oldData);
+	const [allowPublicSignUp, setAllowPublicSignUp] = useState(
+		oldData.allowPublicSignUp
+	);
+	const [allowGoogleSignIn, setAllowGoogleSignIn] = useState(
+		oldData.allowGoogleSignIn
+	);
 
 	useEffect(() => {
 		if (getServerSettingsQuery.isSuccess) {
-			setNewData(getServerSettingsQuery.data);
+			const initialData = {
+				allowPublicSignUp:
+					getServerSettingsQuery.data.allowPublicSignUp,
+				allowGoogleSignIn:
+					getServerSettingsQuery.data.allowGoogleSignIn,
+			};
+			setOldData(initialData);
+			setNewData(initialData);
+			setAllowPublicSignUp(initialData.allowPublicSignUp);
+			setAllowGoogleSignIn(initialData.allowGoogleSignIn);
 		}
 	}, [getServerSettingsQuery.data]);
+
+	useEffect(() => {
+		setNewData({
+			allowPublicSignUp: allowPublicSignUp,
+			allowGoogleSignIn: allowGoogleSignIn,
+		});
+	}, [allowPublicSignUp, allowGoogleSignIn]);
 
 	const mutation = useMutation({
 		mutationFn: () => {
@@ -82,11 +104,9 @@ export const EditContentSignUp = (props: {
 										isOn={newData?.allowPublicSignUp}
 										isAllowed={true}
 										onClick={() => {
-											setNewData({
-												...newData,
-												allowPublicSignUp:
-													!newData.allowPublicSignUp,
-											});
+											setAllowPublicSignUp(
+												!allowPublicSignUp
+											);
 										}}
 									/>
 								</td>
@@ -98,11 +118,9 @@ export const EditContentSignUp = (props: {
 										isOn={newData?.allowGoogleSignIn}
 										isAllowed={true}
 										onClick={() => {
-											setNewData({
-												...newData,
-												allowGoogleSignIn:
-													!newData.allowGoogleSignIn,
-											});
+											setAllowGoogleSignIn(
+												!allowGoogleSignIn
+											);
 										}}
 									/>
 								</td>

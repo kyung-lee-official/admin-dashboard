@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { EditId, EditProps } from "@/components/edit-panel/EditPanel";
 import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
 import { createTemplate, PerformanceQK } from "@/utils/api/app/performance";
-import { RoleSelector } from "../../../../../components/input/selectors/RoleSelector";
+import { RoleSelector } from "@/components/input/selectors/RoleSelector";
 import { MemberRole } from "@/utils/types/internal";
 import { CreatePerformanceEventTemplate } from "@/utils/types/app/performance";
 
@@ -19,9 +19,35 @@ export const EditContentAddTemplate = (props: {
 
 	const jwt = useAuthStore((state) => state.jwt);
 
+	const [oldData, setOldData] = useState<CreatePerformanceEventTemplate>({
+		score: 0,
+		description: "",
+		memberRole: {
+			id: "",
+			name: "",
+			superRoleId: "",
+		},
+	});
+	const [newData, setNewData] = useState(oldData);
+	const [score, setScore] = useState<number>(oldData.score);
+	const [description, setDescription] = useState<string>(oldData.description);
+	const [role, setRole] = useState<MemberRole>(oldData.memberRole);
+	useEffect(() => {
+		setNewData({
+			score: score,
+			description: description,
+			memberRole: role,
+		});
+	}, [score, description, role]);
+
 	const mutation = useMutation({
 		mutationFn: () => {
-			return createTemplate(newData, jwt);
+			const body = {
+				score: newData.score,
+				description: newData.description,
+				memberRoleId: newData.memberRole.id,
+			};
+			return createTemplate(body, jwt);
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
@@ -31,23 +57,6 @@ export const EditContentAddTemplate = (props: {
 		},
 		onError: () => {},
 	});
-
-	const [oldData, setOldData] = useState<CreatePerformanceEventTemplate>({
-		score: 0,
-		description: "",
-		memberRoleId: "",
-	});
-	const [newData, setNewData] = useState(oldData);
-	const [score, setScore] = useState<number>(oldData.score);
-	const [description, setDescription] = useState<string>(oldData.description);
-	const [role, setRole] = useState<MemberRole>();
-	useEffect(() => {
-		setNewData({
-			score: score,
-			description: description,
-			memberRoleId: role?.id ?? "",
-		});
-	}, [score, description, role]);
 
 	function onSave() {
 		mutation.mutate();

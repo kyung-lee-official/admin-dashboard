@@ -41,16 +41,17 @@ export const EditContentEditStat = (props: {
 
 	const [oldData, setOldData] = useState<EditPerformanceStatData>({
 		ownerId: "",
-		month: new Date(),
+		month: dayjs(),
 		statSections: [],
 	});
 	const [newData, setNewData] = useState<EditPerformanceStatData>(oldData);
+	const [statSections, setStatSections] = useState(oldData.statSections);
 
 	useEffect(() => {
 		if (statsQuery.data) {
 			const initialData = {
 				ownerId: statsQuery.data.ownerId,
-				month: dayjs(statsQuery.data.month).toDate(),
+				month: dayjs(statsQuery.data.month),
 				statSections: statsQuery.data.statSections.map((s) => {
 					return {
 						id: s.id,
@@ -62,8 +63,17 @@ export const EditContentEditStat = (props: {
 			};
 			setOldData(initialData);
 			setNewData(initialData);
+			setStatSections(initialData.statSections);
 		}
 	}, [statsQuery.data]);
+
+	useEffect(() => {
+		setNewData({
+			ownerId: oldData.ownerId,
+			month: oldData.month,
+			statSections,
+		});
+	}, [statSections]);
 
 	const mutation = useMutation({
 		mutationFn: () => {

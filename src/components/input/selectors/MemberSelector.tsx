@@ -7,8 +7,8 @@ import { AxiosError } from "axios";
 import { Dispatch, SetStateAction } from "react";
 
 type MemberSelectorProps = {
-	member: Member | undefined;
-	setMember: Dispatch<SetStateAction<Member | undefined>>;
+	member: Member;
+	setMember: Dispatch<SetStateAction<Member>>;
 };
 
 export const MemberSelector = (props: MemberSelectorProps) => {

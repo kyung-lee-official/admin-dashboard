@@ -8,7 +8,7 @@ import { SearchInput } from "@/components/input/SearchInput";
 
 type RoleSelectorProps = {
 	role: MemberRole | undefined;
-	setRole: Dispatch<SetStateAction<MemberRole | undefined>>;
+	setRole: Dispatch<SetStateAction<MemberRole>>;
 };
 
 export const RoleSelector = (props: RoleSelectorProps) => {

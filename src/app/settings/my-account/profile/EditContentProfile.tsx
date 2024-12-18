@@ -28,23 +28,31 @@ export const EditContentProfile = (props: {
 		refetchOnWindowFocus: false,
 	});
 
-	const [oldData, setOldData] = useState<MyInfo>({
+	const [oldData, setOldData] = useState({
 		id: "",
-		email: "",
 		name: "",
-		isVerified: false,
-		isFrozen: false,
-		createdAt: "",
-		updatedAt: "",
-		memberRoles: [],
 	});
-	const [newData, setNewData] = useState<MyInfo>(oldData);
+	const [newData, setNewData] = useState(oldData);
+	const [name, setName] = useState(oldData.name);
 
 	useEffect(() => {
 		if (myInfoQuery.isSuccess) {
-			setNewData(myInfoQuery.data);
+			const initialData = {
+				id: myInfoQuery.data.id,
+				name: myInfoQuery.data.name,
+			};
+			setOldData(initialData);
+			setNewData(initialData);
+			setName(initialData.name);
 		}
 	}, [myInfoQuery.data]);
+
+	useEffect(() => {
+		setNewData({
+			id: oldData.id,
+			name: name,
+		});
+	}, [name]);
 
 	const mutation = useMutation({
 		mutationFn: () => {
@@ -88,10 +96,7 @@ export const EditContentProfile = (props: {
 							border-[1px] border-white/10"
 							value={newData.name}
 							onChange={(e) => {
-								setNewData({
-									...newData,
-									name: e.target.value,
-								});
+								setName(e.target.value);
 							}}
 						/>
 					</div>
