@@ -136,7 +136,8 @@ export const SearchInput = <T, K extends StringKeys<T>>(props: {
 					flex flex-col
 					text-sm
 					bg-neutral-800
-					rounded-md shadow-lg border-[1px] border-white/10 border-t-white/15"
+					rounded-md shadow-lg border-[1px] border-white/10 border-t-white/15
+					z-20"
 				>
 					{sortByProp(filteredOptions, sortBy).map(
 						(item: any, i: number) => {
