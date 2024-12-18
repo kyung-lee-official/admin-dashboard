@@ -12,6 +12,9 @@ import { sortByProp, StringKeys } from "@/utils/data/data";
 export const SearchInput = <T, K extends StringKeys<T>>(props: {
 	selected: T | undefined;
 	setSelected: Dispatch<SetStateAction<T>>;
+	/* 'hover' is typically used to preview the content */
+	hover?: T | undefined;
+	setHover?: Dispatch<SetStateAction<T>>;
 	/* all options */
 	options: T[];
 	placeholder: string;
@@ -67,6 +70,8 @@ export const SearchInput = <T, K extends StringKeys<T>>(props: {
 	const {
 		selected,
 		setSelected,
+		hover,
+		setHover,
 		options,
 		labelProp: { primary, secondary },
 		placeholder,
@@ -145,6 +150,11 @@ export const SearchInput = <T, K extends StringKeys<T>>(props: {
 								<button
 									key={item.id}
 									className="flex w-full p-2 text-nowrap"
+									onMouseEnter={() => {
+										if (setHover) {
+											setHover(item);
+										}
+									}}
 									onClick={() => {
 										setSelected(item);
 										setSearchTerm(
