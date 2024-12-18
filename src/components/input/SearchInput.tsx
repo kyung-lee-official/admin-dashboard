@@ -7,16 +7,11 @@ import {
 	Dispatch,
 	SetStateAction,
 } from "react";
-import { sortByProp } from "@/utils/data/data";
-
-/* get all string keys of an object */
-type StringKeys<T> = {
-	[K in keyof T]: T[K] extends string ? K : never;
-}[keyof T];
+import { sortByProp, StringKeys } from "@/utils/data/data";
 
 export const SearchInput = <T, K extends StringKeys<T>>(props: {
 	selected: T | undefined;
-	setSelected: Dispatch<SetStateAction<T | undefined>>;
+	setSelected: Dispatch<SetStateAction<T>>;
 	/* all options */
 	options: T[];
 	placeholder: string;
