@@ -29,8 +29,6 @@ export type MyInfo = {
 	name: string;
 	isVerified: boolean;
 	isFrozen: boolean;
-	createdAt: string;
-	updatedAt: string;
 	memberRoles: MemberRole[];
 };
 
@@ -47,7 +45,10 @@ export const Content = () => {
 		refetchOnWindowFocus: false,
 	});
 
-	const [edit, setEdit] = useState<EditProps>({ show: false, id: "" });
+	const [edit, setEdit] = useState<EditProps>({
+		show: false,
+		id: EditId.PROFILE,
+	});
 
 	if (myInfoQuery.data) {
 		return (
