@@ -14,7 +14,7 @@ export const SearchInput = <T, K extends StringKeys<T>>(props: {
 	setSelected: Dispatch<SetStateAction<T>>;
 	/* 'hover' is typically used to preview the content */
 	hover?: T | undefined;
-	setHover?: Dispatch<SetStateAction<T>>;
+	setHover?: Dispatch<SetStateAction<T | undefined>>;
 	/* all options */
 	options: T[];
 	placeholder: string;
@@ -143,6 +143,11 @@ export const SearchInput = <T, K extends StringKeys<T>>(props: {
 					bg-neutral-800
 					rounded-md shadow-lg border-[1px] border-white/10 border-t-white/15
 					z-20"
+					onMouseLeave={() => {
+						if (setHover) {
+							setHover(undefined);
+						}
+					}}
 				>
 					{sortByProp(filteredOptions, sortBy).map(
 						(item: any, i: number) => {
