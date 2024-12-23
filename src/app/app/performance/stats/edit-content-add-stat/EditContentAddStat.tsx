@@ -59,7 +59,16 @@ export const EditContentAddStat = (props: {
 
 	const mutation = useMutation({
 		mutationFn: () => {
-			return createStat(newData, jwt);
+			const dto = {
+				ownerId: newData.member.id,
+				month: newData.month.toISOString(),
+				statSections: newData.statSections.map((s) => ({
+					weight: s.weight,
+					title: s.title,
+					description: s.description,
+				})),
+			};
+			return createStat(dto, jwt);
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
