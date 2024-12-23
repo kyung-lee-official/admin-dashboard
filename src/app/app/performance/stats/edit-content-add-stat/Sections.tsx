@@ -56,10 +56,7 @@ export const Sections = (props: SectionProps) => {
 					</div>
 				</div>
 			</div>
-			<div
-				className="flex flex-col h-[calc(100svh-18px-61px-32px-20px-24px-72px-12px-62px)] gap-2
-				overflow-y-auto"
-			>
+			<div className="flex flex-col gap-2">
 				{sections.length > 0 &&
 					sections.map((s, i) => {
 						return (
@@ -82,13 +79,17 @@ export const Sections = (props: SectionProps) => {
 										value={s.title}
 										onChange={(e) => {
 											setSections(
-												sections.map((section, j) => {
-													if (i === j) {
+												sections.map((section) => {
+													if (
+														s.tempId ===
+														section.tempId
+													) {
+														const title =
+															e.target.value;
 														return {
 															tempId: s.tempId,
 															weight: s.weight,
-															title: e.target
-																.value,
+															title: title,
 															description:
 																s.description,
 														};
@@ -109,23 +110,26 @@ export const Sections = (props: SectionProps) => {
 											value={s.weight}
 											onChange={(e) => {
 												setSections(
-													sections.map(
-														(section, j) => {
-															if (i === j) {
-																return {
-																	tempId: s.tempId,
-																	weight: parseInt(
-																		e.target
-																			.value
-																	),
-																	title: s.title,
-																	description:
-																		s.description,
-																};
-															}
-															return section;
+													sections.map((section) => {
+														if (
+															s.tempId ===
+															section.tempId
+														) {
+															const weight =
+																parseInt(
+																	e.target
+																		.value
+																);
+															return {
+																tempId: s.tempId,
+																weight: weight,
+																title: s.title,
+																description:
+																	s.description,
+															};
 														}
-													)
+														return section;
+													})
 												);
 											}}
 										/>
@@ -136,7 +140,9 @@ export const Sections = (props: SectionProps) => {
 											e.preventDefault();
 											setSections(
 												sections.filter(
-													(_, j) => j !== i
+													(section) =>
+														s.tempId !==
+														section.tempId
 												)
 											);
 										}}
@@ -150,23 +156,28 @@ export const Sections = (props: SectionProps) => {
 									bg-transparent
 									border-t-[1px] border-white/20
 									outline-none"
+									value={s.description}
 									onChange={(e) => {
 										setSections(
-											sections.map((section, j) => {
-												if (i === j) {
+											sections.map((section) => {
+												if (
+													s.tempId === section.tempId
+												) {
+													const description =
+														e.target.value;
 													return {
 														tempId: s.tempId,
 														weight: s.weight,
 														title: s.title,
 														description:
-															e.target.value,
+															description,
 													};
 												}
 												return section;
 											})
 										);
 									}}
-								></textarea>
+								/>
 							</div>
 						);
 					})}

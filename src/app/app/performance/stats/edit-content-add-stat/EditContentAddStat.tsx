@@ -14,6 +14,7 @@ import {
 	CreateSectionData,
 } from "@/utils/types/app/performance";
 import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
+import { nanoid } from "nanoid";
 
 export const EditContentAddStat = (props: {
 	edit: EditProps;
@@ -34,7 +35,7 @@ export const EditContentAddStat = (props: {
 		month: dayjs(),
 		statSections: [
 			{
-				tempId: "",
+				tempId: nanoid(),
 				weight: 100,
 				title: "New Section",
 				description: "",
@@ -62,7 +63,7 @@ export const EditContentAddStat = (props: {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: [PerformanceQK.GET_PERFORMANCE_STATS],
+				queryKey: [PerformanceQK.GET_STATS],
 			});
 			setEdit({ show: false, id: editId });
 		},
@@ -83,31 +84,26 @@ export const EditContentAddStat = (props: {
 			newData={newData}
 			oldData={oldData}
 		>
-			<form className="flex-[1_0_100px] flex flex-col">
-				<div className="flex-[1_0_100px] flex flex-col px-6 py-4 gap-6">
-					<div
-						className="flex flex-col gap-1.5
-						text-sm"
-					>
-						Member
-						<MemberSelector member={member} setMember={setMember} />
-					</div>
-					<div
-						className="flex flex-col gap-1.5
-						text-sm"
-					>
-						Month
-						<MonthPicker date={month} setDate={setMonth} />
-					</div>
-					<div
-						className="flex flex-col gap-1.5
-						text-sm"
-					>
-						<Sections
-							sections={statSections}
-							setSections={setStatSections}
-						/>
-					</div>
+			<form className="px-6 py-4 h-full">
+				<div
+					className="mb-6
+					text-sm"
+				>
+					<div className="mb-1.5">Member</div>
+					<MemberSelector member={member} setMember={setMember} />
+				</div>
+				<div
+					className="mb-6
+					text-sm"
+				>
+					<div className="mb-1.5">Month</div>
+					<MonthPicker date={month} setDate={setMonth} />
+				</div>
+				<div className="text-sm">
+					<Sections
+						sections={statSections}
+						setSections={setStatSections}
+					/>
 				</div>
 			</form>
 		</EditContentRegular>
