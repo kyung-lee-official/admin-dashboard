@@ -81,52 +81,61 @@ export const EditContentRegular = (props: {
 				initial={{ x: "100%" }}
 				animate={{ x: "0%" }}
 				transition={{ duration: 0.1 }}
-				className="flex flex-col h-[calc(100svh-16px)] w-full max-w-[560px] m-2
+				className="absolute top-2 bottom-2 right-2 w-full max-w-[560px]
 				text-white/90
 				bg-neutral-900
 				rounded-lg border-[1px] border-neutral-700 border-t-neutral-600"
 			>
-				<div
-					className="flex-[0_0_61px] flex justify-between px-6 py-4
-					font-semibold text-lg
-					border-b-[1px] border-white/10"
-				>
-					<div>{title}</div>
-					<button
-						className="flex justify-center items-center w-7 h-7
-						text-white/50
-						hover:bg-white/10 rounded-md"
-						onClick={() => {
-							quit();
-						}}
+				<div className="relative w-full h-full">
+					<div
+						className="absolute top-0 w-full h-[61px]
+						flex justify-between px-6 py-4
+						font-semibold text-lg
+						border-b-[1px] border-white/10"
 					>
-						<CloseIcon size={15} />
-					</button>
-				</div>
-				{children}
-				<div
-					className="flex-[0_0_61px] flex justify-end px-6 py-4 gap-1.5
-					border-t-[1px] border-white/10"
-				>
-					<Button
-						color="cancel"
-						size="sm"
-						onClick={(e) => {
-							e.preventDefault();
-							quit();
-						}}
+						<div>{title}</div>
+						<button
+							className="flex justify-center items-center w-7 h-7
+							text-white/50
+							hover:bg-white/10 rounded-md"
+							onClick={() => {
+								quit();
+							}}
+						>
+							<CloseIcon size={15} />
+						</button>
+					</div>
+					<div
+						className="absolute top-[61px] bottom-[61px] w-full
+						overflow-y-auto scrollbar"
 					>
-						Cancel
-					</Button>
-					<Button
-						size="sm"
-						onClick={(e) => {
-							e.preventDefault();
-							onSave();
-						}}
+						{children}
+					</div>
+					<div
+						className="absolute bottom-0 w-full h-[61px]
+						flex justify-between px-6 py-4 gap-1.5
+						border-t-[1px] border-white/10"
 					>
-						Save
-					</Button>
+						<Button
+							color="cancel"
+							size="sm"
+							onClick={(e) => {
+								e.preventDefault();
+								quit();
+							}}
+						>
+							Cancel
+						</Button>
+						<Button
+							size="sm"
+							onClick={(e) => {
+								e.preventDefault();
+								onSave();
+							}}
+						>
+							Save
+						</Button>
+					</div>
 				</div>
 			</motion.div>
 			<UnsavedDialog
