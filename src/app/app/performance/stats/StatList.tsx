@@ -13,7 +13,7 @@ export const StatList = (props: { member?: Member; year: dayjs.Dayjs }) => {
 	const jwt = useAuthStore((state) => state.jwt);
 
 	const statsQuery = useQuery<PerformanceStatResponse[], AxiosError>({
-		queryKey: [PerformanceQK.GET_PERFORMANCE_STATS],
+		queryKey: [PerformanceQK.GET_STATS],
 		queryFn: async () => {
 			const stats = await getStats(member?.id as string, jwt);
 			return stats;

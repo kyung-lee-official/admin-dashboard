@@ -93,41 +93,39 @@ export const EditContentSignUp = (props: {
 			newData={newData}
 			oldData={oldData}
 		>
-			<form className="flex-[1_0_100px] flex flex-col">
-				<div className="flex-[1_0_100px] flex flex-col px-6 py-4">
-					<table className="text-sm">
-						<tbody className="[&_>_tr_>_td]:py-4">
-							<tr>
-								<td className="w-full">Allow public sign up</td>
-								<td>
-									<Toggle
-										isOn={newData?.allowPublicSignUp}
-										isAllowed={true}
-										onClick={() => {
-											setAllowPublicSignUp(
-												!allowPublicSignUp
-											);
-										}}
-									/>
-								</td>
-							</tr>
-							<tr>
-								<td>Allow Google sign up</td>
-								<td>
-									<Toggle
-										isOn={newData?.allowGoogleSignIn}
-										isAllowed={true}
-										onClick={() => {
-											setAllowGoogleSignIn(
-												!allowGoogleSignIn
-											);
-										}}
-									/>
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
+			<form className="flex flex-col px-6 py-4">
+				<table className="text-sm">
+					<tbody className="[&_>_tr_>_td]:py-4">
+						<tr>
+							<td className="w-full">Allow public sign up</td>
+							<td>
+								<Toggle
+									isOn={newData?.allowPublicSignUp}
+									isAllowed={true}
+									onClick={() => {
+										setAllowPublicSignUp(
+											!allowPublicSignUp
+										);
+									}}
+								/>
+							</td>
+						</tr>
+						<tr>
+							<td>Allow Google sign up</td>
+							<td>
+								<Toggle
+									isOn={newData?.allowGoogleSignIn}
+									isAllowed={true}
+									onClick={() => {
+										setAllowGoogleSignIn(
+											!allowGoogleSignIn
+										);
+									}}
+								/>
+							</td>
+						</tr>
+					</tbody>
+				</table>
 			</form>
 		</EditContentRegular>
 	);

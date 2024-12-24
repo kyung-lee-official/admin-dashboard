@@ -99,45 +99,40 @@ export const EditContentEmail = (props: {
 				newData={newData}
 				oldData={oldData}
 			>
-				<form
-					action={onSave}
-					className="flex-[1_0_100px] flex flex-col"
-				>
-					<div className="flex-[1_0_100px] flex flex-col px-6 py-4 gap-6">
+				<form action={onSave} className="flex flex-col px-6 py-4 gap-6">
+					<div
+						className="flex flex-col gap-1.5
+						text-sm"
+					>
+						Email
+						<input
+							type="text"
+							className="px-2 py-1.5
+							bg-white/10
+							rounded-md outline-none
+							border-[1px] border-white/10"
+							value={newEmail}
+							onChange={(e) => {
+								setNewEmail(e.target.value);
+							}}
+						/>
+					</div>
+					{!myInfoQuery.data.isVerified && (
 						<div
 							className="flex flex-col gap-1.5
 							text-sm"
 						>
-							Email
-							<input
-								type="text"
-								className="px-2 py-1.5
-								bg-white/10
-								rounded-md outline-none
-								border-[1px] border-white/10"
-								value={newEmail}
-								onChange={(e) => {
-									setNewEmail(e.target.value);
+							<Button
+								size="sm"
+								onClick={(e) => {
+									e.preventDefault();
+									sendEmailMutation.mutate(jwt);
 								}}
-							/>
-						</div>
-						{!myInfoQuery.data.isVerified && (
-							<div
-								className="flex flex-col gap-1.5
-								text-sm"
 							>
-								<Button
-									size="sm"
-									onClick={(e) => {
-										e.preventDefault();
-										sendEmailMutation.mutate(jwt);
-									}}
-								>
-									Send verification email
-								</Button>
-							</div>
-						)}
-					</div>
+								Send verification email
+							</Button>
+						</div>
+					)}
 				</form>
 			</EditContentRegular>
 		);

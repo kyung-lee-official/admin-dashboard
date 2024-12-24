@@ -8,7 +8,13 @@ import {
 import { queryClient } from "@/utils/react-query/react-query";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import {
+	Dispatch,
+	SetStateAction,
+	useEffect,
+	useReducer,
+	useState,
+} from "react";
 import { Sections } from "./Sections";
 import {
 	EditPerformanceStatData,
@@ -17,6 +23,7 @@ import {
 import { AxiosError } from "axios";
 import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
 import { nanoid } from "nanoid";
+import { EditSectionType, statSectionsReducer } from "./Reducers";
 
 export const EditContentEditStat = (props: {
 	edit: EditProps;
@@ -30,7 +37,7 @@ export const EditContentEditStat = (props: {
 	const jwt = useAuthStore((state) => state.jwt);
 
 	const statsQuery = useQuery<PerformanceStatResponse, AxiosError>({
-		queryKey: [PerformanceQK.GET_PERFORMANCE_STAT_BY_ID, statId, jwt],
+		queryKey: [PerformanceQK.GET_STAT_BY_ID, statId, jwt],
 		queryFn: async () => {
 			const stats = await getStatById(statId, jwt);
 			return stats;
@@ -45,7 +52,11 @@ export const EditContentEditStat = (props: {
 		statSections: [],
 	});
 	const [newData, setNewData] = useState<EditPerformanceStatData>(oldData);
-	const [statSections, setStatSections] = useState(oldData.statSections);
+	// const [statSections, setStatSections] = useState(oldData.statSections);
+	const [statSections, dispatchStatSections] = useReducer(
+		statSectionsReducer,
+		oldData.statSections
+	);
 
 	useEffect(() => {
 		if (statsQuery.data) {
@@ -58,12 +69,16 @@ export const EditContentEditStat = (props: {
 						tempId: nanoid(),
 						weight: s.weight,
 						title: s.title,
+						description: s.description,
 					};
 				}),
 			};
 			setOldData(initialData);
 			setNewData(initialData);
-			setStatSections(initialData.statSections);
+			dispatchStatSections({
+				type: EditSectionType.INITIALIZE,
+				payload: initialData.statSections,
+			});
 		}
 	}, [statsQuery.data]);
 
@@ -81,7 +96,7 @@ export const EditContentEditStat = (props: {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: [PerformanceQK.GET_PERFORMANCE_STAT_BY_ID],
+				queryKey: [PerformanceQK.GET_STAT_BY_ID],
 			});
 			setEdit({ show: false, id: editId });
 		},
@@ -102,33 +117,25 @@ export const EditContentEditStat = (props: {
 			newData={newData}
 			oldData={oldData}
 		>
-			<div
-				className="flex flex-col h-[calc(100svh-18px-61px)] overflow-y-auto
-				scrollbar"
-			>
-				<form className="flex-[1_0_100px] flex flex-col">
+			<form className="flex flex-col">
+				<div className="flex flex-col px-6 py-4 gap-6">
 					<div
-						className="flex flex-col px-6 py-4 gap-6
-						border-b-[1px] border-white/10"
+						className="flex flex-col gap-1.5
+						text-sm"
 					>
-						<div
-							className="flex flex-col gap-1.5
-							text-sm"
-						>
-							{dayjs(statsQuery.data?.month).format("MMMM YYYY")}
-						</div>
-						<div
-							className="flex flex-col gap-1.5
-							text-sm"
-						>
-							<Sections
-								newData={newData}
-								setNewData={setNewData}
-							/>
-						</div>
+						{dayjs(statsQuery.data?.month).format("MMMM YYYY")}
 					</div>
-				</form>
-			</div>
+					<div
+						className="flex flex-col gap-1.5
+						text-sm"
+					>
+						<Sections
+							statSections={statSections}
+							dispatchStatSections={dispatchStatSections}
+						/>
+					</div>
+				</div>
+			</form>
 		</EditContentRegular>
 	);
 };

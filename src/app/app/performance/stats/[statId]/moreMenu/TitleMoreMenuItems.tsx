@@ -32,7 +32,7 @@ export const TitleMoreMenuItems = () => {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: [PerformanceQK.GET_PERFORMANCE_STATS],
+				queryKey: [PerformanceQK.GET_STATS],
 			});
 			router.push("/app/performance/stats");
 		},

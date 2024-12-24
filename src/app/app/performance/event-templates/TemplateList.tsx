@@ -1,5 +1,8 @@
 import { useAuthStore } from "@/stores/auth";
-import { getTemplatesByRole, PerformanceQK } from "@/utils/api/app/performance";
+import {
+	getTemplatesByRoleId,
+	PerformanceQK,
+} from "@/utils/api/app/performance";
 import { PerformanceEventTemplateResponse } from "@/utils/types/app/performance";
 import { MemberRole } from "@/utils/types/internal";
 import { useQuery } from "@tanstack/react-query";
@@ -16,9 +19,9 @@ export const TemplateList = (props: { role?: MemberRole }) => {
 		PerformanceEventTemplateResponse[],
 		AxiosError
 	>({
-		queryKey: [PerformanceQK.GET_PERFORMANCE_TEMPLATES],
+		queryKey: [PerformanceQK.GET_TEMPLATES_BY_ROLE_ID],
 		queryFn: async () => {
-			const templates = await getTemplatesByRole(role!.id, jwt);
+			const templates = await getTemplatesByRoleId(role!.id, jwt);
 			return templates;
 		},
 		retry: false,

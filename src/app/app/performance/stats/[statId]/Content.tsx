@@ -18,7 +18,7 @@ export const Content = (props: { statId: string }) => {
 
 	const statsQuery = useQuery<PerformanceStatResponse, AxiosError>({
 		queryKey: [
-			PerformanceQK.GET_PERFORMANCE_STAT_BY_ID,
+			PerformanceQK.GET_STAT_BY_ID,
 			parseInt(statId),
 			jwt,
 		],

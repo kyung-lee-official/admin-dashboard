@@ -103,14 +103,8 @@ export const EditContentPassword = (props: {
 			newData={newData}
 			oldData={oldData}
 		>
-			<form
-				onSubmit={handleSubmit(onSave)}
-				className="flex-[1_0_100px] flex flex-col"
-			>
-				<div
-					className="flex-[1_0_100px] flex flex-col px-6 py-4 gap-6
-					border-b-[1px] border-white/10"
-				>
+			<form onSubmit={handleSubmit(onSave)} className="flex flex-col">
+				<div className="flex flex-col px-6 py-4 gap-6">
 					<div
 						className="flex flex-col gap-1.5
 						text-sm"

@@ -1,3 +1,4 @@
+import { z } from "zod";
 import dayjs from "dayjs";
 import { Member, MemberRole } from "../internal";
 
@@ -77,6 +78,30 @@ export type PerformanceEventTemplateResponse = {
 	score: number;
 	description: string;
 	memberRole: MemberRole;
-	createdAt: string;
-	updatedAt: string;
+};
+
+const createEventDtoSchema = z.object({
+	templateId: z.number().optional(),
+	sectionId: z.number(),
+	score: z.number(),
+	/* amount can only be added after the event is created, default is 1 */
+	amount: z.number().optional(),
+	description: z.string(),
+	/* attachments can only be added after the event is created */
+	// attachments: z.array(z.string()),
+});
+
+export type CreateEventDto = z.infer<typeof createEventDtoSchema>;
+
+export type FindEventByIdResponse = {
+	id: number;
+	templateId?: number;
+	templateScore: number;
+	templateDescription: string;
+	sectionId: number;
+	section: SectionResponse;
+	score: number;
+	amount: number;
+	description: string;
+	attachments: string[];
 };

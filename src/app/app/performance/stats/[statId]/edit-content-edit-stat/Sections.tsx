@@ -1,24 +1,24 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Button } from "@/components/button/Button";
-import { EditPerformanceStatData } from "@/utils/types/app/performance";
 import { DeleteConfirmDialog } from "@/components/delete-confirmation/DeleteConfirmDialog";
-import { nanoid } from "nanoid";
+import { EditSectionData } from "@/utils/types/app/performance";
+import { EditSectionAction, EditSectionType } from "./Reducers";
 
 export const Sections = (props: {
-	newData: EditPerformanceStatData;
-	setNewData: Dispatch<SetStateAction<EditPerformanceStatData>>;
+	statSections: EditSectionData[];
+	dispatchStatSections: Dispatch<EditSectionAction>;
 }) => {
-	const { newData, setNewData } = props;
-	const [showDeleteConfirm, setshowDeleteConfirm] = useState(false);
+	const { statSections, dispatchStatSections } = props;
+	const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 	const [totalWeight, setTotalWeight] = useState(
-		newData.statSections.reduce((acc, s) => acc + s.weight, 0)
+		statSections.reduce((acc, s) => acc + s.weight, 0)
 	);
 
+	const [deleteTempId, setDeleteTempId] = useState("");
+
 	useEffect(() => {
-		setTotalWeight(
-			newData.statSections.reduce((acc, s) => acc + s.weight, 0)
-		);
-	}, [newData.statSections]);
+		setTotalWeight(statSections.reduce((acc, s) => acc + s.weight, 0));
+	}, [statSections]);
 
 	return (
 		<div
@@ -39,14 +39,8 @@ export const Sections = (props: {
 						size="sm"
 						onClick={(e) => {
 							e.preventDefault();
-							setNewData({
-								ownerId: newData.ownerId,
-								month: newData.month,
-								statSections: newData.statSections.concat({
-									tempId: nanoid(),
-									weight: 0,
-									title: "New Section",
-								}),
+							dispatchStatSections({
+								type: EditSectionType.CREATE,
 							});
 						}}
 					>
@@ -60,12 +54,9 @@ export const Sections = (props: {
 					</div>
 				</div>
 			</div>
-			<div
-				className="flex flex-col h-[calc(100svh-18px-61px-32px-20px-24px-72px-12px-62px)] gap-2
-				overflow-y-auto"
-			>
-				{newData.statSections.length > 0 &&
-					newData.statSections.map((s, i) => {
+			<div className="flex flex-col gap-2">
+				{statSections.length > 0 &&
+					statSections.map((s, i) => {
 						return (
 							<div
 								key={i}
@@ -85,29 +76,13 @@ export const Sections = (props: {
 										rounded"
 										value={s.title}
 										onChange={(e) => {
-											const newValue = e.target.value;
-											setNewData({
-												ownerId: newData.ownerId,
-												month: newData.month,
-												statSections:
-													newData.statSections.map(
-														(section) => {
-															if (
-																s.tempId ===
-																section.tempId
-															) {
-																return {
-																	id: s.id,
-																	tempId: s.tempId,
-																	weight: s.weight,
-																	title: newValue,
-																	description:
-																		s.description,
-																};
-															}
-															return section;
-														}
-													),
+											const title = e.target.value;
+											dispatchStatSections({
+												type: EditSectionType.UPDATE_TITLE,
+												payload: {
+													tempId: s.tempId,
+													title,
+												},
 											});
 										}}
 									/>
@@ -121,31 +96,15 @@ export const Sections = (props: {
 											rounded"
 											value={s.weight}
 											onChange={(e) => {
-												const newValue = parseInt(
+												const weight = parseInt(
 													e.target.value
 												);
-												setNewData({
-													ownerId: newData.ownerId,
-													month: newData.month,
-													statSections:
-														newData.statSections.map(
-															(section) => {
-																if (
-																	s.tempId ===
-																	section.tempId
-																) {
-																	return {
-																		id: s.id,
-																		tempId: s.tempId,
-																		weight: newValue,
-																		title: s.title,
-																		description:
-																			s.description,
-																	};
-																}
-																return section;
-															}
-														),
+												dispatchStatSections({
+													type: EditSectionType.UPDATE_WEIGHT,
+													payload: {
+														tempId: s.tempId,
+														weight,
+													},
 												});
 											}}
 										/>
@@ -157,45 +116,21 @@ export const Sections = (props: {
 											/* check whether the section is new or not */
 											if (s.id) {
 												/* if the section is not new, ask for confirmation */
-												setshowDeleteConfirm(true);
+												setDeleteTempId(s.tempId);
+												setShowDeleteConfirm(true);
 											} else {
 												/* if the section is new, remove it immediately */
-												setNewData({
-													ownerId: newData.ownerId,
-													month: newData.month,
-													statSections:
-														newData.statSections.filter(
-															(section) =>
-																section.tempId !==
-																s.tempId
-														),
+												dispatchStatSections({
+													type: EditSectionType.DELETE,
+													payload: {
+														tempId: s.tempId,
+													},
 												});
 											}
 										}}
 									>
 										Delete
 									</Button>
-									<DeleteConfirmDialog
-										show={showDeleteConfirm}
-										setShow={setshowDeleteConfirm}
-										question={
-											"Are you sure you want to delete this section?"
-										}
-										description={
-											"This is an existing section. Deleting it will remove all events associated with it."
-										}
-										onDelete={() => {
-											setNewData({
-												ownerId: newData.ownerId,
-												month: newData.month,
-												statSections:
-													newData.statSections.filter(
-														(_, j) => j !== i
-													),
-											});
-											setshowDeleteConfirm(false);
-										}}
-									/>
 								</div>
 								<textarea
 									placeholder={"Description"}
@@ -205,36 +140,35 @@ export const Sections = (props: {
 									outline-none"
 									value={s.description}
 									onChange={(e) => {
-										const newValue = e.target.value;
-										setNewData({
-											ownerId: newData.ownerId,
-											month: newData.month,
-											statSections:
-												newData.statSections.map(
-													(section) => {
-														if (
-															s.tempId ===
-															section.tempId
-														) {
-															return {
-																id: s.id,
-																tempId: s.tempId,
-																weight: s.weight,
-																title: s.title,
-																description:
-																	newValue,
-															};
-														}
-														return section;
-													}
-												),
+										const description = e.target.value;
+										dispatchStatSections({
+											type: EditSectionType.UPDATE_DESCRIPTION,
+											payload: {
+												tempId: s.tempId,
+												description,
+											},
 										});
 									}}
-								></textarea>
+								/>
 							</div>
 						);
 					})}
 			</div>
+			<DeleteConfirmDialog
+				show={showDeleteConfirm}
+				setShow={setShowDeleteConfirm}
+				question={"Are you sure you want to delete this section?"}
+				description={
+					"This is an existing section. Deleting it will remove all events associated with it."
+				}
+				onDelete={() => {
+					dispatchStatSections({
+						type: EditSectionType.DELETE,
+						payload: { tempId: deleteTempId },
+					});
+					setShowDeleteConfirm(false);
+				}}
+			/>
 		</div>
 	);
 };

@@ -1,10 +1,13 @@
+import { CreateEventDto } from "@/utils/types/app/performance";
 import axios from "axios";
 
 export enum PerformanceQK {
-	GET_PERFORMANCE_STATS = "get-performance-stats",
-	GET_PERFORMANCE_STAT_BY_ID = "get-performance-stat-by-id",
-	GET_PERFORMANCE_TEMPLATES = "get-performance-templates",
-	GET_PERFORMANCE_TEMPLATE_BY_ID = "get-performance-template-by-id",
+	GET_STATS = "get-stats",
+	GET_STAT_BY_ID = "get-stat-by-id",
+	GET_TEMPLATES_BY_ROLE_ID = "get-templates-by-role-id",
+	GET_MY_ROLE_TEMPLATES = "get-my-role-templates",
+	GET_TEMPLATE_BY_ID = "get-template-by-id",
+	GET_EVENT_BY_ID = "get-event-by-id",
 }
 
 export const createStat = async (newData: any, jwt: string) => {
@@ -67,9 +70,22 @@ export const createTemplate = async (newData: any, jwt: string) => {
 	return res.data;
 };
 
-export const getTemplatesByRole = async (roleId: string, jwt: string) => {
+export const getTemplatesByRoleId = async (roleId: string, jwt: string) => {
 	const res = await axios.get(
 		`/performance/event-templates/get-by-role-id/${roleId}`,
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+			},
+		}
+	);
+	return res.data;
+};
+
+export const getMyRoleTemplates = async (jwt: string) => {
+	const res = await axios.get(
+		`/performance/event-templates/get-by-my-role-templates`,
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
 			headers: {
@@ -90,5 +106,25 @@ export const getTemplateById = async (id: string, jwt: string) => {
 			},
 		}
 	);
+	return res.data;
+};
+
+export const createEvent = async (body: CreateEventDto, jwt: string) => {
+	const res = await axios.post("/performance/events", body, {
+		baseURL: process.env.NEXT_PUBLIC_API_HOST,
+		headers: {
+			Authorization: jwt,
+		},
+	});
+	return res.data;
+};
+
+export const getEventById = async (id: string, jwt: string) => {
+	const res = await axios.get(`/performance/events/${id}`, {
+		baseURL: process.env.NEXT_PUBLIC_API_HOST,
+		headers: {
+			Authorization: jwt,
+		},
+	});
 	return res.data;
 };

@@ -21,11 +21,7 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 	const router = useRouter();
 
 	const statsQuery = useQuery<PerformanceStatResponse, AxiosError>({
-		queryKey: [
-			PerformanceQK.GET_PERFORMANCE_STAT_BY_ID,
-			parseInt(statId),
-			jwt,
-		],
+		queryKey: [PerformanceQK.GET_STAT_BY_ID, parseInt(statId), jwt],
 		queryFn: async () => {
 			const stats = await getStatById(parseInt(statId), jwt);
 			return stats;
@@ -137,8 +133,10 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 						[&_>_tr_>_td]:border-t-[1px] [&_>_tr_>_td]:border-white/10"
 					>
 						<tr>
-							<td className="w-1/2">Description</td>
-							<td className="w-1/2">Score</td>
+							<td className="w-2/5">Description</td>
+							<td className="w-1/5">Score</td>
+							<td className="w-1/5">Amount</td>
+							<td className="w-1/5">Total Score</td>
 							<td>
 								<div className="w-7 h-7">
 									{/* placeholder */}
@@ -148,8 +146,10 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 						{section.events.map((ev: EventResponse, i) => {
 							return (
 								<tr key={i}>
-									<td className="w-1/2">{ev.description}</td>
-									<td className="w-1/2">{ev.score}</td>
+									<td>{ev.description}</td>
+									<td>{ev.score}</td>
+									<td>{ev.amount}</td>
+									<td>{ev.score * ev.amount}</td>
 									<td>
 										<Link
 											href={`${section.id}/event/${ev.id}`}

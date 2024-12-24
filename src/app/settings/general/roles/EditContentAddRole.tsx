@@ -58,53 +58,51 @@ export const EditContentAddRole = (props: {
 			newData={newData}
 			oldData={oldData}
 		>
-			<form action={onSave} className="flex-[1_0_100px] flex flex-col">
-				<div className="flex-[1_0_100px] flex flex-col px-6 py-4 gap-6">
-					<div
-						className="flex flex-col gap-1.5
-						text-sm"
-					>
-						Role Id
-						<input
-							type="text"
-							className="px-2 py-1.5
-							bg-white/10
-							rounded-md outline-none
-							border-[1px] border-white/10"
-							onChange={(e) => {
-								setId(e.target.value);
-							}}
-						/>
-					</div>
-					<div
-						className="flex flex-col gap-1.5
-						text-sm"
-					>
-						Name
-						<input
-							type="text"
-							className="px-2 py-1.5
-							bg-white/10
-							rounded-md outline-none
-							border-[1px] border-white/10"
-							onChange={(e) => {
-								setName(e.target.value);
-							}}
-						/>
-					</div>
-					{/* <div
-						className="flex flex-col gap-1.5
-						text-sm"
-					>
-						Members
-						<CheckboxList
-							allOptions={newData.members}
-							newSelectedOptions={newData.members}
-							setNewSelectedOptions={newData.members}
-							itemKey="name"
-						/>
-					</div> */}
+			<form action={onSave} className="flex flex-col px-6 py-4 gap-6">
+				<div
+					className="flex flex-col gap-1.5
+					text-sm"
+				>
+					Role Id
+					<input
+						type="text"
+						className="px-2 py-1.5
+						bg-white/10
+						rounded-md outline-none
+						border-[1px] border-white/10"
+						onChange={(e) => {
+							setId(e.target.value);
+						}}
+					/>
 				</div>
+				<div
+					className="flex flex-col gap-1.5
+					text-sm"
+				>
+					Name
+					<input
+						type="text"
+						className="px-2 py-1.5
+						bg-white/10
+						rounded-md outline-none
+						border-[1px] border-white/10"
+						onChange={(e) => {
+							setName(e.target.value);
+						}}
+					/>
+				</div>
+				{/* <div
+					className="flex flex-col gap-1.5
+					text-sm"
+				>
+					Members
+					<CheckboxList
+						allOptions={newData.members}
+						newSelectedOptions={newData.members}
+						setNewSelectedOptions={newData.members}
+						itemKey="name"
+					/>
+				</div> */}
 			</form>
 		</EditContentRegular>
 	);

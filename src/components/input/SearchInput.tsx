@@ -11,7 +11,7 @@ import { sortByProp, StringKeys } from "@/utils/data/data";
 
 export const SearchInput = <T, K extends StringKeys<T>>(props: {
 	selected: T | undefined;
-	setSelected: Dispatch<SetStateAction<T>>;
+	setSelected: Dispatch<SetStateAction<T | undefined>>;
 	/* 'hover' is typically used to preview the content */
 	hover?: T | undefined;
 	setHover?: Dispatch<SetStateAction<T | undefined>>;

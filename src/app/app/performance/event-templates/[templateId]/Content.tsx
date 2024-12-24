@@ -16,7 +16,7 @@ export const Content = (props: { templateId: string }) => {
 		PerformanceEventTemplateResponse,
 		AxiosError
 	>({
-		queryKey: [PerformanceQK.GET_PERFORMANCE_TEMPLATE_BY_ID, jwt],
+		queryKey: [PerformanceQK.GET_TEMPLATE_BY_ID, jwt],
 		queryFn: async () => {
 			const template = await getTemplateById(templateId, jwt);
 			return template;

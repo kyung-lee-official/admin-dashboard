@@ -42,16 +42,16 @@ export const EditContentAddTemplate = (props: {
 
 	const mutation = useMutation({
 		mutationFn: () => {
-			const body = {
+			const dto = {
 				score: newData.score,
 				description: newData.description,
 				memberRoleId: newData.memberRole.id,
 			};
-			return createTemplate(body, jwt);
+			return createTemplate(dto, jwt);
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: [PerformanceQK.GET_PERFORMANCE_TEMPLATES, jwt],
+				queryKey: [PerformanceQK.GET_TEMPLATES_BY_ROLE_ID, jwt],
 			});
 			setEdit({ show: false, id: editId });
 		},
@@ -72,42 +72,40 @@ export const EditContentAddTemplate = (props: {
 			newData={newData}
 			oldData={oldData}
 		>
-			<form action={onSave} className="flex-[1_0_100px] flex flex-col">
-				<div className="flex-[1_0_100px] flex flex-col px-6 py-4 gap-6">
-					<RoleSelector role={role} setRole={setRole} />
-					<div
-						className="flex flex-col gap-1.5
-						text-sm"
-					>
-						Score
-						<input
-							type="number"
-							className="px-2 py-1.5
-							bg-white/10
-							rounded-md outline-none
-							border-[1px] border-white/10"
-							placeholder="integer only"
-							onChange={(e) => {
-								setScore(parseInt(e.target.value));
-							}}
-						/>
-					</div>
-					<div
-						className="flex flex-col gap-1.5
-						text-sm"
-					>
-						Description
-						<input
-							type="text"
-							className="px-2 py-1.5
-							bg-white/10
-							rounded-md outline-none
-							border-[1px] border-white/10"
-							onChange={(e) => {
-								setDescription(e.target.value);
-							}}
-						/>
-					</div>
+			<form action={onSave} className="flex flex-col px-6 py-4 gap-6">
+				<RoleSelector role={role} setRole={setRole} />
+				<div
+					className="flex flex-col gap-1.5
+					text-sm"
+				>
+					Score
+					<input
+						type="number"
+						className="px-2 py-1.5
+						bg-white/10
+						rounded-md outline-none
+						border-[1px] border-white/10"
+						placeholder="integer only"
+						onChange={(e) => {
+							setScore(parseInt(e.target.value));
+						}}
+					/>
+				</div>
+				<div
+					className="flex flex-col gap-1.5
+					text-sm"
+				>
+					Description
+					<input
+						type="text"
+						className="px-2 py-1.5
+						bg-white/10
+						rounded-md outline-none
+						border-[1px] border-white/10"
+						onChange={(e) => {
+							setDescription(e.target.value);
+						}}
+					/>
 				</div>
 			</form>
 		</EditContentRegular>

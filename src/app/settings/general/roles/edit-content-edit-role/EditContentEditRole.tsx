@@ -72,12 +72,12 @@ export const EditContentEditRole = (props: {
 
 	const mutation = useMutation({
 		mutationFn: () => {
-			const body = {
+			const dto = {
 				id: newData.id,
 				name: newData.name,
 				ids: newData.members.map((member) => member.id),
 			};
-			return updateRoleById(body, roleId, jwt);
+			return updateRoleById(dto, roleId, jwt);
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
@@ -102,52 +102,47 @@ export const EditContentEditRole = (props: {
 			newData={newData}
 			oldData={oldData}
 		>
-			<form action={onSave} className="flex-[1_0_100px] flex flex-col">
-				<div className="flex-[1_0_100px] flex flex-col px-6 py-4 gap-6">
-					<div
-						className="flex flex-col gap-1.5
-						text-sm"
-					>
-						Role Id
-						<input
-							type="text"
-							className="px-2 py-1.5
-							bg-white/10
-							rounded-md outline-none
-							border-[1px] border-white/10"
-							value={newData.id}
-							onChange={(e) => {
-								setId(e.target.value);
-							}}
-						/>
-					</div>
-					<div
-						className="flex flex-col gap-1.5
-						text-sm"
-					>
-						Name
-						<input
-							type="text"
-							className="px-2 py-1.5
-							bg-white/10
-							rounded-md outline-none
-							border-[1px] border-white/10"
-							value={newData.name}
-							onChange={(e) => {
-								setName(e.target.value);
-							}}
-						/>
-					</div>
-					<div
-						className="flex flex-col gap-1.5
-						text-sm"
-					>
-						Members
-						<EditMembers
-							members={members}
-							setMembers={setMembers}
-						/>
-					</div>
+			<form action={onSave} className="flex flex-col px-6 py-4 gap-6">
+				<div
+					className="flex flex-col gap-1.5
+					text-sm"
+				>
+					Role Id
+					<input
+						type="text"
+						className="px-2 py-1.5
+						bg-white/10
+						rounded-md outline-none
+						border-[1px] border-white/10"
+						value={newData.id}
+						onChange={(e) => {
+							setId(e.target.value);
+						}}
+					/>
+				</div>
+				<div
+					className="flex flex-col gap-1.5
+					text-sm"
+				>
+					Name
+					<input
+						type="text"
+						className="px-2 py-1.5
+						bg-white/10
+						rounded-md outline-none
+						border-[1px] border-white/10"
+						value={newData.name}
+						onChange={(e) => {
+							setName(e.target.value);
+						}}
+					/>
+				</div>
+				<div
+					className="flex flex-col gap-1.5
+					text-sm"
+				>
+					Members
+					<EditMembers members={members} setMembers={setMembers} />
 				</div>
 			</form>
 		</EditContentRegular>
