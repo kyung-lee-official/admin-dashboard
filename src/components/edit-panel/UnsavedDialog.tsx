@@ -1,5 +1,5 @@
-import { Dispatch, SetStateAction, useRef } from "react";
-import { EditProps } from "../../components/edit-panel/EditPanel";
+import { Dispatch, SetStateAction } from "react";
+import { EditProps } from "@/components/edit-panel/EditPanel";
 import { Button } from "@/components/button/Button";
 
 export const UnsavedDialog = (props: {
