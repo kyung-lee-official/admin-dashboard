@@ -14,6 +14,7 @@ import { DeleteConfirmDialog } from "@/components/delete-confirmation/DeleteConf
 import { queryClient } from "@/utils/react-query/react-query";
 import { Data } from "./Data";
 import { useRouter } from "next/navigation";
+import { UnsavedDialog } from "@/components/unsaved-dialog/UnsavedDialog";
 
 export const Details = (props: {
 	statId: number;
@@ -44,6 +45,7 @@ export const Details = (props: {
 	const [description, setDescription] = useState(oldData.description);
 
 	const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+	const [showUnsaved, setShowUnsaved] = useState(false);
 
 	const updateMutation = useMutation({
 		mutationFn: () => {
@@ -80,6 +82,13 @@ export const Details = (props: {
 	});
 	function onDelete() {
 		deleteMutation.mutate();
+	}
+
+	function onCancel() {
+		setScore(oldData.score);
+		setAmount(oldData.amount);
+		setDescription(oldData.description);
+		setIsEditing(false);
 	}
 
 	useEffect(() => {
@@ -133,7 +142,7 @@ export const Details = (props: {
 							<Button
 								size="sm"
 								onClick={() => {
-									setIsEditing(false);
+									setShowUnsaved(true);
 								}}
 							>
 								Cancel
@@ -198,6 +207,11 @@ export const Details = (props: {
 				setShow={setShowDeleteConfirmation}
 				question={"Are you sure you want to delete this event?"}
 				onDelete={onDelete}
+			/>
+			<UnsavedDialog
+				showUnsaved={showUnsaved}
+				setShowUnsaved={setShowUnsaved}
+				continueFn={onCancel}
 			/>
 		</div>
 	);
