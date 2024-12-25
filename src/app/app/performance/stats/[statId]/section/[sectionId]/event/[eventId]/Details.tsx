@@ -22,7 +22,6 @@ export const Details = (props: {
 	event: EventResponse;
 }) => {
 	const { statId, sectionId, event } = props;
-
 	const [isEditing, setIsEditing] = useState(false);
 
 	const jwt = useAuthStore((state) => state.jwt);
@@ -84,13 +83,6 @@ export const Details = (props: {
 		deleteMutation.mutate();
 	}
 
-	function onCancel() {
-		setScore(oldData.score);
-		setAmount(oldData.amount);
-		setDescription(oldData.description);
-		setIsEditing(false);
-	}
-
 	useEffect(() => {
 		const initialData = {
 			id: event.id,
@@ -112,17 +104,36 @@ export const Details = (props: {
 
 	useEffect(() => {
 		setNewData({
-			id: newData.id,
-			templateId: newData.templateId,
-			templateScore: newData.templateScore,
-			templateDescription: newData.templateDescription,
-			sectionId: newData.sectionId,
+			id: oldData.id,
+			templateId: oldData.templateId,
+			templateScore: oldData.templateScore,
+			templateDescription: oldData.templateDescription,
+			sectionId: oldData.sectionId,
 			score: score,
 			amount: amount,
 			description: description,
-			attachments: newData.attachments,
+			attachments: oldData.attachments,
 		});
 	}, [score, amount, description]);
+
+	function cancel() {
+		console.log(oldData);
+		console.log(newData);
+
+		const isDataChanged =
+			JSON.stringify(oldData) !== JSON.stringify(newData);
+		if (isDataChanged) {
+			setShowUnsaved(true);
+		} else {
+			discard();
+		}
+	}
+	function discard() {
+		setScore(oldData.score);
+		setAmount(oldData.amount);
+		setDescription(oldData.description);
+		setIsEditing(false);
+	}
 
 	return (
 		<div className="flex flex-col gap-y-3">
@@ -142,7 +153,7 @@ export const Details = (props: {
 							<Button
 								size="sm"
 								onClick={() => {
-									setShowUnsaved(true);
+									cancel();
 								}}
 							>
 								Cancel
@@ -211,7 +222,7 @@ export const Details = (props: {
 			<UnsavedDialog
 				showUnsaved={showUnsaved}
 				setShowUnsaved={setShowUnsaved}
-				continueFn={onCancel}
+				continueFn={discard}
 			/>
 		</div>
 	);
