@@ -21,7 +21,7 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 	const router = useRouter();
 
 	const statsQuery = useQuery<PerformanceStatResponse, AxiosError>({
-		queryKey: [PerformanceQK.GET_STAT_BY_ID, parseInt(statId), jwt],
+		queryKey: [PerformanceQK.GET_STAT_BY_ID],
 		queryFn: async () => {
 			const stats = await getStatById(parseInt(statId), jwt);
 			return stats;
@@ -154,7 +154,7 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 										<Link
 											href={`${section.id}/event/${ev.id}`}
 										>
-											Edit
+											Details
 										</Link>
 									</td>
 								</tr>

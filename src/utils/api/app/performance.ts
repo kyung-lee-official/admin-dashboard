@@ -1,4 +1,4 @@
-import { CreateEventDto } from "@/utils/types/app/performance";
+import { CreateEventDto, UpdateEventDto } from "@/utils/types/app/performance";
 import axios from "axios";
 
 export enum PerformanceQK {
@@ -121,6 +121,34 @@ export const createEvent = async (body: CreateEventDto, jwt: string) => {
 
 export const getEventById = async (id: string, jwt: string) => {
 	const res = await axios.get(`/performance/events/${id}`, {
+		baseURL: process.env.NEXT_PUBLIC_API_HOST,
+		headers: {
+			Authorization: jwt,
+		},
+	});
+	return res.data;
+};
+
+export const updateEventById = async (
+	id: number,
+	body: UpdateEventDto,
+	jwt: string
+) => {
+	const res = await axios.patch(
+		`/performance/events/update-event-by-id/${id}`,
+		body,
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+			},
+		}
+	);
+	return res.data;
+};
+
+export const deleteEventById = async (id: number, jwt: string) => {
+	const res = await axios.delete(`/performance/events/${id}`, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: jwt,

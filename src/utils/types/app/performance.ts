@@ -31,9 +31,9 @@ export type EditPerformanceStatData = {
 
 export type EventResponse = {
 	id: number;
-	templateId: number;
-	templateScore: number;
-	templateDescription: string;
+	templateId?: number;
+	templateScore?: number;
+	templateDescription?: string;
 	sectionId: number;
 	score: number;
 	amount: number;
@@ -96,8 +96,8 @@ export type CreateEventDto = z.infer<typeof createEventDtoSchema>;
 export type FindEventByIdResponse = {
 	id: number;
 	templateId?: number;
-	templateScore: number;
-	templateDescription: string;
+	templateScore?: number;
+	templateDescription?: string;
 	sectionId: number;
 	section: SectionResponse;
 	score: number;
@@ -105,3 +105,14 @@ export type FindEventByIdResponse = {
 	description: string;
 	attachments: string[];
 };
+
+const updateEventDtoSchema = z.object({
+	score: z.number(),
+	/* amount can only be added after the event is created, default is 1 */
+	amount: z.number().optional(),
+	description: z.string(),
+	/* attachments can only be added after the event is created */
+	// attachments: z.array(z.string()),
+});
+
+export type UpdateEventDto = z.infer<typeof updateEventDtoSchema>;

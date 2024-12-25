@@ -37,7 +37,7 @@ export const EditContentEditStat = (props: {
 	const jwt = useAuthStore((state) => state.jwt);
 
 	const statsQuery = useQuery<PerformanceStatResponse, AxiosError>({
-		queryKey: [PerformanceQK.GET_STAT_BY_ID, statId, jwt],
+		queryKey: [PerformanceQK.GET_STAT_BY_ID],
 		queryFn: async () => {
 			const stats = await getStatById(statId, jwt);
 			return stats;
