@@ -117,9 +117,6 @@ export const Details = (props: {
 	}, [score, amount, description]);
 
 	function cancel() {
-		console.log(oldData);
-		console.log(newData);
-
 		const isDataChanged =
 			JSON.stringify(oldData) !== JSON.stringify(newData);
 		if (isDataChanged) {

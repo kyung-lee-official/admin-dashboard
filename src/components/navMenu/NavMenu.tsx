@@ -75,7 +75,8 @@ export const NavMenuItems = (props: { menu: HierarchicalMenuItem[] }) => {
 								className="flex justify-start items-center h-7 px-2 gap-2.5
 								text-neutral-200
 								bg-neutral-400/10
-								border-[1px] border-white/10 border-t-white/15"
+								border-[1px] border-white/10 border-t-white/15
+								rounded"
 								title={item.title}
 							>
 								{item.icon && (
