@@ -13,10 +13,9 @@ import { useAuthStore } from "@/stores/auth";
 export const FileToUpload = (props: {
 	eventId: number;
 	file: File;
-	uploadList: File[];
 	setUploadList: Dispatch<SetStateAction<File[]>>;
 }) => {
-	const { eventId, file, uploadList, setUploadList } = props;
+	const { eventId, file, setUploadList } = props;
 	const filetype = file.name.split(".").pop() as string;
 
 	const jwt = useAuthStore((state) => state.jwt);
@@ -60,43 +59,61 @@ export const FileToUpload = (props: {
 		return <ItemLoading />;
 	}
 
-	if (file) {
-		return (
+	return (
+		<div>
 			<Square>
-				{isImageType(filetype) ? (
-					<img
-						src={url}
-						alt={file.name}
-						className={`object-cover w-full h-full
-						${progress === 1 ? "opacity-100" : "opacity-50"}`}
-					/>
-				) : isVideoType(filetype) ? (
-					<video
-						src={url}
-						className={`object-cover w-full h-full
-						${progress === 1 ? "opacity-100" : "opacity-50"}`}
-					/>
+				{url ? (
+					<>
+						{isImageType(filetype) ? (
+							<img
+								src={url}
+								alt={file.name}
+								className={`object-cover w-full h-full
+								${progress === 1 ? "opacity-100" : "opacity-50"}`}
+							/>
+						) : isVideoType(filetype) ? (
+							<video
+								src={url}
+								className={`object-cover w-full h-full
+								${progress === 1 ? "opacity-100" : "opacity-50"}`}
+							/>
+						) : (
+							/* unknown file type */
+							<div
+								className={
+									progress === 1
+										? "opacity-100"
+										: "opacity-50"
+								}
+							>
+								<UnknownFileTypeIcon
+									title={file.name}
+									size={100}
+								/>
+							</div>
+						)}
+						<div className="absolute left-0 right-0 bottom-0 h-1">
+							<div
+								className={`h-full
+								bg-sky-400 ${progress === 1 && "hidden"}`}
+								style={{
+									width: `${progress * 100}%`,
+								}}
+							/>
+						</div>
+					</>
 				) : (
-					/* unknown file type */
-					<div
-						className={
-							progress === 1 ? "opacity-100" : "opacity-50"
-						}
-					>
-						<UnknownFileTypeIcon title={file.name} size={100} />
-					</div>
+					<ItemLoading />
 				)}
-				<div className="absolute left-0 right-0 bottom-0 h-1">
-					<div
-						className={`h-full
-						bg-sky-400 ${progress === 1 && "hidden"}`}
-						style={{
-							width: `${progress * 100}%`,
-						}}
-					/>
-				</div>
 			</Square>
-		);
-	}
-	return null;
+			<div
+				title={file.name}
+				className="text-white/50 text-sm
+				overflow-hidden whitespace-nowrap text-ellipsis
+				cursor-default"
+			>
+				{file.name}
+			</div>
+		</div>
+	);
 };

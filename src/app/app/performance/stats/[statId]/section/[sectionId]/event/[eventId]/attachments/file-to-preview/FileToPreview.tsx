@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { ItemLoading } from "./Icons";
+import { ItemLoading } from "../Icons";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { queryClient } from "@/utils/react-query/react-query";
 import { Item } from "./Item";
-import { Preview } from "./Attachments";
+import { Preview } from "../Attachments";
 import {
 	deleteAttachment,
 	getAttachment,
@@ -43,6 +43,7 @@ export const FileToPreview = (props: { eventId: number; preview: Preview }) => {
 				<ItemLoading />
 			) : (
 				<Item
+					isLoading={fileBlobQuery.isPending || !url}
 					eventId={eventId}
 					name={name}
 					src={url}

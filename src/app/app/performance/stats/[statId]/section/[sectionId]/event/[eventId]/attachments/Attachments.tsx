@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { FileToUpload } from "./FileToUpload";
-import { FileToPreview } from "./FileToPreview";
+import { FileToPreview } from "./file-to-preview/FileToPreview";
 import {
 	getAttachmentListByEventId,
 	PerformanceQK,
@@ -96,7 +96,6 @@ export const Attachments = (props: { eventId: number }) => {
 									key={i}
 									eventId={eventId}
 									file={file}
-									uploadList={uploadList}
 									setUploadList={setUploadList}
 								/>
 							);

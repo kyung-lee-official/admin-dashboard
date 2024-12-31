@@ -9,11 +9,12 @@ import { createPortal } from "react-dom";
 import {
 	DeleteIcon,
 	DownloadIcon,
+	ItemLoading,
 	PreviewIcon,
 	UnknownFileTypeIcon,
-} from "./Icons";
-import { Square } from "./Square";
-import { isImageType, isVideoType } from "./types";
+} from "../Icons";
+import { Square } from "../Square";
+import { isImageType, isVideoType } from "../types";
 import { DeleteConfirmDialog } from "@/components/delete-confirmation/DeleteConfirmDialog";
 import { useMutation } from "@tanstack/react-query";
 import { getAttachment } from "@/utils/api/app/performance";
@@ -113,9 +114,11 @@ const ThumbnailMask = (props: {
 };
 
 export const Item = (
-	props: ImgHTMLAttributes<HTMLImageElement> & FileProps & { eventId: number }
+	props: ImgHTMLAttributes<HTMLImageElement> &
+		FileProps & { eventId: number; isLoading: boolean }
 ) => {
 	const {
+		isLoading,
 		eventId,
 		src,
 		/* width of the image without zoom */ width,
@@ -129,6 +132,24 @@ export const Item = (
 	const imageRef = useRef<HTMLImageElement>(null);
 
 	const [isZoomOut, setIsZoomOut] = useState(false);
+
+	if (isLoading) {
+		return (
+			<div>
+				<Square>
+					<ItemLoading />
+				</Square>
+				<div
+					title={name}
+					className="text-white/50 text-sm
+					overflow-hidden whitespace-nowrap text-ellipsis
+					cursor-default"
+				>
+					{name}
+				</div>
+			</div>
+		);
+	}
 
 	return (
 		<div>
