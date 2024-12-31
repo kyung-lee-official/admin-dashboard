@@ -9,7 +9,7 @@ import { EventResponse } from "@/utils/types/app/performance";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Edit } from "./Edit";
-import { Attachments } from "./Attachments";
+import { Attachments } from "./attachments/Attachments";
 import { DeleteConfirmDialog } from "@/components/delete-confirmation/DeleteConfirmDialog";
 import { queryClient } from "@/utils/react-query/react-query";
 import { Data } from "./Data";
@@ -209,7 +209,7 @@ export const Details = (props: {
 					/>
 				)}
 			</div>
-			<Attachments />
+			<Attachments eventId={event.id} />
 			<DeleteConfirmDialog
 				show={showDeleteConfirmation}
 				setShow={setShowDeleteConfirmation}

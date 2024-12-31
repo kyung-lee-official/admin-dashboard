@@ -1,5 +1,6 @@
 import { CreateEventDto, UpdateEventDto } from "@/utils/types/app/performance";
 import axios from "axios";
+import { Dispatch, SetStateAction } from "react";
 
 export enum PerformanceQK {
 	GET_STATS = "get-stats",
@@ -8,6 +9,8 @@ export enum PerformanceQK {
 	GET_MY_ROLE_TEMPLATES = "get-my-role-templates",
 	GET_TEMPLATE_BY_ID = "get-template-by-id",
 	GET_EVENT_BY_ID = "get-event-by-id",
+	GET_ATTACHMENT_LIST = "get-attachment-list",
+	GET_ATTACHMENT = "get-attachment",
 }
 
 export const createStat = async (newData: any, jwt: string) => {
@@ -154,5 +157,79 @@ export const deleteEventById = async (id: number, jwt: string) => {
 			Authorization: jwt,
 		},
 	});
+	return res.data;
+};
+
+export const getAttachmentListByEventId = async (id: number, jwt: string) => {
+	const res = await axios.get(
+		`/performance/events/get-attachment-list-by-event-id/${id}`,
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+			},
+		}
+	);
+	return res.data;
+};
+
+export const getAttachment = async (
+	id: number,
+	filename: string,
+	jwt: string
+) => {
+	const res = await axios.get<Blob>(
+		`/performance/events/get-attachment/${id}/${filename}`,
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			responseType: "blob",
+			headers: {
+				Authorization: jwt,
+			},
+		}
+	);
+	return res.data;
+};
+
+export const uploadAttachmentsByEventId = async (
+	id: number,
+	data: any,
+	setProgress: Dispatch<SetStateAction<number>>,
+	jwt: string
+) => {
+	const res = await axios.put(
+		`/performance/events/upload-attachments-by-event-id/${id}`,
+		data,
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+				"Content-Type": "multipart/form-data",
+			},
+			onUploadProgress: (progressEvent) => {
+				const percentCompleted = progressEvent.progress;
+				if (percentCompleted) {
+					setProgress(percentCompleted);
+				}
+			},
+		}
+	);
+	return res.data;
+};
+
+export const deleteAttachment = async (
+	id: number,
+	filename: string,
+	jwt: string
+) => {
+	const res = await axios.delete(
+		`/performance/events/delete-attachment/${id}/${filename}`,
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+			},
+		}
+	);
 	return res.data;
 };
