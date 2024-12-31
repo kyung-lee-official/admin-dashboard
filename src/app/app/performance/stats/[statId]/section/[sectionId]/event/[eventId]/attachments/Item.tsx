@@ -15,6 +15,9 @@ import {
 import { Square } from "./Square";
 import { isImageType, isVideoType } from "./types";
 import { DeleteConfirmDialog } from "@/components/delete-confirmation/DeleteConfirmDialog";
+import { useMutation } from "@tanstack/react-query";
+import { getAttachment } from "@/utils/api/app/performance";
+import { useAuthStore } from "@/stores/auth";
 
 type FileProps = {
 	name: string;
@@ -25,14 +28,32 @@ type FileProps = {
 };
 
 const ThumbnailMask = (props: {
-	filetype: string;
+	eventId: number;
+	name: string;
 	question: string;
 	setIsZoomOut: Dispatch<SetStateAction<boolean>>;
 	onDelete: Function;
 }) => {
-	const { filetype, question, setIsZoomOut, onDelete } = props;
+	const { eventId, name, question, setIsZoomOut, onDelete } = props;
+	const filetype = name.split(".").pop() as string;
+
+	const jwt = useAuthStore((state) => state.jwt);
+
 	const [showDelete, setShowDelete] = useState(false);
 	const [showThumbnailMask, setShowThumbnailMask] = useState(false);
+
+	const downloadMutation = useMutation({
+		mutationFn: async () => {
+			const blob = await getAttachment(eventId, name, jwt);
+			/* download the file */
+			const url = URL.createObjectURL(blob);
+			const a = document.createElement("a");
+			a.href = url;
+			a.download = name;
+			a.click();
+			URL.revokeObjectURL(url); /* free up memory */
+		},
+	});
 
 	return (
 		<div
@@ -61,7 +82,11 @@ const ThumbnailMask = (props: {
 						</button>
 					) : (
 						/* unknown file type */
-						<button onClick={() => {}}>
+						<button
+							onClick={() => {
+								downloadMutation.mutate();
+							}}
+						>
 							<DownloadIcon size={16} />
 						</button>
 					)}
@@ -88,9 +113,10 @@ const ThumbnailMask = (props: {
 };
 
 export const Item = (
-	props: ImgHTMLAttributes<HTMLImageElement> & FileProps
+	props: ImgHTMLAttributes<HTMLImageElement> & FileProps & { eventId: number }
 ) => {
 	const {
+		eventId,
 		src,
 		/* width of the image without zoom */ width,
 		name,
@@ -133,7 +159,8 @@ export const Item = (
 					</div>
 				)}
 				<ThumbnailMask
-					filetype={filetype}
+					eventId={eventId}
+					name={name}
 					question={question}
 					setIsZoomOut={setIsZoomOut}
 					onDelete={onDelete}

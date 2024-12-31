@@ -43,6 +43,7 @@ export const FileToPreview = (props: { eventId: number; preview: Preview }) => {
 				<ItemLoading />
 			) : (
 				<Item
+					eventId={eventId}
 					name={name}
 					src={url}
 					question="Are you sure you want to delete this file?"
