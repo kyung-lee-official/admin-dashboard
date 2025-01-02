@@ -10,8 +10,17 @@ import {
 import { sortByProp, StringKeys } from "@/utils/data/data";
 
 export const DropdownInput = <T, K extends StringKeys<T>>(props: {
+	/**
+	 * both "regular" and "search" have dropdown
+	 * "regular" mode is for selecting an option
+	 * "search" mode is for searching an option
+	 */
+	mode: "regular" | "search";
 	selected: T | undefined;
-	setSelected: Dispatch<SetStateAction<T | undefined>>;
+	setSelected:
+		| Dispatch<SetStateAction<T>>
+		| Dispatch<SetStateAction<T | undefined>>
+		| Dispatch<SetStateAction<undefined>>;
 	/* 'hover' is typically used to preview the content */
 	hover?: T | undefined;
 	setHover?: Dispatch<SetStateAction<T | undefined>>;
@@ -68,6 +77,7 @@ export const DropdownInput = <T, K extends StringKeys<T>>(props: {
 	}, []);
 
 	const {
+		mode,
 		selected,
 		setSelected,
 		hover,
@@ -117,6 +127,7 @@ export const DropdownInput = <T, K extends StringKeys<T>>(props: {
 				value={searchTerm}
 				title={label}
 				placeholder={placeholder}
+				readOnly={mode !== "search"}
 				className="px-2 py-1
 				text-sm
 				bg-white/10
@@ -126,19 +137,20 @@ export const DropdownInput = <T, K extends StringKeys<T>>(props: {
 					setSearchTerm(e.target.value);
 				}}
 			/>
+
 			<div
 				className="flex justify-center items-center h-[30px] px-1
 				bg-white/10
 				border-solid border-r-[1px] border-y-[1px] border-white/10
 				rounded-r-md"
 			>
-				<SearchOutlineIcon size={20} />
+				{mode === "search" && <SearchOutlineIcon size={20} />}
 			</div>
 			{show && filteredOptions && (
 				<div
 					ref={menuRef}
-					className="absolute top-10
-					flex flex-col
+					className="absolute top-10 left-0 w-52
+					flex flex-col p-1
 					text-sm
 					bg-neutral-800
 					rounded-md shadow-lg border-[1px] border-white/10 border-t-white/15
@@ -149,33 +161,37 @@ export const DropdownInput = <T, K extends StringKeys<T>>(props: {
 						}
 					}}
 				>
-					{sortByProp(filteredOptions, sortBy).map(
-						(item: any, i: number) => {
-							return (
-								<button
-									key={item.id}
-									className="flex w-full p-2 text-nowrap"
-									onMouseEnter={() => {
-										if (setHover) {
-											setHover(item);
-										}
-									}}
-									onClick={() => {
-										setSelected(item);
-										setSearchTerm(
-											secondary
-												? `${item[primary]} (${item[secondary]})`
-												: `${item[primary]}`
-										);
-										setShow(false);
-									}}
-								>
-									{item[primary]}
-									{secondary && ` (${item[secondary]})`}
-								</button>
-							);
-						}
-					)}
+					{sortByProp(
+						mode === "search" ? filteredOptions : options,
+						sortBy
+					).map((item: any, i: number) => {
+						const title = secondary
+							? `${item[primary]} (${item[secondary]})`
+							: `${item[primary]}`;
+						return (
+							<button
+								key={item.id}
+								title={title}
+								className="p-2
+								text-left
+								overflow-hidden whitespace-nowrap text-ellipsis
+								hover:bg-white/10
+								rounded"
+								onMouseEnter={() => {
+									if (setHover) {
+										setHover(item);
+									}
+								}}
+								onClick={() => {
+									setSelected(item);
+									setSearchTerm(title);
+									setShow(false);
+								}}
+							>
+								{title}
+							</button>
+						);
+					})}
 				</div>
 			)}
 		</div>

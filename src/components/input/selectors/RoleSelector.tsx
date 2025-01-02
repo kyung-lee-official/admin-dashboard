@@ -8,7 +8,7 @@ import { DropdownInput } from "../DropdownInput";
 
 type RoleSelectorProps = {
 	role: MemberRole | undefined;
-	setRole: Dispatch<SetStateAction<MemberRole>>;
+	setRole: Dispatch<SetStateAction<MemberRole | undefined>>;
 };
 
 export const RoleSelector = (props: RoleSelectorProps) => {
@@ -28,6 +28,7 @@ export const RoleSelector = (props: RoleSelectorProps) => {
 
 	return (
 		<DropdownInput
+			mode="search"
 			selected={role}
 			setSelected={setRole}
 			options={rolesQuery.data ?? []}

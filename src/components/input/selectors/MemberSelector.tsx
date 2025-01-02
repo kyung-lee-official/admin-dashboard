@@ -7,8 +7,10 @@ import { Dispatch, SetStateAction } from "react";
 import { DropdownInput } from "../DropdownInput";
 
 type MemberSelectorProps = {
-	member: Member;
-	setMember: Dispatch<SetStateAction<Member>>;
+	member: Member | undefined;
+	setMember:
+		| Dispatch<SetStateAction<Member>>
+		| Dispatch<SetStateAction<Member | undefined>>;
 };
 
 export const MemberSelector = (props: MemberSelectorProps) => {
@@ -28,6 +30,7 @@ export const MemberSelector = (props: MemberSelectorProps) => {
 
 	return (
 		<DropdownInput
+			mode="search"
 			selected={member}
 			setSelected={setMember}
 			options={membersQuery.data ?? []}

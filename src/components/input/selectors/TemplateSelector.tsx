@@ -37,6 +37,7 @@ export const TemplateSelector = (props: TemplateSelectorProps) => {
 
 	return (
 		<DropdownInput
+			mode="search"
 			selected={template}
 			setSelected={setTemplate}
 			hover={hover}
