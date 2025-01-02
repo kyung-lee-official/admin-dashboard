@@ -31,6 +31,7 @@ export type EditPerformanceStatData = {
 
 export type EventResponse = {
 	id: number;
+	approval: ApprovalType;
 	templateId?: number;
 	templateScore?: number;
 	templateDescription?: string;
@@ -116,3 +117,9 @@ const updateEventDtoSchema = z.object({
 });
 
 export type UpdateEventDto = z.infer<typeof updateEventDtoSchema>;
+
+export enum ApprovalType {
+	PENDING = "PENDING",
+	APPROVED = "APPROVED",
+	REJECTED = "REJECTED",
+}

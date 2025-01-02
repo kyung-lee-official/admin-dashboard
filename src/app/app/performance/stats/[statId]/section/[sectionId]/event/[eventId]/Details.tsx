@@ -5,7 +5,7 @@ import {
 	PerformanceQK,
 	updateEventById,
 } from "@/utils/api/app/performance";
-import { EventResponse } from "@/utils/types/app/performance";
+import { ApprovalType, EventResponse } from "@/utils/types/app/performance";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Edit } from "./Edit";
@@ -29,6 +29,7 @@ export const Details = (props: {
 
 	const [oldData, setOldData] = useState<EventResponse>({
 		id: 0,
+		approval: ApprovalType.PENDING,
 		templateId: undefined,
 		templateScore: 0,
 		templateDescription: "",
@@ -86,6 +87,7 @@ export const Details = (props: {
 	useEffect(() => {
 		const initialData = {
 			id: event.id,
+			approval: event.approval,
 			templateId: event.templateId,
 			templateScore: event.templateScore,
 			templateDescription: event.templateDescription,
@@ -105,6 +107,7 @@ export const Details = (props: {
 	useEffect(() => {
 		setNewData({
 			id: oldData.id,
+			approval: oldData.approval,
 			templateId: oldData.templateId,
 			templateScore: oldData.templateScore,
 			templateDescription: oldData.templateDescription,
@@ -134,6 +137,17 @@ export const Details = (props: {
 
 	return (
 		<div className="flex flex-col gap-y-3">
+			<div
+				className="text-white/50
+				bg-white/5
+				border-[1px] border-white/10 border-t-white/15
+				rounded-md"
+			>
+				<div className="relative flex justify-between items-center px-6 py-4">
+					<div>Approval</div>
+					<div>{event.approval}</div>
+				</div>
+			</div>
 			<div
 				className="text-white/50
 				bg-white/5
