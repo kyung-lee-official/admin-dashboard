@@ -7,7 +7,7 @@ export function uniq(array: any[]) {
 	return array.filter((value, index, self) => self.indexOf(value) === index);
 }
 
-/* get all string keys of an object */
+/* get all keys of string properties of an object */
 export type StringKeys<T> = {
 	[K in keyof T]: T[K] extends string ? K : never;
 }[keyof T];
