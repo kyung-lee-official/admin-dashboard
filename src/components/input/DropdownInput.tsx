@@ -163,16 +163,15 @@ export const DropdownInput = <T, K extends StringKeys<T>>(props: {
 									onClick={() => {
 										setSelected(item);
 										setSearchTerm(
-											`${item[primary]}${
-												secondary &&
-												` (${item[secondary]})`
-											}`
+											secondary
+												? `${item[primary]} (${item[secondary]})`
+												: `${item[primary]}`
 										);
 										setShow(false);
 									}}
 								>
-									{item[primary]}{" "}
-									{secondary && `(${item[secondary]})`}
+									{item[primary]}
+									{secondary && ` (${item[secondary]})`}
 								</button>
 							);
 						}
