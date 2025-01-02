@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { Dispatch, SetStateAction } from "react";
 import { getAllRoles, RolesQK } from "@/utils/api/roles";
-import { SearchInput } from "@/components/input/SearchInput";
+import { DropdownInput } from "../DropdownInput";
 
 type RoleSelectorProps = {
 	role: MemberRole | undefined;
@@ -27,7 +27,7 @@ export const RoleSelector = (props: RoleSelectorProps) => {
 	const { role, setRole } = props;
 
 	return (
-		<SearchInput
+		<DropdownInput
 			selected={role}
 			setSelected={setRole}
 			options={rolesQuery.data ?? []}

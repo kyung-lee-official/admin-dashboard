@@ -1,10 +1,10 @@
-import { SearchInput } from "@/components/input/SearchInput";
 import { useAuthStore } from "@/stores/auth";
 import { getMembers, MembersQK } from "@/utils/api/members";
 import { Member } from "@/utils/types/internal";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { Dispatch, SetStateAction } from "react";
+import { DropdownInput } from "../DropdownInput";
 
 type MemberSelectorProps = {
 	member: Member;
@@ -27,7 +27,7 @@ export const MemberSelector = (props: MemberSelectorProps) => {
 	const { member, setMember } = props;
 
 	return (
-		<SearchInput
+		<DropdownInput
 			selected={member}
 			setSelected={setMember}
 			options={membersQuery.data ?? []}
