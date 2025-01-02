@@ -126,7 +126,7 @@ export const DropdownInput = <T, K extends StringKeys<T>>(props: {
 				type="text"
 				value={searchTerm}
 				title={label}
-				placeholder={placeholder}
+				placeholder={placeholder || ""}
 				readOnly={mode !== "search"}
 				className="px-2 py-1
 				text-sm
@@ -137,7 +137,6 @@ export const DropdownInput = <T, K extends StringKeys<T>>(props: {
 					setSearchTerm(e.target.value);
 				}}
 			/>
-
 			<div
 				className="flex justify-center items-center h-[30px] px-1
 				bg-white/10
@@ -170,7 +169,7 @@ export const DropdownInput = <T, K extends StringKeys<T>>(props: {
 							: `${item[primary]}`;
 						return (
 							<button
-								key={item.id}
+								key={i}
 								title={title}
 								className="p-2
 								text-left

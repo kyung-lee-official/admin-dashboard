@@ -15,6 +15,7 @@ import { queryClient } from "@/utils/react-query/react-query";
 import { Data } from "./Data";
 import { useRouter } from "next/navigation";
 import { UnsavedDialog } from "@/components/unsaved-dialog/UnsavedDialog";
+import { Approval } from "./Approval";
 
 export const Details = (props: {
 	statId: number;
@@ -137,17 +138,7 @@ export const Details = (props: {
 
 	return (
 		<div className="flex flex-col gap-y-3">
-			<div
-				className="text-white/50
-				bg-white/5
-				border-[1px] border-white/10 border-t-white/15
-				rounded-md"
-			>
-				<div className="relative flex justify-between items-center px-6 py-4">
-					<div>Approval</div>
-					<div>{event.approval}</div>
-				</div>
-			</div>
+			<Approval />
 			<div
 				className="text-white/50
 				bg-white/5
