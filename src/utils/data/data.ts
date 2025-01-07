@@ -17,6 +17,6 @@ export type StringKeys<T> = {
  * @param arr the arr to sort
  * @param k the property key to sort by
  */
-export function sortByProp<T, K extends StringKeys<T>>(arr: T[], k: K) {
+export function sortByProp<T>(arr: T[], k: StringKeys<T>) {
 	return arr.sort((a: T, b: T) => String(a[k]).localeCompare(String(b[k])));
 }
