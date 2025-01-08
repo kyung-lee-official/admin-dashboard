@@ -1,43 +1,21 @@
+import { sortByProp } from "@/utils/data/data";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { SearchOutlineIcon } from "@/components/icons/Icons";
-import {
-	useState,
-	useRef,
-	useCallback,
-	useEffect,
-	Dispatch,
-	SetStateAction,
-} from "react";
-import { sortByProp, StringKeys } from "@/utils/data/data";
+import { DropdownObject } from "./DropdownInput";
 
-export const DropdownInput = <T, K extends StringKeys<T>>(props: {
-	/**
-	 * both "regular" and "search" have dropdown
-	 * "regular" mode is for selecting an option
-	 * "search" mode is for searching an option
-	 */
-	mode: "regular" | "search";
-	selected: T | undefined;
-	setSelected:
-		| Dispatch<SetStateAction<T>>
-		| Dispatch<SetStateAction<T | undefined>>
-		| Dispatch<SetStateAction<undefined>>;
-	/* 'hover' is typically used to preview the content */
-	hover?: T | undefined;
-	setHover?: Dispatch<SetStateAction<T | undefined>>;
-	/* all options */
-	options: T[];
-	placeholder: string;
-	/**
-	 * label
-	 * format: primary (secondary)
-	 */
-	labelProp: {
-		primary: K;
-		secondary?: K;
-	};
-	/* sort by, property name */
-	sortBy: K;
-}) => {
+export const ObjectDropdown = <T,>(props: DropdownObject<T>) => {
+	const {
+		mode,
+		selected,
+		setSelected,
+		hover,
+		setHover,
+		options,
+		label: { primaryKey, secondaryKey },
+		placeholder,
+		sortBy,
+	} = props;
+
 	const [show, setShow] = useState<boolean>(false);
 
 	const entryRef = useRef<HTMLInputElement>(null);
@@ -76,29 +54,17 @@ export const DropdownInput = <T, K extends StringKeys<T>>(props: {
 		};
 	}, []);
 
-	const {
-		mode,
-		selected,
-		setSelected,
-		hover,
-		setHover,
-		options,
-		labelProp: { primary, secondary },
-		placeholder,
-		sortBy,
-	} = props;
-
 	const [searchTerm, setSearchTerm] = useState<string>("");
 	const [filteredOptions, setFilteredOptions] = useState<T[]>(options);
 	useEffect(() => {
 		if (searchTerm) {
 			const filtered = options.filter((item) => {
 				return (
-					String(item[primary])
+					String(item[primaryKey])
 						.toLowerCase()
 						.includes(searchTerm.toLowerCase()) ||
-					(secondary &&
-						String(item[secondary])
+					(secondaryKey &&
+						String(item[secondaryKey])
 							.toLowerCase()
 							.includes(searchTerm.toLowerCase()))
 				);
@@ -111,9 +77,9 @@ export const DropdownInput = <T, K extends StringKeys<T>>(props: {
 
 	let label = "";
 	if (selected) {
-		label = secondary
-			? `${selected[primary]} (${selected[secondary]})`
-			: `${selected[primary]}`;
+		label = secondaryKey
+			? `${selected[primaryKey]} (${selected[secondaryKey]})`
+			: `${selected[primaryKey]}`;
 	}
 
 	return (
@@ -164,9 +130,9 @@ export const DropdownInput = <T, K extends StringKeys<T>>(props: {
 						mode === "search" ? filteredOptions : options,
 						sortBy
 					).map((item: any, i: number) => {
-						const title = secondary
-							? `${item[primary]} (${item[secondary]})`
-							: `${item[primary]}`;
+						const title = secondaryKey
+							? `${item[primaryKey]} (${item[secondaryKey]})`
+							: `${item[primaryKey]}`;
 						return (
 							<button
 								key={i}
