@@ -4,7 +4,7 @@ import { PerformanceEventTemplateResponse } from "@/utils/types/app/performance"
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { Dispatch, SetStateAction } from "react";
-import { DropdownInput } from "../DropdownInput";
+import { DropdownInput } from "../dropdown-input/DropdownInput";
 
 type TemplateSelectorProps = {
 	template: PerformanceEventTemplateResponse | undefined;
@@ -37,6 +37,7 @@ export const TemplateSelector = (props: TemplateSelectorProps) => {
 
 	return (
 		<DropdownInput
+			kind="object"
 			mode="search"
 			selected={template}
 			setSelected={setTemplate}
@@ -44,7 +45,7 @@ export const TemplateSelector = (props: TemplateSelectorProps) => {
 			setHover={setHover}
 			options={templatesQuery.data ?? []}
 			placeholder="Select a template"
-			labelProp={{ primary: "description" }}
+			label={{ primaryKey: "description" }}
 			sortBy="description"
 		/>
 	);

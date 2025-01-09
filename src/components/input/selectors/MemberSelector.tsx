@@ -4,7 +4,7 @@ import { Member } from "@/utils/types/internal";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { Dispatch, SetStateAction } from "react";
-import { DropdownInput } from "../DropdownInput";
+import { DropdownInput } from "../dropdown-input/DropdownInput";
 
 type MemberSelectorProps = {
 	member: Member | undefined;
@@ -30,12 +30,13 @@ export const MemberSelector = (props: MemberSelectorProps) => {
 
 	return (
 		<DropdownInput
+			kind="object"
 			mode="search"
 			selected={member}
 			setSelected={setMember}
 			options={membersQuery.data ?? []}
 			placeholder="Select a member"
-			labelProp={{ primary: "name", secondary: "email" }}
+			label={{ primaryKey: "name", secondaryKey: "email" }}
 			sortBy="name"
 		/>
 	);
