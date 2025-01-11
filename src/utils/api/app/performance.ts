@@ -1,4 +1,8 @@
-import { CreateEventDto, UpdateEventDto } from "@/utils/types/app/performance";
+import {
+	CreateEventDto,
+	UpdateApprovalDto,
+	UpdateEventDto,
+} from "@/utils/types/app/performance";
 import axios from "axios";
 import { Dispatch, SetStateAction } from "react";
 
@@ -157,6 +161,24 @@ export const deleteEventById = async (id: number, jwt: string) => {
 			Authorization: jwt,
 		},
 	});
+	return res.data;
+};
+
+export const updateApprovalByEventId = async (
+	id: number,
+	dto: UpdateApprovalDto,
+	jwt: string
+) => {
+	const res = await axios.patch(
+		`/performance/events/update-approval-by-event-id/${id}`,
+		dto,
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+			},
+		}
+	);
 	return res.data;
 };
 

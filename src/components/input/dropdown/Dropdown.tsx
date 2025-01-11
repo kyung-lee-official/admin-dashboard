@@ -1,9 +1,9 @@
 import { Dispatch, SetStateAction } from "react";
-import { StringKeys } from "@/utils/data/data";
-import { StringDropdown } from "./StringDropdown";
-import { ObjectDropdown } from "./ObjectDropdown";
+import { StringDropdown } from "./string-like/StringDropdown";
+import { ObjectDropdown } from "./object-like/ObjectDropdown";
+import { StringKeys } from "./types";
 
-export type DropdownObject<T> = {
+export type ObjectLike<T> = {
 	kind: "object";
 	/**
 	 * both "regular" and "search" have dropdown
@@ -12,12 +12,8 @@ export type DropdownObject<T> = {
 	 */
 	mode: "regular" | "search";
 	selected: T | undefined;
-	setSelected:
-		| Dispatch<SetStateAction<T>>
-		| Dispatch<SetStateAction<T | undefined>>
-		| Dispatch<SetStateAction<undefined>>;
+	setSelected: Dispatch<SetStateAction<T | undefined>>;
 	/* 'hover' is typically used to preview the content */
-	hover?: T | undefined;
 	setHover?: Dispatch<SetStateAction<T | undefined>>;
 	/* all options */
 	options: T[];
@@ -36,44 +32,32 @@ export type DropdownObject<T> = {
 /**
  * here T could be string, enum or union string type
  */
-export type DropdownString<T> = {
+export type StringLike<T> = {
 	kind: "string";
 	mode: "regular" | "search";
 	selected: T | undefined;
-	setSelected:
-		| Dispatch<SetStateAction<T>>
-		| Dispatch<SetStateAction<T | undefined>>
-		| Dispatch<SetStateAction<undefined>>;
-	hover?: T | undefined;
+	setSelected: Dispatch<SetStateAction<T | undefined>>;
 	setHover?: Dispatch<SetStateAction<T | undefined>>;
 	options: T[];
 	placeholder: string;
 };
-type DropdownInputProps<T> = DropdownString<T> | DropdownObject<T>;
+type DropdownInputProps<T> = StringLike<T> | ObjectLike<T>;
 
-export const DropdownInput = <T,>(props: DropdownInputProps<T>) => {
+export const Dropdown = <T,>(props: DropdownInputProps<T>) => {
 	function isStringLike(
 		props: DropdownInputProps<T>
-	): props is DropdownString<T> {
+	): props is StringLike<T> {
 		return props.kind === "string";
 	}
 	if (isStringLike(props)) {
-		const {
-			mode,
-			selected,
-			setSelected,
-			hover,
-			setHover,
-			options,
-			placeholder,
-		} = props;
+		const { mode, selected, setSelected, setHover, options, placeholder } =
+			props;
 		return (
 			<StringDropdown
 				kind="string"
 				mode={mode}
 				selected={selected}
 				setSelected={setSelected}
-				hover={hover}
 				setHover={setHover}
 				options={options}
 				placeholder={placeholder}
@@ -84,7 +68,6 @@ export const DropdownInput = <T,>(props: DropdownInputProps<T>) => {
 			mode,
 			selected,
 			setSelected,
-			hover,
 			setHover,
 			options,
 			label: { primaryKey, secondaryKey },
@@ -97,7 +80,6 @@ export const DropdownInput = <T,>(props: DropdownInputProps<T>) => {
 				mode={mode}
 				selected={selected}
 				setSelected={setSelected}
-				hover={hover}
 				setHover={setHover}
 				options={options}
 				label={{ primaryKey, secondaryKey }}

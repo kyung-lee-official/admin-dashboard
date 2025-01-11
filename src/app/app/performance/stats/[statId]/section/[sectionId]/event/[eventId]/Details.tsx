@@ -138,7 +138,7 @@ export const Details = (props: {
 
 	return (
 		<div className="flex flex-col gap-y-3">
-			<Approval />
+			<Approval event={event} />
 			<div
 				className="text-white/50
 				bg-white/5

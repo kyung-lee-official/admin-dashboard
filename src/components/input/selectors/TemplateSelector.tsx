@@ -4,14 +4,13 @@ import { PerformanceEventTemplateResponse } from "@/utils/types/app/performance"
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { Dispatch, SetStateAction } from "react";
-import { DropdownInput } from "../dropdown-input/DropdownInput";
+import { Dropdown } from "../dropdown/Dropdown";
 
 type TemplateSelectorProps = {
 	template: PerformanceEventTemplateResponse | undefined;
 	setTemplate: Dispatch<
 		SetStateAction<PerformanceEventTemplateResponse | undefined>
 	>;
-	hover: PerformanceEventTemplateResponse | undefined;
 	setHover: Dispatch<
 		SetStateAction<PerformanceEventTemplateResponse | undefined>
 	>;
@@ -33,15 +32,14 @@ export const TemplateSelector = (props: TemplateSelectorProps) => {
 		refetchOnWindowFocus: false,
 	});
 
-	const { template, setTemplate, hover, setHover } = props;
+	const { template, setTemplate, setHover } = props;
 
 	return (
-		<DropdownInput
+		<Dropdown
 			kind="object"
 			mode="search"
 			selected={template}
 			setSelected={setTemplate}
-			hover={hover}
 			setHover={setHover}
 			options={templatesQuery.data ?? []}
 			placeholder="Select a template"

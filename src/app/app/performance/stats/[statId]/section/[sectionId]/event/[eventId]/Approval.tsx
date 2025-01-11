@@ -1,18 +1,48 @@
-import { DropdownInput } from "@/components/input/DropdownInput";
-import { ApprovalType } from "@/utils/types/app/performance";
-import { useState } from "react";
+import { Dropdown } from "@/components/input/dropdown/Dropdown";
+import { useAuthStore } from "@/stores/auth";
+import {
+	PerformanceQK,
+	updateApprovalByEventId,
+} from "@/utils/api/app/performance";
+import { queryClient } from "@/utils/react-query/react-query";
+import {
+	ApprovalType,
+	EventResponse,
+	UpdateApprovalDto,
+} from "@/utils/types/app/performance";
+import { useMutation } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 
-type Approval = {
-	order: string;
-	approval: ApprovalType;
-};
+export const Approval = (props: { event: EventResponse }) => {
+	const { event } = props;
 
-export const Approval = () => {
-	const [oldData, setOldData] = useState<Approval>({
-		order: "1",
-		approval: ApprovalType.PENDING,
+	const [oldData, setOldData] = useState<ApprovalType>(event.approval);
+	const [newData, setNewData] = useState<ApprovalType | undefined>(oldData);
+
+	const jwt = useAuthStore((state) => state.jwt);
+
+	const mutation = useMutation({
+		mutationFn: async () => {
+			const dto = {
+				approval: newData,
+			};
+			return await updateApprovalByEventId(
+				event.id,
+				dto as UpdateApprovalDto,
+				jwt
+			);
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: [PerformanceQK.GET_STAT_BY_ID],
+			});
+		},
+		onError: () => {},
 	});
-	const [newData, setNewData] = useState<Approval>(oldData);
+
+	useEffect(() => {
+		mutation.mutate();
+	}, [newData]);
 
 	return (
 		<div
@@ -23,18 +53,17 @@ export const Approval = () => {
 		>
 			<div className="relative flex justify-between items-center px-6 py-4">
 				<div>Approval</div>
-				<DropdownInput
+				<Dropdown<ApprovalType>
+					kind="string"
 					mode="regular"
 					selected={newData}
 					setSelected={setNewData}
 					options={[
-						{ order: "1", approval: ApprovalType.PENDING },
-						{ order: "2", approval: ApprovalType.APPROVED },
-						{ order: "3", approval: ApprovalType.REJECTED },
+						ApprovalType.PENDING,
+						ApprovalType.APPROVED,
+						ApprovalType.REJECTED,
 					]}
 					placeholder=""
-					labelProp={{ primary: "approval" }}
-					sortBy={"order"}
 				/>
 			</div>
 		</div>
