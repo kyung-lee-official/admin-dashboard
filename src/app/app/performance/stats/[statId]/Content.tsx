@@ -9,6 +9,7 @@ import { AxiosError } from "axios";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { TitleMoreMenuItems } from "./moreMenu/TitleMoreMenuItems";
+import { CircularProgress } from "@/components/circular-progress/CircularProgress";
 
 export const Content = (props: { statId: string }) => {
 	const { statId } = props;
@@ -17,11 +18,7 @@ export const Content = (props: { statId: string }) => {
 	const router = useRouter();
 
 	const statsQuery = useQuery<PerformanceStatResponse, AxiosError>({
-		queryKey: [
-			PerformanceQK.GET_STAT_BY_ID,
-			parseInt(statId),
-			jwt,
-		],
+		queryKey: [PerformanceQK.GET_STAT_BY_ID, parseInt(statId), jwt],
 		queryFn: async () => {
 			const stats = await getStatById(parseInt(statId), jwt);
 			return stats;
@@ -101,6 +98,7 @@ export const Content = (props: { statId: string }) => {
 							<tr>
 								<th className="w-2/12">Title</th>
 								<th className="w-2/12">Weight</th>
+								<th className="w-2/12">Score</th>
 								<th className="w-8/12">Description</th>
 							</tr>
 						</thead>
@@ -122,6 +120,20 @@ export const Content = (props: { statId: string }) => {
 									>
 										<td>{s.title}</td>
 										<td>{s.weight}</td>
+										<td>
+											<CircularProgress
+												size={24}
+												progress={Math.min(
+													s.events.reduce(
+														(acc, e) =>
+															acc +
+															e.score * e.amount,
+														0
+													),
+													100
+												)}
+											/>
+										</td>
 										<td>{s.description}</td>
 									</tr>
 								);

@@ -12,7 +12,7 @@ export const CircularProgress = (props: { size: number; progress: number }) => {
 					strokeWidth={strokeWidth}
 					className="stroke-white/15"
 				/>
-				<circle
+				{!!progress && <circle
 					cx="50%"
 					cy="50%"
 					r="42%"
@@ -25,7 +25,7 @@ export const CircularProgress = (props: { size: number; progress: number }) => {
 					strokeLinecap="round"
 					className="stroke-white/50
 					origin-center -rotate-90"
-				/>
+				/>}
 			</svg>
 		</div>
 	);
