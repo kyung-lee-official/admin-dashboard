@@ -128,3 +128,9 @@ const updateApprovalDtoSchema = z.object({
 	approval: z.enum(["PENDING", "APPROVED", "REJECTED"]),
 });
 export type UpdateApprovalDto = z.infer<typeof updateApprovalDtoSchema>;
+
+export const searchStatDtoSchema = z.object({
+	ownerId: z.string(),
+	year: z.string().datetime(),
+});
+export type SearchStatDto = z.infer<typeof searchStatDtoSchema>;

@@ -1,5 +1,6 @@
 import {
 	CreateEventDto,
+	SearchStatDto,
 	UpdateApprovalDto,
 	UpdateEventDto,
 } from "@/utils/types/app/performance";
@@ -9,6 +10,7 @@ import { Dispatch, SetStateAction } from "react";
 export enum PerformanceQK {
 	GET_STATS = "get-stats",
 	GET_STAT_BY_ID = "get-stat-by-id",
+	SEARCH_STATS = "search-stats",
 	GET_TEMPLATES_BY_ROLE_ID = "get-templates-by-role-id",
 	GET_MY_ROLE_TEMPLATES = "get-my-role-templates",
 	GET_TEMPLATE_BY_ID = "get-template-by-id",
@@ -37,8 +39,21 @@ export const updateStat = async (id: number, newData: any, jwt: string) => {
 	return res.data;
 };
 
-export const getStats = async (memberId: string, jwt: string) => {
+export const getStats = async (jwt: string) => {
 	const res = await axios.get("/performance/stats", {
+		baseURL: process.env.NEXT_PUBLIC_API_HOST,
+		headers: {
+			Authorization: jwt,
+		},
+	});
+	return res.data;
+};
+
+export const searchStats = async (
+	searchStatDto: SearchStatDto,
+	jwt: string
+) => {
+	const res = await axios.post("/performance/stats/search", searchStatDto, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: jwt,

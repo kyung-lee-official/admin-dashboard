@@ -1,11 +1,13 @@
 import { useAuthStore } from "@/stores/auth";
-import { getStats, PerformanceQK } from "@/utils/api/app/performance";
+import { searchStats, PerformanceQK } from "@/utils/api/app/performance";
+import { queryClient } from "@/utils/react-query/react-query";
 import { PerformanceStatResponse } from "@/utils/types/app/performance";
 import { Member } from "@/utils/types/internal";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import dayjs from "dayjs";
 import Link from "next/link";
+import { useEffect } from "react";
 
 export const StatList = (props: { member?: Member; year: dayjs.Dayjs }) => {
 	const { member, year } = props;
@@ -13,15 +15,25 @@ export const StatList = (props: { member?: Member; year: dayjs.Dayjs }) => {
 	const jwt = useAuthStore((state) => state.jwt);
 
 	const statsQuery = useQuery<PerformanceStatResponse[], AxiosError>({
-		queryKey: [PerformanceQK.GET_STATS],
+		queryKey: [PerformanceQK.SEARCH_STATS],
 		queryFn: async () => {
-			const stats = await getStats(member?.id as string, jwt);
+			const searchStatDto = {
+				ownerId: member!.id,
+				year: year.toISOString(),
+			};
+			const stats = await searchStats(searchStatDto, jwt);
 			return stats;
 		},
 		retry: false,
 		enabled: !!member,
 		refetchOnWindowFocus: false,
 	});
+
+	useEffect(() => {
+		queryClient.invalidateQueries({
+			queryKey: [PerformanceQK.SEARCH_STATS],
+		});
+	}, [member, year]);
 
 	return (
 		<div
