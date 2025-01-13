@@ -3,7 +3,10 @@
 import { Loading } from "@/components/page-authorization/Loading";
 import { useAuthStore } from "@/stores/auth";
 import { getStatById, PerformanceQK } from "@/utils/api/app/performance";
-import { PerformanceStatResponse } from "@/utils/types/app/performance";
+import {
+	ApprovalType,
+	PerformanceStatResponse,
+} from "@/utils/types/app/performance";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import dayjs from "dayjs";
@@ -70,6 +73,29 @@ export const Content = (props: { statId: string }) => {
 									{owner.name} ({owner.email})
 								</td>
 							</tr>
+							<tr>
+								<td>Score</td>
+								<td>
+									{statSections
+										.reduce(
+											(acc, s) =>
+												acc +
+												(Math.min(
+													s.events.reduce(
+														(acc, e) =>
+															acc +
+															e.score * e.amount,
+														0
+													),
+													100
+												) *
+													s.weight) /
+													100,
+											0
+										)
+										.toFixed(3)}
+								</td>
+							</tr>
 						</tbody>
 					</table>
 				</div>
@@ -97,6 +123,7 @@ export const Content = (props: { statId: string }) => {
 						>
 							<tr>
 								<th className="w-2/12">Title</th>
+								<th className="w-2/12">Approval</th>
 								<th className="w-2/12">Weight</th>
 								<th className="w-2/12">Score</th>
 								<th className="w-8/12">Description</th>
@@ -119,20 +146,39 @@ export const Content = (props: { statId: string }) => {
 										}}
 									>
 										<td>{s.title}</td>
+										<td>
+											{s.events.some((e) => {
+												return (
+													e.approval ===
+													ApprovalType.PENDING
+												);
+											})
+												? ApprovalType.PENDING
+												: "ALL REVIEWED"}
+										</td>
 										<td>{s.weight}</td>
 										<td>
-											<CircularProgress
-												size={24}
-												progress={Math.min(
-													s.events.reduce(
-														(acc, e) =>
-															acc +
-															e.score * e.amount,
-														0
-													),
-													100
+											<div className="flex items-center gap-2">
+												<CircularProgress
+													size={24}
+													progress={Math.min(
+														s.events.reduce(
+															(acc, e) =>
+																acc +
+																e.score *
+																	e.amount,
+															0
+														),
+														100
+													)}
+												/>
+												{s.events.reduce(
+													(acc, e) =>
+														acc +
+														e.score * e.amount,
+													0
 												)}
-											/>
+											</div>
 										</td>
 										<td>{s.description}</td>
 									</tr>

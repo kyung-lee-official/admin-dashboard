@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/button/Button";
+import { CircularProgress } from "@/components/circular-progress/CircularProgress";
 import { Loading } from "@/components/page-authorization/Loading";
 import { useAuthStore } from "@/stores/auth";
 import { getStatById, PerformanceQK } from "@/utils/api/app/performance";
@@ -107,6 +108,35 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 							<td>Section Description</td>
 							<td>{section.description}</td>
 						</tr>
+						<tr>
+							<td>Section Score</td>
+							<td>
+								<div className="flex items-center gap-2">
+									<CircularProgress
+										size={24}
+										progress={Math.min(
+											section.events.reduce(
+												(acc, e) =>
+													acc +
+													(e.approval === "APPROVED"
+														? e.score * e.amount
+														: 0),
+												0
+											),
+											100
+										)}
+									/>
+									{section.events.reduce(
+										(acc, e) =>
+											acc +
+											(e.approval === "APPROVED"
+												? e.score * e.amount
+												: 0),
+										0
+									)}
+								</div>
+							</td>
+						</tr>
 					</tbody>
 				</table>
 			</div>
@@ -133,10 +163,11 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 						[&_>_tr_>_td]:border-t-[1px] [&_>_tr_>_td]:border-white/10"
 					>
 						<tr>
-							<td className="w-2/5">Description</td>
-							<td className="w-1/5">Score</td>
-							<td className="w-1/5">Amount</td>
-							<td className="w-1/5">Total Score</td>
+							<td className="w-2/6">Description</td>
+							<td className="w-1/6">Approval</td>
+							<td className="w-1/6">Score</td>
+							<td className="w-1/6">Amount</td>
+							<td className="w-1/6">Total Score</td>
 							<td>
 								<div className="w-7 h-7">
 									{/* placeholder */}
@@ -147,12 +178,14 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 							return (
 								<tr key={i}>
 									<td>{ev.description}</td>
+									<td>{ev.approval}</td>
 									<td>{ev.score}</td>
 									<td>{ev.amount}</td>
 									<td>{ev.score * ev.amount}</td>
 									<td>
 										<Link
 											href={`${section.id}/event/${ev.id}`}
+											className="underline"
 										>
 											Details
 										</Link>
