@@ -53,7 +53,7 @@ export const Edit = (props: {
 							bg-white/10
 							rounded-md outline-none
 							border-[1px] border-white/10"
-							value={description}
+							value={description || ""}
 							onChange={(e) => {
 								setDescription(e.target.value);
 							}}

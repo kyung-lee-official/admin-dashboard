@@ -147,7 +147,6 @@ export const CreateEvent = (props: { statId: string; sectionId: string }) => {
 									<TemplateSelector
 										template={template}
 										setTemplate={setTemplate}
-										hover={hover}
 										setHover={setHover}
 									/>
 								</td>
@@ -207,7 +206,7 @@ export const CreateEvent = (props: { statId: string; sectionId: string }) => {
 										bg-white/10
 										rounded-md outline-none
 										border-[1px] border-white/10"
-										value={description}
+										value={description || ""}
 										onChange={(e) => {
 											setDescription(e.target.value);
 										}}

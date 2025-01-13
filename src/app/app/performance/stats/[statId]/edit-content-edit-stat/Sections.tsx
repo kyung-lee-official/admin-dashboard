@@ -138,7 +138,7 @@ export const Sections = (props: {
 									bg-transparent
 									border-t-[1px] border-white/20
 									outline-none"
-									value={s.description}
+									value={s.description || ""}
 									onChange={(e) => {
 										const description = e.target.value;
 										dispatchStatSections({

@@ -20,7 +20,7 @@ export type EditSectionData = {
 	tempId: string /* a nanoId for new sections, used for distinguishing newly added sections in frontend only, for example, identifying which one to delete */;
 	weight: number;
 	title: string;
-	description?: string;
+	description: string;
 };
 
 export type EditPerformanceStatData = {

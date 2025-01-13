@@ -156,7 +156,7 @@ export const Sections = (props: SectionProps) => {
 									bg-transparent
 									border-t-[1px] border-white/20
 									outline-none"
-									value={s.description}
+									value={s.description || ""}
 									onChange={(e) => {
 										setSections(
 											sections.map((section) => {
