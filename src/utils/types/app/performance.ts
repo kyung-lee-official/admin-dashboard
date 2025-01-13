@@ -131,6 +131,6 @@ export type UpdateApprovalDto = z.infer<typeof updateApprovalDtoSchema>;
 
 export const searchStatDtoSchema = z.object({
 	ownerId: z.string(),
-	year: z.string().datetime(),
+	year: z.string().date(),
 });
 export type SearchStatDto = z.infer<typeof searchStatDtoSchema>;

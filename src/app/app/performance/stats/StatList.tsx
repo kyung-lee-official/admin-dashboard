@@ -19,7 +19,7 @@ export const StatList = (props: { member?: Member; year: dayjs.Dayjs }) => {
 		queryFn: async () => {
 			const searchStatDto = {
 				ownerId: member!.id,
-				year: year.toISOString(),
+				year: year.format("YYYY-MM-DD"),
 			};
 			const stats = await searchStats(searchStatDto, jwt);
 			return stats;
