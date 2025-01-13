@@ -79,6 +79,8 @@ export type PerformanceEventTemplateResponse = {
 	score: number;
 	description: string;
 	memberRole: MemberRole;
+	createdAt: string;
+	updatedAt: string;
 };
 
 const createEventDtoSchema = z.object({

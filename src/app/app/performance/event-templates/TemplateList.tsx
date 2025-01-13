@@ -3,12 +3,14 @@ import {
 	getTemplatesByRoleId,
 	PerformanceQK,
 } from "@/utils/api/app/performance";
+import { queryClient } from "@/utils/react-query/react-query";
 import { PerformanceEventTemplateResponse } from "@/utils/types/app/performance";
 import { MemberRole } from "@/utils/types/internal";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import dayjs from "dayjs";
 import Link from "next/link";
+import { useEffect } from "react";
 
 export const TemplateList = (props: { role?: MemberRole }) => {
 	const { role } = props;
@@ -28,6 +30,12 @@ export const TemplateList = (props: { role?: MemberRole }) => {
 		enabled: !!role,
 		refetchOnWindowFocus: false,
 	});
+
+	useEffect(() => {
+		queryClient.invalidateQueries({
+			queryKey: [PerformanceQK.GET_TEMPLATES_BY_ROLE_ID],
+		});
+	}, [role]);
 
 	return (
 		<div
