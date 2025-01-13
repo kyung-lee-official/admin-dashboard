@@ -49,7 +49,6 @@ export const FileToPreview = (props: { eventId: number; preview: Preview }) => {
 					src={url}
 					question="Are you sure you want to delete this file?"
 					onDelete={onDelete}
-					className={`object-cover w-full h-full`}
 				/>
 			)}
 		</div>
