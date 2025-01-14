@@ -38,7 +38,24 @@ export const Content = (props: { statId: string }) => {
 		return null;
 	}
 	const { month, owner, statSections } = statsQuery.data!;
-
+	const statScore = statSections.reduce(
+		(acc, s) =>
+			acc +
+			(Math.min(
+				s.events.reduce(
+					(acc, e) =>
+						acc +
+						(e.approval === ApprovalType.APPROVED
+							? e.score * e.amount
+							: 0),
+					0
+				),
+				100
+			) *
+				s.weight) /
+				100,
+		0
+	);
 	return (
 		<div className="flex flex-col w-full max-w-[1600px] min-h-[calc(100svh-56px)] p-3 mx-auto gap-y-3">
 			<div
@@ -76,24 +93,27 @@ export const Content = (props: { statId: string }) => {
 							<tr>
 								<td>Score</td>
 								<td>
-									{statSections
-										.reduce(
-											(acc, s) =>
-												acc +
-												(Math.min(
-													s.events.reduce(
-														(acc, e) =>
-															acc +
-															e.score * e.amount,
-														0
-													),
-													100
-												) *
-													s.weight) /
-													100,
-											0
-										)
-										.toFixed(3)}
+									<div className="flex items-center gap-2">
+										<CircularProgress
+											size={24}
+											progress={statScore}
+										/>
+										{statScore.toFixed(3)}
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>Approval</td>
+								<td>
+									{statSections.some((s) => {
+										return s.events.some(
+											(e) =>
+												e.approval ===
+												ApprovalType.PENDING
+										);
+									})
+										? ApprovalType.PENDING
+										: "ALL REVIEWED"}
 								</td>
 							</tr>
 						</tbody>
@@ -124,9 +144,10 @@ export const Content = (props: { statId: string }) => {
 							<tr>
 								<th className="w-2/12">Title</th>
 								<th className="w-2/12">Approval</th>
-								<th className="w-2/12">Weight</th>
-								<th className="w-2/12">Score</th>
-								<th className="w-8/12">Description</th>
+								<th className="w-1/12">Weight</th>
+								<th className="w-1/12">Score</th>
+								<th className="w-2/12">Submitted Score</th>
+								<th className="w-4/12">Description</th>
 							</tr>
 						</thead>
 						<tbody
@@ -161,24 +182,34 @@ export const Content = (props: { statId: string }) => {
 											<div className="flex items-center gap-2">
 												<CircularProgress
 													size={24}
-													progress={Math.min(
-														s.events.reduce(
-															(acc, e) =>
-																acc +
-																e.score *
-																	e.amount,
-															0
-														),
-														100
+													progress={s.events.reduce(
+														(acc, e) =>
+															acc +
+															(e.approval ===
+															ApprovalType.APPROVED
+																? e.score *
+																  e.amount
+																: 0),
+														0
 													)}
 												/>
 												{s.events.reduce(
 													(acc, e) =>
 														acc +
-														e.score * e.amount,
+														(e.approval ===
+														ApprovalType.APPROVED
+															? e.score * e.amount
+															: 0),
 													0
 												)}
 											</div>
+										</td>
+										<td>
+											{s.events.reduce(
+												(acc, e) =>
+													acc + e.score * e.amount,
+												0
+											)}
 										</td>
 										<td>{s.description}</td>
 									</tr>

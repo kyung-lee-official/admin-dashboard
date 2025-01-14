@@ -6,6 +6,7 @@ import { Loading } from "@/components/page-authorization/Loading";
 import { useAuthStore } from "@/stores/auth";
 import { getStatById, PerformanceQK } from "@/utils/api/app/performance";
 import {
+	ApprovalType,
 	EventResponse,
 	PerformanceStatResponse,
 } from "@/utils/types/app/performance";
@@ -118,7 +119,8 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 											section.events.reduce(
 												(acc, e) =>
 													acc +
-													(e.approval === "APPROVED"
+													(e.approval ===
+													ApprovalType.APPROVED
 														? e.score * e.amount
 														: 0),
 												0
@@ -129,12 +131,22 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 									{section.events.reduce(
 										(acc, e) =>
 											acc +
-											(e.approval === "APPROVED"
+											(e.approval ===
+											ApprovalType.APPROVED
 												? e.score * e.amount
 												: 0),
 										0
 									)}
 								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>Submitted Score</td>
+							<td>
+								{section.events.reduce(
+									(acc, e) => acc + e.score * e.amount,
+									0
+								)}
 							</td>
 						</tr>
 					</tbody>

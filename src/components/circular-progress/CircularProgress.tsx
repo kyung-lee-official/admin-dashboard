@@ -12,20 +12,22 @@ export const CircularProgress = (props: { size: number; progress: number }) => {
 					strokeWidth={strokeWidth}
 					className="stroke-white/15"
 				/>
-				{!!progress && <circle
-					cx="50%"
-					cy="50%"
-					r="42%"
-					fill="none"
-					strokeWidth={strokeWidth}
-					pathLength={
-						100
-					} /* pathLength sets the length of the path, which is used to calculate the length of the dash array */
-					strokeDasharray={`${progress}, 100`}
-					strokeLinecap="round"
-					className="stroke-white/50
-					origin-center -rotate-90"
-				/>}
+				{!!progress && (
+					<circle
+						cx="50%"
+						cy="50%"
+						r="42%"
+						fill="none"
+						strokeWidth={strokeWidth}
+						pathLength={
+							100
+						} /* pathLength sets the length of the path, which is used to calculate the length of the dash array */
+						strokeDasharray={`${Math.min(progress, 100)}, 100`}
+						strokeLinecap="round"
+						className="stroke-white/50
+						origin-center -rotate-90"
+					/>
+				)}
 			</svg>
 		</div>
 	);
