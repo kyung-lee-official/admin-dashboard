@@ -78,6 +78,7 @@ export const Sections = (props: SectionProps) => {
 										bg-transparent
 										border-[1px] border-neutral-700 border-t-neutral-600
 										rounded"
+										placeholder="Title"
 										value={s.title}
 										onChange={(e) => {
 											setSections(
@@ -109,6 +110,8 @@ export const Sections = (props: SectionProps) => {
 											bg-transparent
 											border-[1px] border-neutral-700 border-t-neutral-600
 											rounded"
+											min={0}
+											max={100}
 											value={s.weight}
 											onChange={(e) => {
 												setSections(
