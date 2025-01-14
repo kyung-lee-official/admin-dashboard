@@ -10,7 +10,7 @@ export type CreateSectionData = {
 };
 
 export type CreatePerformanceStatData = {
-	member: Member;
+	member: Member | undefined;
 	month: dayjs.Dayjs;
 	statSections: CreateSectionData[];
 };

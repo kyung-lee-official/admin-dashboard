@@ -15,7 +15,9 @@ export const Sections = (props: SectionProps) => {
 	);
 
 	useEffect(() => {
-		setTotalWeight(sections.reduce((acc, s) => acc + s.weight, 0));
+		let totalWeight = sections.reduce((acc, s) => acc + s.weight, 0);
+		totalWeight = isNaN(totalWeight) ? 0 : totalWeight;
+		setTotalWeight(totalWeight);
 	}, [sections]);
 
 	return (

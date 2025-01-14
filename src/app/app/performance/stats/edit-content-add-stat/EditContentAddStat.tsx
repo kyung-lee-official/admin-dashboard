@@ -43,7 +43,7 @@ export const EditContentAddStat = (props: {
 		],
 	});
 	const [newData, setNewData] = useState<CreatePerformanceStatData>(oldData);
-	const [member, setMember] = useState<Member>(oldData.member);
+	const [member, setMember] = useState<Member | undefined>(oldData.member);
 	const [month, setMonth] = useState<dayjs.Dayjs>(oldData.month);
 	const [statSections, setStatSections] = useState<CreateSectionData[]>(
 		oldData.statSections
@@ -60,7 +60,7 @@ export const EditContentAddStat = (props: {
 	const mutation = useMutation({
 		mutationFn: () => {
 			const dto = {
-				ownerId: newData.member.id,
+				ownerId: newData.member?.id,
 				month: newData.month.toISOString(),
 				statSections: newData.statSections.map((s) => ({
 					weight: s.weight,
