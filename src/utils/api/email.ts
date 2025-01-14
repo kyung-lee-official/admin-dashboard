@@ -14,15 +14,6 @@ export const sendVerificationEmail = async (jwt: string) => {
 	return res.data;
 };
 
-export const verifyEmail = async (body: {
-	verificationToken: string;
-}): Promise<any> => {
-	const res = await axios.post("/member-auth/verifyEmail", body, {
-		baseURL: process.env.NEXT_PUBLIC_API_HOST,
-	});
-	return res.data;
-};
-
 export const changeEmail = async (newData: any, jwt: string): Promise<any> => {
 	const res = await axios.patch(
 		`/email/change-email`,
@@ -37,10 +28,10 @@ export const changeEmail = async (newData: any, jwt: string): Promise<any> => {
 	return res.data;
 };
 
-export const verifyNewEmail = async (body: {
+export const verifyEmail = async (body: {
 	verificationToken: string;
 }): Promise<any> => {
-	const res = await axios.patch("/email/verify-new-email", body, {
+	const res = await axios.patch("/email/verify-email", body, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 	});
 	return res.data;

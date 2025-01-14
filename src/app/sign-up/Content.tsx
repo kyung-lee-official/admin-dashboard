@@ -2,7 +2,6 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import React from "react";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -68,14 +67,14 @@ const SignUp = () => {
 	return (
 		<div
 			className="bg-neutral-200
-			rounded-3xl shadow-lg"
+				rounded-3xl shadow-lg"
 		>
 			<AnimatePresence mode="wait">
 				{mutation.isError ? (
 					<motion.div
 						key={"success"}
 						className="flex flex-col items-center gap-6 w-96
-						px-10 py-6"
+							px-10 py-6"
 						initial={{ opacity: 0, x: 10 }}
 						animate={{ opacity: 1, x: 0 }}
 						exit={{ opacity: 0 }}
@@ -94,7 +93,7 @@ const SignUp = () => {
 					<motion.div
 						key={"success"}
 						className="flex flex-col items-center gap-6 w-96
-						px-10 py-6"
+							px-10 py-6"
 						initial={{ opacity: 0, x: 10 }}
 						animate={{ opacity: 1, x: 0 }}
 					>
@@ -112,7 +111,7 @@ const SignUp = () => {
 					<motion.div
 						key={"form"}
 						className="flex flex-col items-center gap-6 w-96
-						px-10 py-6"
+							px-10 py-6"
 						animate={{ opacity: 1, x: 0 }}
 						exit={{ opacity: 0, x: -10 }}
 					>
@@ -285,7 +284,7 @@ const SignUpNotAvailable = () => {
 	return (
 		<div
 			className="flex flex-col items-center gap-6 w-[100%]
-			px-10 py-6"
+				px-10 py-6"
 		>
 			<div className="text-6xl">🙅</div>
 			<div className="">Sorry, signing-up is not available.</div>
@@ -293,7 +292,7 @@ const SignUpNotAvailable = () => {
 	);
 };
 
-const Index = () => {
+export const Content = () => {
 	const isSignUpAvailableQuery = useQuery<any, AxiosError>({
 		queryKey: [ServerSettingQK.GET_IS_SIGN_UP_AVAILABLE],
 		queryFn: getIsSignUpAvailable,
@@ -331,5 +330,3 @@ const Index = () => {
 		);
 	}
 };
-
-export default Index;

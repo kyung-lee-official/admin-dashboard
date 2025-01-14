@@ -8,6 +8,7 @@ import { queryClient } from "@/utils/react-query/react-query";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Sacl } from "../sacl/Sacl";
+import { AuthMask } from "../sacl/AuthMask";
 
 const AppWrapper = ({ children }: any) => {
 	const pathname = usePathname();
@@ -28,7 +29,7 @@ const AppWrapper = ({ children }: any) => {
 		<QueryClientProvider client={queryClient}>
 			<div className="bg-neutral-100 dark:bg-neutral-800">
 				{isPublicRoute ? (
-					<div className="min-h-[100svh]">{children}</div>
+					<AuthMask>{children}</AuthMask>
 				) : (
 					<Sacl>{children}</Sacl>
 				)}

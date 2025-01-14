@@ -8,7 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { verifyEmail } from "@/utils/api/email";
 import { Button } from "@/components/button/Button";
 
-const Index = () => {
+export const Content = () => {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const verificationToken = searchParams.get("token");
@@ -50,80 +50,61 @@ const Index = () => {
 	}, [isVerifiedQuery.status]);
 
 	return (
-		<div className="flex justify-center items-center w-full min-h-screen">
+		<div className="flex justify-center items-center w-full h-svh">
 			<AnimatePresence mode="wait">
 				{verificationState === "verifying" && (
 					<motion.div
-						className="flex flex-col items-center w-96 px-10 py-6 gap-6
-						text-3xl text-neutral-600
-						bg-neutral-200
-						rounded-3xl shadow-lg"
+						className="flex flex-col items-center w-full max-w-[280px] m-4 gap-6"
 						key="verifying"
 						initial={{ opacity: 0, y: -20 }}
 						animate={{ opacity: 1, y: 0 }}
 						exit={{ opacity: 0, y: 20 }}
 					>
-						<div className="text-3xl">Verifying...</div>
-						<div className="text-3xl">📃</div>
+						<h1 className="text-2xl">Verifying... 📃</h1>
 					</motion.div>
 				)}
 				{verificationState === "verified" && (
 					<motion.div
-						className="flex flex-col items-center w-96 px-10 py-6 gap-6
-						text-3xl text-neutral-600
-						bg-neutral-200
-						rounded-3xl shadow-lg"
+						className="flex flex-col items-center w-full max-w-[280px] m-4 gap-6"
 						key="verified"
 						initial={{ opacity: 0, y: -20 }}
 						animate={{ opacity: 1, y: 0 }}
 						exit={{ opacity: 0, y: 20 }}
 					>
-						<div>Verified</div>
-						<div>✅</div>
+						<h1 className="text-2xl">Verified ✅</h1>
 						<Button
+							size="sm"
 							onClick={() => {
 								router.push("/sign-in");
 							}}
 						>
-							<div className="flex justify-center items-center py-2">
-								Go to sign in
-							</div>
+							Go to sign in
 						</Button>
 					</motion.div>
 				)}
 				{verificationState === "invalid-token" && (
 					<motion.div
-						className="flex flex-col items-center w-96 px-10 py-6 gap-6
-						text-3xl text-neutral-600
-						bg-neutral-200
-						rounded-3xl shadow-lg"
+						className="flex flex-col items-center w-full max-w-[280px] m-4 gap-6"
 						key="invalid-token"
 						initial={{ opacity: 0, y: -20 }}
 						animate={{ opacity: 1, y: 0 }}
 						exit={{ opacity: 0, y: 20 }}
 					>
-						<div>Invalid token</div>
-						<div>❌</div>
+						<h1 className="text-2xl">Invalid token ❌</h1>
 					</motion.div>
 				)}
 				{verificationState === "verification-failed" && (
 					<motion.div
-						className="flex flex-col items-center w-96 px-10 py-6 gap-6
-						text-3xl text-neutral-600
-						bg-neutral-200
-						rounded-3xl shadow-lg"
+						className="flex flex-col items-center w-full max-w-[280px] m-4 gap-6"
 						key="verification-failed"
 						initial={{ opacity: 0, y: -20 }}
 						animate={{ opacity: 1, y: 0 }}
 						exit={{ opacity: 0, y: 20 }}
 					>
-						<div>Verification failed</div>
-						<div>❌</div>
+						<h1 className="text-2xl">Verification failed ❌</h1>
 					</motion.div>
 				)}
 			</AnimatePresence>
 		</div>
 	);
 };
-
-export default Index;
