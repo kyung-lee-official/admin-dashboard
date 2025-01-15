@@ -75,7 +75,8 @@ export const YearCalendar = (props: CalendarProps) => {
 				bg-neutral-700"
 			>
 				<button
-					onClick={() => {
+					onClick={(e) => {
+						e.preventDefault();
 						setPage((page) => {
 							if (page === 0) {
 								return page;
@@ -89,7 +90,8 @@ export const YearCalendar = (props: CalendarProps) => {
 				</button>
 				{calendarDate.format("YYYY")}
 				<button
-					onClick={() => {
+					onClick={(e) => {
+						e.preventDefault();
 						setPage((page) => {
 							if (page === clusters.length - 1) {
 								return page;

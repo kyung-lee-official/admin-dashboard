@@ -92,7 +92,8 @@ export const Calendar = (props: CalendarProps) => {
 				bg-neutral-700"
 			>
 				<button
-					onClick={() => {
+					onClick={(e) => {
+						e.preventDefault();
 						setCalendarDate(calendarDate.subtract(1, "month"));
 					}}
 				>
@@ -100,7 +101,8 @@ export const Calendar = (props: CalendarProps) => {
 				</button>
 				{calendarDate.format("MMMM YYYY")}
 				<button
-					onClick={() => {
+					onClick={(e) => {
+						e.preventDefault();
 						setCalendarDate(calendarDate.add(1, "month"));
 					}}
 				>
