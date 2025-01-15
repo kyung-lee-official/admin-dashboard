@@ -10,34 +10,23 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { AxiosError } from "axios";
 import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
 
-interface IFormInput {
+type FormInput = {
 	oldPassword: string;
 	newPassword: string;
 	confirmNewPassword: string;
-}
+};
 
-const schema = z
-	.object({
-		oldPassword: z.string().min(1, { message: "Required" }),
-		newPassword: z
-			.string()
-			.min(8, { message: "Must be at least 8 characters" })
-			.regex(
-				/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
-				"Password is too weak, must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number or special character"
-			),
-		confirmNewPassword: z.string().min(1, { message: "Required" }),
-	})
-	.refine((data) => data.oldPassword !== data.newPassword, {
-		message: "New password must be different from old password",
-		/* path of error */
-		path: ["newPassword"],
-	})
-	.refine((data) => data.newPassword === data.confirmNewPassword, {
-		message: "Passwords don't match",
-		/* path of error */
-		path: ["confirmNewPassword"],
-	});
+const schema = z.object({
+	oldPassword: z.string().min(1, { message: "Required" }),
+	newPassword: z
+		.string()
+		.min(8, { message: "Must be at least 8 characters" })
+		.regex(
+			/((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
+			"Password is too weak, must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number or special character"
+		),
+	confirmNewPassword: z.string().min(1, { message: "Required" }),
+});
 
 export const EditContentPassword = (props: {
 	edit: EditProps;
@@ -60,6 +49,8 @@ export const EditContentPassword = (props: {
 	const [confirmNewPassword, setConfirmNewPassword] = useState(
 		oldData.confirmNewPassword
 	);
+	const [isPasswordMatch, setIsPasswordMatch] = useState(true);
+	const [isConfirmPasswordBlur, setIsConfirmPasswordBlur] = useState(false);
 
 	useEffect(() => {
 		setNewData({
@@ -67,7 +58,14 @@ export const EditContentPassword = (props: {
 			newPassword: newPassword,
 			confirmNewPassword: confirmNewPassword,
 		});
-	}, [currPassword, newPassword, confirmNewPassword]);
+		if (isConfirmPasswordBlur) {
+			if (newPassword !== confirmNewPassword) {
+				setIsPasswordMatch(false);
+			} else {
+				setIsPasswordMatch(true);
+			}
+		}
+	}, [currPassword, newPassword, confirmNewPassword, isConfirmPasswordBlur]);
 
 	const mutation = useMutation<any, AxiosError>({
 		mutationFn: () => {
@@ -88,7 +86,7 @@ export const EditContentPassword = (props: {
 		mutation.mutate();
 	}
 
-	const { register, handleSubmit, formState, control } = useForm<IFormInput>({
+	const { register, formState, control } = useForm<FormInput>({
 		mode: "onChange",
 		resolver: zodResolver(schema),
 	});
@@ -103,7 +101,7 @@ export const EditContentPassword = (props: {
 			newData={newData}
 			oldData={oldData}
 		>
-			<form onSubmit={handleSubmit(onSave)} className="flex flex-col">
+			<form className="flex flex-col">
 				<div className="flex flex-col px-6 py-4 gap-6">
 					<div
 						className="flex flex-col gap-1.5
@@ -151,6 +149,11 @@ export const EditContentPassword = (props: {
 								{formState.errors.newPassword.message}
 							</div>
 						)}
+						{isPasswordMatch ? undefined : (
+							<div className="text-red-500/90">
+								Password does not match
+							</div>
+						)}
 					</div>
 					<div
 						className="flex flex-col gap-1.5
@@ -166,6 +169,9 @@ export const EditContentPassword = (props: {
 							{...register("confirmNewPassword", {
 								onChange: (e) => {
 									setConfirmNewPassword(e.target.value);
+								},
+								onBlur: () => {
+									setIsConfirmPasswordBlur(true);
 								},
 							})}
 						/>
