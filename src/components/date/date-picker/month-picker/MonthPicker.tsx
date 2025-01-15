@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import { MonthCalendar } from "./MonthCalendar";
-import { DatePickerProps } from "../DatePicker";
+import { DatePickerProps } from "../date-picker/DatePicker";
 
 export const MonthPicker = (props: DatePickerProps) => {
 	const { date, setDate } = props;
@@ -55,8 +55,8 @@ export const MonthPicker = (props: DatePickerProps) => {
 				className="w-32 px-2 py-1
 				text-white/70
 				bg-neutral-700
-				border-[1px] border-white/10 border-t-white/15
-				rounded"
+				rounded border-[1px] border-white/10 border-t-white/15
+				whitespace-nowrap"
 				onClick={(e) => {
 					e.preventDefault();
 				}}
@@ -68,7 +68,8 @@ export const MonthPicker = (props: DatePickerProps) => {
 					ref={calendarRef}
 					className="absolute top-8 w-64
 					border-[1px] border-white/10 border-t-white/15
-					rounded overflow-hidden"
+					rounded overflow-hidden
+					z-10"
 				>
 					<MonthCalendar
 						date={date}

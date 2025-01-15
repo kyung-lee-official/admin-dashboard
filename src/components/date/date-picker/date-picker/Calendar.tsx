@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { DatePickerProps } from "./DatePicker";
-import { ChevronLeft, ChevronRight } from "../icons/arrows";
 import dayjs from "dayjs";
+import { ChevronLeft, ChevronRight } from "./Icons";
 
 const Button = (props: {
 	children: React.ReactNode;

@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import { ChevronLeft, ChevronRight } from "../../icons/arrows";
 import dayjs from "dayjs";
-import { DatePickerProps } from "../DatePicker";
+import { DatePickerProps } from "../date-picker/DatePicker";
+import { ChevronLeft, ChevronRight } from "./Icons";
 
 type CalendarProps = DatePickerProps & {
 	setShow: Dispatch<SetStateAction<boolean>>;

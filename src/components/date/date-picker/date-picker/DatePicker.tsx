@@ -67,8 +67,10 @@ export const DatePicker = (props: DatePickerProps) => {
 				className="px-2 py-1
 				text-white/70
 				bg-neutral-700
-				border-[1px] border-white/10 border-t-white/15
 				rounded"
+				onClick={(e) => {
+					e.preventDefault();
+				}}
 			>
 				{date.format("MMM DD, YYYY")}
 			</button>
@@ -76,8 +78,8 @@ export const DatePicker = (props: DatePickerProps) => {
 				<div
 					ref={calendarRef}
 					className="absolute top-8 w-64
-					border-[1px] border-white/10 border-t-white/15
-					rounded overflow-hidden"
+					rounded overflow-hidden
+					z-10"
 				>
 					<Calendar date={date} setDate={setDate} setShow={setShow} />
 				</div>

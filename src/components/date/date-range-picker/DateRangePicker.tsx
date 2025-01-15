@@ -7,8 +7,12 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { DateRange } from "./Content";
 import { Calendar } from "./Calendar";
+
+export type DateRange = {
+	start: dayjs.Dayjs;
+	end: dayjs.Dayjs;
+};
 
 export type RangePickerProps = {
 	range: DateRange;
@@ -68,7 +72,6 @@ export const DateRangePicker = (props: RangePickerProps) => {
 				className="px-2 py-1
 				text-white/70
 				bg-neutral-700
-				border-[1px] border-white/10 border-t-white/15
 				rounded"
 			>
 				{range.start.format("MMM DD, YYYY")} -{" "}
@@ -79,7 +82,8 @@ export const DateRangePicker = (props: RangePickerProps) => {
 					ref={calendarRef}
 					className="absolute top-8 w-64
 					border-[1px] border-white/10 border-t-white/15
-					rounded overflow-hidden"
+					rounded overflow-hidden
+					z-10"
 				>
 					<Calendar
 						range={range}
