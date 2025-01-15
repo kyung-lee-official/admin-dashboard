@@ -52,7 +52,7 @@ export const MonthPicker = (props: DatePickerProps) => {
 		>
 			<button
 				ref={entryRef}
-				className="w-32 px-2 py-1
+				className="min-w-32 px-2 py-1
 				text-white/70
 				bg-neutral-700
 				rounded border-[1px] border-white/10 border-t-white/15
