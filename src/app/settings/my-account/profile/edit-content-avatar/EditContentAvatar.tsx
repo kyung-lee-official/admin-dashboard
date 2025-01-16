@@ -11,7 +11,7 @@ import { Button } from "@/components/button/Button";
 import { CloseIcon } from "@/components/icons/Icons";
 import { ClippingArea } from "./ClippingArea";
 import { Canvas } from "./Canvas";
-import { UnsavedDialog } from "@/components/edit-panel/UnsavedDialog";
+import { UnsavedDialog } from "@/components/unsaved-dialog/UnsavedDialog";
 // import { Debug } from "./Debug";
 
 export type CanvasSize = {
@@ -284,10 +284,11 @@ export const EditContentAvatar = (props: {
 				</div>
 			</div>
 			<UnsavedDialog
-				edit={edit}
-				setEdit={setEdit}
 				showUnsaved={showUnsaved}
 				setShowUnsaved={setShowUnsaved}
+				continueFn={() => {
+					setEdit({ show: false, id: edit.id });
+				}}
 			/>
 		</div>
 	);

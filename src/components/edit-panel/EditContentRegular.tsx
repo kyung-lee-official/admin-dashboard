@@ -1,6 +1,6 @@
 import { Button } from "@/components/button/Button";
 import { EditId, EditProps } from "@/components/edit-panel/EditPanel";
-import { UnsavedDialog } from "@/components/edit-panel/UnsavedDialog";
+import { UnsavedDialog } from "@/components/unsaved-dialog/UnsavedDialog";
 import { CloseIcon } from "@/components/icons/Icons";
 import { motion } from "framer-motion";
 import {
@@ -139,10 +139,11 @@ export const EditContentRegular = (props: {
 				</div>
 			</motion.div>
 			<UnsavedDialog
-				edit={edit}
-				setEdit={setEdit}
 				showUnsaved={showUnsaved}
 				setShowUnsaved={setShowUnsaved}
+				continueFn={() => {
+					setEdit({ show: false, id: edit.id });
+				}}
 			/>
 		</div>
 	);
