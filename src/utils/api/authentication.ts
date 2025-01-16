@@ -31,7 +31,7 @@ export const signUp = async (body: {
 	name: string;
 	password: string;
 }): Promise<any> => {
-	const res = await axios.post("/member-auth/signup", body, {
+	const res = await axios.post("/authentication/sign-up", body, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 	});
 	return res.data;
