@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -13,6 +13,7 @@ import {
 	ServerSettingQK,
 } from "@/utils/api/server-settings";
 import { Button } from "@/components/button/Button";
+import { Input } from "@/components/input/Input";
 
 interface IFormInput {
 	email: string;
@@ -54,7 +55,6 @@ const SignUp = () => {
 	});
 
 	const mutation = useMutation<any, AxiosError, Data>({
-		mutationKey: ["signUp"],
 		mutationFn: (data: Data) => {
 			return signUp(data);
 		},
@@ -65,205 +65,94 @@ const SignUp = () => {
 	};
 
 	return (
-		<div
-			className="bg-neutral-200
-				rounded-3xl shadow-lg"
+		<motion.div
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			className="flex justify-center items-center w-full h-svh"
 		>
-			<AnimatePresence mode="wait">
+			<div className="flex flex-col items-center w-full max-w-[280px] m-4 gap-6">
 				{mutation.isError ? (
-					<motion.div
-						key={"success"}
+					<div
 						className="flex flex-col items-center gap-6 w-96
-							px-10 py-6"
-						initial={{ opacity: 0, x: 10 }}
-						animate={{ opacity: 1, x: 0 }}
-						exit={{ opacity: 0 }}
+						px-10 py-6"
 					>
 						<div className="text-4xl">❌</div>
 						<div>Unknown Error</div>
 						<Button
+							size="sm"
 							onClick={() => {
 								mutation.reset();
 							}}
 						>
 							Go Back
 						</Button>
-					</motion.div>
+					</div>
 				) : mutation.isSuccess ? (
-					<motion.div
-						key={"success"}
+					<div
 						className="flex flex-col items-center gap-6 w-96
-							px-10 py-6"
-						initial={{ opacity: 0, x: 10 }}
-						animate={{ opacity: 1, x: 0 }}
+						px-10 py-6"
 					>
 						<div className="text-4xl">✅</div>
-						<div>You&apos;ve signed up as admin 🎉🎉🎉</div>
+						<div>Your account has been created.</div>
 						<Button
+							size="sm"
 							onClick={() => {
 								router.push("/sign-in");
 							}}
 						>
 							Sign In
 						</Button>
-					</motion.div>
+					</div>
 				) : (
-					<motion.div
-						key={"form"}
+					<div
 						className="flex flex-col items-center gap-6 w-96
-							px-10 py-6"
-						animate={{ opacity: 1, x: 0 }}
-						exit={{ opacity: 0, x: -10 }}
+						px-10 py-6"
 					>
-						<h1>Sign Up</h1>
+						<h1 className="text-2xl">Sign Up</h1>
 						<form
 							className="flex flex-col gap-6 w-full"
 							onSubmit={handleSubmit(onSubmit)}
 						>
-							<div className="input-wrapper-text">
-								<input
-									className={`input text-base ${
-										formState.errors.email && "text-red-400"
-									}`}
-									{...register("email")}
-									placeholder="Email"
-									disabled={mutation.isPending}
-								/>
-								<AnimatePresence>
-									{formState.errors.email && (
-										<motion.div
-											className="text-base text-red-400 font-bold"
-											initial={{
-												opacity: 0,
-												scaleY: 0,
-												height: "0rem",
-												originY: 0,
-											}}
-											animate={{
-												opacity: 1,
-												scaleY: 1,
-												height: "1rem",
-											}}
-											exit={{
-												opacity: 0,
-												scaleY: 0,
-												height: "0rem",
-												originY: 0,
-											}}
-										>
-											{formState.errors.email.message}
-										</motion.div>
-									)}
-								</AnimatePresence>
-							</div>
-							<div className="input-wrapper-text">
-								<input
-									className="input text-base"
-									{...register("name")}
-									placeholder="Name"
-									disabled={mutation.isPending}
-								/>
-								<AnimatePresence>
-									{formState.errors.name && (
-										<motion.div
-											className="text-base text-red-400 font-bold"
-											initial={{
-												opacity: 0,
-												scaleY: 0,
-												height: "0rem",
-												originY: 0,
-											}}
-											animate={{
-												opacity: 1,
-												scaleY: 1,
-												height: "1rem",
-											}}
-											exit={{
-												opacity: 0,
-												scaleY: 0,
-												height: "0rem",
-												originY: 0,
-											}}
-										>
-											{formState.errors.name.message}
-										</motion.div>
-									)}
-								</AnimatePresence>
-							</div>
-							<div className="input-wrapper-text">
-								<input
-									className="input text-base"
-									type="password"
-									{...register("password")}
-									placeholder="Password"
-									disabled={mutation.isPending}
-								/>
-								<AnimatePresence>
-									{formState.errors.password && (
-										<motion.div
-											className="text-base text-red-400 font-bold"
-											initial={{
-												opacity: 0,
-												scaleY: 0,
-												height: "0rem",
-												originY: 0,
-											}}
-											animate={{
-												opacity: 1,
-												scaleY: 1,
-												height: "1rem",
-											}}
-											exit={{
-												opacity: 0,
-												scaleY: 0,
-												height: "0rem",
-												originY: 0,
-											}}
-										>
-											{formState.errors.password.message}
-										</motion.div>
-									)}
-								</AnimatePresence>
-							</div>
-							<div className="input-wrapper-text">
-								<input
-									className="input text-base"
-									type="password"
-									{...register("confirmPassword")}
-									placeholder="Confirm Password"
-									disabled={mutation.isPending}
-								/>
-								<AnimatePresence>
-									{formState.errors.confirmPassword && (
-										<motion.div
-											className="text-base text-red-400 font-bold"
-											initial={{
-												opacity: 0,
-												scaleY: 0,
-												height: "0rem",
-												originY: 0,
-											}}
-											animate={{
-												opacity: 1,
-												scaleY: 1,
-												height: "1rem",
-											}}
-											exit={{
-												opacity: 0,
-												scaleY: 0,
-												height: "0rem",
-												originY: 0,
-											}}
-										>
-											{
-												formState.errors.confirmPassword
-													.message
-											}
-										</motion.div>
-									)}
-								</AnimatePresence>
-							</div>
+							<Input
+								placeholder={"Email"}
+								isError={!!formState.errors.email}
+								isRequired={true}
+								errorMessage={formState.errors.email?.message}
+								{...register("email")}
+								disabled={mutation.isPending}
+							/>
+							<Input
+								placeholder={"Name"}
+								isError={!!formState.errors.name}
+								isRequired={true}
+								errorMessage={formState.errors.email?.message}
+								{...register("name")}
+								disabled={mutation.isPending}
+							/>
+							<Input
+								type="password"
+								placeholder={"Password"}
+								isError={!!formState.errors.password}
+								isRequired={true}
+								errorMessage={
+									formState.errors.password?.message
+								}
+								{...register("password")}
+								disabled={mutation.isPending}
+							/>
+							<Input
+								type="password"
+								placeholder={"Confirm Password"}
+								isError={!!formState.errors.confirmPassword}
+								isRequired={true}
+								errorMessage={
+									formState.errors.confirmPassword?.message
+								}
+								{...register("confirmPassword")}
+								disabled={mutation.isPending}
+							/>
 							<Button
+								size="sm"
 								type="submit"
 								disabled={
 									Object.keys(formState.errors).length !== 0
@@ -273,10 +162,10 @@ const SignUp = () => {
 								Sign Up
 							</Button>
 						</form>
-					</motion.div>
+					</div>
 				)}
-			</AnimatePresence>
-		</div>
+			</div>
+		</motion.div>
 	);
 };
 
@@ -284,7 +173,7 @@ const SignUpNotAvailable = () => {
 	return (
 		<div
 			className="flex flex-col items-center gap-6 w-[100%]
-				px-10 py-6"
+			px-10 py-6"
 		>
 			<div className="text-6xl">🙅</div>
 			<div className="">Sorry, signing-up is not available.</div>

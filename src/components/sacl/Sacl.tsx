@@ -29,7 +29,7 @@ export const Sacl = (props: any) => {
 	const pathname = usePathname();
 	const { children } = props;
 	const router = useRouter();
-	const saclRoutes = ["/", "/sign-in", "/signup", "/seed"];
+	const saclRoutes = ["/", "/sign-in", "/sign-up", "/seed"];
 	const [showLoading, setShowLoading] = useState(true);
 	const jwt = useAuthStore((state) => state.jwt);
 	const setJwt = useAuthStore((state) => state.setJwt);
@@ -164,7 +164,7 @@ export const Sacl = (props: any) => {
 					case "/sign-in":
 						setShowLoading(false);
 						break;
-					case "/signup":
+					case "/sign-up":
 						setShowLoading(false);
 						break;
 					default:

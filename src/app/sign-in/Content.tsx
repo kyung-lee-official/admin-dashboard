@@ -13,6 +13,7 @@ import { Button } from "@/components/button/Button";
 import { GoogleIcon } from "@/components/icons/Icons";
 import { Input } from "@/components/input/Input";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 interface IFormInput {
 	email: string;
@@ -67,7 +68,7 @@ export const Content = () => {
 						<div className="flex flex-col gap-3 w-full">
 							<Input
 								placeholder={"Email"}
-								isInvalid={!!formState.errors.email}
+								isError={!!formState.errors.email}
 								isRequired={true}
 								errorMessage={formState.errors.email?.message}
 								{...register("email")}
@@ -75,7 +76,7 @@ export const Content = () => {
 							/>
 							<Input
 								placeholder={"Password"}
-								isInvalid={!!formState.errors.password}
+								isError={!!formState.errors.password}
 								isRequired={true}
 								errorMessage={
 									formState.errors.password?.message
@@ -132,14 +133,12 @@ export const Content = () => {
 						<div className="text-sm text-neutral-500">
 							Need an account?
 						</div>
-						<button
-							onClick={() => {
-								router.push("/signup");
-							}}
+						<Link
+							href={"/sign-up"}
 							className="text-sm text-lime-600 hover:text-lime-700"
 						>
 							Sign up
-						</button>
+						</Link>
 					</div>
 				</div>
 			</div>

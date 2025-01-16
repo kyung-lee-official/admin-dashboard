@@ -128,7 +128,7 @@ const Seed = () => {
 						<div className="flex flex-col gap-3 w-full">
 							<Input
 								placeholder={"Email"}
-								isInvalid={!!formState.errors.email}
+								isError={!!formState.errors.email}
 								isRequired={true}
 								errorMessage={formState.errors.email?.message}
 								{...register("email")}
@@ -136,7 +136,7 @@ const Seed = () => {
 							/>
 							<Input
 								placeholder={"Name"}
-								isInvalid={!!formState.errors.name}
+								isError={!!formState.errors.name}
 								isRequired={true}
 								errorMessage={formState.errors.name?.message}
 								{...register("name")}
@@ -145,7 +145,7 @@ const Seed = () => {
 							<Input
 								type="password"
 								placeholder={"Password"}
-								isInvalid={!!formState.errors.password}
+								isError={!!formState.errors.password}
 								isRequired={true}
 								errorMessage={
 									formState.errors.password?.message
@@ -156,7 +156,7 @@ const Seed = () => {
 							<Input
 								type="password"
 								placeholder={"Confirm Password"}
-								isInvalid={!!formState.errors.confirmPassword}
+								isError={!!formState.errors.confirmPassword}
 								isRequired={true}
 								errorMessage={
 									formState.errors.confirmPassword?.message
