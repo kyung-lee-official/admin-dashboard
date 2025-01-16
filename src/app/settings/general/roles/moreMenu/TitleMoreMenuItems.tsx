@@ -20,6 +20,7 @@ export const TitleMoreMenuItems = () => {
 				items={[
 					{
 						text: "Add a role",
+						hideMenuOnClick: true,
 						icon: <EditIcon size={15} />,
 						onClick: () => {
 							setEdit({

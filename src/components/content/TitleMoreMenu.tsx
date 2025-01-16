@@ -5,6 +5,7 @@ export const TitleMoreMenu = (props: {
 	children?: any;
 	items: {
 		text: string;
+		/* hide menu after clicking on one of the items */
 		hideMenuOnClick: boolean;
 		icon?: ReactNode;
 		onClick: Function;
