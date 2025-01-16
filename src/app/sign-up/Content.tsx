@@ -15,12 +15,12 @@ import {
 import { Button } from "@/components/button/Button";
 import { Input } from "@/components/input/Input";
 
-interface IFormInput {
+type FormInput = {
 	email: string;
 	name: string;
 	password: string;
 	confirmPassword: string;
-}
+};
 
 type Data = {
 	email: string;
@@ -49,7 +49,7 @@ const schema = z
 
 const SignUp = () => {
 	const router = useRouter();
-	const { register, handleSubmit, formState } = useForm<IFormInput>({
+	const { register, handleSubmit, formState } = useForm<FormInput>({
 		mode: "onChange",
 		resolver: zodResolver(schema),
 	});
