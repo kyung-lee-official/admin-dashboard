@@ -1,3 +1,7 @@
+# Render Logic
+
+The outmost layer is `AppWrapper`, if one of `publicRoutes` is access, `Sacl` will not get involved, otherwise, `Sacl` will start checking authentication status and redirect to a proper `saclRoutes`, if the user is not authenticated, he or she will not be able to access pages other than `publicRoutes` and `saclRoutes`.
+
 # Todo
 
 -   Add reCAPTCHA
