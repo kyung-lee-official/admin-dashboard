@@ -11,7 +11,7 @@ import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/utils/react-query/react-query";
 import { deleteStatById, PerformanceQK } from "@/utils/api/app/performance";
 import { useAuthStore } from "@/stores/auth";
-import { DeleteConfirmDialog } from "@/components/delete-confirmation/DeleteConfirmDialog";
+import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
 import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
 
 export const TitleMoreMenuItems = () => {
@@ -68,11 +68,11 @@ export const TitleMoreMenuItems = () => {
 					},
 				]}
 			/>
-			<DeleteConfirmDialog
+			<ConfirmDialog
 				show={showDeleteConfirmation}
 				setShow={setShowDeleteConfirmation}
 				question={"Are you sure you want to delete this stat?"}
-				onDelete={onDelete}
+				onOk={onDelete}
 			/>
 			{createPortal(
 				<EditPanel edit={edit} setEdit={setEdit} />,

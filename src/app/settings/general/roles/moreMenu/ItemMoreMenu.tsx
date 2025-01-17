@@ -12,7 +12,7 @@ import { useMutation } from "@tanstack/react-query";
 import { deleteRoleById, RolesQK } from "@/utils/api/roles";
 import { queryClient } from "@/utils/react-query/react-query";
 import { useAuthStore } from "@/stores/auth";
-import { DeleteConfirmDialog } from "@/components/delete-confirmation/DeleteConfirmDialog";
+import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
 
 type ItemMoreMenuProps = {
 	edit: EditProps;
@@ -137,14 +137,14 @@ export const ItemMoreMenu = (props: ItemMoreMenuProps) => {
 					</button>
 				</div>
 			)}
-			<DeleteConfirmDialog
+			<ConfirmDialog
 				show={showDeleteConfirmation}
 				setShow={setShowDeleteConfirmation}
 				question={"Are you sure you want to delete this role?"}
 				description={
 					"Members that only belong to this role will be moved to 'default' role."
 				}
-				onDelete={onDelete}
+				onOk={onDelete}
 			/>
 		</div>
 	);

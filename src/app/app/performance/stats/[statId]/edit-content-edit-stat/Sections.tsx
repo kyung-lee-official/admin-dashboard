@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Button } from "@/components/button/Button";
-import { DeleteConfirmDialog } from "@/components/delete-confirmation/DeleteConfirmDialog";
+import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
 import { EditSectionData } from "@/utils/types/app/performance";
 import { EditSectionAction, EditSectionType } from "./Reducers";
 
@@ -154,14 +154,14 @@ export const Sections = (props: {
 						);
 					})}
 			</div>
-			<DeleteConfirmDialog
+			<ConfirmDialog
 				show={showDeleteConfirm}
 				setShow={setShowDeleteConfirm}
 				question={"Are you sure you want to delete this section?"}
 				description={
 					"This is an existing section. Deleting it will remove all events associated with it."
 				}
-				onDelete={() => {
+				onOk={() => {
 					dispatchStatSections({
 						type: EditSectionType.DELETE,
 						payload: { tempId: deleteTempId },

@@ -1,14 +1,22 @@
 import { Dispatch, SetStateAction } from "react";
-import { Button } from "@/components/button/Button";
+import { Button } from "../button/Button";
 
-export const DeleteConfirmDialog = (props: {
+export const ConfirmDialog = (props: {
 	show: boolean;
 	setShow: Dispatch<SetStateAction<boolean>>;
 	question: string;
 	description?: string;
-	onDelete: () => void;
+	confirmText?: string;
+	onOk: () => void;
 }) => {
-	const { show, setShow, question, description, onDelete } = props;
+	const {
+		show,
+		setShow,
+		question,
+		description,
+		confirmText = "Confirm",
+		onOk,
+	} = props;
 
 	if (show) {
 		return (
@@ -43,8 +51,8 @@ export const DeleteConfirmDialog = (props: {
 						>
 							Cancel
 						</Button>
-						<Button size="sm" onClick={onDelete}>
-							Confirm
+						<Button size="sm" onClick={onOk}>
+							{confirmText}
 						</Button>
 					</div>
 				</div>

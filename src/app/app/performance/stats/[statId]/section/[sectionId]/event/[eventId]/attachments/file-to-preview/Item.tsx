@@ -15,7 +15,7 @@ import {
 } from "../Icons";
 import { Square } from "../Square";
 import { isImageType, isVideoType } from "../types";
-import { DeleteConfirmDialog } from "@/components/delete-confirmation/DeleteConfirmDialog";
+import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
 import { useMutation } from "@tanstack/react-query";
 import { getAttachment } from "@/utils/api/app/performance";
 import { useAuthStore } from "@/stores/auth";
@@ -99,11 +99,11 @@ const ThumbnailMask = (props: {
 					</button>
 				</div>
 			)}
-			<DeleteConfirmDialog
+			<ConfirmDialog
 				show={showDelete}
 				setShow={setShowDelete}
 				question={question}
-				onDelete={() => {
+				onOk={() => {
 					setShowDelete(false);
 					onDelete();
 				}}

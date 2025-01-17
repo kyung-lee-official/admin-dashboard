@@ -11,7 +11,7 @@ import { Button } from "@/components/button/Button";
 import { CloseIcon } from "@/components/icons/Icons";
 import { ClippingArea } from "./ClippingArea";
 import { Canvas } from "./Canvas";
-import { UnsavedDialog } from "@/components/unsaved-dialog/UnsavedDialog";
+import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
 // import { Debug } from "./Debug";
 
 export type CanvasSize = {
@@ -283,10 +283,12 @@ export const EditContentAvatar = (props: {
 					</div>
 				</div>
 			</div>
-			<UnsavedDialog
-				showUnsaved={showUnsaved}
-				setShowUnsaved={setShowUnsaved}
-				continueFn={() => {
+			<ConfirmDialog
+				show={showUnsaved}
+				setShow={setShowUnsaved}
+				question="Are you sure you want to leave?"
+				confirmText="Continue"
+				onOk={() => {
 					setEdit({ show: false, id: edit.id });
 				}}
 			/>

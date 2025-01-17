@@ -10,11 +10,10 @@ import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Edit } from "./Edit";
 import { Attachments } from "./attachments/Attachments";
-import { DeleteConfirmDialog } from "@/components/delete-confirmation/DeleteConfirmDialog";
+import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
 import { queryClient } from "@/utils/react-query/react-query";
 import { Data } from "./Data";
 import { useRouter } from "next/navigation";
-import { UnsavedDialog } from "@/components/unsaved-dialog/UnsavedDialog";
 import { Approval } from "./Approval";
 
 export const Details = (props: {
@@ -215,16 +214,21 @@ export const Details = (props: {
 				)}
 			</div>
 			<Attachments eventId={event.id} />
-			<DeleteConfirmDialog
+			<ConfirmDialog
 				show={showDeleteConfirmation}
 				setShow={setShowDeleteConfirmation}
 				question={"Are you sure you want to delete this event?"}
-				onDelete={onDelete}
+				onOk={onDelete}
 			/>
-			<UnsavedDialog
-				showUnsaved={showUnsaved}
-				setShowUnsaved={setShowUnsaved}
-				continueFn={discard}
+			<ConfirmDialog
+				show={showUnsaved}
+				setShow={setShowUnsaved}
+				question={"Are you sure you want to leave?"}
+				confirmText="Continue"
+				onOk={() => {
+					discard();
+					setShowUnsaved(false);
+				}}
 			/>
 		</div>
 	);
