@@ -61,10 +61,10 @@ export const EditContentRegular = (props: {
 				quit();
 			}
 		}
-		listenerRef.current?.addEventListener("click", handleClickOutside);
+		listenerRef.current?.addEventListener("mousedown", handleClickOutside);
 		return () => {
 			listenerRef.current?.removeEventListener(
-				"click",
+				"mousedown",
 				handleClickOutside
 			);
 		};
