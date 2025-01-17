@@ -31,7 +31,9 @@ export const EditContentAddTemplate = (props: {
 	const [newData, setNewData] = useState(oldData);
 	const [score, setScore] = useState<number>(oldData.score);
 	const [description, setDescription] = useState<string>(oldData.description);
-	const [role, setRole] = useState<MemberRole>(oldData.memberRole);
+	const [role, setRole] = useState<MemberRole | undefined>(
+		oldData.memberRole
+	);
 	useEffect(() => {
 		setNewData({
 			score: score,
@@ -45,13 +47,13 @@ export const EditContentAddTemplate = (props: {
 			const dto = {
 				score: newData.score,
 				description: newData.description,
-				memberRoleId: newData.memberRole.id,
+				memberRoleId: newData.memberRole?.id,
 			};
 			return createTemplate(dto, jwt);
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: [PerformanceQK.GET_TEMPLATES_BY_ROLE_ID, jwt],
+				queryKey: [PerformanceQK.GET_TEMPLATES_BY_ROLE_ID],
 			});
 			setEdit({ show: false, id: editId });
 		},

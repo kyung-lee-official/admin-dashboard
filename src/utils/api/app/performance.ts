@@ -131,6 +131,15 @@ export const getTemplateById = async (id: string, jwt: string) => {
 	return res.data;
 };
 
+export const deleteTemplateById = async (id: string, jwt: string) => {
+	const res = await axios.delete(`/performance/event-templates/${id}`, {
+		baseURL: process.env.NEXT_PUBLIC_API_HOST,
+		headers: {
+			Authorization: jwt,
+		},
+	});
+};
+
 export const createEvent = async (body: CreateEventDto, jwt: string) => {
 	const res = await axios.post("/performance/events", body, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,

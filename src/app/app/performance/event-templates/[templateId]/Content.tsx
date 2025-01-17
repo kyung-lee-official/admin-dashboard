@@ -5,10 +5,16 @@ import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
 import { DeleteIcon } from "@/components/icons/Icons";
 import { OneRowSkeleton } from "@/components/skeleton/OneRowSkeleton";
 import { useAuthStore } from "@/stores/auth";
-import { getTemplateById, PerformanceQK } from "@/utils/api/app/performance";
+import {
+	deleteTemplateById,
+	getTemplateById,
+	PerformanceQK,
+} from "@/utils/api/app/performance";
+import { queryClient } from "@/utils/react-query/react-query";
 import { PerformanceEventTemplateResponse } from "@/utils/types/app/performance";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export const Content = (props: { templateId: string }) => {
@@ -30,9 +36,22 @@ export const Content = (props: { templateId: string }) => {
 		refetchOnWindowFocus: false,
 	});
 
+	const router = useRouter();
+	const mutation = useMutation({
+		mutationFn: () => {
+			return deleteTemplateById(templateId, jwt);
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: [PerformanceQK.GET_STATS],
+			});
+			router.push("/app/performance/event-templates");
+		},
+		onError: () => {},
+	});
+
 	function onDelete() {
-		/* TODO */
-		// mutation.mutate();
+		mutation.mutate();
 	}
 
 	return (
