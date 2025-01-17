@@ -106,7 +106,7 @@ export const Content = () => {
 						</Button>
 					</form>
 				</div>
-				<div className="flex justify-start w-full my-1">
+				<div className="flex justify-start w-full">
 					<button
 						className="text-sm dark:text-neutral-300/40"
 						onClick={() => {
