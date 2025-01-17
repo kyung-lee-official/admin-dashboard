@@ -6,5 +6,5 @@ export default async function Page({
 	params: Promise<{ statId: string }>;
 }) {
 	const { statId } = await params;
-	return <Content statId={statId} />;
+	return <Content statId={parseInt(statId)} />;
 }

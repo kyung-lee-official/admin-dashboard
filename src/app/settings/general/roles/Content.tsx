@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import {
+	EditId,
 	EditPanel,
 	EditProps,
-} from "../../../../components/edit-panel/EditPanel";
+} from "@/components/edit-panel/EditPanel";
 import { createPortal } from "react-dom";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
@@ -14,11 +15,15 @@ import { ItemMoreMenu } from "./moreMenu/ItemMoreMenu";
 import { Loading } from "@/components/page-authorization/Loading";
 import { Forbidden } from "@/components/page-authorization/Forbidden";
 import { Exception } from "@/components/page-authorization/Exception";
-import { TitleMoreMenuItems } from "./moreMenu/TitleMoreMenuItems";
+import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
+import { EditIcon } from "@/components/icons/Icons";
 
 export const Content = () => {
 	const jwt = useAuthStore((state) => state.jwt);
-	const [edit, setEdit] = useState<EditProps>({ show: false, id: "" });
+	const [edit, setEdit] = useState<EditProps>({
+		show: false,
+		id: EditId.ADD_ROLE,
+	});
 
 	const rolePermQuery = useQuery({
 		queryKey: [RolesQK.GET_MY_ROLE_PERMISSIONS],
@@ -59,7 +64,25 @@ export const Content = () => {
 								<div className="text-lg font-semibold">
 									Roles
 								</div>
-								<TitleMoreMenuItems />
+								<TitleMoreMenu
+									items={[
+										{
+											text: "Add a role",
+											hideMenuOnClick: true,
+											icon: <EditIcon size={15} />,
+											onClick: () => {
+												setEdit({
+													show: true,
+													id: EditId.ADD_ROLE,
+												});
+											},
+										},
+									]}
+								/>
+								{createPortal(
+									<EditPanel edit={edit} setEdit={setEdit} />,
+									document.body
+								)}
 							</div>
 							<div
 								className="flex justify-end items-center px-6 py-4

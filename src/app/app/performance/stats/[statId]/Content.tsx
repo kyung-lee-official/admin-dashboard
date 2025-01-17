@@ -2,28 +2,63 @@
 
 import { Loading } from "@/components/page-authorization/Loading";
 import { useAuthStore } from "@/stores/auth";
-import { getStatById, PerformanceQK } from "@/utils/api/app/performance";
+import {
+	deleteStatById,
+	getStatById,
+	PerformanceQK,
+} from "@/utils/api/app/performance";
 import {
 	ApprovalType,
 	PerformanceStatResponse,
 } from "@/utils/types/app/performance";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
-import { TitleMoreMenuItems } from "./moreMenu/TitleMoreMenuItems";
 import { CircularProgress } from "@/components/circular-progress/CircularProgress";
+import { useState } from "react";
+import {
+	EditId,
+	EditPanel,
+	EditProps,
+} from "@/components/edit-panel/EditPanel";
+import { queryClient } from "@/utils/react-query/react-query";
+import { DeleteIcon, EditIcon } from "@/components/icons/Icons";
+import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
+import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
+import { createPortal } from "react-dom";
 
-export const Content = (props: { statId: string }) => {
+export const Content = (props: { statId: number }) => {
 	const { statId } = props;
-
 	const jwt = useAuthStore((state) => state.jwt);
 	const router = useRouter();
 
+	const [edit, setEdit] = useState<EditProps>({
+		show: false,
+		id: EditId.EDIT_STAT,
+	});
+	const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+
+	const mutation = useMutation({
+		mutationFn: () => {
+			return deleteStatById(statId, jwt);
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: [PerformanceQK.GET_STATS],
+			});
+			router.push("/app/performance/stats");
+		},
+		onError: () => {},
+	});
+	function onDelete() {
+		mutation.mutate();
+	}
+
 	const statsQuery = useQuery<PerformanceStatResponse, AxiosError>({
-		queryKey: [PerformanceQK.GET_STAT_BY_ID, parseInt(statId), jwt],
+		queryKey: [PerformanceQK.GET_STAT_BY_ID, statId, jwt],
 		queryFn: async () => {
-			const stats = await getStatById(parseInt(statId), jwt);
+			const stats = await getStatById(statId, jwt);
 			return stats;
 		},
 		retry: false,
@@ -70,7 +105,44 @@ export const Content = (props: { statId: string }) => {
 				>
 					<div className="flex justify-between items-center w-full px-6 py-4">
 						<div className="text-lg font-semibold">Stat</div>
-						<TitleMoreMenuItems />
+						<TitleMoreMenu
+							items={[
+								{
+									text: "Edit Stat",
+									hideMenuOnClick: true,
+									icon: <EditIcon size={15} />,
+									onClick: () => {
+										setEdit({
+											show: true,
+											id: EditId.EDIT_STAT,
+											auxData: {
+												statId: statId,
+											},
+										});
+									},
+								},
+								{
+									text: "Delete Stat",
+									hideMenuOnClick: true,
+									icon: <DeleteIcon size={15} />,
+									onClick: () => {
+										setShowDeleteConfirmation(true);
+									},
+								},
+							]}
+						/>
+						<ConfirmDialog
+							show={showDeleteConfirmation}
+							setShow={setShowDeleteConfirmation}
+							question={
+								"Are you sure you want to delete this stat?"
+							}
+							onOk={onDelete}
+						/>
+						{createPortal(
+							<EditPanel edit={edit} setEdit={setEdit} />,
+							document.body
+						)}
 					</div>
 					<table
 						className="w-full

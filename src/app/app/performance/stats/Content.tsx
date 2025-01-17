@@ -5,10 +5,22 @@ import { Member } from "@/utils/types/internal";
 import { StatList } from "./StatList";
 import { YearPicker } from "@/components/date/date-picker/year-picker/YearPicker";
 import dayjs from "dayjs";
-import { TitleMoreMenuItems } from "./moreMenu/TitleMoreMenuItems";
 import { MemberSelector } from "@/components/input/selectors/MemberSelector";
+import {
+	EditId,
+	EditPanel,
+	EditProps,
+} from "@/components/edit-panel/EditPanel";
+import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
+import { EditIcon } from "@/components/icons/Icons";
+import { createPortal } from "react-dom";
 
 export const Content = () => {
+	const [edit, setEdit] = useState<EditProps>({
+		show: false,
+		id: EditId.ADD_STAT,
+	});
+
 	const [member, setMember] = useState<Member>();
 	const [year, setYear] = useState<dayjs.Dayjs>(dayjs());
 
@@ -22,7 +34,25 @@ export const Content = () => {
 			>
 				<div className="relative flex justify-between items-center px-6 py-4">
 					<div className="text-lg font-semibold">Stats</div>
-					<TitleMoreMenuItems />
+					<TitleMoreMenu
+						items={[
+							{
+								text: "Add a stat",
+								hideMenuOnClick: true,
+								icon: <EditIcon size={15} />,
+								onClick: () => {
+									setEdit({
+										show: true,
+										id: EditId.ADD_STAT,
+									});
+								},
+							},
+						]}
+					/>
+					{createPortal(
+						<EditPanel edit={edit} setEdit={setEdit} />,
+						document.body
+					)}
 				</div>
 				<div
 					className="flex items-center px-6 py-4 gap-6

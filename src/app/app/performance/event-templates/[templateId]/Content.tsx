@@ -1,16 +1,21 @@
 "use client";
 
+import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
+import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
+import { DeleteIcon } from "@/components/icons/Icons";
 import { OneRowSkeleton } from "@/components/skeleton/OneRowSkeleton";
 import { useAuthStore } from "@/stores/auth";
 import { getTemplateById, PerformanceQK } from "@/utils/api/app/performance";
 import { PerformanceEventTemplateResponse } from "@/utils/types/app/performance";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { useState } from "react";
 
 export const Content = (props: { templateId: string }) => {
 	const { templateId } = props;
 
 	const jwt = useAuthStore((state) => state.jwt);
+	const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
 	const templateQuery = useQuery<
 		PerformanceEventTemplateResponse,
@@ -24,6 +29,11 @@ export const Content = (props: { templateId: string }) => {
 		retry: false,
 		refetchOnWindowFocus: false,
 	});
+
+	function onDelete() {
+		/* TODO */
+		// mutation.mutate();
+	}
 
 	return (
 		<div className="flex flex-col w-full max-w-[1600px] min-h-[calc(100svh-56px)] p-3 mx-auto gap-y-3">
@@ -39,7 +49,26 @@ export const Content = (props: { templateId: string }) => {
 				>
 					<div className="flex justify-between items-center w-full px-6 py-4">
 						<div className="text-lg font-semibold">Template</div>
-						{/* <TitleMoreMenuItems /> */}
+						<TitleMoreMenu
+							items={[
+								{
+									text: "Delete Stat",
+									hideMenuOnClick: true,
+									icon: <DeleteIcon size={15} />,
+									onClick: () => {
+										setShowDeleteConfirmation(true);
+									},
+								},
+							]}
+						/>
+						<ConfirmDialog
+							show={showDeleteConfirmation}
+							setShow={setShowDeleteConfirmation}
+							question={
+								"Are you sure you want to delete this stat?"
+							}
+							onOk={onDelete}
+						/>
 					</div>
 					<table
 						className="w-full
