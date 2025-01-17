@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, MouseEventHandler, SetStateAction } from "react";
 import { Button } from "../button/Button";
 
 export const ConfirmDialog = (props: {
@@ -7,7 +7,7 @@ export const ConfirmDialog = (props: {
 	question: string;
 	description?: string;
 	confirmText?: string;
-	onOk: () => void;
+	onOk: MouseEventHandler<HTMLButtonElement>;
 }) => {
 	const {
 		show,
