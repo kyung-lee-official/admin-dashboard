@@ -17,7 +17,7 @@ export const getMyInfo = async (jwt: string) => {
 };
 
 export const getMembers = async (jwt: string) => {
-	const res = await axios.post("/internal/members/find", null, {
+	const res = await axios.post("/internal/members/search", null, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: jwt,
