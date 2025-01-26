@@ -5,6 +5,8 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { EditId, EditProps } from "@/components/edit-panel/EditPanel";
 import { createRole, RolesQK } from "@/utils/api/roles";
 import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
+import { RoleSelector } from "@/components/input/selectors/RoleSelector";
+import { MemberRole } from "@/utils/types/internal";
 
 export const EditContentAddRole = (props: {
 	edit: EditProps;
@@ -15,10 +17,26 @@ export const EditContentAddRole = (props: {
 	const { edit, setEdit } = props;
 
 	const jwt = useAuthStore((state) => state.jwt);
+	const oldData: MemberRole = {
+		id: "",
+		name: "",
+		superRole: undefined,
+	};
+	const [newData, setNewData] = useState(oldData);
+	const [id, setId] = useState(oldData.id);
+	const [name, setName] = useState(oldData.name);
+	const [superRole, setSuperRole] = useState<MemberRole>();
 
 	const mutation = useMutation({
 		mutationFn: () => {
-			return createRole(newData, jwt);
+			return createRole(
+				{
+					id: newData.id,
+					name: newData.name,
+					superRoleId: newData.superRole?.id,
+				},
+				jwt
+			);
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
@@ -29,20 +47,13 @@ export const EditContentAddRole = (props: {
 		onError: () => {},
 	});
 
-	const oldData = {
-		id: "",
-		name: "",
-	};
-	const [newData, setNewData] = useState(oldData);
-	const [id, setId] = useState(oldData.id);
-	const [name, setName] = useState(oldData.name);
-
 	useEffect(() => {
 		setNewData({
 			id: id,
 			name: name,
+			superRole: superRole,
 		});
-	}, [id, name]);
+	}, [id, name, superRole]);
 
 	function onSave() {
 		mutation.mutate();
@@ -91,18 +102,13 @@ export const EditContentAddRole = (props: {
 						}}
 					/>
 				</div>
-				{/* <div
+				<div
 					className="flex flex-col gap-1.5
 					text-sm"
 				>
-					Members
-					<CheckboxList
-						allOptions={newData.members}
-						newSelectedOptions={newData.members}
-						setNewSelectedOptions={newData.members}
-						itemKey="name"
-					/>
-				</div> */}
+					Super Role
+					<RoleSelector role={superRole} setRole={setSuperRole} />
+				</div>
 			</form>
 		</EditContentRegular>
 	);

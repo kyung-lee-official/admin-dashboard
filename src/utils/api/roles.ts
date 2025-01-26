@@ -25,6 +25,7 @@ export const createRole = async (body: any, jwt: string): Promise<any> => {
 		{
 			id: body.id,
 			name: body.name,
+			superRoleId: body.superRoleId,
 		},
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,

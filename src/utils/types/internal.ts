@@ -14,5 +14,5 @@ export type Member = {
 export type MemberRole = {
 	id: string;
 	name: string;
-	superRoleId?: string;
+	superRole?: MemberRole;
 };

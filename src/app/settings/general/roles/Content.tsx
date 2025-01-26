@@ -84,13 +84,13 @@ export const Content = () => {
 									document.body
 								)}
 							</div>
-							<div
+							{/* <div
 								className="flex justify-end items-center px-6 py-4
 								text-sm
 								rounded-md border-t-[1px] border-white/10"
 							>
 								Search
-							</div>
+							</div> */}
 							<table className="text-sm text-white/50 font-semibold">
 								<tbody
 									className="[&_>_tr_>_td]:py-3 [&_>_tr_>_td]:px-6
