@@ -61,7 +61,7 @@ export const EditContentAddStat = (props: {
 		mutationFn: () => {
 			const dto = {
 				ownerId: newData.member?.id,
-				month: newData.month.format("YYYY-MM-DD"),
+				month: newData.month.startOf("month").format("YYYY-MM-DD"),
 				statSections: newData.statSections.map((s) => ({
 					weight: s.weight,
 					title: s.title,
