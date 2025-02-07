@@ -1,10 +1,11 @@
-import { Dispatch, RefObject, SetStateAction } from "react";
+import { Dispatch, LegacyRef, SetStateAction, useEffect } from "react";
 
 export const StringRegular = <T,>(props: {
-	entryRef: RefObject<HTMLInputElement | null>;
-	menuRef: RefObject<HTMLDivElement | null>;
+	entryRef: LegacyRef<HTMLInputElement> | undefined;
+	menuRef: LegacyRef<HTMLDivElement> | undefined;
 	show: boolean;
 	setShow: Dispatch<SetStateAction<boolean>>;
+	selected: T | undefined;
 	setSelected: Dispatch<SetStateAction<T | undefined>>;
 	label: string;
 	setHover?: Dispatch<SetStateAction<T | undefined>>;
@@ -17,6 +18,7 @@ export const StringRegular = <T,>(props: {
 		menuRef,
 		show,
 		setShow,
+		selected,
 		setSelected,
 		label,
 		setHover,
@@ -24,6 +26,13 @@ export const StringRegular = <T,>(props: {
 		placeholder,
 		setSearchTerm,
 	} = props;
+
+	useEffect(() => {
+		if (selected) {
+			setSearchTerm(selected as string);
+		}
+	}, [selected]);
+
 	return (
 		<div
 			className="relative flex items-center

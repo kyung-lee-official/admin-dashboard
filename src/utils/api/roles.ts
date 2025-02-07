@@ -1,5 +1,6 @@
 import axios from "axios";
 import qs from "qs";
+import { UpdateRoleByIdDto } from "../types/internal";
 
 export enum RolesQK {
 	GET_MY_ROLE_PERMISSIONS = "get-my-role-permissions",
@@ -75,11 +76,10 @@ export const getRoleById = async (jwt: string, id: string): Promise<any> => {
 };
 
 export const updateRoleById = async (
-	body: any,
-	roleId: number,
+	dto: UpdateRoleByIdDto,
 	jwt: string
 ): Promise<any> => {
-	const res = await axios.patch(`/internal/roles/${roleId}`, body, {
+	const res = await axios.patch(`/internal/roles`, dto, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: jwt,

@@ -1,10 +1,10 @@
-import { Dispatch, RefObject, SetStateAction } from "react";
+import { Dispatch, LegacyRef, SetStateAction, useEffect } from "react";
 import { SearchOutlineIcon } from "../Icons";
 import { sortByProp, StringKeys } from "../types";
 
 export const ObjectSearch = <T,>(props: {
-	entryRef: RefObject<HTMLInputElement | null>;
-	menuRef: RefObject<HTMLDivElement | null>;
+	entryRef: LegacyRef<HTMLInputElement> | undefined;
+	menuRef: LegacyRef<HTMLDivElement> | undefined;
 	show: boolean;
 	setShow: Dispatch<SetStateAction<boolean>>;
 	selected: T | undefined;
@@ -43,6 +43,12 @@ export const ObjectSearch = <T,>(props: {
 			? `${selected[primaryKey]} (${selected[secondaryKey]})`
 			: `${selected[primaryKey]}`;
 	}
+
+	useEffect(() => {
+		if (selected) {
+			setSearchTerm(label);
+		}
+	}, [selected]);
 
 	return (
 		<div

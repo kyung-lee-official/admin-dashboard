@@ -6,13 +6,15 @@ import { EditId, EditProps } from "@/components/edit-panel/EditPanel";
 import { getRoleById, RolesQK, updateRoleById } from "@/utils/api/roles";
 import { AxiosError } from "axios";
 import { EditMembers } from "./EditMembers";
-import { Member } from "@/utils/types/internal";
+import { Member, MemberRole } from "@/utils/types/internal";
 import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
 import { sortByProp } from "@/utils/data/data";
+import { RoleSelector } from "@/components/input/selectors/RoleSelector";
 
 export type EditRoleData = {
 	id: string;
 	name: string;
+	superRole: MemberRole | undefined;
 	members: Member[];
 };
 
@@ -40,24 +42,30 @@ export const EditContentEditRole = (props: {
 	const [oldData, setOldData] = useState<EditRoleData>({
 		id: "",
 		name: "",
+		superRole: undefined,
 		members: [],
 	});
 	const [newData, setNewData] = useState<EditRoleData>(oldData);
 	const [id, setId] = useState(oldData.id);
 	const [name, setName] = useState(oldData.name);
-	const [members, setMembers] = useState(oldData.members);
+	const [superRole, setSuperRole] = useState<MemberRole>();
+	const [members, setMembers] = useState<Member[]>(oldData.members);
 
 	useEffect(() => {
 		if (roleQuery.isSuccess) {
 			const initialData = {
 				id: roleQuery.data.id,
 				name: roleQuery.data.name,
+				superRole: roleQuery.data.superRole,
 				members: sortByProp(roleQuery.data.members, "name"),
 			};
 			setOldData(initialData);
 			setNewData(initialData);
 			setId(initialData.id);
 			setName(initialData.name);
+			setSuperRole(
+				initialData.superRole ? initialData.superRole : undefined
+			);
 			setMembers(initialData.members);
 		}
 	}, [roleQuery.data]);
@@ -66,18 +74,20 @@ export const EditContentEditRole = (props: {
 		setNewData({
 			id: id,
 			name: name,
+			superRole: superRole,
 			members: sortByProp(members, "name"),
 		});
-	}, [id, name, members]);
+	}, [id, name, superRole, members]);
 
 	const mutation = useMutation({
 		mutationFn: () => {
 			const dto = {
 				id: newData.id,
 				name: newData.name,
-				ids: newData.members.map((member) => member.id),
+				superRoleId: newData.superRole?.id,
+				memberIds: newData.members.map((member) => member.id),
 			};
-			return updateRoleById(dto, roleId, jwt);
+			return updateRoleById(dto, jwt);
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
@@ -136,6 +146,13 @@ export const EditContentEditRole = (props: {
 							setName(e.target.value);
 						}}
 					/>
+				</div>
+				<div
+					className="flex flex-col gap-1.5
+					text-sm"
+				>
+					Super Role
+					<RoleSelector role={superRole} setRole={setSuperRole} />
 				</div>
 				<div
 					className="flex flex-col gap-1.5

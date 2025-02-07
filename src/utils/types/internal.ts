@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export type MemberResponse = {
 	id: string;
 	email: string;
@@ -16,3 +18,12 @@ export type MemberRole = {
 	name: string;
 	superRole?: MemberRole;
 };
+
+export const updateRoleByIdSchema = z.object({
+	id: z.string(),
+	name: z.string(),
+	superRoleId: z.string().optional(),
+	memberIds: z.array(z.string().uuid()),
+});
+
+export type UpdateRoleByIdDto = z.infer<typeof updateRoleByIdSchema>;

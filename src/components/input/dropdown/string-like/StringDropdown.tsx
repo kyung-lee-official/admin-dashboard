@@ -72,6 +72,7 @@ export const StringDropdown = <T,>(props: StringLike<T>) => {
 					menuRef={menuRef}
 					show={show}
 					setShow={setShow}
+					selected={selected}
 					setSelected={setSelected}
 					label={label}
 					setHover={setHover}
@@ -87,6 +88,7 @@ export const StringDropdown = <T,>(props: StringLike<T>) => {
 					menuRef={menuRef}
 					show={show}
 					setShow={setShow}
+					selected={selected}
 					setSelected={setSelected}
 					label={label}
 					setHover={setHover}
