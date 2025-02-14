@@ -17,6 +17,7 @@ import { Forbidden } from "@/components/page-authorization/Forbidden";
 import { Exception } from "@/components/page-authorization/Exception";
 import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
 import { EditIcon } from "@/components/icons/Icons";
+import { sortByProp } from "@/utils/data/data";
 
 export const Content = () => {
 	const jwt = useAuthStore((state) => state.jwt);
@@ -106,29 +107,33 @@ export const Content = () => {
 										</td>
 									</tr>
 									{rolesQuery.isSuccess &&
-										rolesQuery.data.map((role: any) => {
-											return (
-												<tr key={role.id}>
-													<td className="w-1/2">
-														{role.name}
-													</td>
-													<td className="w-1/2">
-														{role.id}
-													</td>
-													<td>
-														<ItemMoreMenu
-															edit={{
-																...edit,
-																auxData: {
-																	roleId: role.id,
-																},
-															}}
-															setEdit={setEdit}
-														/>
-													</td>
-												</tr>
-											);
-										})}
+										sortByProp(rolesQuery.data, "id").map(
+											(role: any) => {
+												return (
+													<tr key={role.id}>
+														<td className="w-1/2">
+															{role.name}
+														</td>
+														<td className="w-1/2">
+															{role.id}
+														</td>
+														<td>
+															<ItemMoreMenu
+																edit={{
+																	...edit,
+																	auxData: {
+																		roleId: role.id,
+																	},
+																}}
+																setEdit={
+																	setEdit
+																}
+															/>
+														</td>
+													</tr>
+												);
+											}
+										)}
 								</tbody>
 							</table>
 						</div>
