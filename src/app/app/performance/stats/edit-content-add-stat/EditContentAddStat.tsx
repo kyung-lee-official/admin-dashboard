@@ -43,7 +43,7 @@ export const EditContentAddStat = (props: {
 		],
 	});
 	const [newData, setNewData] = useState<CreatePerformanceStatData>(oldData);
-	const [member, setMember] = useState<Member | undefined>(oldData.member);
+	const [member, setMember] = useState<Member | undefined>(undefined);
 	const [month, setMonth] = useState<dayjs.Dayjs>(oldData.month);
 	const [statSections, setStatSections] = useState<CreateSectionData[]>(
 		oldData.statSections
