@@ -17,7 +17,7 @@ export const sendVerificationEmail = async (jwt: string) => {
 export const changeEmail = async (newData: any, jwt: string): Promise<any> => {
 	const res = await axios.patch(
 		`/email/change-email`,
-		{ newEmail: newData.email },
+		{ newEmail: newData.newEmail },
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
 			headers: {
