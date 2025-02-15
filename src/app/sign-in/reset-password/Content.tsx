@@ -1,6 +1,5 @@
 "use client";
 
-import React, { useEffect } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -9,6 +8,9 @@ import { motion } from "framer-motion";
 import { useSearchParams } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { resetPassword } from "@/utils/api/authentication";
+import { useEffect } from "react";
+import { Input } from "@/components/input/Input";
+import { Button } from "@/components/button/Button";
 
 interface IFormInput {
 	password: string;
@@ -32,7 +34,7 @@ const schema = z
 		path: ["confirmPassword"],
 	});
 
-const Index = () => {
+const Content = () => {
 	const searchParams = useSearchParams();
 	// const searchParams = new URLSearchParams(
 	// 	router.asPath.substring(router.asPath.indexOf("?"))
@@ -65,46 +67,32 @@ const Index = () => {
 	}, [mutation]);
 
 	return (
-		<div className="flex justify-center items-center w-full min-h-screen">
+		<div className="flex justify-center items-center w-full h-svh">
 			{mutation.isSuccess ? (
-				<div
-					className="flex flex-col items-center w-[480px] px-10 py-6 gap-6
-					text-3xl text-neutral-600
-					bg-neutral-200
-					rounded-3xl shadow-lg"
-				>
-					<div>Your password has been reset</div>
-					<div>✅</div>
+				<div className="flex flex-col items-center w-full max-w-[280px] m-4 gap-6">
+					<h1 className="text-2xl">
+						Your password has been reset ✅
+					</h1>
 				</div>
 			) : mutation.isError &&
 			  mutation.error.response?.data?.message === "Invalid token" ? (
-				<div
-					className="flex flex-col items-center w-[480px] px-10 py-6 gap-6
-					text-3xl text-neutral-600
-					bg-neutral-200
-					rounded-3xl shadow-lg"
-				>
+				<div className="flex flex-col items-center w-full max-w-[280px] m-4 gap-6">
 					Invalid token ❌
 				</div>
 			) : (
-				<div
-					className="flex flex-col items-center w-[480px] px-10 py-6 gap-6
-					text-3xl text-neutral-600
-					bg-neutral-200
-					rounded-3xl shadow-lg"
-				>
-					<h1 className="text-3xl">Reset your password</h1>
-					<div>🗝️</div>
+				<div className="flex flex-col items-center w-full max-w-[280px] m-4 gap-6">
+					<h1 className="text-2xl">Reset your password 🗝️</h1>
 					<form
 						className="flex flex-col items-center gap-6 w-full"
 						onSubmit={handleSubmit(onSubmit)}
 					>
-						<div className="input-wrapper-text">
-							<input
+						<div className="w-full">
+							<Input
 								type="password"
 								className={`input text-base ${
 									formState.errors.password && "text-red-400"
 								}`}
+								isError={!!formState.errors.password}
 								{...register("password")}
 								placeholder="New Password"
 								disabled={mutation.isPending}
@@ -128,13 +116,14 @@ const Index = () => {
 								</motion.div>
 							)}
 						</div>
-						<div className="input-wrapper-text">
-							<input
+						<div className="w-full">
+							<Input
 								type="password"
 								className={`input text-base ${
 									formState.errors.confirmPassword &&
 									"text-red-400"
 								}`}
+								isError={!!formState.errors.confirmPassword}
 								{...register("confirmPassword")}
 								placeholder="Confirm Your New Password"
 								disabled={mutation.isPending}
@@ -158,23 +147,21 @@ const Index = () => {
 								</motion.div>
 							)}
 						</div>
-						<button
+						<Button
+							size="sm"
 							type="submit"
-							className={`w-24 px-2 py-1
-							text-xl
-							text-blue-100
+							className={`
 							${
 								formState.isValid && !mutation.isPending
 									? "bg-blue-500 hover:bg-blue-600"
 									: mutation.isPending
 									? "bg-blue-400 cursor-wait"
 									: "bg-neutral-400 cursor-not-allowed"
-							}
-							rounded`}
+							}`}
 							disabled={!formState.isValid || mutation.isPending}
 						>
 							Reset
-						</button>
+						</Button>
 					</form>
 				</div>
 			)}
@@ -182,4 +169,4 @@ const Index = () => {
 	);
 };
 
-export default Index;
+export default Content;

@@ -36,3 +36,10 @@ export const verifyEmail = async (body: {
 	});
 	return res.data;
 };
+
+export const forgetPassword = async (body: { email: string }): Promise<any> => {
+	const res = await axios.post("/email/forget-password", body, {
+		baseURL: process.env.NEXT_PUBLIC_API_HOST,
+	});
+	return res.data;
+};

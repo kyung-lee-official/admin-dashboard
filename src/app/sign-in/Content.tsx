@@ -107,14 +107,12 @@ export const Content = () => {
 					</form>
 				</div>
 				<div className="flex justify-start w-full">
-					<button
+					<Link
+						href={"/sign-in/forget-password"}
 						className="text-sm dark:text-neutral-300/40"
-						onClick={() => {
-							router.push("/sign-in/forgetPassword");
-						}}
 					>
 						Forget your password?
-					</button>
+					</Link>
 				</div>
 				<div className="flex flex-col w-full gap-4">
 					<Button

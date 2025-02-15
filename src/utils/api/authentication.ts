@@ -47,13 +47,6 @@ export const refreshJwt = async (jwt: string) => {
 	return res.data;
 };
 
-export const forgetPassword = async (body: { email: string }): Promise<any> => {
-	const res = await axios.post("/member-auth/forgetPassword", body, {
-		baseURL: process.env.NEXT_PUBLIC_API_HOST,
-	});
-	return res.data;
-};
-
 export const changePassword = async (
 	body: { oldPassword: string; newPassword: string },
 	jwt: string
@@ -71,7 +64,7 @@ export const resetPassword = async (body: {
 	password: string;
 	resetPasswordToken: string | null;
 }): Promise<any> => {
-	const res = await axios.post(`/member-auth/resetPassword`, body, {
+	const res = await axios.post(`/authentication/reset-password`, body, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 	});
 	return res.data;

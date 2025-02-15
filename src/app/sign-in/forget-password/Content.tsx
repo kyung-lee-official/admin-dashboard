@@ -1,13 +1,14 @@
 "use client";
 
-import React from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AxiosError } from "axios";
 import { motion } from "framer-motion";
 import { useMutation } from "@tanstack/react-query";
-import { forgetPassword } from "@/utils/api/authentication";
+import { Input } from "@/components/input/Input";
+import { Button } from "@/components/button/Button";
+import { forgetPassword } from "@/utils/api/email";
 
 interface IFormInput {
 	email: string;
@@ -17,7 +18,7 @@ const schema = z.object({
 	email: z.string().email({ message: "Invalid email address" }),
 });
 
-const Index = () => {
+const Content = () => {
 	const { register, handleSubmit, formState } = useForm<IFormInput>({
 		mode: "onChange",
 		resolver: zodResolver(schema),
@@ -35,25 +36,14 @@ const Index = () => {
 	};
 
 	return (
-		<div className="flex justify-center items-center w-full min-h-screen">
+		<div className="flex justify-center items-center w-full h-svh">
 			{mutation.isSuccess ? (
-				<div
-					className="flex flex-col items-center w-96 px-10 py-6 gap-6
-					text-3xl text-neutral-600
-					bg-neutral-200
-					rounded-3xl shadow-lg"
-				>
-					<h1>Email has been sent</h1>
-					<h1>✅</h1>
+				<div className="flex flex-col items-center w-full max-w-[280px] m-4 gap-6">
+					<h1 className="text-2xl">Email has been sent ✅</h1>
 				</div>
 			) : (
-				<div
-					className="flex flex-col items-center w-[450px] px-10 py-6 gap-6
-					text-3xl text-neutral-600
-					bg-neutral-200
-					rounded-3xl shadow-lg"
-				>
-					<h1 className="text-3xl">Forget your Password?</h1>
+				<div className="flex flex-col items-center w-full max-w-[280px] m-4 gap-6">
+					<h1 className="text-2xl">Forget your Password?</h1>
 					<div className="flex justify-center text-base text-neutral-500">
 						Enter your email address and we will send you a link to
 						reset your password.
@@ -62,13 +52,13 @@ const Index = () => {
 						className="flex flex-col items-center gap-6 w-full"
 						onSubmit={handleSubmit(onSubmit)}
 					>
-						<div className="input-wrapper-text">
-							<input
-								className={`input text-base ${
-									formState.errors.email && "text-red-400"
-								}`}
+						<div className="w-full">
+							<Input
+								placeholder={"Email"}
+								isError={!!formState.errors.email}
+								isRequired={true}
+								errorMessage={formState.errors.email?.message}
 								{...register("email")}
-								placeholder="Email"
 								disabled={mutation.isPending}
 							/>
 							{formState.errors.email && (
@@ -105,27 +95,26 @@ const Index = () => {
 											height: "auto",
 										}}
 									>
-										Member not found, please check your email
+										Member not found, please check your
+										email
 									</motion.div>
 								)}
 						</div>
-						<button
+						<Button
 							type="submit"
-							className={`w-24 px-2 py-1
-							text-xl
-							text-blue-100
+							size="sm"
+							className={`text-blue-100
 							${
 								formState.isValid && !mutation.isPending
 									? "bg-blue-500 hover:bg-blue-600"
 									: mutation.isPending
 									? "bg-blue-400 cursor-wait"
 									: "bg-neutral-400 cursor-not-allowed"
-							}
-							rounded`}
+							}`}
 							disabled={!formState.isValid || mutation.isPending}
 						>
 							Send
-						</button>
+						</Button>
 					</form>
 				</div>
 			)}
@@ -133,4 +122,4 @@ const Index = () => {
 	);
 };
 
-export default Index;
+export default Content;
