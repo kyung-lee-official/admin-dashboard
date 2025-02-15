@@ -1,11 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Member } from "@/utils/types/internal";
 import { StatList } from "./StatList";
 import { YearPicker } from "@/components/date/date-picker/year-picker/YearPicker";
 import dayjs from "dayjs";
-import { MemberSelector } from "@/components/input/selectors/MemberSelector";
 import {
 	EditId,
 	EditPanel,
@@ -14,6 +13,12 @@ import {
 import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
 import { EditIcon } from "@/components/icons/Icons";
 import { createPortal } from "react-dom";
+import { Dropdown } from "@/components/input/dropdown/Dropdown";
+import { useQuery } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { useAuthStore } from "@/stores/auth";
+import { getMembers, getMyInfo, MembersQK } from "@/utils/api/members";
+import { MyInfo } from "@/app/settings/my-account/profile/Content";
 
 export const Content = () => {
 	const [edit, setEdit] = useState<EditProps>({
@@ -22,7 +27,41 @@ export const Content = () => {
 	});
 
 	const [member, setMember] = useState<Member>();
+	const [memberOptions, setMemberOptions] = useState<Member[]>([]);
 	const [year, setYear] = useState<dayjs.Dayjs>(dayjs());
+	const jwt = useAuthStore((state) => state.jwt);
+
+	const membersQuery = useQuery<Member[], AxiosError>({
+		queryKey: [MembersQK.GET_MEMBERS, jwt],
+		queryFn: async () => {
+			const members = await getMembers(jwt);
+			return members;
+		},
+		retry: false,
+		refetchOnWindowFocus: false,
+	});
+
+	const myInfoQuery = useQuery<MyInfo, AxiosError>({
+		queryKey: [MembersQK.GET_MY_INFO, jwt],
+		queryFn: async () => {
+			const isSignedIn = await getMyInfo(jwt);
+			return isSignedIn;
+		},
+		retry: false,
+		refetchOnWindowFocus: false,
+	});
+
+	useEffect(() => {
+		if (membersQuery.data && myInfoQuery.data) {
+			const myRoles = myInfoQuery.data.memberRoles;
+			const iAmAdmin = myRoles.some((role) => role.id === "admin");
+			if (!iAmAdmin) {
+				setMemberOptions([myInfoQuery.data]);
+			} else {
+				setMemberOptions(membersQuery.data);
+			}
+		}
+	}, [membersQuery.data, myInfoQuery.data]);
 
 	return (
 		<div className="flex flex-col w-full max-w-[1600px] min-h-[calc(100svh-56px)] p-3 mx-auto gap-y-3">
@@ -59,7 +98,16 @@ export const Content = () => {
 					text-sm
 					rounded-md border-t-[1px] border-white/10"
 				>
-					<MemberSelector member={member} setMember={setMember} />
+					<Dropdown
+						kind="object"
+						mode="search"
+						selected={member}
+						setSelected={setMember}
+						options={memberOptions ?? []}
+						placeholder="Select a member"
+						label={{ primaryKey: "name", secondaryKey: "email" }}
+						sortBy="name"
+					/>
 					<YearPicker date={year} setDate={setYear} />
 				</div>
 				<StatList member={member} year={year} />

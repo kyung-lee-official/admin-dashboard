@@ -2,10 +2,9 @@ import { EditId, EditProps } from "@/components/edit-panel/EditPanel";
 import { useAuthStore } from "@/stores/auth";
 import { createStat, PerformanceQK } from "@/utils/api/app/performance";
 import { queryClient } from "@/utils/react-query/react-query";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { MemberSelector } from "@/components/input/selectors/MemberSelector";
 import { MonthPicker } from "@/components/date/date-picker/month-picker/MonthPicker";
 import { Member } from "@/utils/types/internal";
 import { Sections } from "./Sections";
@@ -15,6 +14,10 @@ import {
 } from "@/utils/types/app/performance";
 import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
 import { nanoid } from "nanoid";
+import { Dropdown } from "@/components/input/dropdown/Dropdown";
+import { MyInfo } from "@/app/settings/my-account/profile/Content";
+import { AxiosError } from "axios";
+import { getMembers, getMyInfo, MembersQK } from "@/utils/api/members";
 
 export const EditContentAddStat = (props: {
 	edit: EditProps;
@@ -27,11 +30,7 @@ export const EditContentAddStat = (props: {
 	const jwt = useAuthStore((state) => state.jwt);
 
 	const [oldData, setOldData] = useState<CreatePerformanceStatData>({
-		member: {
-			id: "",
-			email: "",
-			name: "",
-		},
+		member: undefined,
 		month: dayjs(),
 		statSections: [
 			{
@@ -44,10 +43,43 @@ export const EditContentAddStat = (props: {
 	});
 	const [newData, setNewData] = useState<CreatePerformanceStatData>(oldData);
 	const [member, setMember] = useState<Member | undefined>(undefined);
+	const [memberOptions, setMemberOptions] = useState<Member[]>([]);
 	const [month, setMonth] = useState<dayjs.Dayjs>(oldData.month);
 	const [statSections, setStatSections] = useState<CreateSectionData[]>(
 		oldData.statSections
 	);
+
+	const myInfoQuery = useQuery<MyInfo, AxiosError>({
+		queryKey: [MembersQK.GET_MY_INFO, jwt],
+		queryFn: async () => {
+			const isSignedIn = await getMyInfo(jwt);
+			return isSignedIn;
+		},
+		retry: false,
+		refetchOnWindowFocus: false,
+	});
+
+	const membersQuery = useQuery<Member[], AxiosError>({
+		queryKey: [MembersQK.GET_MEMBERS, jwt],
+		queryFn: async () => {
+			const members = await getMembers(jwt);
+			return members;
+		},
+		retry: false,
+		refetchOnWindowFocus: false,
+	});
+
+	useEffect(() => {
+		if (membersQuery.data && myInfoQuery.data) {
+			const myRoles = myInfoQuery.data.memberRoles;
+			const iAmAdmin = myRoles.some((role) => role.id === "admin");
+			if (!iAmAdmin) {
+				setMemberOptions([myInfoQuery.data]);
+			} else {
+				setMemberOptions(membersQuery.data);
+			}
+		}
+	}, [membersQuery.data, myInfoQuery.data]);
 
 	useEffect(() => {
 		setNewData({
@@ -99,7 +131,16 @@ export const EditContentAddStat = (props: {
 					text-sm"
 				>
 					<div className="mb-1.5">Member</div>
-					<MemberSelector member={member} setMember={setMember} />
+					<Dropdown
+						kind="object"
+						mode="search"
+						selected={member}
+						setSelected={setMember}
+						options={memberOptions ?? []}
+						placeholder="Select a member"
+						label={{ primaryKey: "name", secondaryKey: "email" }}
+						sortBy="name"
+					/>
 				</div>
 				<div
 					className="mb-6
