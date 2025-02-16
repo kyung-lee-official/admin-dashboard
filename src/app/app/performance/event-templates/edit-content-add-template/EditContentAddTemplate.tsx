@@ -22,11 +22,7 @@ export const EditContentAddTemplate = (props: {
 	const [oldData, setOldData] = useState<CreatePerformanceEventTemplate>({
 		score: 0,
 		description: "",
-		memberRole: {
-			id: "",
-			name: "",
-			superRoleId: "",
-		},
+		memberRole: undefined,
 	});
 	const [newData, setNewData] = useState(oldData);
 	const [score, setScore] = useState<number>(oldData.score);

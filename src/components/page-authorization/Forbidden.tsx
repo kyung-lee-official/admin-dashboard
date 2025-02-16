@@ -8,7 +8,7 @@ export const Forbidden = () => {
 			>
 				<div className="flex justify-center items-center px-6 py-4">
 					<div className="text-lg font-semibold">
-						You do not have permission to access this page
+						You do not have permissions to access this page
 					</div>
 				</div>
 			</div>
