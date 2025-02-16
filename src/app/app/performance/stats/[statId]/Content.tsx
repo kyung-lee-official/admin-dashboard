@@ -224,7 +224,6 @@ export const Content = (props: { statId: number }) => {
 						</thead>
 						<tbody
 							className="[&_>_tr_>_td]:py-3 [&_>_tr_>_td]:px-6
-							hover:[&_>_tr]:bg-white/5
 							[&_>_tr_>_td]:border-t-[1px] [&_>_tr_>_td]:border-white/10
 							[&_>_tr]:cursor-pointer"
 						>
@@ -232,6 +231,7 @@ export const Content = (props: { statId: number }) => {
 								return (
 									<tr
 										key={i}
+										className="hover:bg-white/5"
 										onClick={() => {
 											router.push(
 												`${statId}/section/${s.id}`

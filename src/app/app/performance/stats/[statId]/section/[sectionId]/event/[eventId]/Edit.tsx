@@ -65,6 +65,7 @@ export const Edit = (props: {
 					<td>
 						<input
 							type="number"
+							min={0}
 							className="px-2 py-1.5
 							bg-white/10
 							rounded-md outline-none
@@ -81,6 +82,7 @@ export const Edit = (props: {
 					<td>
 						<input
 							type="number"
+							min={0}
 							className="px-2 py-1.5
 							bg-white/10
 							rounded-md outline-none
