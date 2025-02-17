@@ -127,7 +127,11 @@ export const Sections = (props: SectionProps) => {
 																);
 															return {
 																tempId: s.tempId,
-																weight: weight,
+																weight: Number.isNaN(
+																	weight
+																)
+																	? 0
+																	: weight,
 																title: s.title,
 																description:
 																	s.description,
