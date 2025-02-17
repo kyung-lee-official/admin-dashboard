@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer components {
 	.sidebar-icon {
 		@apply relative flex items-center justify-center
