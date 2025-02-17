@@ -3,13 +3,18 @@ import { queryClient } from "@/utils/react-query/react-query";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { EditId, EditProps } from "@/components/edit-panel/EditPanel";
-import { getRoleById, RolesQK, updateRoleById } from "@/utils/api/roles";
+import {
+	getAllRoles,
+	getRoleById,
+	RolesQK,
+	updateRoleById,
+} from "@/utils/api/roles";
 import { AxiosError } from "axios";
 import { EditMembers } from "./EditMembers";
 import { Member, MemberRole } from "@/utils/types/internal";
 import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
 import { sortByProp } from "@/utils/data/data";
-import { RoleSelector } from "@/components/input/selectors/RoleSelector";
+import { Dropdown } from "@/components/input/dropdown/Dropdown";
 
 export type EditRoleData = {
 	id: string;
@@ -29,6 +34,16 @@ export const EditContentEditRole = (props: {
 
 	const jwt = useAuthStore((state) => state.jwt);
 
+	const [role, setRole] = useState<MemberRole | undefined>(undefined);
+	const rolesQuery = useQuery<MemberRole[], AxiosError>({
+		queryKey: [RolesQK.GET_ALL_ROLES, jwt],
+		queryFn: async () => {
+			const roles = await getAllRoles(jwt);
+			return roles;
+		},
+		retry: false,
+		refetchOnWindowFocus: false,
+	});
 	const roleQuery = useQuery<EditRoleData, AxiosError>({
 		queryKey: [RolesQK.GET_ROLE_BY_ID, jwt],
 		queryFn: async () => {
@@ -152,7 +167,16 @@ export const EditContentEditRole = (props: {
 					text-sm"
 				>
 					Super Role
-					<RoleSelector role={superRole} setRole={setSuperRole} />
+					<Dropdown
+						kind="object"
+						mode="search"
+						selected={role}
+						setSelected={setRole}
+						options={rolesQuery.data ?? []}
+						placeholder="Select a role"
+						label={{ primaryKey: "name", secondaryKey: "id" }}
+						sortBy="name"
+					/>
 				</div>
 				<div
 					className="flex flex-col gap-1.5

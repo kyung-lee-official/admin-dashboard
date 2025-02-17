@@ -1,12 +1,13 @@
 import { useAuthStore } from "@/stores/auth";
 import { queryClient } from "@/utils/react-query/react-query";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { EditId, EditProps } from "@/components/edit-panel/EditPanel";
-import { createRole, RolesQK } from "@/utils/api/roles";
+import { createRole, getAllRoles, RolesQK } from "@/utils/api/roles";
 import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
-import { RoleSelector } from "@/components/input/selectors/RoleSelector";
 import { MemberRole } from "@/utils/types/internal";
+import { Dropdown } from "@/components/input/dropdown/Dropdown";
+import { AxiosError } from "axios";
 
 export const EditContentAddRole = (props: {
 	edit: EditProps;
@@ -26,6 +27,17 @@ export const EditContentAddRole = (props: {
 	const [id, setId] = useState(oldData.id);
 	const [name, setName] = useState(oldData.name);
 	const [superRole, setSuperRole] = useState<MemberRole>();
+
+	const [role, setRole] = useState<MemberRole | undefined>(undefined);
+	const rolesQuery = useQuery<MemberRole[], AxiosError>({
+		queryKey: [RolesQK.GET_ALL_ROLES, jwt],
+		queryFn: async () => {
+			const roles = await getAllRoles(jwt);
+			return roles;
+		},
+		retry: false,
+		refetchOnWindowFocus: false,
+	});
 
 	const mutation = useMutation({
 		mutationFn: () => {
@@ -107,7 +119,16 @@ export const EditContentAddRole = (props: {
 					text-sm"
 				>
 					Super Role
-					<RoleSelector role={superRole} setRole={setSuperRole} />
+					<Dropdown
+						kind="object"
+						mode="search"
+						selected={role}
+						setSelected={setRole}
+						options={rolesQuery.data ?? []}
+						placeholder="Select a role"
+						label={{ primaryKey: "name", secondaryKey: "id" }}
+						sortBy="name"
+					/>
 				</div>
 			</form>
 		</EditContentRegular>

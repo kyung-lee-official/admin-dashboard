@@ -1,13 +1,15 @@
 import { useAuthStore } from "@/stores/auth";
 import { queryClient } from "@/utils/react-query/react-query";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { EditId, EditProps } from "@/components/edit-panel/EditPanel";
 import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
 import { createTemplate, PerformanceQK } from "@/utils/api/app/performance";
-import { RoleSelector } from "@/components/input/selectors/RoleSelector";
 import { MemberRole } from "@/utils/types/internal";
 import { CreatePerformanceEventTemplate } from "@/utils/types/app/performance";
+import { Dropdown } from "@/components/input/dropdown/Dropdown";
+import { RolesQK, getAllRoles } from "@/utils/api/roles";
+import { AxiosError } from "axios";
 
 export const EditContentAddTemplate = (props: {
 	edit: EditProps;
@@ -30,6 +32,17 @@ export const EditContentAddTemplate = (props: {
 	const [role, setRole] = useState<MemberRole | undefined>(
 		oldData.memberRole
 	);
+
+	const rolesQuery = useQuery<MemberRole[], AxiosError>({
+		queryKey: [RolesQK.GET_ALL_ROLES, jwt],
+		queryFn: async () => {
+			const roles = await getAllRoles(jwt);
+			return roles;
+		},
+		retry: false,
+		refetchOnWindowFocus: false,
+	});
+
 	useEffect(() => {
 		setNewData({
 			score: score,
@@ -71,7 +84,16 @@ export const EditContentAddTemplate = (props: {
 			oldData={oldData}
 		>
 			<form action={onSave} className="flex flex-col px-6 py-4 gap-6">
-				<RoleSelector role={role} setRole={setRole} />
+				<Dropdown
+					kind="object"
+					mode="search"
+					selected={role}
+					setSelected={setRole}
+					options={rolesQuery.data ?? []}
+					placeholder="Select a role"
+					label={{ primaryKey: "name", secondaryKey: "id" }}
+					sortBy="name"
+				/>
 				<div
 					className="flex flex-col gap-1.5
 					text-sm"
