@@ -10,6 +10,7 @@ import { EditContentEditRole } from "../../app/settings/general/roles/edit-conte
 import { EditContentAddStat } from "@/app/app/performance/stats/edit-content-add-stat/EditContentAddStat";
 import { EditContentEditStat } from "@/app/app/performance/stats/[statId]/edit-content-edit-stat/EditContentEditStat";
 import { EditContentAddTemplate } from "@/app/app/performance/event-templates/edit-content-add-template/EditContentAddTemplate";
+import { EditContentOverwriteSourceData } from "@/app/app/sns-crawler/facebook-group/source-data/edit-content-overwrite-source-data/EditContentOverwriteSourceData";
 
 export enum EditId {
 	/* settings */
@@ -24,6 +25,9 @@ export enum EditId {
 	ADD_STAT = "add-stat",
 	EDIT_STAT = "edit-stat",
 	ADD_TEMPLATE = "add-template",
+	/* app/sns-crawler */
+	OVERWRITE_FACEBOOK_GROUP_SOURCE_DATA = "overwrite-facebook-group-source-data",
+	EDIT_FACEBOOK_GROUP_SOURCE_DATA = "edit-facebook-group-source-data",
 }
 
 export type EditProps = {
@@ -72,6 +76,12 @@ const EditContent = (props: {
 			return <EditContentEditStat edit={edit} setEdit={setEdit} />;
 		case EditId.ADD_TEMPLATE:
 			return <EditContentAddTemplate edit={edit} setEdit={setEdit} />;
+		case EditId.OVERWRITE_FACEBOOK_GROUP_SOURCE_DATA:
+			return (
+				<EditContentOverwriteSourceData edit={edit} setEdit={setEdit} />
+			);
+		case EditId.EDIT_FACEBOOK_GROUP_SOURCE_DATA:
+			return null;
 		default:
 			return null;
 	}

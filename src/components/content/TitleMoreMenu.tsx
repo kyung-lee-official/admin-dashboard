@@ -76,7 +76,8 @@ export const TitleMoreMenu = (props: {
 							<button
 								key={i}
 								className="flex items-center px-2 py-1.5 gap-2
-								whitespace-nowrap"
+								hover:bg-white/5
+								rounded cursor-pointer whitespace-nowrap"
 								onClick={() => {
 									item.onClick();
 									if (item.hideMenuOnClick) {

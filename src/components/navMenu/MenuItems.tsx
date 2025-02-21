@@ -23,6 +23,9 @@ export const enum MenuKey {
 	PERFORMANCE_EVENT_TEMPLATES,
 	PERFORMANCE_EVENT_TEMPLATE,
 	SNS_CRAWLER,
+	SNS_CRAWLER_FACEBOOK_GROUP,
+	SNS_CRAWLER_FACEBOOK_GROUP_SOURCE_DATA,
+	SNS_CRAWLER_FACEBOOK_GROUP_CRAWLER_TASKS,
 	SETTINGS,
 	GENERAL,
 	MY_ACCOUNT,
@@ -313,9 +316,65 @@ export const menuItems: HierarchicalMenuItem[] = [
 	{
 		menuKey: MenuKey.SNS_CRAWLER,
 		isActive: false,
+		link: "/app/sns-crawler/facebook-group",
 		title: "SNS Crawler",
-		link: "/app/sns-crawler",
-		pageUrlReg: /^\/app\/sns-crawler$/,
+		subMenu: [
+			{
+				menuKey: MenuKey.SNS_CRAWLER_FACEBOOK_GROUP,
+				isActive: false,
+				title: "Facebook Group",
+				link: "/app/sns-crawler/facebook-group",
+				pageUrlReg: /^\/app\/sns-crawler\/facebook-group$/,
+				subMenu: [
+					{
+						menuKey: MenuKey.SNS_CRAWLER_FACEBOOK_GROUP_SOURCE_DATA,
+						isActive: false,
+						breadcrumbs: () => {
+							return (
+								<div className="flex items-center gap-2 flex-wrap">
+									<Link href="/app/sns-crawler/facebook-group">
+										Facebook Group
+									</Link>
+									<ArrowRight size={15} />
+									<Link
+										href={`/app/sns-crawler/facebook-group/source-data`}
+									>
+										Source Data
+									</Link>
+								</div>
+							);
+						},
+						link: "/app/sns-crawler/facebook-group/source-data",
+						pageUrlReg:
+							/^\/app\/sns-crawler\/facebook-group\/source-data$/,
+					},
+					{
+						menuKey:
+							MenuKey.SNS_CRAWLER_FACEBOOK_GROUP_CRAWLER_TASKS,
+						isActive: false,
+						breadcrumbs: () => {
+							return (
+								<div className="flex items-center gap-2 flex-wrap">
+									<Link href="/app/sns-crawler/facebook-group">
+										Facebook Group
+									</Link>
+									<ArrowRight size={15} />
+									<Link
+										href={`/app/sns-crawler/facebook-group/crawler-tasks`}
+									>
+										Crawler Tasks
+									</Link>
+								</div>
+							);
+						},
+						title: "Crawler Tasks",
+						link: "/app/sns-crawler/facebook-group/crawler-tasks",
+						pageUrlReg:
+							/^\/app\/sns-crawler\/facebook-group\/crawler-tasks$/,
+					},
+				],
+			},
+		],
 		icon: <Crawler size="20" />,
 	},
 ];

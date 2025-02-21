@@ -24,6 +24,7 @@
     "dotenv": "^16.4.7",
     "eslint": "9.20.1",
     "eslint-config-next": "15.1.7",
+    "exceljs": "^4.4.0",
     "framer-motion": "^12.4.2",
     "lottie-react": "^2.4.1",
     "mathjs": "^14.2.1",

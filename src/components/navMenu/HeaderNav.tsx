@@ -72,6 +72,26 @@ export const HeaderNav = (props: {
 						<item.breadcrumbs templateId={templateId} />
 					</nav>
 				);
+			case MenuKey.SNS_CRAWLER_FACEBOOK_GROUP_SOURCE_DATA:
+				return (
+					<nav
+						className="flex-[0_0_56px] flex items-center p-3
+						text-sm font-semibold dark:text-white/40
+						border-b-[1px] dark:border-white/5"
+					>
+						<item.breadcrumbs />
+					</nav>
+				);
+			case MenuKey.SNS_CRAWLER_FACEBOOK_GROUP_CRAWLER_TASKS:
+				return (
+					<nav
+						className="flex-[0_0_56px] flex items-center p-3
+						text-sm font-semibold dark:text-white/40
+						border-b-[1px] dark:border-white/5"
+					>
+						<item.breadcrumbs />
+					</nav>
+				);
 			default:
 				break;
 		}
