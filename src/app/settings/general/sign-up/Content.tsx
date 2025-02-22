@@ -16,7 +16,10 @@ import { Loading } from "@/components/page-authorization/Loading";
 import { Exception } from "@/components/page-authorization/Exception";
 
 export const Content = () => {
-	const [edit, setEdit] = useState<EditProps>({ show: false, id: "" });
+	const [edit, setEdit] = useState<EditProps>({
+		show: false,
+		id: EditId.SIGN_UP,
+	});
 	const jwt = useAuthStore((state) => state.jwt);
 
 	const serverPermQuery = useQuery({
