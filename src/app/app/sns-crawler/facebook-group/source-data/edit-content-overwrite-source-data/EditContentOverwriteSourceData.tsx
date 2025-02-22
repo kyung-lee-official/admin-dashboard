@@ -6,8 +6,12 @@ import Link from "next/link";
 import { xlsxToJson } from "./xlsxToJson";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/utils/react-query/react-query";
-import { overwriteFacebookGroupSourceData, SnsCrawlerQK } from "@/utils/api/app/sns-crawler";
+import {
+	overwriteFacebookGroupSourceData,
+	SnsCrawlerQK,
+} from "@/utils/api/app/sns-crawler";
 import { FacebookGroupOverwriteSourceDto } from "@/utils/types/app/sns-crawler";
+import { Button } from "@/components/button/Button";
 
 export const EditContentOverwriteSourceData = (props: {
 	edit: EditProps;
@@ -24,6 +28,7 @@ export const EditContentOverwriteSourceData = (props: {
 	/* md5 of the file */
 	const [oldData, setOldData] = useState<FacebookGroupOverwriteSourceDto>([]);
 	const [newData, setNewData] = useState(oldData);
+	const [file, setFile] = useState<File | null>(null);
 
 	const onFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0];
@@ -31,6 +36,7 @@ export const EditContentOverwriteSourceData = (props: {
 
 		const json = await xlsxToJson(file);
 		setNewData(json);
+		setFile(file);
 
 		if (fileInputRef.current) {
 			/* This is to clear the input file value, so that the same file can be uploaded again */
@@ -44,7 +50,7 @@ export const EditContentOverwriteSourceData = (props: {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: [SnsCrawlerQK.OVERWRITE_FACEBOOK_GROUP_SOURCE_DATA],
+				queryKey: [SnsCrawlerQK.GET_FACEBOOK_GROUP_SOURCE_DATA],
 			});
 			setEdit({ show: false, id: editId });
 		},
@@ -97,11 +103,18 @@ export const EditContentOverwriteSourceData = (props: {
 						onChange={onFileChange}
 						type="file"
 						accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-						className="flex justify-center py-1.5 px-3 text-sm leading-4
-						text-neutral-600 dark:text-neutral-50
-						bg-neutral-300 hover:bg-neutral-300/70 dark:bg-neutral-600 dark:hover:bg-neutral-600/70
-						border-[1px] border-white/10 border-t-white/15 rounded-sm cursor-pointer"
+						className="hidden"
 					/>
+					<Button
+						size="sm"
+						onClick={(e) => {
+							e.preventDefault();
+							fileInputRef.current?.click();
+						}}
+					>
+						Select File
+					</Button>
+					<div>{file?.name}</div>
 				</div>
 			</form>
 		</EditContentRegular>
