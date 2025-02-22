@@ -31,6 +31,7 @@ export const enum MenuKey {
 	MY_ACCOUNT,
 	SIGN_UP,
 	ROLES,
+	APPEARANCE,
 	PROFILE,
 }
 
@@ -404,6 +405,13 @@ export const settingsGeneralMenuItems: HierarchicalMenuItem[] = [
 		title: "Roles",
 		link: "/settings/general/roles",
 		pageUrlReg: /^\/settings\/general\/roles$/,
+	},
+	{
+		menuKey: MenuKey.APPEARANCE,
+		isActive: false,
+		title: "Appearance",
+		link: "/settings/general/appearance",
+		pageUrlReg: /^\/settings\/general\/appearance$/,
 	},
 ];
 
