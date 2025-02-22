@@ -116,7 +116,7 @@ export const Button = ({
 			${btnBgColor}
 			${btnRadius}
 			${fullWidth && "w-full"}
-			${isDisabled && "cursor-not-allowed"}
+			${isDisabled ? "cursor-not-allowed" : "cursor-pointer"}
 			${isDisabled ? "bg-neutral-400" : btnBgColor}
 			${isDisabled ? "text-neutral-500" : "text-neutral-50"}
 			transition-all duration-150 outline-none
