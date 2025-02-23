@@ -26,6 +26,7 @@ export const enum MenuKey {
 	SNS_CRAWLER_FACEBOOK_GROUP,
 	SNS_CRAWLER_FACEBOOK_GROUP_SOURCE_DATA,
 	SNS_CRAWLER_FACEBOOK_GROUP_CRAWLER_TASKS,
+	SNS_CRAWLER_FACEBOOK_GROUP_CRAWLER_TASK,
 	SETTINGS,
 	GENERAL,
 	MY_ACCOUNT,
@@ -372,6 +373,37 @@ export const menuItems: HierarchicalMenuItem[] = [
 						link: "/app/sns-crawler/facebook-group/crawler-tasks",
 						pageUrlReg:
 							/^\/app\/sns-crawler\/facebook-group\/crawler-tasks$/,
+						subMenu: [
+							{
+								menuKey:
+									MenuKey.SNS_CRAWLER_FACEBOOK_GROUP_CRAWLER_TASK,
+								isActive: false,
+								breadcrumbs: (props: { taskId: number }) => {
+									const { taskId } = props;
+									return (
+										<div className="flex items-center gap-2 flex-wrap">
+											<Link href="/app/sns-crawler/facebook-group">
+												Facebook Group
+											</Link>
+											<ArrowRight size={15} />
+											<Link
+												href={`/app/sns-crawler/facebook-group/crawler-tasks`}
+											>
+												Crawler Tasks
+											</Link>
+											<ArrowRight size={15} />
+											<Link
+												href={`/app/sns-crawler/facebook-group/crawler-tasks/${taskId}`}
+											>
+												Task {taskId}
+											</Link>
+										</div>
+									);
+								},
+								pageUrlReg:
+									/^\/app\/sns-crawler\/facebook-group\/crawler-tasks\/[0-9]*$/,
+							},
+						],
 					},
 				],
 			},

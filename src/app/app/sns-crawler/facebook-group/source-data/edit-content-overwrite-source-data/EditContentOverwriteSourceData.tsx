@@ -80,7 +80,7 @@ export const EditContentOverwriteSourceData = (props: {
 						bg-neutral-300 hover:bg-neutral-300/70 dark:bg-neutral-600 dark:hover:bg-neutral-600/70
 						border-[1px] border-white/10 border-t-white/15 rounded-sm"
 					>
-						Download template
+						Download Template
 					</Link>
 					<div className="text-sm text-white/50">
 						The first column is group address, the suffix of the

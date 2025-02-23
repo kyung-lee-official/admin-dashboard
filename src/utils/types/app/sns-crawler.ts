@@ -5,7 +5,7 @@ export const overwriteSourceSchema = z.array(
 		groupAddress: z
 			.string()
 			.url()
-			.regex(/www.facebook.com\/groups\/[a-zA-Z0-9\.]+\/*$/g),
+			.regex(/facebook.com\/groups\/[a-zA-Z0-9\.]+\/*$/g),
 		groupName: z.string(),
 	})
 );

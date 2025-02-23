@@ -8,7 +8,7 @@ export const HeaderNav = (props: {
 	const { item } = props;
 
 	const params = useParams();
-	const { statId, sectionId, eventId, templateId } = params;
+	const { statId, sectionId, eventId, templateId, taskId } = params;
 
 	if (item?.breadcrumbs) {
 		switch (item.menuKey) {
@@ -90,6 +90,16 @@ export const HeaderNav = (props: {
 						border-b-[1px] dark:border-white/5"
 					>
 						<item.breadcrumbs />
+					</nav>
+				);
+			case MenuKey.SNS_CRAWLER_FACEBOOK_GROUP_CRAWLER_TASK:
+				return (
+					<nav
+						className="flex-[0_0_56px] flex items-center p-3
+						text-sm font-semibold dark:text-white/40
+						border-b-[1px] dark:border-white/5"
+					>
+						<item.breadcrumbs taskId={taskId} />
 					</nav>
 				);
 			default:
