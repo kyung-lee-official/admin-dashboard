@@ -1,18 +1,22 @@
 "use client";
 
+import { Button } from "@/components/button/Button";
+import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
 import { useAuthStore } from "@/stores/auth";
 import {
 	getFacebookGroupCrawlerTasks,
 	SnsCrawlerQK,
+	startFacebookGroupCrawler,
 } from "@/utils/api/app/sns-crawler";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export const Content = () => {
 	const jwt = useAuthStore((state) => state.jwt);
 	const router = useRouter();
+	const [showStartConfirmation, setShowStartConfirmation] = useState(false);
 
 	const getFacebookGroupCrawlerTasksQuery = useQuery<any, AxiosError>({
 		queryKey: [SnsCrawlerQK.GET_FACEBOOK_GROUP_CRAWLER_TASKS, jwt],
@@ -26,6 +30,17 @@ export const Content = () => {
 		refetchOnWindowFocus: false,
 	});
 
+	const mutation = useMutation({
+		mutationFn: () => {
+			return startFacebookGroupCrawler(jwt);
+		},
+		onSuccess: (data) => {
+			console.log(data);
+			router.push(`crawler-tasks/${data.taskId}`);
+		},
+		onError: () => {},
+	});
+
 	return (
 		<div className="flex flex-col w-full max-w-[1600px] min-h-[calc(100svh-56px)] p-3 mx-auto gap-y-3">
 			<div
@@ -37,15 +52,29 @@ export const Content = () => {
 				<div className="relative flex items-center px-6 py-4">
 					<div className="text-lg font-semibold">Crawler Tasks</div>
 				</div>
-				<Link
-					href={"facebook-group/source-data"}
+				<div
 					className="flex items-center px-6 py-4 gap-6
 					text-sm
-					hover:bg-white/5
 					border-t-[1px] border-white/10"
 				>
-					Start
-				</Link>
+					<Button
+						size="sm"
+						onClick={() => {
+							setShowStartConfirmation(true);
+						}}
+					>
+						Start
+					</Button>
+					<ConfirmDialog
+						show={showStartConfirmation}
+						setShow={setShowStartConfirmation}
+						question={"Start crawling?"}
+						onOk={() => {
+							mutation.mutate();
+							setShowStartConfirmation(false);
+						}}
+					/>
+				</div>
 			</div>
 			<div
 				className="text-white/90

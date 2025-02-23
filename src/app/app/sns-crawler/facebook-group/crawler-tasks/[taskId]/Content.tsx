@@ -3,12 +3,10 @@
 import { useAuthStore } from "@/stores/auth";
 import {
 	getFacebookGroupCrawlerTaskById,
-	getFacebookGroupCrawlerTasks,
 	SnsCrawlerQK,
 } from "@/utils/api/app/sns-crawler";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import Link from "next/link";
 
 export const Content = (props: { taskId: number }) => {
 	const { taskId } = props;
@@ -22,10 +20,8 @@ export const Content = (props: { taskId: number }) => {
 			return facebookGroupSourceData;
 		},
 		retry: false,
-		refetchOnWindowFocus: false,
+		refetchInterval: 2000,
 	});
-
-	console.log(getFacebookGroupCrawlerTaskByIdQuery.data);
 
 	return (
 		<div className="flex flex-col w-full max-w-[1600px] min-h-[calc(100svh-56px)] p-3 mx-auto gap-y-3">
@@ -36,10 +32,46 @@ export const Content = (props: { taskId: number }) => {
 				rounded-md"
 			>
 				<div className="relative flex items-center px-6 py-4">
-					<div className="text-lg font-semibold">
-						Crawler Task {taskId}
+					<div
+						className="flex items-center gap-x-4
+						text-lg font-semibold"
+					>
+						<div>Crawler Task {taskId}</div>
+						{getFacebookGroupCrawlerTaskByIdQuery.data?.running ? (
+							<div
+								className="w-2.5 h-2.5
+								bg-green-500
+								rounded-full border-1 border-green-500"
+							></div>
+						) : (
+							<div
+								className="w-2.5 h-2.5
+								rounded-full border-1 border-white/30"
+							></div>
+						)}
 					</div>
 				</div>
+			</div>
+			<div
+				className="w-full h-1.5
+				rounded
+				border-[1px] border-white/10 overflow-hidden"
+			>
+				{getFacebookGroupCrawlerTaskByIdQuery.data && (
+					<div
+						style={{
+							width: `${
+								(getFacebookGroupCrawlerTaskByIdQuery.data
+									.records.length /
+									getFacebookGroupCrawlerTaskByIdQuery.data
+										.sourceLength) *
+								100
+							}%`,
+						}}
+						className={`h-1.5
+						bg-white/70 duration-200`}
+					></div>
+				)}
 			</div>
 			<div
 				className="text-white/90
@@ -57,7 +89,10 @@ export const Content = (props: { taskId: number }) => {
 					[&_>_tbody_>_tr_>_td]:px-6 [&_>_tbody_>_tr_>_td]:py-3"
 				>
 					<thead>
-						<tr className="w-full">
+						<tr
+							className="w-full
+							border-t-[1px] border-white/10"
+						>
 							<th className="w-2/6">Group Address</th>
 							<th className="w-2/6">Group Name</th>
 							<th className="w-1/6">Member Count</th>
@@ -77,7 +112,10 @@ export const Content = (props: { taskId: number }) => {
 									// >
 									// 	{record.id}
 									// </div>
-									<tr key={i}>
+									<tr
+										key={i}
+										className="border-t-[1px] border-white/10"
+									>
 										<td>{record.groupAddress}</td>
 										<td>{record.groupName}</td>
 										<td>{record.memberCount}</td>

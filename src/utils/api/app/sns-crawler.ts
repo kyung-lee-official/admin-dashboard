@@ -35,6 +35,20 @@ export const getFacebookGroupSourceData = async (jwt: string) => {
 	return res.data;
 };
 
+export const startFacebookGroupCrawler = async (jwt: string) => {
+	const res = await axios.post(
+		"internal/applications/facebook-group/start-task",
+		{},
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+			},
+		}
+	);
+	return res.data;
+};
+
 export const getFacebookGroupCrawlerTasks = async (jwt: string) => {
 	const res = await axios.get("internal/applications/facebook-group/tasks", {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
