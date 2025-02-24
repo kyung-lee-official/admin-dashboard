@@ -4,12 +4,14 @@ import { Button } from "@/components/button/Button";
 import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
 import { useAuthStore } from "@/stores/auth";
 import {
+	getFacebookGroupCrawlerStatus,
 	getFacebookGroupCrawlerTasks,
 	SnsCrawlerQK,
 	startFacebookGroupCrawler,
 } from "@/utils/api/app/sns-crawler";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -28,6 +30,17 @@ export const Content = () => {
 		},
 		retry: false,
 		refetchOnWindowFocus: false,
+	});
+
+	const getFacebookGroupCrawlerStatusQuery = useQuery<any, AxiosError>({
+		queryKey: [SnsCrawlerQK.GET_FACEBOOK_GROUP_CRAWLER_STATUS, jwt],
+		queryFn: async () => {
+			const facebookGroupSourceData = await getFacebookGroupCrawlerStatus(
+				jwt
+			);
+			return facebookGroupSourceData;
+		},
+		refetchInterval: 2000,
 	});
 
 	const mutation = useMutation({
@@ -57,14 +70,45 @@ export const Content = () => {
 					text-sm
 					border-t-[1px] border-white/10"
 				>
-					<Button
-						size="sm"
-						onClick={() => {
-							setShowStartConfirmation(true);
-						}}
-					>
-						Start
-					</Button>
+					{getFacebookGroupCrawlerStatusQuery.data?.running ? (
+						<div className="flex items-center gap-4">
+							<div className="text-white/50">
+								Task{" "}
+								<Link
+									href={`crawler-tasks/${getFacebookGroupCrawlerStatusQuery.data?.taskId}`}
+									className="underline"
+								>
+									{
+										getFacebookGroupCrawlerStatusQuery.data
+											?.taskId
+									}
+								</Link>{" "}
+								is running
+							</div>
+							<div
+								className="w-2.5 h-2.5
+								bg-green-500
+								rounded-full border-1 border-green-500"
+							></div>
+						</div>
+					) : (
+						<div className="flex items-center gap-4">
+							<Button
+								size="sm"
+								onClick={() => {
+									setShowStartConfirmation(true);
+								}}
+							>
+								Start
+							</Button>
+							<div
+								className="w-2.5 h-2.5
+								rounded-full border-1 border-white/30"
+							></div>
+							<div className="text-white/50">Crawler Idle</div>
+						</div>
+					)}
+
 					<ConfirmDialog
 						show={showStartConfirmation}
 						setShow={setShowStartConfirmation}

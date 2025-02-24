@@ -6,6 +6,7 @@ export enum SnsCrawlerQK {
 	GET_FACEBOOK_GROUP_SOURCE_DATA = "get-facebook-group-source-data",
 	GET_FACEBOOK_GROUP_CRAWLER_TASKS = "get-facebook-group-crawler-tasks",
 	GET_FACEBOOK_GROUP_CRAWLER_TASK_BY_ID = "get-facebook-group-crawler-task-by-id",
+	GET_FACEBOOK_GROUP_CRAWLER_STATUS = "get-facebook-group-crawler-status",
 }
 
 export const overwriteFacebookGroupSourceData = async (
@@ -72,5 +73,15 @@ export const getFacebookGroupCrawlerTaskById = async (
 			},
 		}
 	);
+	return res.data;
+};
+
+export const getFacebookGroupCrawlerStatus = async (jwt: string) => {
+	const res = await axios.get("internal/applications/facebook-group/status", {
+		baseURL: process.env.NEXT_PUBLIC_API_HOST,
+		headers: {
+			Authorization: jwt,
+		},
+	});
 	return res.data;
 };

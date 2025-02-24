@@ -37,7 +37,9 @@ export const Content = (props: { taskId: number }) => {
 						text-lg font-semibold"
 					>
 						<div>Crawler Task {taskId}</div>
-						{getFacebookGroupCrawlerTaskByIdQuery.data?.running ? (
+						{getFacebookGroupCrawlerTaskByIdQuery.data?.running &&
+						getFacebookGroupCrawlerTaskByIdQuery.data?.taskId ===
+							taskId ? (
 							<div
 								className="w-2.5 h-2.5
 								bg-green-500
