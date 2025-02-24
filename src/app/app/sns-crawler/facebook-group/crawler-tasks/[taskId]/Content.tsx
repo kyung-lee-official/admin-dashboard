@@ -1,13 +1,15 @@
 "use client";
 
+import { Button } from "@/components/button/Button";
 import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
-import { EditIcon, ExportIcon } from "@/components/icons/Icons";
+import { ExportIcon } from "@/components/icons/Icons";
 import { useAuthStore } from "@/stores/auth";
 import {
+	abortFacebookGroupCrawler,
 	getFacebookGroupCrawlerTaskById,
 	SnsCrawlerQK,
 } from "@/utils/api/app/sns-crawler";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import * as ExcelJS from "exceljs";
 
@@ -26,6 +28,14 @@ export const Content = (props: { taskId: number }) => {
 		refetchInterval: 2000,
 	});
 
+	const mutation = useMutation({
+		mutationFn: () => {
+			return abortFacebookGroupCrawler(jwt);
+		},
+		onSuccess: () => {},
+		onError: () => {},
+	});
+
 	async function exportAsXlsx() {
 		if (getFacebookGroupCrawlerTaskByIdQuery.data) {
 			const workbook = new ExcelJS.Workbook();
@@ -35,7 +45,11 @@ export const Content = (props: { taskId: number }) => {
 				{ header: "Group Address", key: "groupAddress", width: 60 },
 				{ header: "Group Name", key: "groupName", width: 55 },
 				{ header: "Member Count", key: "memberCount", width: 20 },
-				{ header: "Monthly Post Count", key: "monthlyPostCount", width: 20 },
+				{
+					header: "Monthly Post Count",
+					key: "monthlyPostCount",
+					width: 20,
+				},
 			];
 			for (const record of getFacebookGroupCrawlerTaskByIdQuery.data
 				.records) {
@@ -71,18 +85,28 @@ export const Content = (props: { taskId: number }) => {
 			>
 				<div className="relative flex justify-between items-center px-6 py-4">
 					<div
-						className="flex items-center gap-x-4
+						className="flex items-center gap-4
 						text-lg font-semibold"
 					>
 						<div>Crawler Task {taskId}</div>
 						{getFacebookGroupCrawlerTaskByIdQuery.data?.running &&
 						getFacebookGroupCrawlerTaskByIdQuery.data?.taskId ===
 							taskId ? (
-							<div
-								className="w-2.5 h-2.5
-								bg-green-500
-								rounded-full border-1 border-green-500"
-							></div>
+							<div className="flex items-center gap-4">
+								<div
+									className="w-2.5 h-2.5
+									bg-green-500
+									rounded-full border-1 border-green-500"
+								></div>
+								<Button
+									size="sm"
+									onClick={() => {
+										mutation.mutate();
+									}}
+								>
+									Abort
+								</Button>
+							</div>
 						) : (
 							<div
 								className="w-2.5 h-2.5
@@ -155,15 +179,6 @@ export const Content = (props: { taskId: number }) => {
 						{getFacebookGroupCrawlerTaskByIdQuery.data?.records.map(
 							(record: any, i: number) => {
 								return (
-									// <div
-									// 	key={i}
-									// 	className="flex items-center px-6 py-4 gap-6
-									// 	text-sm
-									// 	hover:bg-white/5
-									// 	border-t-[1px] border-white/10"
-									// >
-									// 	{record.id}
-									// </div>
 									<tr
 										key={i}
 										className="border-t-[1px] border-white/10"
