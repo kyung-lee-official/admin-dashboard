@@ -1,5 +1,7 @@
 "use client";
 
+import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
+import { EditIcon, ExportIcon } from "@/components/icons/Icons";
 import { useAuthStore } from "@/stores/auth";
 import {
 	getFacebookGroupCrawlerTaskById,
@@ -7,6 +9,7 @@ import {
 } from "@/utils/api/app/sns-crawler";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import * as ExcelJS from "exceljs";
 
 export const Content = (props: { taskId: number }) => {
 	const { taskId } = props;
@@ -23,6 +26,41 @@ export const Content = (props: { taskId: number }) => {
 		refetchInterval: 2000,
 	});
 
+	async function exportAsXlsx() {
+		if (getFacebookGroupCrawlerTaskByIdQuery.data) {
+			const workbook = new ExcelJS.Workbook();
+			const worksheet = workbook.addWorksheet("Sheet1");
+			/* add header, set column width */
+			worksheet.columns = [
+				{ header: "Group Address", key: "groupAddress", width: 60 },
+				{ header: "Group Name", key: "groupName", width: 55 },
+				{ header: "Member Count", key: "memberCount", width: 20 },
+				{ header: "Monthly Post Count", key: "monthlyPostCount", width: 20 },
+			];
+			for (const record of getFacebookGroupCrawlerTaskByIdQuery.data
+				.records) {
+				worksheet.addRow([
+					record.groupAddress,
+					record.groupName,
+					record.memberCount,
+					record.monthlyPostCount,
+				]);
+			}
+			/* create blob from the workbook */
+			const buffer = await workbook.xlsx.writeBuffer();
+			const blob = new Blob([buffer], {
+				type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+			});
+			/* create a download link and trigger the download */
+			const url = window.URL.createObjectURL(blob);
+			const a = document.createElement("a");
+			a.href = url;
+			a.download = `facebook-group-crawler-task-${taskId}.xlsx`;
+			a.click();
+			window.URL.revokeObjectURL(url);
+		}
+	}
+
 	return (
 		<div className="flex flex-col w-full max-w-[1600px] min-h-[calc(100svh-56px)] p-3 mx-auto gap-y-3">
 			<div
@@ -31,7 +69,7 @@ export const Content = (props: { taskId: number }) => {
 				border-[1px] border-white/10 border-t-white/15
 				rounded-md"
 			>
-				<div className="relative flex items-center px-6 py-4">
+				<div className="relative flex justify-between items-center px-6 py-4">
 					<div
 						className="flex items-center gap-x-4
 						text-lg font-semibold"
@@ -52,6 +90,18 @@ export const Content = (props: { taskId: number }) => {
 							></div>
 						)}
 					</div>
+					<TitleMoreMenu
+						items={[
+							{
+								text: "Export as xlsx",
+								hideMenuOnClick: true,
+								icon: <ExportIcon size={15} />,
+								onClick: () => {
+									exportAsXlsx();
+								},
+							},
+						]}
+					/>
 				</div>
 			</div>
 			<div
@@ -98,7 +148,7 @@ export const Content = (props: { taskId: number }) => {
 							<th className="w-2/6">Group Address</th>
 							<th className="w-2/6">Group Name</th>
 							<th className="w-1/6">Member Count</th>
-							<th className="w-1/6">Montrly Post Count</th>
+							<th className="w-1/6">Monthly Post Count</th>
 						</tr>
 					</thead>
 					<tbody>
