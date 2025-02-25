@@ -40,9 +40,10 @@ export type Task = {
 	createdAt: Date;
 	updatedAt: Date;
 	records: {
+		id: number;
 		groupAddress: string;
 		groupName: string;
-		id: number;
+		failed: boolean;
 		memberCount: number;
 		monthlyPostCount: number;
 		facebookGroupCrawlTaskId: number;

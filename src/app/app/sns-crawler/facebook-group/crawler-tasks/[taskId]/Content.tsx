@@ -8,12 +8,13 @@ import {
 	abortFacebookGroupCrawler,
 	getFacebookGroupCrawlerStatus,
 	getFacebookGroupCrawlerTaskById,
+	recrawlFailedRecords,
 	SnsCrawlerQK,
 } from "@/utils/api/app/sns-crawler";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import * as ExcelJS from "exceljs";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export const Content = (props: { taskId: number }) => {
 	const { taskId } = props;
@@ -42,13 +43,29 @@ export const Content = (props: { taskId: number }) => {
 		refetchInterval: 2000,
 	});
 
+	useEffect(() => {
+		if (getFacebookGroupCrawlerStatusQuery.data) {
+			if (getFacebookGroupCrawlerStatusQuery.data.pendingAbort) {
+				setPendingAbort(true);
+			} else {
+				setPendingAbort(false);
+			}
+		}
+	}, [getFacebookGroupCrawlerStatusQuery.data]);
+
 	const mutation = useMutation({
 		mutationFn: () => {
 			return abortFacebookGroupCrawler(jwt);
 		},
-		onSuccess: () => {
-			setPendingAbort(true);
+		onSuccess: () => {},
+		onError: () => {},
+	});
+
+	const recrawlFailedRecordsMutation = useMutation({
+		mutationFn: () => {
+			return recrawlFailedRecords(taskId, jwt);
 		},
+		onSuccess: () => {},
 		onError: () => {},
 	});
 
@@ -136,6 +153,23 @@ export const Content = (props: { taskId: number }) => {
 								rounded-full border-1 border-white/30"
 							></div>
 						)}
+						{getFacebookGroupCrawlerTaskByIdQuery.data &&
+							getFacebookGroupCrawlerTaskByIdQuery.data.records.filter(
+								(record) => {
+									return record.failed === false;
+								}
+							).length <
+								getFacebookGroupCrawlerTaskByIdQuery.data
+									.sourceLength && (
+								<Button
+									size="sm"
+									onClick={() => {
+										recrawlFailedRecordsMutation.mutate();
+									}}
+								>
+									Retry failed records
+								</Button>
+							)}
 					</div>
 					<TitleMoreMenu
 						items={[
@@ -160,8 +194,11 @@ export const Content = (props: { taskId: number }) => {
 					<div
 						style={{
 							width: `${
-								(getFacebookGroupCrawlerTaskByIdQuery.data
-									.records.length /
+								(getFacebookGroupCrawlerTaskByIdQuery.data.records.filter(
+									(record) => {
+										return record.failed === false;
+									}
+								).length /
 									getFacebookGroupCrawlerTaskByIdQuery.data
 										.sourceLength) *
 								100
@@ -204,7 +241,10 @@ export const Content = (props: { taskId: number }) => {
 								return (
 									<tr
 										key={i}
-										className="border-t-[1px] border-white/10"
+										className={`${
+											record.failed && "text-white/20"
+										}
+										border-t-[1px] border-white/10`}
 									>
 										<td>
 											<Link

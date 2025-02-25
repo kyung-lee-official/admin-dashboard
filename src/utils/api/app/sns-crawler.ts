@@ -73,6 +73,23 @@ export const facebookGroupCrawlerTaskStartCrawling = async (
 	return res.data;
 };
 
+export const recrawlFailedRecords = async (
+	taskId: number,
+	jwt: string
+): Promise<Status> => {
+	const res = await axios.post(
+		`internal/applications/facebook-group/recrawl-failed-records/${taskId}`,
+		{},
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+			},
+		}
+	);
+	return res.data;
+};
+
 export const abortFacebookGroupCrawler = async (
 	jwt: string
 ): Promise<Status> => {
