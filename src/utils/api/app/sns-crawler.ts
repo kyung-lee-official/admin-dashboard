@@ -1,4 +1,8 @@
-import { FacebookGroupOverwriteSourceDto } from "@/utils/types/app/sns-crawler";
+import {
+	FacebookGroupOverwriteSourceDto,
+	Status,
+	Task,
+} from "@/utils/types/app/sns-crawler";
 import axios from "axios";
 
 export enum SnsCrawlerQK {
@@ -36,9 +40,11 @@ export const getFacebookGroupSourceData = async (jwt: string) => {
 	return res.data;
 };
 
-export const startFacebookGroupCrawler = async (jwt: string) => {
+export const createFacebookGroupCrawlerTask = async (
+	jwt: string
+): Promise<Status> => {
 	const res = await axios.post(
-		"internal/applications/facebook-group/start-task",
+		"internal/applications/facebook-group/create-task",
 		{},
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
@@ -50,7 +56,26 @@ export const startFacebookGroupCrawler = async (jwt: string) => {
 	return res.data;
 };
 
-export const abortFacebookGroupCrawler = async (jwt: string) => {
+export const facebookGroupCrawlerTaskStartCrawling = async (
+	taskId: number,
+	jwt: string
+): Promise<Status> => {
+	const res = await axios.post(
+		`internal/applications/facebook-group/start-crawling/${taskId}`,
+		{},
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+			},
+		}
+	);
+	return res.data;
+};
+
+export const abortFacebookGroupCrawler = async (
+	jwt: string
+): Promise<Status> => {
 	const res = await axios.post(
 		"internal/applications/facebook-group/abort-task",
 		{},
@@ -64,7 +89,9 @@ export const abortFacebookGroupCrawler = async (jwt: string) => {
 	return res.data;
 };
 
-export const getFacebookGroupCrawlerTasks = async (jwt: string) => {
+export const getFacebookGroupCrawlerTasks = async (
+	jwt: string
+): Promise<Task[]> => {
 	const res = await axios.get("internal/applications/facebook-group/tasks", {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
@@ -77,7 +104,7 @@ export const getFacebookGroupCrawlerTasks = async (jwt: string) => {
 export const getFacebookGroupCrawlerTaskById = async (
 	id: number,
 	jwt: string
-) => {
+): Promise<Task> => {
 	const res = await axios.get(
 		`internal/applications/facebook-group/task/${id}`,
 		{
@@ -90,7 +117,9 @@ export const getFacebookGroupCrawlerTaskById = async (
 	return res.data;
 };
 
-export const getFacebookGroupCrawlerStatus = async (jwt: string) => {
+export const getFacebookGroupCrawlerStatus = async (
+	jwt: string
+): Promise<Status> => {
 	const res = await axios.get("internal/applications/facebook-group/status", {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {

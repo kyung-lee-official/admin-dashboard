@@ -7,7 +7,8 @@ import {
 	getFacebookGroupCrawlerStatus,
 	getFacebookGroupCrawlerTasks,
 	SnsCrawlerQK,
-	startFacebookGroupCrawler,
+	createFacebookGroupCrawlerTask,
+	facebookGroupCrawlerTaskStartCrawling,
 } from "@/utils/api/app/sns-crawler";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
@@ -45,10 +46,10 @@ export const Content = () => {
 
 	const mutation = useMutation({
 		mutationFn: () => {
-			return startFacebookGroupCrawler(jwt);
+			return createFacebookGroupCrawlerTask(jwt);
 		},
-		onSuccess: (data) => {
-			console.log(data);
+		onSuccess: async (data) => {
+			facebookGroupCrawlerTaskStartCrawling(data.taskId!, jwt);
 			router.push(`crawler-tasks/${data.taskId}`);
 		},
 		onError: () => {},
@@ -70,7 +71,7 @@ export const Content = () => {
 					text-sm
 					border-t-[1px] border-white/10"
 				>
-					{getFacebookGroupCrawlerStatusQuery.data?.running ? (
+					{getFacebookGroupCrawlerStatusQuery.data?.browserRunning ? (
 						<div className="flex items-center gap-4">
 							<div className="text-white/50">
 								Task{" "}

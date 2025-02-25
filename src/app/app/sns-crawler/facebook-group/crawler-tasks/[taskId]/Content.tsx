@@ -6,18 +6,21 @@ import { ExportIcon } from "@/components/icons/Icons";
 import { useAuthStore } from "@/stores/auth";
 import {
 	abortFacebookGroupCrawler,
+	getFacebookGroupCrawlerStatus,
 	getFacebookGroupCrawlerTaskById,
 	SnsCrawlerQK,
 } from "@/utils/api/app/sns-crawler";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { AxiosError } from "axios";
 import * as ExcelJS from "exceljs";
+import Link from "next/link";
+import { useState } from "react";
 
 export const Content = (props: { taskId: number }) => {
 	const { taskId } = props;
 	const jwt = useAuthStore((state) => state.jwt);
+	const [pendingAbort, setPendingAbort] = useState(false);
 
-	const getFacebookGroupCrawlerTaskByIdQuery = useQuery<any, AxiosError>({
+	const getFacebookGroupCrawlerTaskByIdQuery = useQuery({
 		queryKey: [SnsCrawlerQK.GET_FACEBOOK_GROUP_CRAWLER_TASK_BY_ID, jwt],
 		queryFn: async () => {
 			const facebookGroupSourceData =
@@ -28,11 +31,24 @@ export const Content = (props: { taskId: number }) => {
 		refetchInterval: 2000,
 	});
 
+	const getFacebookGroupCrawlerStatusQuery = useQuery({
+		queryKey: [SnsCrawlerQK.GET_FACEBOOK_GROUP_CRAWLER_STATUS, jwt],
+		queryFn: async () => {
+			const facebookGroupSourceData = await getFacebookGroupCrawlerStatus(
+				jwt
+			);
+			return facebookGroupSourceData;
+		},
+		refetchInterval: 2000,
+	});
+
 	const mutation = useMutation({
 		mutationFn: () => {
 			return abortFacebookGroupCrawler(jwt);
 		},
-		onSuccess: () => {},
+		onSuccess: () => {
+			setPendingAbort(true);
+		},
 		onError: () => {},
 	});
 
@@ -89,8 +105,9 @@ export const Content = (props: { taskId: number }) => {
 						text-lg font-semibold"
 					>
 						<div>Crawler Task {taskId}</div>
-						{getFacebookGroupCrawlerTaskByIdQuery.data?.running &&
-						getFacebookGroupCrawlerTaskByIdQuery.data?.taskId ===
+						{getFacebookGroupCrawlerStatusQuery.data
+							?.browserRunning &&
+						getFacebookGroupCrawlerTaskByIdQuery.data?.id ===
 							taskId ? (
 							<div className="flex items-center gap-4">
 								<div
@@ -98,14 +115,20 @@ export const Content = (props: { taskId: number }) => {
 									bg-green-500
 									rounded-full border-1 border-green-500"
 								></div>
-								<Button
-									size="sm"
-									onClick={() => {
-										mutation.mutate();
-									}}
-								>
-									Abort
-								</Button>
+								{pendingAbort ? (
+									<div className="text-sm text-white/50">
+										Pending Abort...
+									</div>
+								) : (
+									<Button
+										size="sm"
+										onClick={() => {
+											mutation.mutate();
+										}}
+									>
+										Abort
+									</Button>
+								)}
 							</div>
 						) : (
 							<div
@@ -183,7 +206,14 @@ export const Content = (props: { taskId: number }) => {
 										key={i}
 										className="border-t-[1px] border-white/10"
 									>
-										<td>{record.groupAddress}</td>
+										<td>
+											<Link
+												href={record.groupAddress}
+												className="underline hover:text-white/70"
+											>
+												{record.groupAddress}
+											</Link>
+										</td>
 										<td>{record.groupName}</td>
 										<td>{record.memberCount}</td>
 										<td>{record.monthlyPostCount}</td>
