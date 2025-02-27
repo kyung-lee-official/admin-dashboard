@@ -52,7 +52,7 @@ export const NavMenuItems = (props: { menu: HierarchicalMenuItem[] }) => {
 								{crumbs[0].text}
 							</div>
 						</Link>
-						{item.subMenu && (
+						{isActive && item.subMenu && (
 							<div className="flex flex-col gap-2">
 								<NavSubMenuItems menu={item.subMenu} />
 							</div>
