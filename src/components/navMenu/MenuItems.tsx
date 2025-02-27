@@ -21,6 +21,24 @@ export type HierarchicalMenuItem = {
 	subMenu?: HierarchicalMenuItem[];
 };
 
+export function flattenMenu(
+	menuItems: HierarchicalMenuItem[]
+): HierarchicalMenuItem[] {
+	const flatList: HierarchicalMenuItem[] = [];
+	function traverse(items: HierarchicalMenuItem[]) {
+		for (const item of items) {
+			/* add the current item to the flat list */
+			flatList.push(item);
+			/* if the item has a submenu, recursively flatten it */
+			if (item.subMenu && item.subMenu.length > 0) {
+				traverse(item.subMenu);
+			}
+		}
+	}
+	traverse(menuItems);
+	return flatList;
+}
+
 export const homeMenuItem: HierarchicalMenuItem[] = [
 	{
 		pageUrlReg: /^\/home$/,
@@ -33,7 +51,7 @@ export const homeMenuItem: HierarchicalMenuItem[] = [
 
 export const menuItems: HierarchicalMenuItem[] = [
 	{
-		pageUrlReg: /^\/app\/chitubox-docs-analytics/,
+		pageUrlReg: /^\/app\/chitubox-docs-analytics$/,
 		breadcrumbs: () => {
 			return [
 				{
@@ -95,7 +113,7 @@ export const menuItems: HierarchicalMenuItem[] = [
 		],
 	},
 	{
-		pageUrlReg: /^\/app\/performance/,
+		pageUrlReg: /^\/app\/performance$/,
 		breadcrumbs: () => {
 			return [
 				{
@@ -242,7 +260,7 @@ export const menuItems: HierarchicalMenuItem[] = [
 						},
 						{
 							href: "/app/performance/event-templates",
-							text: "Performance Event Templates",
+							text: "Event Templates",
 						},
 					];
 				},
@@ -255,7 +273,7 @@ export const menuItems: HierarchicalMenuItem[] = [
 							return [
 								{
 									href: "/app/performance/event-templates",
-									text: "Performance Event Templates",
+									text: "Event Templates",
 								},
 								{
 									href: `/app/performance/event-templates/${templateId}`,
@@ -446,7 +464,7 @@ export const menuItems: HierarchicalMenuItem[] = [
 
 export const settingsReturnMenuItem: HierarchicalMenuItem[] = [
 	{
-		pageUrlReg: /^\/settings/,
+		pageUrlReg: /^\/settings$/,
 		breadcrumbs: () => {
 			return [
 				{

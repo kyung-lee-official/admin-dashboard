@@ -21,7 +21,13 @@ export const NavMenuItems = (props: { menu: HierarchicalMenuItem[] }) => {
 	return (
 		<div>
 			{menu.map((item, i) => {
-				const isActive = item.pageUrlReg.test(pathname);
+				const fuzzySource = item.pageUrlReg.source.replace(/\$$/g, "");
+				const fuzzyRegex = new RegExp(
+					fuzzySource,
+					item.pageUrlReg.flags
+				);
+				const isActive = fuzzyRegex.test(pathname);
+
 				const crumbs = item.breadcrumbs({
 					statId,
 					sectionId,
@@ -67,7 +73,13 @@ const NavSubMenuItems = (props: { menu: HierarchicalMenuItem[] }) => {
 	return (
 		<div>
 			{menu.map((item, i) => {
-				const isActive = item.pageUrlReg.test(pathname);
+				const fuzzySource = item.pageUrlReg.source.replace(/\$$/g, "");
+				const fuzzyRegex = new RegExp(
+					fuzzySource,
+					item.pageUrlReg.flags
+				);
+				const isActive = fuzzyRegex.test(pathname);
+
 				const crumbs = item.breadcrumbs({
 					statId,
 					sectionId,
@@ -75,7 +87,6 @@ const NavSubMenuItems = (props: { menu: HierarchicalMenuItem[] }) => {
 					templateId,
 					taskId,
 				});
-
 				return (
 					<Link
 						key={i}

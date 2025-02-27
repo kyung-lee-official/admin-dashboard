@@ -1,27 +1,10 @@
 import { useParams, usePathname } from "next/navigation";
-import { HierarchicalMenuItem } from "./MenuItems";
+import { flattenMenu } from "./MenuItems";
 import Link from "next/link";
 import { menu } from "./MenuItems";
 import { ArrowRight } from "./ArrowRight";
 
 export const HeaderNav = () => {
-	function flattenMenu(
-		menuItems: HierarchicalMenuItem[]
-	): HierarchicalMenuItem[] {
-		const flatList: HierarchicalMenuItem[] = [];
-		function traverse(items: HierarchicalMenuItem[]) {
-			for (const item of items) {
-				/* add the current item to the flat list */
-				flatList.push(item);
-				/* if the item has a submenu, recursively flatten it */
-				if (item.subMenu && item.subMenu.length > 0) {
-					traverse(item.subMenu);
-				}
-			}
-		}
-		traverse(menuItems);
-		return flatList;
-	}
 	const flattenedMenu = flattenMenu(menu);
 
 	const pathname = usePathname();
@@ -29,12 +12,7 @@ export const HeaderNav = () => {
 	const { statId, sectionId, eventId, templateId, taskId } = params;
 
 	const item = flattenedMenu.find((item) => {
-		if (item.pageUrlReg.test(pathname)) {
-			/* check the regex source, ensure it ends with '$' so that it matches the end of the pathname */
-			if (item.pageUrlReg.source.endsWith("$")) {
-				return item.pageUrlReg.test(pathname);
-			}
-		}
+		return item.pageUrlReg.test(pathname);
 	});
 
 	if (item) {
