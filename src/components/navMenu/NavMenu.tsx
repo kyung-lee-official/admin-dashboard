@@ -2,160 +2,90 @@
 
 import Link from "next/link";
 import { ReturnIcon } from "../icons/Icons";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import {
 	homeMenuItem,
 	HierarchicalMenuItem,
 	menuItems,
 	settingsGeneralMenuItems,
 	settingsMyAccountMenuItems,
-	updateIsActive,
 } from "@/components/navMenu/MenuItems";
 import { MoreMenu } from "./moreMenu/MoreMenu";
 
-function findDescendantActive(m: HierarchicalMenuItem[]): boolean {
-	for (const item of m) {
-		if (item.isActive) {
-			return true;
-		}
-		if (item.subMenu) {
-			const result = findDescendantActive(item.subMenu);
-			if (result) {
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
 export const NavMenuItems = (props: { menu: HierarchicalMenuItem[] }) => {
 	const { menu } = props;
-	updateIsActive(menu);
+	const pathname = usePathname();
+	const params = useParams();
+	const { statId, sectionId, eventId, templateId, taskId } = params;
 
 	return (
 		<div>
 			{menu.map((item, i) => {
-				/* if any of recursive subMenu is active */
-				const isDescendantActive = findDescendantActive(
-					item.subMenu ?? []
+				const isActive = item.pageUrlReg.test(pathname);
+				const crumbs = item.breadcrumbs({
+					statId,
+					sectionId,
+					eventId,
+					templateId,
+					taskId,
+				});
+				return (
+					<div key={i} className="px-3">
+						<Link
+							href={crumbs[0].href}
+							className={`flex justify-start items-center h-7 px-2 gap-2.5
+							${isActive ? "text-white/80" : "text-white/50 hover:text-white/60"}`}
+							title={crumbs[0].text}
+						>
+							{item.icon && (
+								<div className="flex-[0_0_20px] h-5">
+									{item.icon}
+								</div>
+							)}
+							<div className="min-w-0 text-ellipsis whitespace-nowrap overflow-hidden">
+								{crumbs[0].text}
+							</div>
+						</Link>
+						{item.subMenu && (
+							<div className="flex flex-col gap-2">
+								<NavSubMenuItems menu={item.subMenu} />
+							</div>
+						)}
+					</div>
 				);
-				const isActive = item.isActive;
-				if (isDescendantActive) {
-					/* has subMenu and one of the subMenu items is active */
-					return (
-						<div key={i} className="px-3">
-							<Link
-								href={item.link ?? "/"}
-								className="flex justify-start items-center h-7 px-2 gap-2.5
-								text-neutral-200"
-								title={item.title}
-							>
-								{item.icon && (
-									<div className="flex-[0_0_20px] h-5">
-										{item.icon}
-									</div>
-								)}
-								<div className="min-w-0 text-ellipsis whitespace-nowrap overflow-hidden">
-									{item.title}
-								</div>
-							</Link>
-							{item.subMenu &&
-								/* has subMenu and one of the subMenu is active */
-								item.subMenu.some(
-									(subItem) => subItem.isActive
-								) && <NavSubMenuItems menu={item.subMenu} />}
-						</div>
-					);
-				} else if (isActive) {
-					/* the menu item is active and has no subMenu */
-					return (
-						<div key={i} className="px-3">
-							<Link
-								href={item.link ?? "/"}
-								className="flex justify-start items-center h-7 px-2 gap-2.5
-								text-neutral-200
-								bg-neutral-400/10
-								border-[1px] border-white/10 border-t-white/15
-								rounded"
-								title={item.title}
-							>
-								{item.icon && (
-									<div className="flex-[0_0_20px] h-5">
-										{item.icon}
-									</div>
-								)}
-								<div className="min-w-0 text-ellipsis whitespace-nowrap overflow-hidden">
-									{item.title}
-								</div>
-							</Link>
-							{item.subMenu &&
-								/* has subMenu and one of the subMenu is active */
-								item.subMenu.some(
-									(subItem) => subItem.isActive
-								) && <NavSubMenuItems menu={item.subMenu} />}
-						</div>
-					);
-				} else {
-					/* the menu item is not active and has no subMenu */
-					return (
-						<div key={i} className="px-3">
-							<Link
-								href={item.link ?? "/"}
-								className="flex justify-start items-center h-7 px-2 gap-2.5
-								text-neutral-400/80
-								hover:bg-neutral-400/5"
-								title={item.title}
-							>
-								{item.icon && (
-									<div className="flex-[0_0_20px] h-5">
-										{item.icon}
-									</div>
-								)}
-								<div className="min-w-0 text-ellipsis whitespace-nowrap overflow-hidden">
-									{item.title}
-								</div>
-							</Link>
-							{item.subMenu &&
-								/* has subMenu and one of the subMenu is active */
-								item.subMenu.some(
-									(subItem) => subItem.isActive
-								) && <NavSubMenuItems menu={item.subMenu} />}
-						</div>
-					);
-				}
 			})}
 		</div>
 	);
 };
 
 const NavSubMenuItems = (props: { menu: HierarchicalMenuItem[] }) => {
+	const pathname = usePathname();
+	const params = useParams();
+	const { statId, sectionId, eventId, templateId, taskId } = params;
 	const { menu } = props;
 
 	return (
 		<div>
 			{menu.map((item, i) => {
-				const isDescendantActive = findDescendantActive(
-					item.subMenu ?? []
-				);
-				const isActive = item.isActive;
+				const isActive = item.pageUrlReg.test(pathname);
+				const crumbs = item.breadcrumbs({
+					statId,
+					sectionId,
+					eventId,
+					templateId,
+					taskId,
+				});
 
 				return (
 					<Link
 						key={i}
-						href={item.link ?? "/"}
+						href={crumbs[1].href}
 						className={`flex justify-start items-center h-7 px-2 gap-2.5
-						${isDescendantActive || isActive ? "text-neutral-200" : "text-neutral-400/50"}
-						${
-							isDescendantActive || isActive
-								? "dark:bg-neutral-400/10"
-								: "dark:hover:bg-neutral-400/5"
-						}
+						${isActive ? "text-neutral-200" : "text-neutral-400/50"}
+						${isActive ? "dark:bg-neutral-400/10" : "dark:hover:bg-neutral-400/5"}
 						rounded-md
-						${
-							(isDescendantActive || isActive) &&
-							"border-[1px] border-white/10 border-t-white/15"
-						}`}
-						title={item.title}
+						${isActive && "border-[1px] border-white/10 border-t-white/15"}`}
+						title={crumbs[1].text}
 					>
 						{item.icon ? (
 							<div className="flex-[0_0_20px] h-5">
@@ -166,7 +96,7 @@ const NavSubMenuItems = (props: { menu: HierarchicalMenuItem[] }) => {
 							<div className="flex-[0_0_20px] h-5"></div>
 						)}
 						<div className="min-w-0 text-ellipsis whitespace-nowrap overflow-hidden">
-							{item.title}
+							{crumbs[1].text}
 						</div>
 					</Link>
 				);

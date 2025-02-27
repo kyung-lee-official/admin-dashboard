@@ -1,121 +1,81 @@
-import { useParams } from "next/navigation";
-import { HierarchicalMenuItem, MenuKey } from "./MenuItems";
+import { useParams, usePathname } from "next/navigation";
+import { HierarchicalMenuItem } from "./MenuItems";
 import Link from "next/link";
+import { menu } from "./MenuItems";
+import { ArrowRight } from "./ArrowRight";
 
-export const HeaderNav = (props: {
-	item: HierarchicalMenuItem | undefined;
-}) => {
-	const { item } = props;
+export const HeaderNav = () => {
+	function flattenMenu(
+		menuItems: HierarchicalMenuItem[]
+	): HierarchicalMenuItem[] {
+		const flatList: HierarchicalMenuItem[] = [];
+		function traverse(items: HierarchicalMenuItem[]) {
+			for (const item of items) {
+				/* add the current item to the flat list */
+				flatList.push(item);
+				/* if the item has a submenu, recursively flatten it */
+				if (item.subMenu && item.subMenu.length > 0) {
+					traverse(item.subMenu);
+				}
+			}
+		}
+		traverse(menuItems);
+		return flatList;
+	}
+	const flattenedMenu = flattenMenu(menu);
 
+	const pathname = usePathname();
 	const params = useParams();
 	const { statId, sectionId, eventId, templateId, taskId } = params;
 
-	if (item?.breadcrumbs) {
-		switch (item.menuKey) {
-			case MenuKey.PERFORMANCE_STAT:
-				return (
-					<nav
-						className="flex-[0_0_56px] flex items-center p-3
-						text-sm font-semibold dark:text-white/40
-						border-b-[1px] dark:border-white/5"
-					>
-						<item.breadcrumbs statId={statId} />
-					</nav>
-				);
-			case MenuKey.PERFORMANCE_SECTION:
-				return (
-					<nav
-						className="flex-[0_0_56px] flex items-center p-3
-						text-sm font-semibold dark:text-white/40
-						border-b-[1px] dark:border-white/5"
-					>
-						<item.breadcrumbs
-							statId={statId}
-							sectionId={sectionId}
-						/>
-					</nav>
-				);
-			case MenuKey.PERFORMANCE_CREATE_EVENT:
-				return (
-					<nav
-						className="flex-[0_0_56px] flex items-center p-3
-						text-sm font-semibold dark:text-white/40
-						border-b-[1px] dark:border-white/5"
-					>
-						<item.breadcrumbs
-							statId={statId}
-							sectionId={sectionId}
-						/>
-					</nav>
-				);
-			case MenuKey.PERFORMANCE_EVENT:
-				return (
-					<nav
-						className="flex-[0_0_56px] flex items-center p-3
-						text-sm font-semibold dark:text-white/40
-						border-b-[1px] dark:border-white/5"
-					>
-						<item.breadcrumbs
-							statId={statId}
-							sectionId={sectionId}
-							eventId={eventId}
-						/>
-					</nav>
-				);
-			case MenuKey.PERFORMANCE_EVENT_TEMPLATE:
-				return (
-					<nav
-						className="flex-[0_0_56px] flex items-center p-3
-						text-sm font-semibold dark:text-white/40
-						border-b-[1px] dark:border-white/5"
-					>
-						<item.breadcrumbs templateId={templateId} />
-					</nav>
-				);
-			case MenuKey.SNS_CRAWLER_FACEBOOK_GROUP_SOURCE_DATA:
-				return (
-					<nav
-						className="flex-[0_0_56px] flex items-center p-3
-						text-sm font-semibold dark:text-white/40
-						border-b-[1px] dark:border-white/5"
-					>
-						<item.breadcrumbs />
-					</nav>
-				);
-			case MenuKey.SNS_CRAWLER_FACEBOOK_GROUP_CRAWLER_TASKS:
-				return (
-					<nav
-						className="flex-[0_0_56px] flex items-center p-3
-						text-sm font-semibold dark:text-white/40
-						border-b-[1px] dark:border-white/5"
-					>
-						<item.breadcrumbs />
-					</nav>
-				);
-			case MenuKey.SNS_CRAWLER_FACEBOOK_GROUP_CRAWLER_TASK:
-				return (
-					<nav
-						className="flex-[0_0_56px] flex items-center p-3
-						text-sm font-semibold dark:text-white/40
-						border-b-[1px] dark:border-white/5"
-					>
-						<item.breadcrumbs taskId={taskId} />
-					</nav>
-				);
-			default:
-				break;
+	const item = flattenedMenu.find((item) => {
+		if (item.pageUrlReg.test(pathname)) {
+			/* check the regex source, ensure it ends with '$' so that it matches the end of the pathname */
+			if (item.pageUrlReg.source.endsWith("$")) {
+				return item.pageUrlReg.test(pathname);
+			}
 		}
-	}
+	});
 
-	return (
-		<nav
-			className="flex-[0_0_56px] flex items-center p-3
-			text-sm font-semibold dark:text-white/40
-			border-b-[1px] dark:border-white/5"
-		>
-			{item?.title && item?.link && (
-				<Link href={item.link}>{item.title}</Link>
-			)}
-		</nav>
-	);
+	if (item) {
+		const crumbs = item.breadcrumbs({ statId, sectionId, eventId });
+		return (
+			<nav
+				className="flex-[0_0_56px] flex items-center p-3
+				text-sm font-semibold dark:text-white/40
+				border-b-[1px] dark:border-white/5"
+			>
+				<div className="flex items-center gap-2 flex-wrap">
+					{crumbs.map((crumb, index) => {
+						if (index === crumbs.length - 1) {
+							return (
+								<Link
+									key={index}
+									href={crumb.href}
+									className="text-neutral-200"
+								>
+									{crumb.text}
+								</Link>
+							);
+						} else {
+							return (
+								<div
+									key={index}
+									className="flex items-center gap-2 flex-wrap"
+								>
+									<Link
+										href={crumb.href}
+										className="text-neutral-200"
+									>
+										{crumb.text}
+									</Link>
+									<ArrowRight size={15} />
+								</div>
+							);
+						}
+					})}
+				</div>
+			</nav>
+		);
+	}
 };

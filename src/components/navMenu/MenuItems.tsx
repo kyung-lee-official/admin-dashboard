@@ -5,238 +5,197 @@ import {
 	PerformanceIcon,
 	ReturnIcon,
 } from "@/components/icons/Icons";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { ArrowRight } from "./ArrowRight";
-
-export const enum MenuKey {
-	HOME,
-	CHITUBOX_DOCS_ANALYTICS,
-	CHITUBOX_DOCS_USER_FEEDBACK,
-	CHITUBOX_DOCS_ADVERTISEMENT,
-	PERFORMANCE,
-	PERFORMANCE_STATS,
-	PERFORMANCE_STAT,
-	PERFORMANCE_SECTION,
-	PERFORMANCE_CREATE_EVENT,
-	PERFORMANCE_EVENT,
-	PERFORMANCE_EVENT_TEMPLATES,
-	PERFORMANCE_EVENT_TEMPLATE,
-	SNS_CRAWLER,
-	SNS_CRAWLER_FACEBOOK_GROUP,
-	SNS_CRAWLER_FACEBOOK_GROUP_SOURCE_DATA,
-	SNS_CRAWLER_FACEBOOK_GROUP_CRAWLER_TASKS,
-	SNS_CRAWLER_FACEBOOK_GROUP_CRAWLER_TASK,
-	SETTINGS,
-	GENERAL,
-	MY_ACCOUNT,
-	SIGN_UP,
-	ROLES,
-	APPEARANCE,
-	PROFILE,
-}
 
 export type HierarchicalMenuItem = {
-	menuKey: MenuKey /* key used to highlight the current menu item */;
-	isActive: boolean;
-	link?: string /* where to go when clicked, can be ignored if it is not a menu item. */;
-	pageUrlReg?: RegExp /* the regex of url of current page. if the item is a sub-menu (without page), should be ignored */;
-	title?: string;
-	breadcrumbs?: (props: any) => JSX.Element;
+	/* the regex of url of current page, can be used to highlight the menu item */
+	pageUrlReg: RegExp;
+	/**
+	 * where to go when clicked, can be empty string if it is not a menu item, for example, the third-level route page
+	 * which doesn't have an entry in the menu.
+	 *
+	 * NavMenu can also use href provided in breadcrumbs to navigate to the target page.
+	 * if the corresponding page of the link doesn't exist, the page itself should be responsible for redirecting to the target page.
+	 */
+	breadcrumbs: (props: any) => { href: string; text: string }[];
 	icon?: JSX.Element;
 	subMenu?: HierarchicalMenuItem[];
 };
-/**
- * check if the current page is or belongs to the menu by checking its pageUrlReg
- * used to highlight the first two levels of the menu
- * @param m menu
- * @returns boolean
- */
-export function updateIsActive(m: HierarchicalMenuItem[]) {
-	const pathname = usePathname();
-	function checkRecursively(m: HierarchicalMenuItem[]): any {
-		let result = false;
-		for (const item of m) {
-			if (item.pageUrlReg) {
-				/* has pageUrlReg */
-				item.isActive = item.pageUrlReg.test(pathname);
-				if (item.isActive) {
-					result = true;
-				} else {
-					/* not matched, check its subMenu */
-					if (item.subMenu) {
-						result = checkRecursively(item.subMenu);
-						item.isActive = result;
-					}
-				}
-			} else {
-				/* no pageUrlReg */
-				if (item.subMenu) {
-					/* has subMenu */
-					result = checkRecursively(item.subMenu);
-					item.isActive = result;
-				} else {
-					/* no subMenu, do nothing */
-				}
-			}
-		}
-		return result;
-	}
-	checkRecursively(m);
-}
 
 export const homeMenuItem: HierarchicalMenuItem[] = [
 	{
-		menuKey: MenuKey.HOME,
-		isActive: false,
-		title: "Home",
-		link: "/home",
 		pageUrlReg: /^\/home$/,
+		breadcrumbs: () => {
+			return [{ href: "/home", text: "Home" }];
+		},
 		icon: <Home size="20" />,
 	},
 ];
 
 export const menuItems: HierarchicalMenuItem[] = [
 	{
-		menuKey: MenuKey.CHITUBOX_DOCS_ANALYTICS,
-		isActive: false,
-		title: "CHITUBOX Docs Analytics",
-		link: "/app/chitubox-docs-analytics/chitubox-docs-user-feedback",
+		pageUrlReg: /^\/app\/chitubox-docs-analytics/,
+		breadcrumbs: () => {
+			return [
+				{
+					href: "/app/chitubox-docs-analytics",
+					text: "CHITUBOX Docs Analytics",
+				},
+			];
+		},
 		icon: <Manual size="20" />,
 		subMenu: [
 			{
-				menuKey: MenuKey.CHITUBOX_DOCS_USER_FEEDBACK,
-				isActive: false,
-				title: "CHITUBOX Docs User Feedback",
-				link: "/app/chitubox-docs-analytics/chitubox-docs-user-feedback",
 				pageUrlReg:
 					/^\/app\/chitubox-docs-analytics\/chitubox-docs-user-feedback$/,
+				breadcrumbs: () => {
+					return [
+						{
+							href: "/app/chitubox-docs-analytics",
+							text: "CHITUBOX Docs Analytics",
+						},
+						{
+							href: "/app/chitubox-docs-analytics/chitubox-docs-user-feedback",
+							text: "CHITUBOX Docs User Feedback",
+						},
+					];
+				},
 			},
 			{
-				menuKey: MenuKey.CHITUBOX_DOCS_ADVERTISEMENT,
-				isActive: false,
-				title: "CHITUBOX Docs Page Views",
-				link: "/app/chitubox-docs-analytics/chitubox-docs-page-views",
 				pageUrlReg:
 					/^\/app\/chitubox-docs-analytics\/chitubox-docs-page-views$/,
+				breadcrumbs: () => {
+					return [
+						{
+							href: "/app/chitubox-docs-analytics",
+							text: "CHITUBOX Docs Analytics",
+						},
+						{
+							href: "/app/chitubox-docs-analytics/chitubox-docs-page-views",
+							text: "CHITUBOX Docs Page Views",
+						},
+					];
+				},
 			},
 			{
-				menuKey: MenuKey.CHITUBOX_DOCS_ADVERTISEMENT,
-				isActive: false,
-				title: "CHITUBOX Docs Ads",
-				link: "/app/chitubox-docs-analytics/chitubox-docs-advertisement",
 				pageUrlReg:
 					/^\/app\/chitubox-docs-analytics\/chitubox-docs-advertisement$/,
+				breadcrumbs: () => {
+					return [
+						{
+							href: "/app/chitubox-docs-analytics",
+							text: "CHITUBOX Docs Analytics",
+						},
+						{
+							href: "/app/chitubox-docs-analytics/chitubox-docs-advertisement",
+							text: "CHITUBOX Docs Advertisement",
+						},
+					];
+				},
 			},
 		],
 	},
 	{
-		menuKey: MenuKey.PERFORMANCE,
-		isActive: false,
-		title: "Performance",
-		link: "/app/performance/stats",
+		pageUrlReg: /^\/app\/performance/,
+		breadcrumbs: () => {
+			return [
+				{
+					href: "/app/performance",
+					text: "Performance",
+				},
+			];
+		},
 		icon: <PerformanceIcon size="20" />,
 		subMenu: [
 			{
-				menuKey: MenuKey.PERFORMANCE_STATS,
-				isActive: false,
-				title: "Peformance Stats",
-				link: "/app/performance/stats",
 				pageUrlReg: /^\/app\/performance\/stats$/,
+				breadcrumbs: () => {
+					return [
+						{
+							href: "/app/performance",
+							text: "Performance",
+						},
+						{
+							href: "/app/performance/stats",
+							text: "Stats",
+						},
+					];
+				},
 				subMenu: [
 					{
-						menuKey: MenuKey.PERFORMANCE_STAT,
-						isActive: false,
+						pageUrlReg: /^\/app\/performance\/stats\/[0-9]*$/,
 						breadcrumbs: (props: { statId: number }) => {
 							const { statId } = props;
-							return (
-								<div className="flex items-center gap-2 flex-wrap">
-									<Link href="/app/performance/stats">
-										Peformance Stats
-									</Link>
-									<ArrowRight size={15} />
-									<Link
-										href={`/app/performance/stats/${statId}`}
-									>
-										Stat
-									</Link>
-								</div>
-							);
+							return [
+								{
+									href: "/app/performance/stats",
+									text: "Performance",
+								},
+								{
+									href: `/app/performance/stats`,
+									text: `Stats`,
+								},
+								{
+									href: `/app/performance/stats/${statId}`,
+									text: `Stat ${statId}`,
+								},
+							];
 						},
-						pageUrlReg: /^\/app\/performance\/stats\/[0-9]*$/,
 						subMenu: [
 							{
-								menuKey: MenuKey.PERFORMANCE_SECTION,
-								isActive: false,
+								pageUrlReg:
+									/^\/app\/performance\/stats\/[0-9]*\/section\/[0-9]*$/,
 								breadcrumbs: (props: {
 									statId: number;
 									sectionId: number;
 								}) => {
 									const { statId, sectionId } = props;
-									return (
-										<div className="flex items-center gap-2 flex-wrap">
-											<Link href="/app/performance/stats">
-												Peformance Stats
-											</Link>
-											<ArrowRight size={15} />
-											<Link
-												href={`/app/performance/stats/${statId}`}
-											>
-												Stat
-											</Link>
-											<ArrowRight size={15} />
-											<Link
-												href={`/app/performance/stats/${statId}/section/${sectionId}`}
-											>
-												Section
-											</Link>
-										</div>
-									);
+									return [
+										{
+											href: "/app/performance/stats",
+											text: "Performance Stats",
+										},
+										{
+											href: `/app/performance/stats/${statId}`,
+											text: `Stat ${statId}`,
+										},
+										{
+											href: `/app/performance/stats/${statId}/section/${sectionId}`,
+											text: `Section ${sectionId}`,
+										},
+									];
 								},
-								pageUrlReg:
-									/^\/app\/performance\/stats\/[0-9]*\/section\/[0-9]*$/,
 								subMenu: [
 									{
-										menuKey:
-											MenuKey.PERFORMANCE_CREATE_EVENT,
-										isActive: false,
+										pageUrlReg:
+											/^\/app\/performance\/stats\/[0-9]*\/section\/[0-9]*\/create\-event$/,
 										breadcrumbs: (props: {
 											statId: number;
 											sectionId: number;
 										}) => {
 											const { statId, sectionId } = props;
-											return (
-												<div className="flex items-center gap-2 flex-wrap">
-													<Link href="/app/performance/stats">
-														Peformance Stats
-													</Link>
-													<ArrowRight size={15} />
-													<Link
-														href={`/app/performance/stats/${statId}`}
-													>
-														Stat
-													</Link>
-													<ArrowRight size={15} />
-													<Link
-														href={`/app/performance/stats/${statId}/section/${sectionId}`}
-													>
-														Section
-													</Link>
-													<ArrowRight size={15} />
-													<Link
-														href={`/app/performance/stats/${statId}/section/${sectionId}/create-event`}
-													>
-														Create Event
-													</Link>
-												</div>
-											);
+											return [
+												{
+													href: "/app/performance/stats",
+													text: "Performance Stats",
+												},
+												{
+													href: `/app/performance/stats/${statId}`,
+													text: `Stat ${statId}`,
+												},
+												{
+													href: `/app/performance/stats/${statId}/section/${sectionId}`,
+													text: `Section ${sectionId}`,
+												},
+												{
+													href: `/app/performance/stats/${statId}/section/${sectionId}/create-event`,
+													text: `Create Event`,
+												},
+											];
 										},
-										pageUrlReg:
-											/^\/app\/performance\/stats\/[0-9]*\/section\/[0-9]*\/create\-event$/,
 									},
 									{
-										menuKey: MenuKey.PERFORMANCE_EVENT,
-										isActive: false,
+										pageUrlReg:
+											/^\/app\/performance\/stats\/[0-9]*\/section\/[0-9]*\/event\/[0-9]*$/,
 										breadcrumbs: (props: {
 											statId: number;
 											sectionId: number;
@@ -247,34 +206,25 @@ export const menuItems: HierarchicalMenuItem[] = [
 												sectionId,
 												eventId,
 											} = props;
-											return (
-												<div className="flex items-center gap-2 flex-wrap">
-													<Link href="/app/performance/stats">
-														Peformance Stats
-													</Link>
-													<ArrowRight size={15} />
-													<Link
-														href={`/app/performance/stats/${statId}`}
-													>
-														Stat
-													</Link>
-													<ArrowRight size={15} />
-													<Link
-														href={`/app/performance/stats/${statId}/section/${sectionId}`}
-													>
-														Section
-													</Link>
-													<ArrowRight size={15} />
-													<Link
-														href={`/app/performance/stats/${statId}/section/${sectionId}/event/${eventId}`}
-													>
-														Event
-													</Link>
-												</div>
-											);
+											return [
+												{
+													href: "/app/performance/stats",
+													text: "Performance Stats",
+												},
+												{
+													href: `/app/performance/stats/${statId}`,
+													text: `Stat ${statId}`,
+												},
+												{
+													href: `/app/performance/stats/${statId}/section/${sectionId}`,
+													text: `Section ${sectionId}`,
+												},
+												{
+													href: `/app/performance/stats/${statId}/section/${sectionId}/event/${eventId}`,
+													text: `Event ${eventId}`,
+												},
+											];
 										},
-										pageUrlReg:
-											/^\/app\/performance\/stats\/[0-9]*\/section\/[0-9]*\/event\/[0-9]*$/,
 									},
 								],
 							},
@@ -283,125 +233,207 @@ export const menuItems: HierarchicalMenuItem[] = [
 				],
 			},
 			{
-				menuKey: MenuKey.PERFORMANCE_EVENT_TEMPLATES,
-				isActive: false,
-				title: "Performance Event Templates",
-				link: "/app/performance/event-templates",
+				pageUrlReg: /^\/app\/performance\/event-templates$/,
+				breadcrumbs: () => {
+					return [
+						{
+							href: "/app/performance",
+							text: "Performance",
+						},
+						{
+							href: "/app/performance/event-templates",
+							text: "Performance Event Templates",
+						},
+					];
+				},
 				subMenu: [
 					{
-						menuKey: MenuKey.PERFORMANCE_EVENT_TEMPLATE,
-						isActive: false,
-						breadcrumbs: (props: { templateId: number }) => {
-							const { templateId } = props;
-							return (
-								<div className="flex items-center gap-2 flex-wrap">
-									<Link href="/app/performance/event-templates">
-										Performance Event Templates
-									</Link>
-									<ArrowRight size={15} />
-									<Link
-										href={`/app/performance/event-templates/${templateId}`}
-									>
-										Template
-									</Link>
-								</div>
-							);
-						},
 						pageUrlReg:
 							/^\/app\/performance\/event-templates\/[0-9]*$/,
+						breadcrumbs: (props: { templateId: number }) => {
+							const { templateId } = props;
+							return [
+								{
+									href: "/app/performance/event-templates",
+									text: "Performance Event Templates",
+								},
+								{
+									href: `/app/performance/event-templates/${templateId}`,
+									text: `Template ${templateId}`,
+								},
+							];
+						},
 					},
 				],
-				pageUrlReg: /^\/app\/performance\/event-templates$/,
 			},
 		],
 	},
 	{
-		menuKey: MenuKey.SNS_CRAWLER,
-		isActive: false,
-		link: "/app/sns-crawler/facebook-group",
-		title: "SNS Crawler",
+		pageUrlReg: /^\/app\/sns-crawler$/,
+		breadcrumbs: () => {
+			return [
+				{
+					href: "/app/sns-crawler",
+					text: "SNS Crawler",
+				},
+			];
+		},
 		subMenu: [
 			{
-				menuKey: MenuKey.SNS_CRAWLER_FACEBOOK_GROUP,
-				isActive: false,
-				title: "Facebook Group",
-				link: "/app/sns-crawler/facebook-group",
 				pageUrlReg: /^\/app\/sns-crawler\/facebook-group$/,
+				breadcrumbs: () => {
+					return [
+						{
+							href: "/app/sns-crawler",
+							text: "SNS Crawler",
+						},
+						{
+							href: "/app/sns-crawler/facebook-group",
+							text: "Facebook Group",
+						},
+					];
+				},
 				subMenu: [
 					{
-						menuKey: MenuKey.SNS_CRAWLER_FACEBOOK_GROUP_SOURCE_DATA,
-						isActive: false,
-						breadcrumbs: () => {
-							return (
-								<div className="flex items-center gap-2 flex-wrap">
-									<Link href="/app/sns-crawler/facebook-group">
-										Facebook Group
-									</Link>
-									<ArrowRight size={15} />
-									<Link
-										href={`/app/sns-crawler/facebook-group/source-data`}
-									>
-										Source Data
-									</Link>
-								</div>
-							);
-						},
-						link: "/app/sns-crawler/facebook-group/source-data",
 						pageUrlReg:
 							/^\/app\/sns-crawler\/facebook-group\/source-data$/,
+						breadcrumbs: () => {
+							return [
+								{
+									href: "/app/sns-crawler",
+									text: "SNS Crawler",
+								},
+								{
+									href: "/app/sns-crawler/facebook-group",
+									text: "Facebook Group",
+								},
+								{
+									href: `/app/sns-crawler/facebook-group/source-data`,
+									text: "Source Data",
+								},
+							];
+						},
 					},
 					{
-						menuKey:
-							MenuKey.SNS_CRAWLER_FACEBOOK_GROUP_CRAWLER_TASKS,
-						isActive: false,
 						breadcrumbs: () => {
-							return (
-								<div className="flex items-center gap-2 flex-wrap">
-									<Link href="/app/sns-crawler/facebook-group">
-										Facebook Group
-									</Link>
-									<ArrowRight size={15} />
-									<Link
-										href={`/app/sns-crawler/facebook-group/crawler-tasks`}
-									>
-										Crawler Tasks
-									</Link>
-								</div>
-							);
+							return [
+								{
+									href: "/app/sns-crawler",
+									text: "SNS Crawler",
+								},
+								{
+									href: "/app/sns-crawler/facebook-group",
+									text: "Facebook Group",
+								},
+								{
+									href: `/app/sns-crawler/facebook-group/crawler-tasks`,
+									text: "Crawler Tasks",
+								},
+							];
 						},
-						title: "Crawler Tasks",
-						link: "/app/sns-crawler/facebook-group/crawler-tasks",
 						pageUrlReg:
 							/^\/app\/sns-crawler\/facebook-group\/crawler-tasks$/,
 						subMenu: [
 							{
-								menuKey:
-									MenuKey.SNS_CRAWLER_FACEBOOK_GROUP_CRAWLER_TASK,
-								isActive: false,
 								breadcrumbs: (props: { taskId: number }) => {
 									const { taskId } = props;
-									return (
-										<div className="flex items-center gap-2 flex-wrap">
-											<Link href="/app/sns-crawler/facebook-group">
-												Facebook Group
-											</Link>
-											<ArrowRight size={15} />
-											<Link
-												href={`/app/sns-crawler/facebook-group/crawler-tasks`}
-											>
-												Crawler Tasks
-											</Link>
-											<ArrowRight size={15} />
-											<Link
-												href={`/app/sns-crawler/facebook-group/crawler-tasks/${taskId}`}
-											>
-												Task {taskId}
-											</Link>
-										</div>
-									);
+									return [
+										{
+											href: "/app/sns-crawler/facebook-group",
+											text: "Facebook Group",
+										},
+										{
+											href: `/app/sns-crawler/facebook-group/crawler-tasks`,
+											text: "Crawler Tasks",
+										},
+										{
+											href: `/app/sns-crawler/facebook-group/crawler-tasks/${taskId}`,
+											text: `Task ${taskId}`,
+										},
+									];
 								},
 								pageUrlReg:
 									/^\/app\/sns-crawler\/facebook-group\/crawler-tasks\/[0-9]*$/,
+							},
+						],
+					},
+				],
+			},
+			{
+				pageUrlReg: /^\/app\/sns-crawler\/youtube-data-collector$/,
+				breadcrumbs: () => {
+					return [
+						{
+							href: "/app/sns-crawler",
+							text: "SNS Crawler",
+						},
+						{
+							href: "/app/sns-crawler/youtube-data-collector",
+							text: "YouTube Data Collector",
+						},
+					];
+				},
+				subMenu: [
+					{
+						pageUrlReg:
+							/^\/app\/sns-crawler\/youtube-data-collector\/source-data$/,
+						breadcrumbs: () => {
+							return [
+								{
+									href: "/app/sns-crawler",
+									text: "SNS Crawler",
+								},
+								{
+									href: "/app/sns-crawler/youtube-data-collector",
+									text: "YouTube Data Collector",
+								},
+								{
+									href: `/app/sns-crawler/youtube-data-collector/source-data`,
+									text: "Source Data",
+								},
+							];
+						},
+					},
+					{
+						pageUrlReg:
+							/^\/app\/sns-crawler\/youtube-data-collector\/tasks$/,
+						breadcrumbs: () => {
+							return [
+								{
+									href: "/app/sns-crawler",
+									text: "SNS Crawler",
+								},
+								{
+									href: "/app/sns-crawler/youtube-data-collector",
+									text: "YouTube Data Collector",
+								},
+								{
+									href: `/app/sns-crawler/youtube-data-collector/tasks`,
+									text: "YouTube Data Collector Tasks",
+								},
+							];
+						},
+						subMenu: [
+							{
+								pageUrlReg:
+									/^\/app\/sns-crawler\/youtube-data-collector\/tasks\/[0-9]*$/,
+								breadcrumbs: (props: { taskId: number }) => {
+									const { taskId } = props;
+									return [
+										{
+											href: "/app/sns-crawler/youtube-data-collector",
+											text: "YouTube Data Collector",
+										},
+										{
+											href: `/app/sns-crawler/youtube-data-collector/tasks`,
+											text: "YouTube Data Collector Tasks",
+										},
+										{
+											href: `/app/sns-crawler/youtube-data-collector/tasks/${taskId}`,
+											text: `Task ${taskId}`,
+										},
+									];
+								},
 							},
 						],
 					},
@@ -414,46 +446,66 @@ export const menuItems: HierarchicalMenuItem[] = [
 
 export const settingsReturnMenuItem: HierarchicalMenuItem[] = [
 	{
-		menuKey: MenuKey.SETTINGS,
-		isActive: false,
-		title: "Settings",
-		link: "/home",
-		pageUrlReg: /^\/settings\/general$/,
+		pageUrlReg: /^\/settings/,
+		breadcrumbs: () => {
+			return [
+				{
+					href: "/home",
+					text: "Return Home",
+				},
+			];
+		},
 		icon: <ReturnIcon size="20" />,
 	},
 ];
 
 export const settingsGeneralMenuItems: HierarchicalMenuItem[] = [
 	{
-		menuKey: MenuKey.SIGN_UP,
-		isActive: false,
-		title: "Sign Up",
-		link: "/settings/general/sign-up",
 		pageUrlReg: /^\/settings\/general\/sign-up$/,
+		breadcrumbs: () => {
+			return [
+				{
+					href: "/settings/general/sign-up",
+					text: "Sign Up",
+				},
+			];
+		},
 	},
 	{
-		menuKey: MenuKey.ROLES,
-		isActive: false,
-		title: "Roles",
-		link: "/settings/general/roles",
 		pageUrlReg: /^\/settings\/general\/roles$/,
+		breadcrumbs: () => {
+			return [
+				{
+					href: "/settings/general/roles",
+					text: "Roles",
+				},
+			];
+		},
 	},
 	{
-		menuKey: MenuKey.APPEARANCE,
-		isActive: false,
-		title: "Appearance",
-		link: "/settings/general/appearance",
 		pageUrlReg: /^\/settings\/general\/appearance$/,
+		breadcrumbs: () => {
+			return [
+				{
+					href: "/settings/general/appearance",
+					text: "Appearance",
+				},
+			];
+		},
 	},
 ];
 
 export const settingsMyAccountMenuItems: HierarchicalMenuItem[] = [
 	{
-		menuKey: MenuKey.PROFILE,
-		isActive: false,
-		title: "Profile",
-		link: "/settings/my-account/profile",
 		pageUrlReg: /^\/settings\/my-account\/profile$/,
+		breadcrumbs: () => {
+			return [
+				{
+					href: "/settings/my-account/profile",
+					text: "Profile",
+				},
+			];
+		},
 	},
 ];
 
