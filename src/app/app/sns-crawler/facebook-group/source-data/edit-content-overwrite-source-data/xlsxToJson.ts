@@ -7,16 +7,6 @@ type CellObj = {
 	hyperlink: string;
 };
 
-function isCellObj(value: string | CellObj): value is CellObj {
-	console.log(value);
-
-	if (typeof value === "object") {
-		return "text" in value && "hyperlink" in value;
-	} else {
-		return false;
-	}
-}
-
 export async function xlsxToJson(
 	file: File
 ): Promise<FacebookGroupOverwriteSourceDto> {

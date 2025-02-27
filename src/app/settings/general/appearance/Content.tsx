@@ -7,8 +7,6 @@ const Content = () => {
 	const theme = useThemeStore((state) => state.theme);
 	const setTheme = useThemeStore((state) => state.setTheme);
 
-	console.log(theme);
-
 	return (
 		<div className="w-full max-w-[1600px] min-h-[calc(100svh-56px)] p-3 gap-y-3">
 			<div
