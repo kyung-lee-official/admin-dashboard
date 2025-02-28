@@ -9,10 +9,10 @@ import {
 import { EditIcon } from "@/components/icons/Icons";
 import { useAuthStore } from "@/stores/auth";
 import {
-	getFacebookGroupSourceData,
+	getYouTubeGroupSourceData,
 	SnsCrawlerQK,
 } from "@/utils/api/app/sns-crawler";
-import { FacebookGroupOverwriteSourceDto } from "@/utils/types/app/sns-crawler";
+import { YoutubeDataOverwriteSourceDto } from "@/utils/types/app/sns-crawler";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useState } from "react";
@@ -21,24 +21,22 @@ import { createPortal } from "react-dom";
 export const Content = () => {
 	const [edit, setEdit] = useState<EditProps>({
 		show: false,
-		id: EditId.OVERWRITE_FACEBOOK_GROUP_SOURCE_DATA,
+		id: EditId.OVERWRITE_YOUTUBE_GROUP_SOURCE_DATA,
 	});
 
 	const jwt = useAuthStore((state) => state.jwt);
-	// const getFacebookSourceDataQuery = useQuery<
-	// 	FacebookGroupOverwriteSourceDto,
-	// 	AxiosError
-	// >({
-	// 	queryKey: [SnsCrawlerQK.GET_FACEBOOK_GROUP_SOURCE_DATA, jwt],
-	// 	queryFn: async () => {
-	// 		const facebookGroupSourceData = await getFacebookGroupSourceData(
-	// 			jwt
-	// 		);
-	// 		return facebookGroupSourceData;
-	// 	},
-	// 	retry: false,
-	// 	refetchOnWindowFocus: false,
-	// });
+	const getYouTubeSourceDataQuery = useQuery<
+		YoutubeDataOverwriteSourceDto,
+		AxiosError
+	>({
+		queryKey: [SnsCrawlerQK.GET_YOUTUBE_SOURCE_DATA, jwt],
+		queryFn: async () => {
+			const youtubeGroupSourceData = await getYouTubeGroupSourceData(jwt);
+			return youtubeGroupSourceData;
+		},
+		retry: false,
+		refetchOnWindowFocus: false,
+	});
 
 	return (
 		<div className="flex flex-col w-full max-w-[1600px] min-h-[calc(100svh-56px)] p-3 mx-auto gap-y-3">
@@ -59,21 +57,10 @@ export const Content = () => {
 								onClick: () => {
 									setEdit({
 										show: true,
-										id: EditId.OVERWRITE_FACEBOOK_GROUP_SOURCE_DATA,
+										id: EditId.OVERWRITE_YOUTUBE_GROUP_SOURCE_DATA,
 									});
 								},
 							},
-							// {
-							// 	text: "Edit Source Data",
-							// 	hideMenuOnClick: true,
-							// 	icon: <EditIcon size={15} />,
-							// 	onClick: () => {
-							// 		setEdit({
-							// 			show: true,
-							// 			id: EditId.EDIT_FACEBOOK_GROUP_SOURCE_DATA,
-							// 		});
-							// 	},
-							// },
 						]}
 					/>
 					{createPortal(
@@ -81,13 +68,13 @@ export const Content = () => {
 						document.body
 					)}
 				</div>
-				{/* {getFacebookSourceDataQuery.data && (
+				{getYouTubeSourceDataQuery.data && (
 					<table
 						className="w-full
 						text-sm text-white/50"
 					>
 						<tbody className="[&_>_tr_>_td]:px-2 [&_>_tr_>_td]:py-1">
-							{getFacebookSourceDataQuery.data.map((s, i) => {
+							{getYouTubeSourceDataQuery.data.map((s, i) => {
 								return (
 									<tr
 										key={i}
@@ -96,16 +83,13 @@ export const Content = () => {
 										hover:bg-white/5
 										border-t-[1px] border-white/10"
 									>
-										<td className="w-1/2">
-											{s.groupAddress}
-										</td>
-										<td className="w-1/2">{s.groupName}</td>
+										<td>{s.keyword}</td>
 									</tr>
 								);
 							})}
 						</tbody>
 					</table>
-				)} */}
+				)}
 			</div>
 		</div>
 	);

@@ -11,6 +11,7 @@ import { EditContentAddStat } from "@/app/app/performance/stats/edit-content-add
 import { EditContentEditStat } from "@/app/app/performance/stats/[statId]/edit-content-edit-stat/EditContentEditStat";
 import { EditContentAddTemplate } from "@/app/app/performance/event-templates/edit-content-add-template/EditContentAddTemplate";
 import { EditContentOverwriteSourceData } from "@/app/app/sns-crawler/facebook-group/source-data/edit-content-overwrite-source-data/EditContentOverwriteSourceData";
+import { EditContentOverwriteYouTubeSourceData } from "@/app/app/sns-crawler/youtube-data-collector/source-data/edit-content-overwrite-youtube-source-data/EditContentOverwriteYouTubeSourceData";
 
 export enum EditId {
 	/* settings */
@@ -28,6 +29,7 @@ export enum EditId {
 	/* app/sns-crawler */
 	OVERWRITE_FACEBOOK_GROUP_SOURCE_DATA = "overwrite-facebook-group-source-data",
 	EDIT_FACEBOOK_GROUP_SOURCE_DATA = "edit-facebook-group-source-data",
+	OVERWRITE_YOUTUBE_GROUP_SOURCE_DATA = "overwrite-youtube-group-source-data",
 }
 
 export type EditProps = {
@@ -82,6 +84,13 @@ const EditContent = (props: {
 			);
 		case EditId.EDIT_FACEBOOK_GROUP_SOURCE_DATA:
 			return null;
+		case EditId.OVERWRITE_YOUTUBE_GROUP_SOURCE_DATA:
+			return (
+				<EditContentOverwriteYouTubeSourceData
+					edit={edit}
+					setEdit={setEdit}
+				/>
+			);
 		default:
 			return null;
 	}

@@ -2,6 +2,7 @@ import {
 	FacebookGroupOverwriteSourceDto,
 	Status,
 	Task,
+	YoutubeDataOverwriteSourceDto,
 } from "@/utils/types/app/sns-crawler";
 import axios from "axios";
 
@@ -11,6 +12,7 @@ export enum SnsCrawlerQK {
 	GET_FACEBOOK_GROUP_CRAWLER_TASKS = "get-facebook-group-crawler-tasks",
 	GET_FACEBOOK_GROUP_CRAWLER_TASK_BY_ID = "get-facebook-group-crawler-task-by-id",
 	GET_FACEBOOK_GROUP_CRAWLER_STATUS = "get-facebook-group-crawler-status",
+	GET_YOUTUBE_SOURCE_DATA = "get-youtube-source-data",
 }
 
 export const overwriteFacebookGroupSourceData = async (
@@ -143,5 +145,35 @@ export const getFacebookGroupCrawlerStatus = async (
 			Authorization: jwt,
 		},
 	});
+	return res.data;
+};
+
+export const overwriteYouTubeSourceData = async (
+	newData: YoutubeDataOverwriteSourceDto,
+	jwt: string
+) => {
+	const res = await axios.patch(
+		"internal/applications/youtube-data-collector/overwrite-source",
+		newData,
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+			},
+		}
+	);
+	return res.data;
+};
+
+export const getYouTubeGroupSourceData = async (jwt: string) => {
+	const res = await axios.get(
+		"internal/applications/youtube-data-collector",
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+			},
+		}
+	);
 	return res.data;
 };

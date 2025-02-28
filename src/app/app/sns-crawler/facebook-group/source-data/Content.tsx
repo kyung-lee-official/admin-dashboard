@@ -63,17 +63,6 @@ export const Content = () => {
 									});
 								},
 							},
-							// {
-							// 	text: "Edit Source Data",
-							// 	hideMenuOnClick: true,
-							// 	icon: <EditIcon size={15} />,
-							// 	onClick: () => {
-							// 		setEdit({
-							// 			show: true,
-							// 			id: EditId.EDIT_FACEBOOK_GROUP_SOURCE_DATA,
-							// 		});
-							// 	},
-							// },
 						]}
 					/>
 					{createPortal(
