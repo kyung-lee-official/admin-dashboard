@@ -31,7 +31,7 @@ export const Input = forwardRef<
 				{...rest}
 				className={`w-full py-[6px] px-[8px]
 				${isError && "text-red-400"}
-				dark:bg-slate-700/50
+				dark:bg-neutral-700/50
 				${isError && "border-solid border-red-500 border-[1px] m-0"}
 				rounded-lg
 				outline-none`}
