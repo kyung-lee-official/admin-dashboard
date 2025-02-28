@@ -17,6 +17,15 @@ export const Content = () => {
 					</div>
 				</div>
 				<Link
+					href={"youtube-data-collector/manage-token"}
+					className="flex items-center px-6 py-4 gap-6
+					text-sm
+					hover:bg-white/5
+					border-t-[1px] border-white/10"
+				>
+					Manage Token
+				</Link>
+				<Link
 					href={"youtube-data-collector/source-data"}
 					className="flex items-center px-6 py-4 gap-6
 					text-sm
@@ -26,7 +35,7 @@ export const Content = () => {
 					Source Data
 				</Link>
 				<Link
-					href={"youtube-data-collector/tasks"}
+					href={"youtube-data-collector/collection-tasks"}
 					className="flex items-center px-6 py-4 gap-6
 					text-sm
 					hover:bg-white/5

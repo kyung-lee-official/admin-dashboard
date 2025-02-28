@@ -394,6 +394,26 @@ export const menuItems: HierarchicalMenuItem[] = [
 				subMenu: [
 					{
 						pageUrlReg:
+							/^\/app\/sns-crawler\/youtube-data-collector\/manage-token$/,
+						breadcrumbs: () => {
+							return [
+								{
+									href: "/app/sns-crawler",
+									text: "SNS Crawler",
+								},
+								{
+									href: "/app/sns-crawler/youtube-data-collector",
+									text: "YouTube Data Collector",
+								},
+								{
+									href: `/app/sns-crawler/youtube-data-collector/manage-token`,
+									text: "Manage Token",
+								},
+							];
+						},
+					},
+					{
+						pageUrlReg:
 							/^\/app\/sns-crawler\/youtube-data-collector\/source-data$/,
 						breadcrumbs: () => {
 							return [
@@ -414,7 +434,7 @@ export const menuItems: HierarchicalMenuItem[] = [
 					},
 					{
 						pageUrlReg:
-							/^\/app\/sns-crawler\/youtube-data-collector\/tasks$/,
+							/^\/app\/sns-crawler\/youtube-data-collector\/collection-tasks$/,
 						breadcrumbs: () => {
 							return [
 								{
@@ -426,7 +446,7 @@ export const menuItems: HierarchicalMenuItem[] = [
 									text: "YouTube Data Collector",
 								},
 								{
-									href: `/app/sns-crawler/youtube-data-collector/tasks`,
+									href: `/app/sns-crawler/youtube-data-collector/collection-tasks`,
 									text: "YouTube Data Collector Tasks",
 								},
 							];

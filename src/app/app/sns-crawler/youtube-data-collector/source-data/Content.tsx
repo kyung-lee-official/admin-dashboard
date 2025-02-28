@@ -21,7 +21,7 @@ import { createPortal } from "react-dom";
 export const Content = () => {
 	const [edit, setEdit] = useState<EditProps>({
 		show: false,
-		id: EditId.OVERWRITE_YOUTUBE_GROUP_SOURCE_DATA,
+		id: EditId.OVERWRITE_YOUTUBE_SOURCE_DATA,
 	});
 
 	const jwt = useAuthStore((state) => state.jwt);
@@ -57,7 +57,7 @@ export const Content = () => {
 								onClick: () => {
 									setEdit({
 										show: true,
-										id: EditId.OVERWRITE_YOUTUBE_GROUP_SOURCE_DATA,
+										id: EditId.OVERWRITE_YOUTUBE_SOURCE_DATA,
 									});
 								},
 							},

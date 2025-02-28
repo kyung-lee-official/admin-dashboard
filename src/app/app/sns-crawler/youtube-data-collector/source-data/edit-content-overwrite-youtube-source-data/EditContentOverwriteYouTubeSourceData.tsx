@@ -17,7 +17,7 @@ export const EditContentOverwriteYouTubeSourceData = (props: {
 	edit: EditProps;
 	setEdit: Dispatch<SetStateAction<EditProps>>;
 }) => {
-	const editId = EditId.OVERWRITE_YOUTUBE_GROUP_SOURCE_DATA;
+	const editId = EditId.OVERWRITE_YOUTUBE_SOURCE_DATA;
 	const title = "Overwrite Source Data";
 	const { edit, setEdit } = props;
 
@@ -25,7 +25,6 @@ export const EditContentOverwriteYouTubeSourceData = (props: {
 
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
-	/* md5 of the file */
 	const [oldData, setOldData] = useState<YoutubeDataOverwriteSourceDto>([]);
 	const [newData, setNewData] = useState(oldData);
 	const [file, setFile] = useState<File | null>(null);

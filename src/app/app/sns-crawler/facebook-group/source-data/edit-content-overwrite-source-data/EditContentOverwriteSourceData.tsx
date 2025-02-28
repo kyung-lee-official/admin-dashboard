@@ -25,7 +25,6 @@ export const EditContentOverwriteSourceData = (props: {
 
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
-	/* md5 of the file */
 	const [oldData, setOldData] = useState<FacebookGroupOverwriteSourceDto>([]);
 	const [newData, setNewData] = useState(oldData);
 	const [file, setFile] = useState<File | null>(null);

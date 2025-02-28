@@ -12,6 +12,7 @@ export enum SnsCrawlerQK {
 	GET_FACEBOOK_GROUP_CRAWLER_TASKS = "get-facebook-group-crawler-tasks",
 	GET_FACEBOOK_GROUP_CRAWLER_TASK_BY_ID = "get-facebook-group-crawler-task-by-id",
 	GET_FACEBOOK_GROUP_CRAWLER_STATUS = "get-facebook-group-crawler-status",
+	GET_YOUTUBE_TOKEN = "get-youtube-token",
 	GET_YOUTUBE_SOURCE_DATA = "get-youtube-source-data",
 }
 
@@ -145,6 +146,46 @@ export const getFacebookGroupCrawlerStatus = async (
 			Authorization: jwt,
 		},
 	});
+	return res.data;
+};
+
+export const addYouTubeToken = async (youtubeToken: string, jwt: string) => {
+	const res = await axios.post(
+		"internal/applications/youtube-data-collector/token",
+		{ token: youtubeToken },
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+			},
+		}
+	);
+	return res.data;
+};
+
+export const getYouTubeToken = async (jwt: string) => {
+	const res = await axios.get(
+		"internal/applications/youtube-data-collector/token",
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+			},
+		}
+	);
+	return res.data;
+};
+
+export const deleteToken = async (youtubeToken: string, jwt: string) => {
+	const res = await axios.delete(
+		`internal/applications/youtube-data-collector/${youtubeToken}`,
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+			},
+		}
+	);
 	return res.data;
 };
 
