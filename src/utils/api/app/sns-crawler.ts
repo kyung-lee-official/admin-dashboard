@@ -163,9 +163,9 @@ export const addYouTubeToken = async (youtubeToken: string, jwt: string) => {
 	return res.data;
 };
 
-export const getYouTubeToken = async (jwt: string) => {
+export const getYouTubeTokens = async (jwt: string) => {
 	const res = await axios.get(
-		"internal/applications/youtube-data-collector/token",
+		"internal/applications/youtube-data-collector/tokens",
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
 			headers: {

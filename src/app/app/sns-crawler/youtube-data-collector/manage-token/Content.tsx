@@ -11,7 +11,7 @@ import { DeleteIcon, EditIcon } from "@/components/icons/Icons";
 import { useAuthStore } from "@/stores/auth";
 import {
 	deleteToken,
-	getYouTubeToken,
+	getYouTubeTokens,
 	SnsCrawlerQK,
 } from "@/utils/api/app/sns-crawler";
 import { queryClient } from "@/utils/react-query/react-query";
@@ -31,7 +31,7 @@ export const Content = () => {
 	const getYouTubeTokenQuery = useQuery({
 		queryKey: [SnsCrawlerQK.GET_YOUTUBE_TOKEN, jwt],
 		queryFn: async () => {
-			const youtubeToken = await getYouTubeToken(jwt);
+			const youtubeToken = await getYouTubeTokens(jwt);
 			return youtubeToken;
 		},
 		retry: false,
