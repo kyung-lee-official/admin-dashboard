@@ -19,7 +19,6 @@ export async function xlsxToJson(
 				await workbook.xlsx.load(buffer);
 				const sheet = workbook.getWorksheet(1);
 				if (sheet) {
-					console.log(sheet.rowCount);
 					for (let i = 1; i <= sheet.rowCount; i++) {
 						const row = sheet.getRow(i);
 						/* ignore empty row */
