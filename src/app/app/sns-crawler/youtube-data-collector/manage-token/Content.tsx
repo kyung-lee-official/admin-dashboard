@@ -63,7 +63,7 @@ export const Content = () => {
 					<TitleMoreMenu
 						items={[
 							{
-								text: "Overwrite Source Data",
+								text: "Add Token",
 								hideMenuOnClick: true,
 								icon: <EditIcon size={15} />,
 								onClick: () => {
