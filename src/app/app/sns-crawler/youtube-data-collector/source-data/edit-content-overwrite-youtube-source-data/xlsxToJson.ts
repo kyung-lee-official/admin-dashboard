@@ -19,8 +19,8 @@ export async function xlsxToJson(
 				await workbook.xlsx.load(buffer);
 				const sheet = workbook.getWorksheet(1);
 				if (sheet) {
-					const lastRow = sheet.actualRowCount;
-					for (let i = 1; i <= lastRow; i++) {
+					console.log(sheet.rowCount);
+					for (let i = 1; i <= sheet.rowCount; i++) {
 						const row = sheet.getRow(i);
 						/* ignore empty row */
 						if (!row.getCell(1).text) {
@@ -37,10 +37,10 @@ export async function xlsxToJson(
 								keyword: row.getCell(1).text as string,
 							});
 						} catch (error) {
-							console.error(
-								`Error at row ${i}, invalid data format, row ignored`
+							console.warn(
+								`Error parsing row ${i}, invalid data format, row ignored`
 							);
-							console.error(error);
+							console.warn(error);
 						}
 					}
 					resolve(json);
