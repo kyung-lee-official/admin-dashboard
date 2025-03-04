@@ -30,7 +30,7 @@ export const EditContentAddYouTubeToken = (props: {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: [SnsCrawlerQK.GET_YOUTUBE_TOKEN],
+				queryKey: [SnsCrawlerQK.GET_YOUTUBE_TOKENS],
 			});
 			setEdit({ show: false, id: editId });
 		},

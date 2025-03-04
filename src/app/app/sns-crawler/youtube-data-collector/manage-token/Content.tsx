@@ -15,6 +15,7 @@ import {
 	SnsCrawlerQK,
 } from "@/utils/api/app/sns-crawler";
 import { queryClient } from "@/utils/react-query/react-query";
+import { YouTubeToken } from "@/utils/types/app/sns-crawler";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { createPortal } from "react-dom";
@@ -28,8 +29,8 @@ export const Content = () => {
 	const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
 	const jwt = useAuthStore((state) => state.jwt);
-	const getYouTubeTokenQuery = useQuery({
-		queryKey: [SnsCrawlerQK.GET_YOUTUBE_TOKEN, jwt],
+	const getYouTubeTokensQuery = useQuery<YouTubeToken[]>({
+		queryKey: [SnsCrawlerQK.GET_YOUTUBE_TOKENS, jwt],
 		queryFn: async () => {
 			const youtubeToken = await getYouTubeTokens(jwt);
 			return youtubeToken;
@@ -44,7 +45,7 @@ export const Content = () => {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: [SnsCrawlerQK.GET_YOUTUBE_TOKEN],
+				queryKey: [SnsCrawlerQK.GET_YOUTUBE_TOKENS],
 			});
 		},
 		onError: () => {},
@@ -80,13 +81,13 @@ export const Content = () => {
 						document.body
 					)}
 				</div>
-				{getYouTubeTokenQuery.data && (
+				{getYouTubeTokensQuery.data && (
 					<table
 						className="w-full
 						text-sm text-white/50"
 					>
 						<tbody className="[&_>_tr_>_td]:px-2 [&_>_tr_>_td]:py-1">
-							{getYouTubeTokenQuery.data.map(
+							{getYouTubeTokensQuery.data.map(
 								(t: any, i: number) => {
 									return (
 										<tr
