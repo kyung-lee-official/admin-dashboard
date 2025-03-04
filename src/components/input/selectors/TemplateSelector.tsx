@@ -23,7 +23,7 @@ export const TemplateSelector = (props: TemplateSelectorProps) => {
 		PerformanceEventTemplateResponse[],
 		AxiosError
 	>({
-		queryKey: [PerformanceQK.GET_MY_ROLE_TEMPLATES, jwt],
+		queryKey: [PerformanceQK.GET_MY_ROLE_TEMPLATES],
 		queryFn: async () => {
 			const templates = await getMyRoleTemplates(jwt);
 			return templates;

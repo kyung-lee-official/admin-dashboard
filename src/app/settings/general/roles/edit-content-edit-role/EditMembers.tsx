@@ -47,7 +47,7 @@ export const EditMembers = (props: {
 	const jwt = useAuthStore((state) => state.jwt);
 
 	const membersQuery = useQuery<Member[], AxiosError>({
-		queryKey: [MembersQK.GET_MEMBERS, jwt],
+		queryKey: [MembersQK.GET_MEMBERS],
 		queryFn: async () => {
 			const members = await getMembers(jwt);
 			return members;

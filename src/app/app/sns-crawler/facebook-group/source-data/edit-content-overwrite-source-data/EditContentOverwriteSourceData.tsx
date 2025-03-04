@@ -8,8 +8,8 @@ import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/utils/react-query/react-query";
 import {
 	overwriteFacebookGroupSourceData,
-	SnsCrawlerQK,
-} from "@/utils/api/app/sns-crawler";
+	SnsFacebookCrawlerQK,
+} from "@/utils/api/app/sns-crawler/facebook-group-crawler";
 import { FacebookGroupOverwriteSourceDto } from "@/utils/types/app/sns-crawler";
 import { Button } from "@/components/button/Button";
 
@@ -49,7 +49,7 @@ export const EditContentOverwriteSourceData = (props: {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: [SnsCrawlerQK.GET_FACEBOOK_GROUP_SOURCE_DATA],
+				queryKey: [SnsFacebookCrawlerQK.GET_FACEBOOK_GROUP_SOURCE_DATA],
 			});
 			setEdit({ show: false, id: editId });
 		},

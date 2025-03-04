@@ -4,8 +4,11 @@ import { EditId, EditProps } from "@/components/edit-panel/EditPanel";
 import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/utils/react-query/react-query";
-import { addYouTubeToken, SnsCrawlerQK } from "@/utils/api/app/sns-crawler";
 import { Input } from "@/components/input/Input";
+import {
+	addYouTubeToken,
+	SnsYouTubeDataQK,
+} from "@/utils/api/app/sns-crawler/youtube-data-collector";
 
 export const EditContentAddYouTubeToken = (props: {
 	edit: EditProps;
@@ -30,7 +33,7 @@ export const EditContentAddYouTubeToken = (props: {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: [SnsCrawlerQK.GET_YOUTUBE_TOKENS],
+				queryKey: [SnsYouTubeDataQK.GET_YOUTUBE_TOKENS],
 			});
 			setEdit({ show: false, id: editId });
 		},

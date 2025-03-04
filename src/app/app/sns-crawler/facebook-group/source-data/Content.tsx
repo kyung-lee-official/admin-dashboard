@@ -10,8 +10,8 @@ import { EditIcon } from "@/components/icons/Icons";
 import { useAuthStore } from "@/stores/auth";
 import {
 	getFacebookGroupSourceData,
-	SnsCrawlerQK,
-} from "@/utils/api/app/sns-crawler";
+	SnsFacebookCrawlerQK,
+} from "@/utils/api/app/sns-crawler/facebook-group-crawler";
 import { FacebookGroupOverwriteSourceDto } from "@/utils/types/app/sns-crawler";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
@@ -29,7 +29,7 @@ export const Content = () => {
 		FacebookGroupOverwriteSourceDto,
 		AxiosError
 	>({
-		queryKey: [SnsCrawlerQK.GET_FACEBOOK_GROUP_SOURCE_DATA, jwt],
+		queryKey: [SnsFacebookCrawlerQK.GET_FACEBOOK_GROUP_SOURCE_DATA],
 		queryFn: async () => {
 			const facebookGroupSourceData = await getFacebookGroupSourceData(
 				jwt

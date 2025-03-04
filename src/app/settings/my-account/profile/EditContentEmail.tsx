@@ -28,7 +28,7 @@ export const EditContentEmail = (props: {
 	const [newEmail, setNewEmail] = useState("");
 
 	const myInfoQuery = useQuery<MyInfo, AxiosError>({
-		queryKey: [MembersQK.GET_MY_INFO, jwt],
+		queryKey: [MembersQK.GET_MY_INFO],
 		queryFn: async () => {
 			const isSignedIn = await getMyInfo(jwt);
 			return isSignedIn;
@@ -61,7 +61,7 @@ export const EditContentEmail = (props: {
 		onSuccess: (data) => {
 			setJwt(data.jwt);
 			queryClient.invalidateQueries({
-				queryKey: [MembersQK.GET_MY_INFO, data.jwt],
+				queryKey: [MembersQK.GET_MY_INFO],
 			});
 			setEdit({ show: false, id: editId });
 		},
@@ -80,7 +80,7 @@ export const EditContentEmail = (props: {
 	/* send manually */
 
 	const sendEmailMutation = useMutation({
-		mutationKey: ["send-verification-email", jwt],
+		mutationKey: ["send-verification-email"],
 		mutationFn: sendVerificationEmail,
 		onSuccess: () => {
 			setEmailSent(true);

@@ -12,8 +12,8 @@ import { useAuthStore } from "@/stores/auth";
 import {
 	deleteToken,
 	getYouTubeTokens,
-	SnsCrawlerQK,
-} from "@/utils/api/app/sns-crawler";
+	SnsYouTubeDataQK,
+} from "@/utils/api/app/sns-crawler/youtube-data-collector";
 import { queryClient } from "@/utils/react-query/react-query";
 import { YouTubeToken } from "@/utils/types/app/sns-crawler";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -30,7 +30,7 @@ export const Content = () => {
 
 	const jwt = useAuthStore((state) => state.jwt);
 	const getYouTubeTokensQuery = useQuery<YouTubeToken[]>({
-		queryKey: [SnsCrawlerQK.GET_YOUTUBE_TOKENS, jwt],
+		queryKey: [SnsYouTubeDataQK.GET_YOUTUBE_TOKENS],
 		queryFn: async () => {
 			const youtubeToken = await getYouTubeTokens(jwt);
 			return youtubeToken;
@@ -45,7 +45,7 @@ export const Content = () => {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: [SnsCrawlerQK.GET_YOUTUBE_TOKENS],
+				queryKey: [SnsYouTubeDataQK.GET_YOUTUBE_TOKENS],
 			});
 		},
 		onError: () => {},

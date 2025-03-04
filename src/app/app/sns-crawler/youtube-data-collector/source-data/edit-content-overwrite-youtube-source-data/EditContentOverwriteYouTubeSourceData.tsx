@@ -6,12 +6,12 @@ import Link from "next/link";
 import { xlsxToJson } from "./xlsxToJson";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/utils/react-query/react-query";
-import {
-	overwriteYouTubeSourceData,
-	SnsCrawlerQK,
-} from "@/utils/api/app/sns-crawler";
 import { YoutubeDataOverwriteSourceDto } from "@/utils/types/app/sns-crawler";
 import { Button } from "@/components/button/Button";
+import {
+	overwriteYouTubeSourceData,
+	SnsYouTubeDataQK,
+} from "@/utils/api/app/sns-crawler/youtube-data-collector";
 
 export const EditContentOverwriteYouTubeSourceData = (props: {
 	edit: EditProps;
@@ -49,7 +49,7 @@ export const EditContentOverwriteYouTubeSourceData = (props: {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: [SnsCrawlerQK.GET_YOUTUBE_SOURCE_DATA],
+				queryKey: [SnsYouTubeDataQK.GET_YOUTUBE_SOURCE_DATA],
 			});
 			setEdit({ show: false, id: editId });
 		},

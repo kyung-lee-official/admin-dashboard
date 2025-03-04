@@ -23,7 +23,7 @@ export const EditContentSignUp = (props: {
 	const jwt = useAuthStore((state) => state.jwt);
 
 	const getServerSettingsQuery = useQuery<any, AxiosError>({
-		queryKey: [ServerSettingQK.GET_SERVER_SETTINGS, jwt],
+		queryKey: [ServerSettingQK.GET_SERVER_SETTINGS],
 		queryFn: async () => {
 			const serverSettings = await getServerSettings(jwt);
 			return serverSettings;
@@ -72,7 +72,7 @@ export const EditContentSignUp = (props: {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: [ServerSettingQK.GET_SERVER_SETTINGS, jwt],
+				queryKey: [ServerSettingQK.GET_SERVER_SETTINGS],
 			});
 			setEdit({ show: false, id: editId });
 		},

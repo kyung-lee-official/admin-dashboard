@@ -30,7 +30,7 @@ export const EditContentAddRole = (props: {
 
 	const [role, setRole] = useState<MemberRole | undefined>(undefined);
 	const rolesQuery = useQuery<MemberRole[], AxiosError>({
-		queryKey: [RolesQK.GET_ALL_ROLES, jwt],
+		queryKey: [RolesQK.GET_ALL_ROLES],
 		queryFn: async () => {
 			const roles = await getAllRoles(jwt);
 			return roles;
@@ -52,7 +52,7 @@ export const EditContentAddRole = (props: {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: [RolesQK.GET_ROLES_BY_IDS, jwt],
+				queryKey: [RolesQK.GET_ROLES_BY_IDS],
 			});
 			setEdit({ show: false, id: editId });
 		},

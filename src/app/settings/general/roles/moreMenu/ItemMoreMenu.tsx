@@ -71,7 +71,7 @@ export const ItemMoreMenu = (props: ItemMoreMenuProps) => {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: [RolesQK.GET_ROLES_BY_IDS, jwt],
+				queryKey: [RolesQK.GET_ROLES_BY_IDS],
 			});
 			setShow(false);
 		},

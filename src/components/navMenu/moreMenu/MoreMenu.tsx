@@ -28,7 +28,7 @@ export const MoreMenu = () => {
 	const [show, setShow] = useState<boolean>(false);
 
 	const myInfoQuery = useQuery<any, AxiosError>({
-		queryKey: [MembersQK.GET_MY_INFO, jwt],
+		queryKey: [MembersQK.GET_MY_INFO],
 		queryFn: async () => {
 			const isSignedIn = await getMyInfo(jwt);
 			return isSignedIn;
@@ -38,7 +38,7 @@ export const MoreMenu = () => {
 	});
 
 	const myAvatarQuery = useQuery<any, AxiosError>({
-		queryKey: [MembersQK.GET_AVATAR_BY_ID, jwt],
+		queryKey: [MembersQK.GET_AVATAR_BY_ID],
 		queryFn: async () => {
 			const avatar = await downloadAvatar(myInfoQuery.data.id, jwt);
 			return avatar;

@@ -26,7 +26,7 @@ export const Content = () => {
 	});
 
 	const feedbacksQuery = useQuery<any, AxiosError>({
-		queryKey: [ChituboxDocsAnalysisQK.GET_DOCS_FEEDBACKS, jwt],
+		queryKey: [ChituboxDocsAnalysisQK.GET_DOCS_FEEDBACKS],
 		queryFn: async () => {
 			const feedbacks = await getChituboxManualFeedbacks(
 				range.start,

@@ -10,8 +10,8 @@ import { EditIcon } from "@/components/icons/Icons";
 import { useAuthStore } from "@/stores/auth";
 import {
 	getYouTubeGroupSourceData,
-	SnsCrawlerQK,
-} from "@/utils/api/app/sns-crawler";
+	SnsYouTubeDataQK,
+} from "@/utils/api/app/sns-crawler/youtube-data-collector";
 import { YoutubeDataOverwriteSourceDto } from "@/utils/types/app/sns-crawler";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
@@ -29,7 +29,7 @@ export const Content = () => {
 		YoutubeDataOverwriteSourceDto,
 		AxiosError
 	>({
-		queryKey: [SnsCrawlerQK.GET_YOUTUBE_SOURCE_DATA, jwt],
+		queryKey: [SnsYouTubeDataQK.GET_YOUTUBE_SOURCE_DATA],
 		queryFn: async () => {
 			const youtubeGroupSourceData = await getYouTubeGroupSourceData(jwt);
 			return youtubeGroupSourceData;

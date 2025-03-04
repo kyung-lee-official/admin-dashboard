@@ -9,8 +9,8 @@ import {
 	getFacebookGroupCrawlerStatus,
 	getFacebookGroupCrawlerTaskById,
 	recrawlFailedRecords,
-	SnsCrawlerQK,
-} from "@/utils/api/app/sns-crawler";
+	SnsFacebookCrawlerQK,
+} from "@/utils/api/app/sns-crawler/facebook-group-crawler";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import * as ExcelJS from "exceljs";
 import Link from "next/link";
@@ -22,7 +22,7 @@ export const Content = (props: { taskId: number }) => {
 	const [pendingAbort, setPendingAbort] = useState(false);
 
 	const getFacebookGroupCrawlerTaskByIdQuery = useQuery({
-		queryKey: [SnsCrawlerQK.GET_FACEBOOK_GROUP_CRAWLER_TASK_BY_ID, jwt],
+		queryKey: [SnsFacebookCrawlerQK.GET_FACEBOOK_GROUP_CRAWLER_TASK_BY_ID],
 		queryFn: async () => {
 			const facebookGroupSourceData =
 				await getFacebookGroupCrawlerTaskById(taskId, jwt);
@@ -33,7 +33,7 @@ export const Content = (props: { taskId: number }) => {
 	});
 
 	const getFacebookGroupCrawlerStatusQuery = useQuery({
-		queryKey: [SnsCrawlerQK.GET_FACEBOOK_GROUP_CRAWLER_STATUS, jwt],
+		queryKey: [SnsFacebookCrawlerQK.GET_FACEBOOK_GROUP_CRAWLER_STATUS],
 		queryFn: async () => {
 			const facebookGroupSourceData = await getFacebookGroupCrawlerStatus(
 				jwt

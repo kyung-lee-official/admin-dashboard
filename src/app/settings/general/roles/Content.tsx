@@ -35,7 +35,7 @@ export const Content = () => {
 	});
 
 	const rolesQuery = useQuery<any, AxiosError>({
-		queryKey: [RolesQK.GET_ROLES_BY_IDS, jwt],
+		queryKey: [RolesQK.GET_ROLES_BY_IDS],
 		queryFn: async () => {
 			const roles = await getRolesByIds(jwt, []);
 			return roles;

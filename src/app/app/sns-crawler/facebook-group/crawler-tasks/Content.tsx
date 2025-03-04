@@ -6,10 +6,10 @@ import { useAuthStore } from "@/stores/auth";
 import {
 	getFacebookGroupCrawlerStatus,
 	getFacebookGroupCrawlerTasks,
-	SnsCrawlerQK,
+	SnsFacebookCrawlerQK,
 	createFacebookGroupCrawlerTask,
 	facebookGroupCrawlerTaskStartCrawling,
-} from "@/utils/api/app/sns-crawler";
+} from "@/utils/api/app/sns-crawler/facebook-group-crawler";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import Link from "next/link";
@@ -22,7 +22,7 @@ export const Content = () => {
 	const [showStartConfirmation, setShowStartConfirmation] = useState(false);
 
 	const getFacebookGroupCrawlerTasksQuery = useQuery<any, AxiosError>({
-		queryKey: [SnsCrawlerQK.GET_FACEBOOK_GROUP_CRAWLER_TASKS, jwt],
+		queryKey: [SnsFacebookCrawlerQK.GET_FACEBOOK_GROUP_CRAWLER_TASKS],
 		queryFn: async () => {
 			const facebookGroupSourceData = await getFacebookGroupCrawlerTasks(
 				jwt
@@ -34,7 +34,7 @@ export const Content = () => {
 	});
 
 	const getFacebookGroupCrawlerStatusQuery = useQuery<any, AxiosError>({
-		queryKey: [SnsCrawlerQK.GET_FACEBOOK_GROUP_CRAWLER_STATUS, jwt],
+		queryKey: [SnsFacebookCrawlerQK.GET_FACEBOOK_GROUP_CRAWLER_STATUS],
 		queryFn: async () => {
 			const facebookGroupSourceData = await getFacebookGroupCrawlerStatus(
 				jwt

@@ -34,7 +34,7 @@ export const EditContentAddTemplate = (props: {
 	);
 
 	const rolesQuery = useQuery<MemberRole[], AxiosError>({
-		queryKey: [RolesQK.GET_ALL_ROLES, jwt],
+		queryKey: [RolesQK.GET_ALL_ROLES],
 		queryFn: async () => {
 			const roles = await getAllRoles(jwt);
 			return roles;

@@ -34,7 +34,7 @@ const Content = () => {
 	const setJwt = useAuthStore((state) => state.setJwt);
 
 	const isValidToken = useQuery<any, AxiosError>({
-		queryKey: [AuthenticationQK.GET_IS_SIGNED_IN, jwt],
+		queryKey: [AuthenticationQK.GET_IS_SIGNED_IN],
 		queryFn: async () => {
 			const isSignedIn = await getIsSignedIn("Bearer " + jwt);
 			return isSignedIn;

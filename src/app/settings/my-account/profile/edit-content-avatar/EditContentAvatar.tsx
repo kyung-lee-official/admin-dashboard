@@ -117,7 +117,7 @@ export const EditContentAvatar = (props: {
 				// panelRef.current.close();
 				setEdit({ show: false, id: editId });
 				queryClient.invalidateQueries({
-					queryKey: [MembersQK.GET_AVATAR_BY_ID, jwt],
+					queryKey: [MembersQK.GET_AVATAR_BY_ID],
 				});
 			}
 			/* Tencent COS response */
