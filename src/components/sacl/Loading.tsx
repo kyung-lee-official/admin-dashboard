@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { AuthMask } from "./AuthMask";
 
 export function Loading({ hint }: { hint: string }) {
 	const [count, setCount] = useState<number>(0);
@@ -16,9 +17,9 @@ export function Loading({ hint }: { hint: string }) {
 		setEllipsis(".".repeat(dots));
 	}, [count]);
 	return (
-		<div>
+		<AuthMask>
 			{hint}
 			{ellipsis}
-		</div>
+		</AuthMask>
 	);
 }
