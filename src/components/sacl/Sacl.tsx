@@ -31,69 +31,69 @@ export const Sacl = (props: any) => {
 	const router = useRouter();
 	const saclRoutes = ["/", "/sign-in", "/sign-up", "/seed"];
 	const jwt = useAuthStore((state) => state.jwt);
-	// const setJwt = useAuthStore((state) => state.setJwt);
-	// const tencentCosTempCredential = useAuthStore(
-	// 	(state) => state.tencentCosTempCredential
-	// );
-	// const setTencentCosTempCredential = useAuthStore(
-	// 	(state) => state.setTencentCosTempCredential
-	// );
+	const setJwt = useAuthStore((state) => state.setJwt);
+	const tencentCosTempCredential = useAuthStore(
+		(state) => state.tencentCosTempCredential
+	);
+	const setTencentCosTempCredential = useAuthStore(
+		(state) => state.setTencentCosTempCredential
+	);
 	const enableRefetch: boolean = !saclRoutes.includes(pathname);
 	const refetchIntervalMs = enableRefetch && 10000;
 
-	// const tencentCosTempCredentialQuery = useQuery<any, AxiosError>({
-	// 	queryKey: [AuthenticationQK.GET_TENCENT_COS_TEMP_CREDENTIAL],
-	// 	queryFn: async () => {
-	// 		const tempCredential = await getTencentCosTempCredential(jwt);
-	// 		return tempCredential;
-	// 	},
-	// 	retry: false,
-	// 	refetchOnWindowFocus: false,
-	// 	enabled:
-	// 		tencentCosTempCredential === null ||
-	// 		tencentCosTempCredential?.expiredTime * 1000 - Date.now() < 0,
-	// });
+	const tencentCosTempCredentialQuery = useQuery<any, AxiosError>({
+		queryKey: [AuthenticationQK.GET_TENCENT_COS_TEMP_CREDENTIAL],
+		queryFn: async () => {
+			const tempCredential = await getTencentCosTempCredential(jwt);
+			return tempCredential;
+		},
+		retry: false,
+		refetchOnWindowFocus: false,
+		enabled:
+			tencentCosTempCredential === null ||
+			tencentCosTempCredential?.expiredTime * 1000 - Date.now() < 0,
+	});
 
-	// useEffect(() => {
-	// 	if (tencentCosTempCredentialQuery.isSuccess) {
-	// 		setTencentCosTempCredential(tencentCosTempCredentialQuery.data);
-	// 	}
-	// }, [tencentCosTempCredentialQuery]);
+	useEffect(() => {
+		if (tencentCosTempCredentialQuery.isSuccess) {
+			setTencentCosTempCredential(tencentCosTempCredentialQuery.data);
+		}
+	}, [tencentCosTempCredentialQuery]);
 
-	// const refreshJwtQuery = useQuery<any, AxiosError>({
-	// 	queryKey: [AuthenticationQK.REFRESH_JWT],
-	// 	queryFn: async () => {
-	// 		if (jwt) {
-	// 			if (jwt.split(".")[1]) {
-	// 				const tokenPayload = window.atob(jwt.split(".")[1]);
-	// 				const { exp } = JSON.parse(tokenPayload);
-	// 				const expirationTime = exp * 1000;
-	// 				const now = Date.now();
-	// 				if (expirationTime - now > 0) {
-	// 					/* Token is not expired yet. */
-	// 					const timeLeft = expirationTime - now;
-	// 					if (timeLeft < ms("2h")) {
-	// 						/* Token is about to expire. */
-	// 						const res = await refreshJwt(jwt);
-	// 						setJwt(res.jwt);
-	// 						return res.jwt;
-	// 					} else {
-	// 						/* Ample time left. */
-	// 						return null;
-	// 					}
-	// 				} else {
-	// 					/* Token is expired. */
-	// 					return null;
-	// 				}
-	// 			} else {
-	// 				return null;
-	// 			}
-	// 		} else {
-	// 			return null;
-	// 		}
-	// 	},
-	// 	refetchInterval: refetchIntervalMs,
-	// });
+	const refreshJwtQuery = useQuery<any, AxiosError>({
+		queryKey: [AuthenticationQK.REFRESH_JWT],
+		queryFn: async () => {
+			if (jwt) {
+				if (jwt.split(".")[1]) {
+					const tokenPayload = window.atob(jwt.split(".")[1]);
+					const { exp } = JSON.parse(tokenPayload);
+					const expirationTime = exp * 1000;
+					const now = Date.now();
+					if (expirationTime - now > 0) {
+						/* Token is not expired yet. */
+						const timeLeft = expirationTime - now;
+						if (timeLeft < ms("2h")) {
+							/* Token is about to expire. */
+							const res = await refreshJwt(jwt);
+							setJwt(res.jwt);
+							return res.jwt;
+						} else {
+							/* Ample time left. */
+							return null;
+						}
+					} else {
+						/* Token is expired. */
+						return null;
+					}
+				} else {
+					return null;
+				}
+			} else {
+				return null;
+			}
+		},
+		refetchInterval: refetchIntervalMs,
+	});
 
 	const isSeededQuery = useQuery<any, AxiosError>({
 		queryKey: [ServerSettingQK.IS_SEEDED],
@@ -209,7 +209,13 @@ export const Sacl = (props: any) => {
 		return <IsFrozen />;
 	} else {
 		if (saclRoutes.includes(pathname)) {
-			router.push("/home");
+			/**
+			 * the timeout is essential because this ensures that the route change occurs after the component has been rendered.
+			 * triggering a route change during the render phase of a component violates React's rules about side effects and state updates.
+			 */
+			setTimeout(() => {
+				router.push("/home");
+			}, 1000);
 			return <Loading hint="Loading" />;
 		} else {
 			return <Layout>{children}</Layout>;
