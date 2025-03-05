@@ -32,7 +32,7 @@ export const Content = () => {
 	const jwt = useAuthStore((state) => state.jwt);
 
 	const membersQuery = useQuery<Member[], AxiosError>({
-		queryKey: [MembersQK.GET_MEMBERS, jwt],
+		queryKey: [MembersQK.GET_MEMBERS],
 		queryFn: async () => {
 			const members = await getMembers(jwt);
 			return members;
@@ -42,7 +42,7 @@ export const Content = () => {
 	});
 
 	const myInfoQuery = useQuery<MyInfo, AxiosError>({
-		queryKey: [MembersQK.GET_MY_INFO, jwt],
+		queryKey: [MembersQK.GET_MY_INFO],
 		queryFn: async () => {
 			const isSignedIn = await getMyInfo(jwt);
 			return isSignedIn;

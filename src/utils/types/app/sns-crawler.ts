@@ -59,3 +59,49 @@ export const youtubeDataOverwriteSourceSchema = z.array(
 export type YoutubeDataOverwriteSourceDto = z.infer<
 	typeof youtubeDataOverwriteSourceSchema
 >;
+
+export type YouTubeToken = {
+	isRecentlyUsed: boolean;
+	quotaRunOutAt: string;
+	token: string;
+};
+
+export type YouTubeDataTask = {
+	id: number;
+	youTubeDataTaskKeywords: YouTubeDataTaskKeyword[];
+	createdAt: string;
+	updatedAt: string;
+};
+
+export type YouTubeDataTaskKeyword = {
+	id: number;
+	keyword: string;
+	pending: boolean;
+	failed: boolean;
+	taskId: number;
+};
+
+export const youtubeDataUpdateTokenStateSchema = z.object({
+	recentlyUsedToken: z.string().optional(),
+	oldToken: z.string().optional(),
+});
+
+export type YouTubeDataUpdateTokenStateDto = z.infer<
+	typeof youtubeDataUpdateTokenStateSchema
+>;
+
+export const updateSearchesByTaskIdSchema = z.object({
+	taskId: z.number().int(),
+	searches: z.array(
+		z.object({
+			id: z.string() /* videoId */,
+			keyword: z.string(),
+			publishedAt: z.string().datetime(),
+			channelId: z.string(),
+		})
+	),
+});
+
+export type UpdateSearchesByTaskIdDto = z.infer<
+	typeof updateSearchesByTaskIdSchema
+>;

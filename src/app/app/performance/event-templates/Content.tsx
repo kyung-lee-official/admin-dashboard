@@ -30,7 +30,7 @@ export const Content = () => {
 	const [iAmAdmin, setIAmAdmin] = useState<boolean>(false);
 	const jwt = useAuthStore((state) => state.jwt);
 	const myInfoQuery = useQuery<MyInfo, AxiosError>({
-		queryKey: [MembersQK.GET_MY_INFO, jwt],
+		queryKey: [MembersQK.GET_MY_INFO],
 		queryFn: async () => {
 			const isSignedIn = await getMyInfo(jwt);
 			return isSignedIn;
@@ -40,7 +40,7 @@ export const Content = () => {
 	});
 
 	const rolesQuery = useQuery<MemberRole[], AxiosError>({
-		queryKey: [RolesQK.GET_ALL_ROLES, jwt],
+		queryKey: [RolesQK.GET_ALL_ROLES],
 		queryFn: async () => {
 			const roles = await getAllRoles(jwt);
 			return roles;
