@@ -106,6 +106,9 @@ export const Sacl = (props: any) => {
 	const isSignedInQuery = useQuery<any, AxiosError>({
 		queryKey: [AuthenticationQK.GET_IS_SIGNED_IN, jwt],
 		queryFn: async () => {
+			if (!jwt) {
+				return { isSignedIn: false };
+			}
 			const isSignedIn = await getIsSignedIn(jwt);
 			return isSignedIn;
 		},
@@ -118,8 +121,11 @@ export const Sacl = (props: any) => {
 	const myInfoQuery = useQuery<any, AxiosError>({
 		queryKey: [MembersQK.GET_MY_INFO, jwt],
 		queryFn: async () => {
-			const isSignedIn = await getMyInfo(jwt);
-			return isSignedIn;
+			if (!jwt) {
+				return null;
+			}
+			const myInfo = await getMyInfo(jwt);
+			return myInfo;
 		},
 		retry: false,
 		refetchOnWindowFocus: false,
