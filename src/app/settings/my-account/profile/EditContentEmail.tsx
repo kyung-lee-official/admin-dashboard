@@ -2,7 +2,7 @@ import { useAuthStore } from "@/stores/auth";
 import { queryClient } from "@/utils/react-query/react-query";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Button } from "@/components/button/Button";
 import { getMyInfo, MembersQK } from "@/utils/api/members";
 import { changeEmail, sendVerificationEmail } from "@/utils/api/email";
@@ -28,7 +28,7 @@ export const EditContentEmail = (props: {
 	const [newEmail, setNewEmail] = useState("");
 
 	const myInfoQuery = useQuery<MyInfo, AxiosError>({
-		queryKey: [MembersQK.GET_MY_INFO],
+		queryKey: [MembersQK.GET_MY_INFO, jwt],
 		queryFn: async () => {
 			const isSignedIn = await getMyInfo(jwt);
 			return isSignedIn;
@@ -61,7 +61,7 @@ export const EditContentEmail = (props: {
 		onSuccess: (data) => {
 			setJwt(data.jwt);
 			queryClient.invalidateQueries({
-				queryKey: [MembersQK.GET_MY_INFO],
+				queryKey: [MembersQK.GET_MY_INFO, data.jwt],
 			});
 			setEdit({ show: false, id: editId });
 		},

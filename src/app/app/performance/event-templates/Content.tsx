@@ -1,6 +1,6 @@
 "use client";
 
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { MemberRole } from "@/utils/types/internal";
 import { TemplateList } from "./TemplateList";
 import {
@@ -30,7 +30,7 @@ export const Content = () => {
 	const [iAmAdmin, setIAmAdmin] = useState<boolean>(false);
 	const jwt = useAuthStore((state) => state.jwt);
 	const myInfoQuery = useQuery<MyInfo, AxiosError>({
-		queryKey: [MembersQK.GET_MY_INFO],
+		queryKey: [MembersQK.GET_MY_INFO, jwt],
 		queryFn: async () => {
 			const isSignedIn = await getMyInfo(jwt);
 			return isSignedIn;

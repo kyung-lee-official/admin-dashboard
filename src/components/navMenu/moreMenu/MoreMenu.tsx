@@ -4,13 +4,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useAuthStore } from "@/stores/auth";
-import {
-	downloadAvatar,
-	getMyInfo,
-	MembersQK,
-} from "@/utils/api/members";
+import { downloadAvatar, getMyInfo, MembersQK } from "@/utils/api/members";
 import { MoreIcon } from "../../icons/Icons";
 import { useRouter } from "next/navigation";
+import { MyInfo } from "@/app/settings/my-account/profile/Content";
 
 export const MoreMenu = () => {
 	const router = useRouter();
@@ -27,8 +24,8 @@ export const MoreMenu = () => {
 	const menuRef = useRef<HTMLDivElement>(null);
 	const [show, setShow] = useState<boolean>(false);
 
-	const myInfoQuery = useQuery<any, AxiosError>({
-		queryKey: [MembersQK.GET_MY_INFO],
+	const myInfoQuery = useQuery<MyInfo, AxiosError>({
+		queryKey: [MembersQK.GET_MY_INFO, jwt],
 		queryFn: async () => {
 			const isSignedIn = await getMyInfo(jwt);
 			return isSignedIn;
@@ -40,7 +37,7 @@ export const MoreMenu = () => {
 	const myAvatarQuery = useQuery<any, AxiosError>({
 		queryKey: [MembersQK.GET_AVATAR_BY_ID],
 		queryFn: async () => {
-			const avatar = await downloadAvatar(myInfoQuery.data.id, jwt);
+			const avatar = await downloadAvatar(myInfoQuery!.data!.id, jwt);
 			return avatar;
 		},
 		// enabled: !!tencentCosTempCredential && myInfoQuery.isSuccess,
@@ -101,7 +98,7 @@ export const MoreMenu = () => {
 									className="rounded-full"
 								/>
 							) : (
-								<div>{myInfoQuery.data.name[0]}</div>
+								<div>{myInfoQuery.data?.name[0]}</div>
 							)
 						) : (
 							myInfoQuery.data?.name[0]
