@@ -454,24 +454,62 @@ export const menuItems: HierarchicalMenuItem[] = [
 						subMenu: [
 							{
 								pageUrlReg:
-									/^\/app\/sns-crawler\/youtube-data-collector\/tasks\/[0-9]*$/,
+									/^\/app\/sns-crawler\/youtube-data-collector\/collection-tasks\/[0-9]*$/,
 								breadcrumbs: (props: { taskId: number }) => {
 									const { taskId } = props;
 									return [
+										{
+											href: "/app/sns-crawler",
+											text: "SNS Crawler",
+										},
 										{
 											href: "/app/sns-crawler/youtube-data-collector",
 											text: "YouTube Data Collector",
 										},
 										{
-											href: `/app/sns-crawler/youtube-data-collector/tasks`,
+											href: `/app/sns-crawler/youtube-data-collector/collection-tasks`,
 											text: "YouTube Data Collector Tasks",
 										},
 										{
-											href: `/app/sns-crawler/youtube-data-collector/tasks/${taskId}`,
+											href: `/app/sns-crawler/youtube-data-collector/collection-tasks/${taskId}`,
 											text: `Task ${taskId}`,
 										},
 									];
 								},
+								subMenu: [
+									{
+										pageUrlReg:
+											/^\/app\/sns-crawler\/youtube-data-collector\/collection-tasks\/[0-9]*\/keyword\/[0-9]*$/,
+										breadcrumbs: (props: {
+											taskId: number;
+											keywordId: number;
+										}) => {
+											const { taskId, keywordId } = props;
+											return [
+												{
+													href: "/app/sns-crawler",
+													text: "SNS Crawler",
+												},
+												{
+													href: "/app/sns-crawler/youtube-data-collector",
+													text: "YouTube Data Collector",
+												},
+												{
+													href: `/app/sns-crawler/youtube-data-collector/collection-tasks`,
+													text: "YouTube Data Collector Tasks",
+												},
+												{
+													href: `/app/sns-crawler/youtube-data-collector/collection-tasks/${taskId}`,
+													text: `Task ${taskId}`,
+												},
+												{
+													href: `/app/sns-crawler/youtube-data-collector/collection-tasks/${taskId}/keyword/${keywordId}`,
+													text: `Keyword ${keywordId}`,
+												},
+											];
+										},
+									},
+								],
 							},
 						],
 					},

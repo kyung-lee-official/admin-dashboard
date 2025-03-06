@@ -9,14 +9,22 @@ export const HeaderNav = () => {
 
 	const pathname = usePathname();
 	const params = useParams();
-	const { statId, sectionId, eventId, templateId, taskId } = params;
+	const { statId, sectionId, eventId, templateId, taskId, keywordId } =
+		params;
 
 	const item = flattenedMenu.find((item) => {
 		return item.pageUrlReg.test(pathname);
 	});
 
 	if (item) {
-		const crumbs = item.breadcrumbs({ statId, sectionId, eventId });
+		const crumbs = item.breadcrumbs({
+			statId,
+			sectionId,
+			eventId,
+			templateId,
+			taskId,
+			keywordId,
+		});
 		return (
 			<nav
 				className="flex-[0_0_56px] flex items-center p-3
