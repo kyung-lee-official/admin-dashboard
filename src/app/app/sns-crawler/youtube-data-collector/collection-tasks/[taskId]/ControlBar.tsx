@@ -57,41 +57,32 @@ export const ControlBar = (props: {
 	switch (status) {
 		case TaskStatus.IDLE:
 			return (
-				<>
-					<div
-						className="relative flex items-center px-6 py-2 gap-3
-						border-t-[1px] border-white/10"
+				<div
+					className="relative flex items-center px-6 py-2 gap-3 flex-wrap
+					border-t-[1px] border-white/10"
+				>
+					<Button
+						size="sm"
+						onClick={() => {
+							mutation.mutate();
+						}}
 					>
-						<Button
-							size="sm"
-							onClick={() => {
-								mutation.mutate();
-							}}
-						>
-							Search Keywords
-						</Button>
-						<DateRangePicker range={range} setRange={setRange} />
-					</div>
-					<div
-						className="relative flex items-center px-6 py-2 gap-3
-						border-t-[1px] border-white/10"
-					>
-						<div>Target Result Count (Per Keyword)</div>
-						<Input
-							type="number"
-							min={1}
-							sz={"sm"}
-							placeholder="Target Result Count"
-							value={targetResultCount}
-							onChange={(e) => {
-								setTargetResultCount(
-									parseInt(e.target.value) || 0
-								);
-							}}
-							isError={false}
-						/>
-					</div>
-				</>
+						Search Keywords
+					</Button>
+					<DateRangePicker range={range} setRange={setRange} />
+					<div>Target Result Count (Per Keyword)</div>
+					<Input
+						type="number"
+						min={1}
+						sz={"sm"}
+						placeholder="Target Result Count"
+						value={targetResultCount}
+						onChange={(e) => {
+							setTargetResultCount(parseInt(e.target.value) || 0);
+						}}
+						isError={false}
+					/>
+				</div>
 			);
 		case TaskStatus.PROCESSING:
 			return (

@@ -8,8 +8,8 @@ export const Indicator = (props: IndicatorProps) => {
 	return (
 		<div className="flex items-center">
 			<div
-				className={`w-2.5 h-2.5 mr-2 ${
-					isActive ? "bg-green-500" : ""
+				className={`w-2.5 h-2.5 mx-4 ${
+					isActive ? "bg-green-500" : "border-1 border-white/30"
 				} rounded-full`}
 			/>
 			{labelText && (

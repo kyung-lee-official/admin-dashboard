@@ -2,17 +2,23 @@
 
 import { useAuthStore } from "@/stores/auth";
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ControlBar } from "./ControlBar";
 import { YouTubeDataTask, YouTubeToken } from "@/utils/types/app/sns-crawler";
 import {
+	deleteYouTubeTaskById,
 	getYouTubeTaskById,
+	getYouTubeTaskMeta,
 	getYouTubeTokens,
 	SnsYouTubeDataQK,
 } from "@/utils/api/app/sns-crawler/youtube-data-collector";
+import { Indicator } from "@/components/indecator/Indicator";
+import { Button } from "@/components/button/Button";
+import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
+import { queryClient } from "@/utils/react-query/react-query";
 
 export enum TaskStatus {
 	IDLE = "idle",
@@ -35,12 +41,41 @@ export const Content = (props: { taskId: number }) => {
 		refetchOnWindowFocus: false,
 	});
 
+	const getYouTubeTaskMetaQuery = useQuery({
+		queryKey: [SnsYouTubeDataQK.GET_YOUTUBE_TASK_META],
+		queryFn: async () => {
+			const youtubeTaskMeta = await getYouTubeTaskMeta(jwt);
+			console.log(youtubeTaskMeta);
+
+			return youtubeTaskMeta;
+		},
+		refetchInterval: 1000,
+		refetchOnWindowFocus: false,
+	});
+
 	const [status, setStatus] = useState<TaskStatus>(TaskStatus.IDLE);
 	const [range, setRange] = useState({
 		start: dayjs().startOf("month"),
 		end: dayjs().endOf("month"),
 	});
 	const [targetResultCount, setTargetResultCount] = useState(500);
+
+	const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+
+	const mutation = useMutation({
+		mutationFn: () => {
+			return deleteYouTubeTaskById(taskId, jwt);
+		},
+		onSuccess: () => {
+			router.push(
+				"/app/sns-crawler/youtube-data-collector/collection-tasks"
+			);
+		},
+		onError: () => {},
+	});
+	function onDelete() {
+		mutation.mutate();
+	}
 
 	return (
 		<div className="flex flex-col w-full max-w-[1600px] min-h-[calc(100svh-56px)] p-3 mx-auto gap-y-3">
@@ -51,7 +86,21 @@ export const Content = (props: { taskId: number }) => {
 				rounded-md"
 			>
 				<div className="relative flex justify-between items-center px-6 py-4">
-					<div className="text-lg font-semibold">Tasks {taskId}</div>
+					<div className="text-lg font-semibold">Tasks {taskId} </div>
+					<Button
+						size="sm"
+						onClick={() => {
+							setShowDeleteConfirmation(true);
+						}}
+					>
+						Delete
+					</Button>
+					<ConfirmDialog
+						show={showDeleteConfirmation}
+						setShow={setShowDeleteConfirmation}
+						question={"Are you sure you want to delete this task`?"}
+						onOk={onDelete}
+					/>
 				</div>
 				{getYouTubeTaskByIdQuery.data && (
 					<ControlBar
@@ -67,6 +116,21 @@ export const Content = (props: { taskId: number }) => {
 						setTargetResultCount={setTargetResultCount}
 					/>
 				)}
+			</div>
+			<div
+				className="text-white/90
+				bg-white/5
+				border-[1px] border-white/10 border-t-white/15
+				rounded-md"
+			>
+				<div className="flex items-center px-6 py-4">
+					YouTube Data Collector Service Status
+					<Indicator
+						isActive={
+							getYouTubeTaskMetaQuery.data?.status === "running"
+						}
+					/>
+				</div>
 			</div>
 			<div
 				className="text-white/90

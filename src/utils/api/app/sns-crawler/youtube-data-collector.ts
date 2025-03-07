@@ -12,6 +12,7 @@ export enum SnsYouTubeDataQK {
 	GET_YOUTUBE_TASK_BY_ID = "get-youtube-task-by-id",
 	GET_YOUTUBE_TASK_KEYWORD_BY_ID = "get-youtube-task-keyword-by-id",
 	GET_YOUTUBE_SEARCHES_BY_TASK_ID_AND_KEYWORD = "get-youtube-searches-by-task-id-and-keyword",
+	GET_YOUTUBE_TASK_META = "get-youtube-task-meta",
 }
 
 export const addYouTubeToken = async (youtubeToken: string, jwt: string) => {
@@ -117,6 +118,32 @@ export const getYouTubeTasks = async (jwt: string) => {
 export const getYouTubeTaskById = async (taskId: number, jwt: string) => {
 	const res = await axios.get(
 		`internal/applications/youtube-data-collector/get-task-by-id/${taskId}`,
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+			},
+		}
+	);
+	return res.data;
+};
+
+export const deleteYouTubeTaskById = async (taskId: number, jwt: string) => {
+	const res = await axios.delete(
+		`internal/applications/youtube-data-collector/delete-task-by-id/${taskId}`,
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+			},
+		}
+	);
+	return res.data;
+};
+
+export const getYouTubeTaskMeta = async (jwt: string) => {
+	const res = await axios.get(
+		"internal/applications/youtube-data-collector/meta",
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
 			headers: {
