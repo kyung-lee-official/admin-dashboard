@@ -1,5 +1,6 @@
 import {
 	YoutubeDataOverwriteSourceDto,
+	YouTubeDataSearchDto,
 	YouTubeDataUpdateTokenStateDto,
 } from "@/utils/types/app/sns-crawler";
 import axios from "axios";
@@ -10,6 +11,7 @@ export enum SnsYouTubeDataQK {
 	GET_YOUTUBE_TASKS = "get-youtube-tasks",
 	GET_YOUTUBE_TASK_BY_ID = "get-youtube-task-by-id",
 	GET_YOUTUBE_TASK_KEYWORD_BY_ID = "get-youtube-task-keyword-by-id",
+	GET_YOUTUBE_SEARCHES_BY_TASK_ID_AND_KEYWORD = "get-youtube-searches-by-task-id-and-keyword",
 }
 
 export const addYouTubeToken = async (youtubeToken: string, jwt: string) => {
@@ -131,6 +133,49 @@ export const getYouTubeDataTaskKeywordById = async (
 ) => {
 	const res = await axios.get(
 		`internal/applications/youtube-data-collector/get-task-keyword-by-id/${keywordId}`,
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+			},
+		}
+	);
+	return res.data;
+};
+
+export const getSearchesByTaskIdAndKeyword = async (
+	{ taskId, keyword }: { taskId: number; keyword: string },
+	jwt: string
+) => {
+	const res = await axios.post(
+		"internal/applications/youtube-data-collector/get-searches-by-task-id-and-keyword",
+		{
+			taskId: taskId,
+			keyword: keyword,
+		},
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+			},
+		}
+	);
+	return res.data;
+};
+
+export const startTaskById = async (
+	youtubeDataSearchDto: YouTubeDataSearchDto,
+	jwt: string
+) => {
+	const { taskId, start, end, targetResultCount } = youtubeDataSearchDto;
+	const res = await axios.post(
+		`internal/applications/youtube-data-collector/start-task-by-id`,
+		{
+			taskId,
+			start,
+			end,
+			targetResultCount,
+		},
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
 			headers: {

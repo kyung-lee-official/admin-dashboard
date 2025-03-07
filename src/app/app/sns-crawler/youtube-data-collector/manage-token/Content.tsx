@@ -86,36 +86,51 @@ export const Content = () => {
 						className="w-full
 						text-sm text-white/50"
 					>
-						<tbody className="[&_>_tr_>_td]:px-2 [&_>_tr_>_td]:py-1">
+						<thead className="[&_>_tr_>_th]:px-6 [&_>_tr_>_th]:py-1 [&_>_tr_>_th]:text-left">
+							<tr>
+								<th className="w-2/6">Token</th>
+								<th className="w-2/6">Quota Run Out At</th>
+								<th className="w-1/6">Is Expired</th>
+								<th className="w-1/6"></th>
+							</tr>
+						</thead>
+						<tbody className="[&_>_tr_>_td]:px-6 [&_>_tr_>_td]:py-1">
 							{getYouTubeTokensQuery.data.map(
 								(t: any, i: number) => {
 									return (
 										<tr
 											key={i}
-											className="flex items-center px-3 py-1 gap-6
+											className="items-center px-3 py-1 gap-6
 											text-sm
 											border-t-[1px] border-white/10"
 										>
-											<td className="w-3/6">{t.token}</td>
+											<td className="w-2/6">{t.token}</td>
 											<td className="w-2/6">
 												{t.quotaRunOutAt}
 											</td>
-											<td className="flex justify-end w-1/6">
-												<button
-													className="flex justify-center items-center w-6 h-6
-													bg-white/5 hover:bg-white/15
-													rounded cursor-pointer"
-													onClick={() => {
-														setTokenToDelete(
-															t.token
-														);
-														setShowDeleteConfirmation(
-															true
-														);
-													}}
-												>
-													<DeleteIcon size={15} />
-												</button>
+											<td className="w-1/6">
+												{t.isExpired
+													? "isExpired"
+													: "Unknown"}
+											</td>
+											<td className="w-1/6">
+												<div className="flex justify-end items-center">
+													<button
+														className="flex justify-center items-center w-6 h-6
+														bg-white/5 hover:bg-white/15
+														rounded cursor-pointer"
+														onClick={() => {
+															setTokenToDelete(
+																t.token
+															);
+															setShowDeleteConfirmation(
+																true
+															);
+														}}
+													>
+														<DeleteIcon size={15} />
+													</button>
+												</div>
 											</td>
 										</tr>
 									);

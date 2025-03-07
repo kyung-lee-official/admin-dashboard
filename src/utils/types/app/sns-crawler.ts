@@ -90,18 +90,15 @@ export type YouTubeDataUpdateTokenStateDto = z.infer<
 	typeof youtubeDataUpdateTokenStateSchema
 >;
 
-export const updateSearchesByTaskIdSchema = z.object({
-	taskId: z.number().int(),
-	searches: z.array(
-		z.object({
-			id: z.string() /* videoId */,
-			keyword: z.string(),
-			publishedAt: z.string().datetime(),
-			channelId: z.string(),
-		})
-	),
-});
+export const youtubeDataSearchSchema = z
+	.object({
+		taskId: z.number(),
+		start: z.string().datetime(),
+		end: z.string().datetime(),
+		targetResultCount: z.number().int().min(1),
+	})
+	.refine((data) => data.start < data.end, {
+		message: "start date must be before end date",
+	});
 
-export type UpdateSearchesByTaskIdDto = z.infer<
-	typeof updateSearchesByTaskIdSchema
->;
+export type YouTubeDataSearchDto = z.infer<typeof youtubeDataSearchSchema>;
