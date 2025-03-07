@@ -3,6 +3,7 @@
 import { Button } from "@/components/button/Button";
 import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
 import { ExportIcon } from "@/components/icons/Icons";
+import { Indicator } from "@/components/indecator/Indicator";
 import { useAuthStore } from "@/stores/auth";
 import {
 	abortFacebookGroupCrawler,
@@ -122,36 +123,28 @@ export const Content = (props: { taskId: number }) => {
 						text-lg font-semibold"
 					>
 						<div>Crawler Task {taskId}</div>
-						{getFacebookGroupCrawlerStatusQuery.data
-							?.browserRunning &&
-						getFacebookGroupCrawlerTaskByIdQuery.data?.id ===
-							taskId ? (
-							<div className="flex items-center gap-4">
-								<div
-									className="w-2.5 h-2.5
-									bg-green-500
-									rounded-full border-1 border-green-500"
-								></div>
-								{pendingAbort ? (
-									<div className="text-sm text-white/50">
-										Pending Abort...
-									</div>
-								) : (
-									<Button
-										size="sm"
-										onClick={() => {
-											mutation.mutate();
-										}}
-									>
-										Abort
-									</Button>
-								)}
-							</div>
-						) : (
-							<div
-								className="w-2.5 h-2.5
-								rounded-full border-1 border-white/30"
-							></div>
+						<Indicator
+							isActive={
+								!!(
+									getFacebookGroupCrawlerStatusQuery.data
+										?.browserRunning &&
+									getFacebookGroupCrawlerTaskByIdQuery.data
+										?.id === taskId
+								)
+							}
+							labelText={
+								pendingAbort ? "Pending Abort..." : undefined
+							}
+						/>
+						{!pendingAbort && (
+							<Button
+								size="sm"
+								onClick={() => {
+									mutation.mutate();
+								}}
+							>
+								Abort
+							</Button>
 						)}
 						{getFacebookGroupCrawlerTaskByIdQuery.data &&
 							getFacebookGroupCrawlerTaskByIdQuery.data.records.filter(
