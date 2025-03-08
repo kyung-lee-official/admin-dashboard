@@ -15,7 +15,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
-import { CircularProgress } from "@/components/circular-progress/CircularProgress";
+import { CircularProgress } from "@/components/progress/circular-progress/CircularProgress";
 import { useState } from "react";
 import {
 	EditId,

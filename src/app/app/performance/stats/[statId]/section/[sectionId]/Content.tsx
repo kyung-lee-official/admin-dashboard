@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/button/Button";
-import { CircularProgress } from "@/components/circular-progress/CircularProgress";
+import { CircularProgress } from "@/components/progress/circular-progress/CircularProgress";
 import { Loading } from "@/components/page-authorization/Loading";
 import { useAuthStore } from "@/stores/auth";
 import { getStatById, PerformanceQK } from "@/utils/api/app/performance";
