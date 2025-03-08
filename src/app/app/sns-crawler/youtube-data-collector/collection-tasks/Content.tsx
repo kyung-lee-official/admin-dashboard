@@ -1,9 +1,16 @@
 "use client";
 
+import { Button } from "@/components/button/Button";
+import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
 import { useAuthStore } from "@/stores/auth";
-import { getYouTubeTasks, SnsYouTubeDataQK } from "@/utils/api/app/sns-crawler/youtube-data-collector";
-import { useQuery } from "@tanstack/react-query";
+import {
+	createYouTubeTask,
+	getYouTubeTasks,
+	SnsYouTubeDataQK,
+} from "@/utils/api/app/sns-crawler/youtube-data-collector";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export const Content = () => {
 	const router = useRouter();
@@ -18,6 +25,22 @@ export const Content = () => {
 		refetchOnWindowFocus: false,
 	});
 
+	const [showCreateConfirmation, setShowCreateConfirmation] = useState(false);
+	const mutation = useMutation({
+		mutationFn: () => {
+			return createYouTubeTask(jwt);
+		},
+		onSuccess: (data) => {
+			router.push(
+				`/app/sns-crawler/youtube-data-collector/collection-tasks/${data.id}`
+			);
+		},
+		onError: () => {},
+	});
+	function onCreate() {
+		mutation.mutate();
+	}
+
 	return (
 		<div className="flex flex-col w-full max-w-[1600px] min-h-[calc(100svh-56px)] p-3 mx-auto gap-y-3">
 			<div
@@ -27,7 +50,21 @@ export const Content = () => {
 				rounded-md"
 			>
 				<div className="relative flex justify-between items-center px-6 py-4">
-					<div className="text-lg font-semibold">Tasks</div>
+					<div className="text-lg font-semibold">Tasks </div>
+					<Button
+						size="sm"
+						onClick={() => {
+							setShowCreateConfirmation(true);
+						}}
+					>
+						Create
+					</Button>
+					<ConfirmDialog
+						show={showCreateConfirmation}
+						setShow={setShowCreateConfirmation}
+						question={"Create a new task`?"}
+						onOk={onCreate}
+					/>
 				</div>
 				{getYouTubeTasksQuery.data && (
 					<table

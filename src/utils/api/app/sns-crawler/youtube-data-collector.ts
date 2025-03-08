@@ -102,6 +102,20 @@ export const getYouTubeGroupSourceData = async (jwt: string) => {
 	return res.data;
 };
 
+export const createYouTubeTask = async (jwt: string) => {
+	const res = await axios.post(
+		"internal/applications/youtube-data-collector/create-task",
+		{},
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+			},
+		}
+	);
+	return res.data;
+};
+
 export const getYouTubeTasks = async (jwt: string) => {
 	const res = await axios.get(
 		"internal/applications/youtube-data-collector/tasks",

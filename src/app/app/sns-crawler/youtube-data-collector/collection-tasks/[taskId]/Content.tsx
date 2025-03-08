@@ -7,18 +7,17 @@ import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ControlBar } from "./ControlBar";
-import { YouTubeDataTask, YouTubeToken } from "@/utils/types/app/sns-crawler";
+import { YouTubeDataTask } from "@/utils/types/app/sns-crawler";
 import {
 	deleteYouTubeTaskById,
 	getYouTubeTaskById,
 	getYouTubeTaskMeta,
-	getYouTubeTokens,
 	SnsYouTubeDataQK,
 } from "@/utils/api/app/sns-crawler/youtube-data-collector";
 import { Indicator } from "@/components/indecator/Indicator";
 import { Button } from "@/components/button/Button";
 import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
-import { queryClient } from "@/utils/react-query/react-query";
+import { HorizontalProgress } from "@/components/progress/horizontal-progress/HorizontalProgress";
 
 export enum TaskStatus {
 	IDLE = "idle",
@@ -37,7 +36,7 @@ export const Content = (props: { taskId: number }) => {
 			const youtubeTask = await getYouTubeTaskById(taskId, jwt);
 			return youtubeTask;
 		},
-		retry: false,
+		refetchInterval: 1000,
 		refetchOnWindowFocus: false,
 	});
 
@@ -45,8 +44,6 @@ export const Content = (props: { taskId: number }) => {
 		queryKey: [SnsYouTubeDataQK.GET_YOUTUBE_TASK_META],
 		queryFn: async () => {
 			const youtubeTaskMeta = await getYouTubeTaskMeta(jwt);
-			console.log(youtubeTaskMeta);
-
 			return youtubeTaskMeta;
 		},
 		refetchInterval: 1000,
@@ -98,7 +95,7 @@ export const Content = (props: { taskId: number }) => {
 					<ConfirmDialog
 						show={showDeleteConfirmation}
 						setShow={setShowDeleteConfirmation}
-						question={"Are you sure you want to delete this task`?"}
+						question={"Are you sure you want to delete this task?"}
 						onOk={onDelete}
 					/>
 				</div>
@@ -138,8 +135,25 @@ export const Content = (props: { taskId: number }) => {
 				border-[1px] border-white/10 border-t-white/15
 				rounded-md"
 			>
-				<div className="relative flex justify-between items-center px-6 py-4">
-					<div className="text-lg font-semibold">Keywords</div>
+				<div>
+					<div className="relative flex justify-between items-center px-6 py-4">
+						<div className="text-lg font-semibold">Keywords</div>
+					</div>
+					<HorizontalProgress
+						progress={
+							getYouTubeTaskByIdQuery.data
+								? (getYouTubeTaskByIdQuery.data.youTubeDataTaskKeywords.filter(
+										(k) => {
+											return k.status === "SUCCESS";
+										}
+								  ).length /
+										getYouTubeTaskByIdQuery.data
+											.youTubeDataTaskKeywords.length) *
+								  100
+								: 0
+						}
+						borderRadius="rounded-none"
+					/>
 				</div>
 				<table
 					className="w-full

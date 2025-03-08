@@ -76,8 +76,7 @@ export type YouTubeDataTask = {
 export type YouTubeDataTaskKeyword = {
 	id: number;
 	keyword: string;
-	pending: boolean;
-	failed: boolean;
+	status: "PENDING" | "FAILED" | "SUCCESS";
 	taskId: number;
 };
 
