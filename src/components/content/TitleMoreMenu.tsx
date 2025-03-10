@@ -69,7 +69,8 @@ export const TitleMoreMenu = (props: {
 					flex flex-col min-w-52 p-1
 					text-sm
 					bg-neutral-800
-					rounded-md shadow-md border-[1px] border-white/10 border-t-white/15"
+					rounded-md shadow-md border-[1px] border-white/10 border-t-white/15
+					z-10"
 				>
 					{items.map((item, i) => {
 						return (
