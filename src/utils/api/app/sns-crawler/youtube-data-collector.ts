@@ -187,7 +187,15 @@ export const getYouTubeChannelsByTaskId = async (
 			},
 		}
 	);
-	return res.data;
+	const parsedData = res.data.map((data: any) => {
+		return {
+			...data,
+			viewCount: parseInt(data.viewCount as string),
+			subscriberCount: parseInt(data.subscriberCount as string),
+			videoCount: parseInt(data.videoCount as string),
+		};
+	});
+	return parsedData;
 };
 
 export const fetchYouTubeVideosByTaskId = async (
@@ -216,7 +224,16 @@ export const getYouTubeVideosByTaskId = async (taskId: number, jwt: string) => {
 			},
 		}
 	);
-	return res.data;
+	const parsedData = res.data.map((data: any) => {
+		return {
+			...data,
+			viewCount: parseInt(data.viewCount as string),
+			likeCount: parseInt(data.likeCount as string),
+			favoriteCount: parseInt(data.favoriteCount as string),
+			commentCount: parseInt(data.commentCount as string),
+		};
+	});
+	return parsedData;
 };
 
 export const getYouTubeTaskMeta = async (jwt: string) => {
@@ -291,8 +308,11 @@ export const startTaskById = async (
 	return res.data;
 };
 
-export const getCompositeDataByTaskId = async (taskId: number, jwt: string) => {
-	const compositeData = await axios.get<CompositeData[]>(
+export const getCompositeDataByTaskId = async (
+	taskId: number,
+	jwt: string
+): Promise<CompositeData[]> => {
+	const compositeData = await axios.get(
 		`internal/applications/youtube-data-collector/get-composite-data-by-task-id/${taskId}`,
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
@@ -301,7 +321,19 @@ export const getCompositeDataByTaskId = async (taskId: number, jwt: string) => {
 			},
 		}
 	);
-	return compositeData.data;
+	const parsedData = compositeData.data.map((data: any) => {
+		return {
+			...data,
+			viewCount: parseInt(data.viewCount as string),
+			likeCount: parseInt(data.likeCount as string),
+			favoriteCount: parseInt(data.favoriteCount as string),
+			commentCount: parseInt(data.commentCount as string),
+			channelViewCount: parseInt(data.channelViewCount as string),
+			channelVideoCount: parseInt(data.channelVideoCount as string),
+			subscriberCount: parseInt(data.subscriberCount as string),
+		};
+	});
+	return parsedData;
 };
 
 // export const updateTaskKeywordSearchesById = async (
