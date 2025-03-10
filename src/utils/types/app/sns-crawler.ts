@@ -80,6 +80,16 @@ export type YouTubeDataTaskKeyword = {
 	taskId: number;
 };
 
+export type YouTubeDataTaskChannel = {
+	id: number;
+	channelId: string;
+	channelTitle: string;
+	viewCount: number;
+	subscriberCount: number;
+	videoCount: number;
+	youTubeDataTaskId: number;
+};
+
 export const youtubeDataUpdateTokenStateSchema = z.object({
 	recentlyUsedToken: z.string().optional(),
 	oldToken: z.string().optional(),

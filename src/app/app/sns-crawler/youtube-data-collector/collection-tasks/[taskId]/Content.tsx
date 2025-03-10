@@ -7,9 +7,14 @@ import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ControlBar } from "./ControlBar";
-import { YouTubeDataTask } from "@/utils/types/app/sns-crawler";
+import {
+	YouTubeDataTask,
+	YouTubeDataTaskChannel,
+} from "@/utils/types/app/sns-crawler";
 import {
 	deleteYouTubeTaskById,
+	fetchYouTubeChannelsByTaskId,
+	getYouTubeChannelsByTaskId,
 	getYouTubeTaskById,
 	getYouTubeTaskMeta,
 	SnsYouTubeDataQK,
@@ -40,6 +45,19 @@ export const Content = (props: { taskId: number }) => {
 		refetchOnWindowFocus: false,
 	});
 
+	const getYouTubeChannelsByTaskIdQuery = useQuery<YouTubeDataTaskChannel[]>({
+		queryKey: [SnsYouTubeDataQK.GET_YOUTUBE_CHANNELS_BY_TASK_ID],
+		queryFn: async () => {
+			const youtubeChannels = await getYouTubeChannelsByTaskId(
+				taskId,
+				jwt
+			);
+			return youtubeChannels;
+		},
+		refetchInterval: 1000,
+		refetchOnWindowFocus: false,
+	});
+
 	const getYouTubeTaskMetaQuery = useQuery({
 		queryKey: [SnsYouTubeDataQK.GET_YOUTUBE_TASK_META],
 		queryFn: async () => {
@@ -59,7 +77,7 @@ export const Content = (props: { taskId: number }) => {
 
 	const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
-	const mutation = useMutation({
+	const deleteTaskMutation = useMutation({
 		mutationFn: () => {
 			return deleteYouTubeTaskById(taskId, jwt);
 		},
@@ -71,8 +89,16 @@ export const Content = (props: { taskId: number }) => {
 		onError: () => {},
 	});
 	function onDelete() {
-		mutation.mutate();
+		deleteTaskMutation.mutate();
 	}
+
+	const fetchChannelsMutation = useMutation({
+		mutationFn: () => {
+			return fetchYouTubeChannelsByTaskId(taskId, jwt);
+		},
+		onSuccess: () => {},
+		onError: () => {},
+	});
 
 	return (
 		<div className="flex flex-col w-full max-w-[1600px] min-h-[calc(100svh-56px)] p-3 mx-auto gap-y-3">
@@ -194,6 +220,76 @@ export const Content = (props: { taskId: number }) => {
 									);
 								}
 							)}
+					</tbody>
+				</table>
+			</div>
+			<div
+				className="text-white/90
+				bg-white/5
+				border-[1px] border-white/10 border-t-white/15
+				rounded-md"
+			>
+				<div className="flex items-center px-6 py-4 gap-3">
+					<div>Fetch Channel Info Based on Search Results</div>
+					<Button
+						size="sm"
+						onClick={() => {
+							fetchChannelsMutation.mutate();
+						}}
+					>
+						Fetch
+					</Button>
+				</div>
+			</div>
+			<div
+				className="text-white/90
+				bg-white/5
+				border-[1px] border-white/10 border-t-white/15
+				rounded-md"
+			>
+				<div className="flex items-center px-6 py-4 gap-3">
+					<div>Channels</div>
+					{getYouTubeChannelsByTaskIdQuery.data && (
+						<div>{`(${getYouTubeChannelsByTaskIdQuery.data.length})`}</div>
+					)}
+				</div>
+				<table
+					className="w-full
+					text-sm text-white/50"
+				>
+					<thead className="[&_>_tr_>_th]:px-6 [&_>_tr_>_th]:py-2 [&_>_tr_>th]:text-left">
+						<tr
+							className="px-3 py-1
+							text-sm
+							border-t-[1px] border-white/10"
+						>
+							<th>Id</th>
+							<th>Channel Id</th>
+							<th>Channel Name</th>
+							<th>View Count</th>
+							<th>Subscriber Count</th>
+							<th>Video Count</th>
+						</tr>
+					</thead>
+					<tbody className="[&_>_tr_>_td]:px-6 [&_>_tr_>_td]:py-2">
+						{!!getYouTubeChannelsByTaskIdQuery.data?.length &&
+							getYouTubeChannelsByTaskIdQuery.data.map((c, i) => {
+								return (
+									<tr
+										key={i}
+										className="px-3 py-1
+										text-sm
+										border-t-[1px] border-white/10"
+									>
+										<td>{c.id}</td>
+										<td>{c.channelId}</td>
+										<td>{c.channelTitle}</td>
+										<td>{c.videoCount}</td>
+										<td>{c.subscriberCount}</td>
+										<td>{c.videoCount}</td>
+									</tr>
+								);
+							})}
 					</tbody>
 				</table>
 			</div>
