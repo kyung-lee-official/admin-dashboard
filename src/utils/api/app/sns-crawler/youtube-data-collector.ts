@@ -1,3 +1,4 @@
+import { CompositeData } from "@/app/app/sns-crawler/youtube-data-collector/collection-tasks/[taskId]/export-as-xlsx";
 import {
 	YoutubeDataOverwriteSourceDto,
 	YouTubeDataSearchDto,
@@ -288,6 +289,19 @@ export const startTaskById = async (
 		}
 	);
 	return res.data;
+};
+
+export const getCompositeDataByTaskId = async (taskId: number, jwt: string) => {
+	const compositeData = await axios.get<CompositeData[]>(
+		`internal/applications/youtube-data-collector/get-composite-data-by-task-id/${taskId}`,
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+			},
+		}
+	);
+	return compositeData.data;
 };
 
 // export const updateTaskKeywordSearchesById = async (

@@ -27,6 +27,9 @@ import { Button } from "@/components/button/Button";
 import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
 import { HorizontalProgress } from "@/components/progress/horizontal-progress/HorizontalProgress";
 import Link from "next/link";
+import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
+import { Input } from "@/components/input/Input";
+import { exportAsXlsx } from "./export-as-xlsx";
 
 export enum TaskStatus {
 	IDLE = "idle",
@@ -72,8 +75,6 @@ export const Content = (props: { taskId: number }) => {
 		refetchOnWindowFocus: false,
 	});
 
-	console.log(getYouTubeVideosByTaskIdQuery.data);
-
 	const getYouTubeTaskMetaQuery = useQuery({
 		queryKey: [SnsYouTubeDataQK.GET_YOUTUBE_TASK_META],
 		queryFn: async () => {
@@ -90,8 +91,10 @@ export const Content = (props: { taskId: number }) => {
 		end: dayjs().endOf("month"),
 	});
 	const [targetResultCount, setTargetResultCount] = useState(500);
-
 	const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+	const [filterState, setFilterState] = useState({
+		minChannelSubsCount: 500,
+	});
 
 	const deleteTaskMutation = useMutation({
 		mutationFn: () => {
@@ -134,14 +137,17 @@ export const Content = (props: { taskId: number }) => {
 			>
 				<div className="relative flex justify-between items-center px-6 py-4">
 					<div className="text-lg font-semibold">Tasks {taskId} </div>
-					<Button
-						size="sm"
-						onClick={() => {
-							setShowDeleteConfirmation(true);
-						}}
-					>
-						Delete
-					</Button>
+					<TitleMoreMenu
+						items={[
+							{
+								text: "Delete Task",
+								hideMenuOnClick: true,
+								onClick: () => {
+									setShowDeleteConfirmation(true);
+								},
+							},
+						]}
+					/>
 					<ConfirmDialog
 						show={showDeleteConfirmation}
 						setShow={setShowDeleteConfirmation}
@@ -163,6 +169,41 @@ export const Content = (props: { taskId: number }) => {
 						setTargetResultCount={setTargetResultCount}
 					/>
 				)}
+				<div
+					className="flex flex-col items-start px-6 py-2 gap-2
+					border-t-[1px] border-white/10"
+				>
+					<div className="flex justify-between w-full">
+						<div>Export as XLSX</div>
+						<Button
+							size="sm"
+							onClick={() => {
+								exportAsXlsx(taskId, jwt);
+							}}
+						>
+							Export
+						</Button>
+					</div>
+					<div className="flex flex-wrap gap-4">
+						<Input
+							sz="sm"
+							isError={false}
+							type="number"
+							min={0}
+							value={filterState.minChannelSubsCount}
+							onChange={(e) => {
+								setFilterState({
+									minChannelSubsCount: isNaN(
+										parseInt(e.target.value)
+									)
+										? 0
+										: parseInt(e.target.value),
+								});
+							}}
+							placeholder="Min Channel Subs Count"
+						/>
+					</div>
+				</div>
 			</div>
 			<div
 				className="text-white/90
