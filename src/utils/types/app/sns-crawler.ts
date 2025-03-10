@@ -90,6 +90,19 @@ export type YouTubeDataTaskChannel = {
 	youTubeDataTaskId: number;
 };
 
+export type YouTubeDataTaskVideo = {
+	id: number;
+	videoId: string,
+	title: string,
+	description: string,
+	durationAsSeconds: number,
+	viewCount: number,
+	likeCount: number,
+	favoriteCount: number,
+	commentCount: number,
+	youTubeDataTaskId: number,
+};
+
 export const youtubeDataUpdateTokenStateSchema = z.object({
 	recentlyUsedToken: z.string().optional(),
 	oldToken: z.string().optional(),

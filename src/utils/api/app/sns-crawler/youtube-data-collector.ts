@@ -14,6 +14,7 @@ export enum SnsYouTubeDataQK {
 	GET_YOUTUBE_SEARCHES_BY_TASK_ID_AND_KEYWORD = "get-youtube-searches-by-task-id-and-keyword",
 	GET_YOUTUBE_TASK_META = "get-youtube-task-meta",
 	GET_YOUTUBE_CHANNELS_BY_TASK_ID = "get-youtube-channels-by-task-id",
+	GET_YOUTUBE_VIDEOS_BY_TASK_ID = "get-youtube-videos-by-task-id",
 }
 
 export const addYouTubeToken = async (youtubeToken: string, jwt: string) => {
@@ -178,6 +179,35 @@ export const getYouTubeChannelsByTaskId = async (
 ) => {
 	const res = await axios.get(
 		`internal/applications/youtube-data-collector/get-channels-by-task-id/${taskId}`,
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+			},
+		}
+	);
+	return res.data;
+};
+
+export const fetchYouTubeVideosByTaskId = async (
+	taskId: number,
+	jwt: string
+) => {
+	const res = await axios.get(
+		`internal/applications/youtube-data-collector/fetch-videos-by-task-id/${taskId}`,
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+			},
+		}
+	);
+	return res.data;
+};
+
+export const getYouTubeVideosByTaskId = async (taskId: number, jwt: string) => {
+	const res = await axios.get(
+		`internal/applications/youtube-data-collector/get-videos-by-task-id/${taskId}`,
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
 			headers: {

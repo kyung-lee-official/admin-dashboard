@@ -10,19 +10,23 @@ import { ControlBar } from "./ControlBar";
 import {
 	YouTubeDataTask,
 	YouTubeDataTaskChannel,
+	YouTubeDataTaskVideo,
 } from "@/utils/types/app/sns-crawler";
 import {
 	deleteYouTubeTaskById,
 	fetchYouTubeChannelsByTaskId,
+	fetchYouTubeVideosByTaskId,
 	getYouTubeChannelsByTaskId,
 	getYouTubeTaskById,
 	getYouTubeTaskMeta,
+	getYouTubeVideosByTaskId,
 	SnsYouTubeDataQK,
 } from "@/utils/api/app/sns-crawler/youtube-data-collector";
 import { Indicator } from "@/components/indecator/Indicator";
 import { Button } from "@/components/button/Button";
 import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
 import { HorizontalProgress } from "@/components/progress/horizontal-progress/HorizontalProgress";
+import Link from "next/link";
 
 export enum TaskStatus {
 	IDLE = "idle",
@@ -57,6 +61,18 @@ export const Content = (props: { taskId: number }) => {
 		refetchInterval: 1000,
 		refetchOnWindowFocus: false,
 	});
+
+	const getYouTubeVideosByTaskIdQuery = useQuery<YouTubeDataTaskVideo[]>({
+		queryKey: [SnsYouTubeDataQK.GET_YOUTUBE_VIDEOS_BY_TASK_ID],
+		queryFn: async () => {
+			const youtubeVideos = await getYouTubeVideosByTaskId(taskId, jwt);
+			return youtubeVideos;
+		},
+		refetchInterval: 1000,
+		refetchOnWindowFocus: false,
+	});
+
+	console.log(getYouTubeVideosByTaskIdQuery.data);
 
 	const getYouTubeTaskMetaQuery = useQuery({
 		queryKey: [SnsYouTubeDataQK.GET_YOUTUBE_TASK_META],
@@ -95,6 +111,14 @@ export const Content = (props: { taskId: number }) => {
 	const fetchChannelsMutation = useMutation({
 		mutationFn: () => {
 			return fetchYouTubeChannelsByTaskId(taskId, jwt);
+		},
+		onSuccess: () => {},
+		onError: () => {},
+	});
+
+	const fetchVideosMutation = useMutation({
+		mutationFn: () => {
+			return fetchYouTubeVideosByTaskId(taskId, jwt);
 		},
 		onSuccess: () => {},
 		onError: () => {},
@@ -150,7 +174,7 @@ export const Content = (props: { taskId: number }) => {
 					YouTube Data Collector Service Status
 					<Indicator
 						isActive={
-							getYouTubeTaskMetaQuery.data?.status === "running"
+							getYouTubeTaskMetaQuery.data?.status !== "idle"
 						}
 					/>
 				</div>
@@ -287,6 +311,84 @@ export const Content = (props: { taskId: number }) => {
 										<td>{c.videoCount}</td>
 										<td>{c.subscriberCount}</td>
 										<td>{c.videoCount}</td>
+									</tr>
+								);
+							})}
+					</tbody>
+				</table>
+			</div>
+			<div
+				className="text-white/90
+				bg-white/5
+				border-[1px] border-white/10 border-t-white/15
+				rounded-md"
+			>
+				<div className="flex items-center px-6 py-4 gap-3">
+					<div>Fetch Video Info Based on Search Results</div>
+					<Button
+						size="sm"
+						onClick={() => {
+							fetchVideosMutation.mutate();
+						}}
+					>
+						Fetch
+					</Button>
+				</div>
+			</div>
+			<div
+				className="text-white/90
+				bg-white/5
+				border-[1px] border-white/10 border-t-white/15
+				rounded-md"
+			>
+				<div className="flex items-center px-6 py-4 gap-3">
+					<div>Videos</div>
+					{getYouTubeChannelsByTaskIdQuery.data && (
+						<div>{`(${getYouTubeChannelsByTaskIdQuery.data.length})`}</div>
+					)}
+				</div>
+				<table
+					className="w-full
+					text-sm text-white/50"
+				>
+					<thead className="[&_>_tr_>_th]:px-6 [&_>_tr_>_th]:py-2 [&_>_tr_>th]:text-left">
+						<tr
+							className="px-3 py-1
+							text-sm
+							border-t-[1px] border-white/10"
+						>
+							<th>Id</th>
+							<th>Video</th>
+							<th>Video Title</th>
+							<th>Duration as Seconds</th>
+							<th>Favorite Count</th>
+							<th>Comment Count</th>
+						</tr>
+					</thead>
+					<tbody className="[&_>_tr_>_td]:px-6 [&_>_tr_>_td]:py-2">
+						{!!getYouTubeVideosByTaskIdQuery.data?.length &&
+							getYouTubeVideosByTaskIdQuery.data.map((v, i) => {
+								return (
+									<tr
+										key={i}
+										className="px-3 py-1
+										text-sm
+										border-t-[1px] border-white/10"
+									>
+										<td>{v.id}</td>
+										<td>
+											<Link
+												href={`https://www.youtube.com/watch?v=${v.videoId}`}
+												className="underline"
+											>
+												{v.videoId}
+											</Link>
+										</td>
+										<td>{v.title}</td>
+										{/* <td>{v.description}</td> */}
+										<td>{v.durationAsSeconds}</td>
+										<td>{v.favoriteCount}</td>
+										<td>{v.commentCount}</td>
 									</tr>
 								);
 							})}
