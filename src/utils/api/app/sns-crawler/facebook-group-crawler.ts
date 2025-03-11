@@ -145,3 +145,19 @@ export const getFacebookGroupCrawlerStatus = async (
 	});
 	return res.data;
 };
+
+export const deleteFacebookGroupCrawlerTask = async (
+	taskId: number,
+	jwt: string
+) => {
+	const res = await axios.delete(
+		`internal/applications/facebook-group/delete-task/${taskId}`,
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+			},
+		}
+	);
+	return res.data;
+};

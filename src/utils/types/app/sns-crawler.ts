@@ -43,7 +43,7 @@ export type Task = {
 		id: number;
 		groupAddress: string;
 		groupName: string;
-		failed: boolean;
+		status: "PENDING" | "SUCCESS" | "FAILED";
 		memberCount: number;
 		monthlyPostCount: number;
 		facebookGroupCrawlTaskId: number;
@@ -92,15 +92,15 @@ export type YouTubeDataTaskChannel = {
 
 export type YouTubeDataTaskVideo = {
 	id: number;
-	videoId: string,
-	title: string,
-	description: string,
-	durationAsSeconds: number,
-	viewCount: number,
-	likeCount: number,
-	favoriteCount: number,
-	commentCount: number,
-	youTubeDataTaskId: number,
+	videoId: string;
+	title: string;
+	description: string;
+	durationAsSeconds: number;
+	viewCount: number;
+	likeCount: number;
+	favoriteCount: number;
+	commentCount: number;
+	youTubeDataTaskId: number;
 };
 
 export const youtubeDataUpdateTokenStateSchema = z.object({

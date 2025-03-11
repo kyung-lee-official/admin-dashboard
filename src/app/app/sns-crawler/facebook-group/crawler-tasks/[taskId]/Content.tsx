@@ -7,6 +7,7 @@ import { Indicator } from "@/components/indecator/Indicator";
 import { useAuthStore } from "@/stores/auth";
 import {
 	abortFacebookGroupCrawler,
+	deleteFacebookGroupCrawlerTask,
 	getFacebookGroupCrawlerStatus,
 	getFacebookGroupCrawlerTaskById,
 	recrawlFailedRecords,
@@ -15,11 +16,13 @@ import {
 import { useMutation, useQuery } from "@tanstack/react-query";
 import * as ExcelJS from "exceljs";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export const Content = (props: { taskId: number }) => {
 	const { taskId } = props;
 	const jwt = useAuthStore((state) => state.jwt);
+	const router = useRouter();
 	const [pendingAbort, setPendingAbort] = useState(false);
 
 	const getFacebookGroupCrawlerTaskByIdQuery = useQuery({
@@ -67,6 +70,16 @@ export const Content = (props: { taskId: number }) => {
 			return recrawlFailedRecords(taskId, jwt);
 		},
 		onSuccess: () => {},
+		onError: () => {},
+	});
+
+	const deleteTaskMutation = useMutation({
+		mutationFn: () => {
+			return deleteFacebookGroupCrawlerTask(taskId, jwt);
+		},
+		onSuccess: () => {
+			router.push("/app/sns-crawler/facebook-group/crawler-tasks");
+		},
 		onError: () => {},
 	});
 
@@ -151,7 +164,7 @@ export const Content = (props: { taskId: number }) => {
 						{getFacebookGroupCrawlerTaskByIdQuery.data &&
 							getFacebookGroupCrawlerTaskByIdQuery.data.records.filter(
 								(record) => {
-									return record.failed === false;
+									return record.status === "SUCCESS";
 								}
 							).length <
 								getFacebookGroupCrawlerTaskByIdQuery.data
@@ -178,6 +191,14 @@ export const Content = (props: { taskId: number }) => {
 									exportAsXlsx();
 								},
 							},
+							{
+								text: "Delete Task",
+								hideMenuOnClick: true,
+								icon: <ExportIcon size={15} />,
+								onClick: () => {
+									deleteTaskMutation.mutate();
+								},
+							},
 						]}
 					/>
 				</div>
@@ -193,7 +214,7 @@ export const Content = (props: { taskId: number }) => {
 							width: `${
 								(getFacebookGroupCrawlerTaskByIdQuery.data.records.filter(
 									(record) => {
-										return record.failed === false;
+										return record.status === "SUCCESS";
 									}
 								).length /
 									getFacebookGroupCrawlerTaskByIdQuery.data
@@ -239,7 +260,8 @@ export const Content = (props: { taskId: number }) => {
 									<tr
 										key={i}
 										className={`${
-											record.failed && "text-white/20"
+											record.status !== "SUCCESS" &&
+											"text-white/20"
 										}
 										border-t-[1px] border-white/10`}
 									>
