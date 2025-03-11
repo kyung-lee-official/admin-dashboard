@@ -136,16 +136,18 @@ export const Content = (props: { taskId: number }) => {
 								pendingAbort ? "Pending Abort..." : undefined
 							}
 						/>
-						{!pendingAbort && (
-							<Button
-								size="sm"
-								onClick={() => {
-									mutation.mutate();
-								}}
-							>
-								Abort
-							</Button>
-						)}
+						{!pendingAbort &&
+							getFacebookGroupCrawlerStatusQuery.data
+								?.browserRunning && (
+								<Button
+									size="sm"
+									onClick={() => {
+										mutation.mutate();
+									}}
+								>
+									Abort
+								</Button>
+							)}
 						{getFacebookGroupCrawlerTaskByIdQuery.data &&
 							getFacebookGroupCrawlerTaskByIdQuery.data.records.filter(
 								(record) => {
@@ -153,7 +155,9 @@ export const Content = (props: { taskId: number }) => {
 								}
 							).length <
 								getFacebookGroupCrawlerTaskByIdQuery.data
-									.sourceLength && (
+									.sourceLength &&
+							!getFacebookGroupCrawlerStatusQuery.data
+								?.browserRunning && (
 								<Button
 									size="sm"
 									onClick={() => {
