@@ -33,8 +33,9 @@ import { exportAsXlsx } from "./export-as-xlsx";
 
 export enum TaskStatus {
 	IDLE = "idle",
-	PROCESSING = "processing",
-	ABORTED = "aborted",
+	FETCHING_SEARCHES = "fetching-searches",
+	FETCHING_CHANNELS = "fetching-channels",
+	FETCHING_VIDEOS = "fetching-videos",
 }
 
 export const Content = (props: { taskId: number }) => {
@@ -85,7 +86,6 @@ export const Content = (props: { taskId: number }) => {
 		refetchOnWindowFocus: false,
 	});
 
-	const [status, setStatus] = useState<TaskStatus>(TaskStatus.IDLE);
 	const [range, setRange] = useState({
 		start: dayjs().startOf("month"),
 		end: dayjs().endOf("month"),
@@ -155,23 +155,18 @@ export const Content = (props: { taskId: number }) => {
 						onOk={onDelete}
 					/>
 				</div>
-				{getYouTubeTaskByIdQuery.data &&
-					getYouTubeTaskMetaQuery.data &&
-					getYouTubeTaskMetaQuery.data.status === "idle" && (
-						<ControlBar
-							taskId={taskId}
-							youTubeDataTaskKeywords={
-								getYouTubeTaskByIdQuery.data
-									.youTubeDataTaskKeywords
-							}
-							status={status}
-							setStatus={setStatus}
-							range={range}
-							setRange={setRange}
-							targetResultCount={targetResultCount}
-							setTargetResultCount={setTargetResultCount}
-						/>
-					)}
+				{getYouTubeTaskMetaQuery.data && (
+					<ControlBar
+						taskId={taskId}
+						status={
+							getYouTubeTaskMetaQuery.data.status as TaskStatus
+						}
+						range={range}
+						setRange={setRange}
+						targetResultCount={targetResultCount}
+						setTargetResultCount={setTargetResultCount}
+					/>
+				)}
 				<div
 					className="flex flex-col items-start px-6 py-2 gap-2
 					border-t-[1px] border-white/10"
@@ -187,7 +182,11 @@ export const Content = (props: { taskId: number }) => {
 							Export
 						</Button>
 					</div>
-					<div className="flex flex-wrap gap-4">
+					<div
+						className="flex items-center flex-wrap gap-4
+						text-white/50"
+					>
+						Channel Subs Count Larger Than
 						<Input
 							sz="sm"
 							isError={false}
@@ -203,7 +202,6 @@ export const Content = (props: { taskId: number }) => {
 										: parseInt(e.target.value),
 								});
 							}}
-							placeholder="Min Channel Subs Count"
 						/>
 					</div>
 				</div>
@@ -218,7 +216,8 @@ export const Content = (props: { taskId: number }) => {
 					YouTube Data Collector Service Status
 					<Indicator
 						isActive={
-							getYouTubeTaskMetaQuery.data?.status !== "idle"
+							getYouTubeTaskMetaQuery.data?.status !==
+							TaskStatus.IDLE
 						}
 					/>
 				</div>
@@ -299,7 +298,8 @@ export const Content = (props: { taskId: number }) => {
 			>
 				<div className="flex items-center px-6 py-4 gap-3">
 					<div>Fetch Channel Info Based on Search Results</div>
-					{getYouTubeTaskMetaQuery.data?.status === "idle" && (
+					{getYouTubeTaskMetaQuery.data?.status ===
+						TaskStatus.IDLE && (
 						<Button
 							size="sm"
 							onClick={() => {
@@ -371,7 +371,8 @@ export const Content = (props: { taskId: number }) => {
 			>
 				<div className="flex items-center px-6 py-4 gap-3">
 					<div>Fetch Video Info Based on Search Results</div>
-					{getYouTubeTaskMetaQuery.data?.status === "idle" && (
+					{getYouTubeTaskMetaQuery.data?.status ===
+						TaskStatus.IDLE && (
 						<Button
 							size="sm"
 							onClick={() => {

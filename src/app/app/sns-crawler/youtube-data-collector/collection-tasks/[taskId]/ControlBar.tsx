@@ -6,14 +6,15 @@ import { DateRangePicker } from "@/components/date/date-range-picker/DateRangePi
 import { Input } from "@/components/input/Input";
 import { YouTubeDataTaskKeyword } from "@/utils/types/app/sns-crawler";
 import { useMutation } from "@tanstack/react-query";
-import { startTaskById } from "@/utils/api/app/sns-crawler/youtube-data-collector";
+import {
+	abortTask,
+	startTaskById,
+} from "@/utils/api/app/sns-crawler/youtube-data-collector";
 import { useAuthStore } from "@/stores/auth";
 
 export const ControlBar = (props: {
 	taskId: number;
-	youTubeDataTaskKeywords: YouTubeDataTaskKeyword[];
 	status: TaskStatus;
-	setStatus: Dispatch<SetStateAction<TaskStatus>>;
 	range: {
 		start: dayjs.Dayjs;
 		end: dayjs.Dayjs;
@@ -29,16 +30,14 @@ export const ControlBar = (props: {
 }) => {
 	const {
 		taskId,
-		youTubeDataTaskKeywords,
 		status,
-		setStatus,
 		range,
 		setRange,
 		targetResultCount,
 		setTargetResultCount,
 	} = props;
 	const jwt = useAuthStore((state) => state.jwt);
-	const mutation = useMutation({
+	const searchMutation = useMutation({
 		mutationFn: () => {
 			return startTaskById(
 				{
@@ -54,6 +53,14 @@ export const ControlBar = (props: {
 		onError: () => {},
 	});
 
+	const abortMutation = useMutation({
+		mutationFn: () => {
+			return abortTask(jwt);
+		},
+		onSuccess: () => {},
+		onError: () => {},
+	});
+
 	switch (status) {
 		case TaskStatus.IDLE:
 			return (
@@ -64,7 +71,7 @@ export const ControlBar = (props: {
 					<Button
 						size="sm"
 						onClick={() => {
-							mutation.mutate();
+							searchMutation.mutate();
 						}}
 					>
 						Search Keywords
@@ -84,13 +91,21 @@ export const ControlBar = (props: {
 					/>
 				</div>
 			);
-		case TaskStatus.PROCESSING:
-			return (
-				<Button size="sm" onClick={() => {}}>
-					Abort
-				</Button>
-			);
 		default:
-			return null;
+			return (
+				<div
+					className="relative flex items-center px-6 py-2 gap-3 flex-wrap
+					border-t-[1px] border-white/10"
+				>
+					<Button
+						size="sm"
+						onClick={() => {
+							abortMutation.mutate();
+						}}
+					>
+						Abort
+					</Button>
+				</div>
+			);
 	}
 };

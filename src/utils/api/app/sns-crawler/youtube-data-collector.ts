@@ -336,19 +336,16 @@ export const getCompositeDataByTaskId = async (
 	return parsedData;
 };
 
-// export const updateTaskKeywordSearchesById = async (
-// 	dto: UpdateTaskKeywordSearchesByIdDto,
-// 	jwt: string
-// ) => {
-// 	const res = await axios.patch(
-// 		`internal/applications/youtube-data-collector/update-task-keyword-searches-by-id`,
-// 		dto,
-// 		{
-// 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
-// 			headers: {
-// 				Authorization: jwt,
-// 			},
-// 		}
-// 	);
-// 	return res.data;
-// };
+export const abortTask = async (jwt: string) => {
+	const res = await axios.post(
+		`internal/applications/youtube-data-collector/abort-task`,
+		{},
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+			},
+		}
+	);
+	return res.data;
+};
