@@ -4,7 +4,7 @@ import { useAuthStore } from "@/stores/auth";
 
 import { useMutation, useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { ControlBar } from "./ControlBar";
 import {
@@ -30,6 +30,7 @@ import Link from "next/link";
 import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
 import { Input } from "@/components/input/Input";
 import { exportAsXlsx } from "./export-as-xlsx";
+import { chunkify } from "@/utils/data/data";
 
 export enum TaskStatus {
 	IDLE = "idle",
@@ -42,6 +43,35 @@ export const Content = (props: { taskId: number }) => {
 	const { taskId } = props;
 
 	const router = useRouter();
+	const searchParams = useSearchParams();
+	const channelPage = parseInt(searchParams.get("channel-page") || "1");
+	const videoPage = parseInt(searchParams.get("video-page") || "1");
+	const updateSearchParams = (
+		newChannelPage: number,
+		newVideoPage: number
+	) => {
+		const newParams = new URLSearchParams(searchParams.toString());
+		newParams.set("channel-page", newChannelPage.toString());
+		newParams.set("video-page", newVideoPage.toString());
+		router.push(`?${newParams.toString()}`);
+	};
+	const handlePrevChannelPage = () => {
+		if (channelPage > 1) {
+			updateSearchParams(channelPage - 1, videoPage);
+		}
+	};
+	const handleNextChannelPage = () => {
+		updateSearchParams(channelPage + 1, videoPage);
+	};
+	const handlePrevVideoPage = () => {
+		if (videoPage > 1) {
+			updateSearchParams(channelPage, videoPage - 1);
+		}
+	};
+	const handleNextVideoPage = () => {
+		updateSearchParams(channelPage, videoPage + 1);
+	};
+
 	const jwt = useAuthStore((state) => state.jwt);
 	const getYouTubeTaskByIdQuery = useQuery<YouTubeDataTask>({
 		queryKey: [SnsYouTubeDataQK.GET_YOUTUBE_TASK_BY_ID],
@@ -343,7 +373,9 @@ export const Content = (props: { taskId: number }) => {
 					</thead>
 					<tbody className="[&_>_tr_>_td]:px-6 [&_>_tr_>_td]:py-2">
 						{!!getYouTubeChannelsByTaskIdQuery.data?.length &&
-							getYouTubeChannelsByTaskIdQuery.data.map((c, i) => {
+							chunkify(getYouTubeChannelsByTaskIdQuery.data, 10)[
+								channelPage - 1
+							].map((c, i) => {
 								return (
 									<tr
 										key={i}
@@ -362,6 +394,29 @@ export const Content = (props: { taskId: number }) => {
 							})}
 					</tbody>
 				</table>
+				<div
+					className="text-white/90
+					border-t-[1px] border-white/10 border-t-white/15"
+				>
+					<div className="flex justify-between px-6 py-4">
+						{channelPage === 1 ? (
+							<div></div>
+						) : (
+							<Button size="sm" onClick={handlePrevChannelPage}>
+								Prev
+							</Button>
+						)}
+						{!!getYouTubeChannelsByTaskIdQuery.data &&
+						getYouTubeChannelsByTaskIdQuery.data.length <=
+							channelPage * 10 ? (
+							<div></div>
+						) : (
+							<Button size="sm" onClick={handleNextChannelPage}>
+								Next
+							</Button>
+						)}
+					</div>
+				</div>
 			</div>
 			<div
 				className="text-white/90
@@ -416,7 +471,9 @@ export const Content = (props: { taskId: number }) => {
 					</thead>
 					<tbody className="[&_>_tr_>_td]:px-6 [&_>_tr_>_td]:py-2">
 						{!!getYouTubeVideosByTaskIdQuery.data?.length &&
-							getYouTubeVideosByTaskIdQuery.data.map((v, i) => {
+							chunkify(getYouTubeVideosByTaskIdQuery.data, 10)[
+								videoPage - 1
+							].map((v, i) => {
 								return (
 									<tr
 										key={i}
@@ -443,6 +500,29 @@ export const Content = (props: { taskId: number }) => {
 							})}
 					</tbody>
 				</table>
+				<div
+					className="text-white/90
+					border-t-[1px] border-white/10 border-t-white/15"
+				>
+					<div className="flex justify-between px-6 py-4">
+						{videoPage === 1 ? (
+							<div></div>
+						) : (
+							<Button size="sm" onClick={handlePrevVideoPage}>
+								Prev
+							</Button>
+						)}
+						{!!getYouTubeVideosByTaskIdQuery.data &&
+						getYouTubeVideosByTaskIdQuery.data.length <=
+							videoPage * 10 ? (
+							<div></div>
+						) : (
+							<Button size="sm" onClick={handleNextVideoPage}>
+								Next
+							</Button>
+						)}
+					</div>
+				</div>
 			</div>
 		</div>
 	);
