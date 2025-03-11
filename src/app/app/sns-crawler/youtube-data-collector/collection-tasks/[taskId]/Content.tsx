@@ -155,20 +155,23 @@ export const Content = (props: { taskId: number }) => {
 						onOk={onDelete}
 					/>
 				</div>
-				{getYouTubeTaskByIdQuery.data && (
-					<ControlBar
-						taskId={taskId}
-						youTubeDataTaskKeywords={
-							getYouTubeTaskByIdQuery.data.youTubeDataTaskKeywords
-						}
-						status={status}
-						setStatus={setStatus}
-						range={range}
-						setRange={setRange}
-						targetResultCount={targetResultCount}
-						setTargetResultCount={setTargetResultCount}
-					/>
-				)}
+				{getYouTubeTaskByIdQuery.data &&
+					getYouTubeTaskMetaQuery.data &&
+					getYouTubeTaskMetaQuery.data.status === "idle" && (
+						<ControlBar
+							taskId={taskId}
+							youTubeDataTaskKeywords={
+								getYouTubeTaskByIdQuery.data
+									.youTubeDataTaskKeywords
+							}
+							status={status}
+							setStatus={setStatus}
+							range={range}
+							setRange={setRange}
+							targetResultCount={targetResultCount}
+							setTargetResultCount={setTargetResultCount}
+						/>
+					)}
 				<div
 					className="flex flex-col items-start px-6 py-2 gap-2
 					border-t-[1px] border-white/10"
@@ -296,14 +299,16 @@ export const Content = (props: { taskId: number }) => {
 			>
 				<div className="flex items-center px-6 py-4 gap-3">
 					<div>Fetch Channel Info Based on Search Results</div>
-					<Button
-						size="sm"
-						onClick={() => {
-							fetchChannelsMutation.mutate();
-						}}
-					>
-						Fetch
-					</Button>
+					{getYouTubeTaskMetaQuery.data?.status === "idle" && (
+						<Button
+							size="sm"
+							onClick={() => {
+								fetchChannelsMutation.mutate();
+							}}
+						>
+							Fetch
+						</Button>
+					)}
 				</div>
 			</div>
 			<div
@@ -366,14 +371,16 @@ export const Content = (props: { taskId: number }) => {
 			>
 				<div className="flex items-center px-6 py-4 gap-3">
 					<div>Fetch Video Info Based on Search Results</div>
-					<Button
-						size="sm"
-						onClick={() => {
-							fetchVideosMutation.mutate();
-						}}
-					>
-						Fetch
-					</Button>
+					{getYouTubeTaskMetaQuery.data?.status === "idle" && (
+						<Button
+							size="sm"
+							onClick={() => {
+								fetchVideosMutation.mutate();
+							}}
+						>
+							Fetch
+						</Button>
+					)}
 				</div>
 			</div>
 			<div
