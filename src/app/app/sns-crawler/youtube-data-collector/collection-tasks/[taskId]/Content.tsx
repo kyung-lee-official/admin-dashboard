@@ -92,8 +92,8 @@ export const Content = (props: { taskId: number }) => {
 	});
 	const [targetResultCount, setTargetResultCount] = useState(500);
 	const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-	const [filterState, setFilterState] = useState({
-		minChannelSubsCount: 500,
+	const [exportConfig, setExportConfig] = useState({
+		minChannelSubscriberCount: 500,
 	});
 
 	const deleteTaskMutation = useMutation({
@@ -176,7 +176,7 @@ export const Content = (props: { taskId: number }) => {
 						<Button
 							size="sm"
 							onClick={() => {
-								exportAsXlsx(taskId, jwt);
+								exportAsXlsx(taskId, exportConfig, jwt);
 							}}
 						>
 							Export
@@ -192,10 +192,10 @@ export const Content = (props: { taskId: number }) => {
 							isError={false}
 							type="number"
 							min={0}
-							value={filterState.minChannelSubsCount}
+							value={exportConfig.minChannelSubscriberCount}
 							onChange={(e) => {
-								setFilterState({
-									minChannelSubsCount: isNaN(
+								setExportConfig({
+									minChannelSubscriberCount: isNaN(
 										parseInt(e.target.value)
 									)
 										? 0

@@ -9,6 +9,10 @@ type Summary = {
 	totalLikeCount: number;
 };
 
+type ExportConfig = {
+	minChannelSubscriberCount: number;
+};
+
 export type CompositeData = {
 	keyword: string;
 	publishedAt: string;
@@ -26,8 +30,17 @@ export type CompositeData = {
 	subscriberCount: number;
 };
 
-export async function exportAsXlsx(taskId: number, jwt: string) {
-	const compositeData = await getCompositeDataByTaskId(taskId, jwt);
+export async function exportAsXlsx(
+	taskId: number,
+	config: ExportConfig,
+	jwt: string
+) {
+	const { minChannelSubscriberCount } = config;
+	const compositeData = (await getCompositeDataByTaskId(taskId, jwt)).filter(
+		(d, i) => {
+			return d.subscriberCount >= minChannelSubscriberCount;
+		}
+	);
 
 	const summary: Summary[] = [];
 	for (const c of compositeData) {
