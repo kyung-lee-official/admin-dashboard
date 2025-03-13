@@ -14,9 +14,9 @@ const PanelContainer = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<div
 			className="relative flex flex-col items-center w-96 px-10 py-6 gap-6
-				text-3xl text-neutral-600
-				bg-neutral-200
-				rounded-3xl shadow-lg"
+			text-3xl text-neutral-600
+			bg-neutral-200
+			rounded-3xl shadow-lg"
 		>
 			{children}
 		</div>
@@ -103,8 +103,8 @@ const ContentWrapper = () => {
 						<div className="text-2xl">You&apos;ve signed up as</div>
 						<div
 							className="px-2 py-1
-								text-yellow-500
-								bg-zinc-900 rounded-md"
+							text-yellow-500
+							bg-zinc-900 rounded-md"
 						>
 							admin
 						</div>
@@ -118,9 +118,9 @@ const ContentWrapper = () => {
 								router.push(`/home`);
 							}}
 							className="flex justify-center items-center w-full gap-4 py-2
-									text-xl
-									bg-neutral-50 hover:bg-neutral-400
-									rounded-xl"
+							text-xl
+							bg-neutral-50 hover:bg-neutral-400
+							rounded-xl"
 						>
 							<div>Go to home page</div>
 						</button>
@@ -146,9 +146,9 @@ const ContentWrapper = () => {
 								router.push(`/home`);
 							}}
 							className="flex justify-center items-center w-full gap-4 py-2
-									text-xl
-									bg-neutral-50 hover:bg-neutral-400
-									rounded-xl"
+							text-xl
+							bg-neutral-50 hover:bg-neutral-400
+							rounded-xl"
 						>
 							<div>Go to home page</div>
 						</button>
