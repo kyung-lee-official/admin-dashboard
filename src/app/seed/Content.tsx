@@ -13,6 +13,7 @@ import { Button } from "@/components/button/Button";
 import { GoogleIcon } from "@/components/icons/Icons";
 import { Input } from "@/components/input/Input";
 import { seed, ServerSettingQK } from "@/utils/api/server-settings";
+import { DynamicCongrats } from "./DynamicCongrats";
 
 interface IFormInput {
 	email: string;
@@ -104,11 +105,7 @@ const Seed = () => {
 						Sign in
 					</Button>
 					<div className="absolute top-[-112px] right-0 bottom-28 left-0 pointer-events-none">
-						<Lottie
-							animationData={lottieFiles}
-							loop={false}
-							autoplay
-						/>
+						<DynamicCongrats />
 					</div>
 				</div>
 			</div>
