@@ -62,7 +62,7 @@ export const Content = () => {
 					<ConfirmDialog
 						show={showCreateConfirmation}
 						setShow={setShowCreateConfirmation}
-						question={"Create a new task`?"}
+						question={"Create a new task?"}
 						onOk={onCreate}
 					/>
 				</div>
