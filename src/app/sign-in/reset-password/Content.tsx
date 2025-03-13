@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 import { useSearchParams } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { resetPassword } from "@/utils/api/authentication";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { Input } from "@/components/input/Input";
 import { Button } from "@/components/button/Button";
 
@@ -34,7 +34,7 @@ const schema = z
 		path: ["confirmPassword"],
 	});
 
-const Content = () => {
+const ContentWrapper = () => {
 	const searchParams = useSearchParams();
 	// const searchParams = new URLSearchParams(
 	// 	router.asPath.substring(router.asPath.indexOf("?"))
@@ -166,6 +166,14 @@ const Content = () => {
 				</div>
 			)}
 		</div>
+	);
+};
+
+const Content = () => {
+	return (
+		<Suspense>
+			<ContentWrapper />
+		</Suspense>
 	);
 };
 

@@ -5,7 +5,7 @@ import { useAuthStore } from "@/stores/auth";
 import { AxiosError } from "axios";
 import Lottie from "lottie-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import lottieFiles from "@/components/lottie-animations/animation_congratulations.json";
 import { AuthenticationQK, getIsSignedIn } from "@/utils/api/authentication";
@@ -23,7 +23,7 @@ const PanelContainer = ({ children }: { children: React.ReactNode }) => {
 	);
 };
 
-const Content = () => {
+const ContentWrapper = () => {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const jwt = searchParams.get("jwt");
@@ -169,4 +169,10 @@ const Content = () => {
 	}
 };
 
-export default Content;
+export const Content = () => {
+	return (
+		<Suspense>
+			<ContentWrapper />
+		</Suspense>
+	);
+};

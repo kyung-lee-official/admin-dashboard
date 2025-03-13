@@ -3,12 +3,12 @@
 import { AxiosError } from "axios";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { verifyEmail } from "@/utils/api/email";
 import { Button } from "@/components/button/Button";
 
-export const Content = () => {
+const ContentWrapper = () => {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const verificationToken = searchParams.get("token");
@@ -106,5 +106,13 @@ export const Content = () => {
 				)}
 			</AnimatePresence>
 		</div>
+	);
+};
+
+export const Content = () => {
+	return (
+		<Suspense>
+			<ContentWrapper />
+		</Suspense>
 	);
 };

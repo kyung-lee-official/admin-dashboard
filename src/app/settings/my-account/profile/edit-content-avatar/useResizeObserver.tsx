@@ -1,9 +1,12 @@
 import { useState, useEffect, RefObject } from "react";
 
-const useResizeObserver = (ref: RefObject<HTMLDivElement>) => {
+const useResizeObserver = (ref: RefObject<HTMLDivElement | null>) => {
 	const [size, setSize] = useState({ width: 0, height: 0 });
 
 	useEffect(() => {
+		if (ref === null) {
+			return;
+		}
 		const observer = new ResizeObserver((entries) => {
 			const entry = entries[0];
 			setSize({

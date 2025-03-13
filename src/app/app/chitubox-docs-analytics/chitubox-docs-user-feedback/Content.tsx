@@ -1,9 +1,8 @@
 "use client";
 
 import dayjs from "dayjs";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAuthStore } from "@/stores/auth";
-import { Geo } from "@/components/geo/Geo";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { usePathname } from "next/navigation";

@@ -56,7 +56,7 @@ export type SectionResponse = {
 	id: number;
 	weight: number;
 	title: string;
-	description?: string;
+	description: string;
 	events: EventResponse[];
 };
 

@@ -3,7 +3,7 @@
 import { AxiosError } from "axios";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/button/Button";
 import { EmailQK, verifyEmail } from "@/utils/api/email";
@@ -80,7 +80,7 @@ const Panel = (props: { verificationState: VerificationState }) => {
 	}
 };
 
-export const Content = () => {
+const SuspenseWrapper = () => {
 	const searchParams = useSearchParams();
 	const verificationToken = searchParams.get("token");
 	if (!verificationToken) {
@@ -122,11 +122,19 @@ export const Content = () => {
 	return (
 		<div
 			className="flex justify-center items-center h-svh w-full
-			dark:text-neutral-100"
+				dark:text-neutral-100"
 		>
 			<AnimatePresence mode="wait">
 				<Panel verificationState={verificationState} />
 			</AnimatePresence>
 		</div>
+	);
+};
+
+export const Content = () => {
+	return (
+		<Suspense>
+			<SuspenseWrapper />
+		</Suspense>
 	);
 };
