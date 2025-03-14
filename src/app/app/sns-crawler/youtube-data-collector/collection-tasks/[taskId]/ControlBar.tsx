@@ -68,16 +68,10 @@ export const ControlBar = (props: {
 					className="relative flex items-center px-6 py-2 gap-3 flex-wrap
 					border-t-[1px] border-white/10"
 				>
-					<Button
-						size="sm"
-						onClick={() => {
-							searchMutation.mutate();
-						}}
-					>
-						Search Keywords
-					</Button>
 					<DateRangePicker range={range} setRange={setRange} />
-					<div>Target Result Count (Per Keyword)</div>
+					<div className="text-white/50">
+						Target Result Count (Per Keyword)
+					</div>
 					<Input
 						type="number"
 						min={1}
@@ -89,6 +83,14 @@ export const ControlBar = (props: {
 						}}
 						isError={false}
 					/>
+					<Button
+						size="sm"
+						onClick={() => {
+							searchMutation.mutate();
+						}}
+					>
+						Search Keywords
+					</Button>
 				</div>
 			);
 		default:

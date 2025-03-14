@@ -5,12 +5,17 @@ type Summary = {
 	keyword: string;
 	totalVideoCount: number;
 	totalViewCount: number;
+	totalVideoCountLong: number;
+	totalViewCountLong: number;
+	totalVideoCountShort: number;
+	totalViewCountShort: number;
 	totalCommentCount: number;
 	totalLikeCount: number;
 };
 
 type ExportConfig = {
 	minChannelSubscriberCount: number;
+	longVideoDurationThreshold: number;
 };
 
 export type CompositeData = {
@@ -35,7 +40,7 @@ export async function exportAsXlsx(
 	config: ExportConfig,
 	jwt: string
 ) {
-	const { minChannelSubscriberCount } = config;
+	const { minChannelSubscriberCount, longVideoDurationThreshold } = config;
 	const compositeData = (await getCompositeDataByTaskId(taskId, jwt)).filter(
 		(d, i) => {
 			return d.subscriberCount >= minChannelSubscriberCount;
@@ -49,6 +54,18 @@ export async function exportAsXlsx(
 		if (existing) {
 			existing.totalVideoCount++;
 			existing.totalViewCount += c.viewCount;
+			existing.totalVideoCountLong +=
+				c.durationAsSeconds >= longVideoDurationThreshold ? 1 : 0;
+			existing.totalViewCountLong +=
+				c.durationAsSeconds >= longVideoDurationThreshold
+					? c.viewCount
+					: 0;
+			existing.totalVideoCountShort +=
+				c.durationAsSeconds < longVideoDurationThreshold ? 1 : 0;
+			existing.totalViewCountShort +=
+				c.durationAsSeconds < longVideoDurationThreshold
+					? c.viewCount
+					: 0;
 			existing.totalCommentCount += c.commentCount;
 			existing.totalLikeCount += c.likeCount;
 		} else {
@@ -56,6 +73,18 @@ export async function exportAsXlsx(
 				keyword,
 				totalVideoCount: 1,
 				totalViewCount: c.viewCount,
+				totalVideoCountLong:
+					c.durationAsSeconds >= longVideoDurationThreshold ? 1 : 0,
+				totalViewCountLong:
+					c.durationAsSeconds >= longVideoDurationThreshold
+						? c.viewCount
+						: 0,
+				totalVideoCountShort:
+					c.durationAsSeconds < longVideoDurationThreshold ? 1 : 0,
+				totalViewCountShort:
+					c.durationAsSeconds < longVideoDurationThreshold
+						? c.viewCount
+						: 0,
 				totalCommentCount: c.commentCount,
 				totalLikeCount: c.likeCount,
 			});
@@ -86,7 +115,27 @@ export async function exportAsXlsx(
 		{ header: "Keyword", key: "keyword", width: 40 },
 		{ header: "Total Video Count", key: "totalVideoCount", width: 20 },
 		{ header: "Total View Count", key: "totalViewCount", width: 20 },
-		{ header: "Total Comment Count", key: "totalCommentCount", width: 20 },
+		{
+			header: "Total Video Count (Long)",
+			key: "totalVideoCountLong",
+			width: 30,
+		},
+		{
+			header: "Total View Count (Long)",
+			key: "totalViewCountLong",
+			width: 30,
+		},
+		{
+			header: "Total Video Count (Short)",
+			key: "totalVideoCountShort",
+			width: 30,
+		},
+		{
+			header: "Total View Count (Short)",
+			key: "totalViewCountShort",
+			width: 30,
+		},
+		{ header: "Total Comment Count", key: "totalCommentCount", width: 25 },
 		{ header: "Total Like Count", key: "totalLikeCount", width: 20 },
 	];
 	for (const s of summary) {
@@ -94,6 +143,10 @@ export async function exportAsXlsx(
 			s.keyword,
 			s.totalVideoCount,
 			s.totalViewCount,
+			s.totalVideoCountLong,
+			s.totalViewCountLong,
+			s.totalVideoCountShort,
+			s.totalViewCountShort,
 			s.totalCommentCount,
 			s.totalLikeCount,
 		]);
@@ -105,19 +158,19 @@ export async function exportAsXlsx(
 		worksheet.columns = [
 			{ header: "Video ID", key: "videoId", width: 30 },
 			{ header: "Title", key: "title", width: 50 },
-			{ header: "Description", key: "description", width: 60 },
-			{ header: "Published At", key: "publishedAt", width: 20 },
+			{ header: "Channel Title", key: "channelTitle", width: 20 },
 			{ header: "View Count", key: "viewCount", width: 20 },
 			{ header: "Like Count", key: "likeCount", width: 20 },
 			{ header: "Comment Count", key: "commentCount", width: 20 },
-			{ header: "Favorite Count", key: "favoriteCount", width: 20 },
-			{ header: "Duration (s)", key: "durationAsSeconds", width: 20 },
-			{ header: "Channel Title", key: "channelTitle", width: 20 },
+			{ header: "Published At", key: "publishedAt", width: 20 },
+			{ header: "Description", key: "description", width: 60 },
 			{
 				header: "Channel Subscriber Count",
 				key: "channelSubscriberCount",
-				width: 20,
+				width: 30,
 			},
+			{ header: "Favorite Count", key: "favoriteCount", width: 20 },
+			{ header: "Duration (s)", key: "durationAsSeconds", width: 20 },
 		];
 		for (const v of chunk) {
 			worksheet.addRow([
@@ -133,15 +186,15 @@ export async function exportAsXlsx(
 					// },
 				},
 				v.title,
-				v.description,
-				new Date(v.publishedAt).toLocaleString(),
+				v.channelTitle,
 				v.viewCount,
 				v.likeCount,
 				v.commentCount,
+				new Date(v.publishedAt).toLocaleString(),
+				v.description,
+				v.subscriberCount,
 				v.favoriteCount,
 				v.durationAsSeconds,
-				v.channelTitle,
-				v.subscriberCount,
 			]);
 		}
 	}

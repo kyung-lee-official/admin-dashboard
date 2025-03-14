@@ -124,6 +124,7 @@ export const Content = (props: { taskId: number }) => {
 	const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 	const [exportConfig, setExportConfig] = useState({
 		minChannelSubscriberCount: 500,
+		longVideoDurationThreshold: 120,
 	});
 
 	const deleteTaskMutation = useMutation({
@@ -213,26 +214,53 @@ export const Content = (props: { taskId: number }) => {
 						</Button>
 					</div>
 					<div
-						className="flex items-center flex-wrap gap-4
+						className="flex items-center flex-wrap gap-6
 						text-white/50"
 					>
-						Channel Subs Count Larger Than
-						<Input
-							sz="sm"
-							isError={false}
-							type="number"
-							min={0}
-							value={exportConfig.minChannelSubscriberCount}
-							onChange={(e) => {
-								setExportConfig({
-									minChannelSubscriberCount: isNaN(
-										parseInt(e.target.value)
-									)
-										? 0
-										: parseInt(e.target.value),
-								});
-							}}
-						/>
+						<div>
+							<div className="text-sm">
+								Channel Subs Count Larger Than
+							</div>
+							<Input
+								sz="sm"
+								isError={false}
+								type="number"
+								min={0}
+								value={exportConfig.minChannelSubscriberCount}
+								onChange={(e) => {
+									setExportConfig({
+										...exportConfig,
+										minChannelSubscriberCount: isNaN(
+											parseInt(e.target.value)
+										)
+											? 0
+											: parseInt(e.target.value),
+									});
+								}}
+							/>
+						</div>
+						<div>
+							<div className="text-sm">
+								Long Video Duration Threshold (Seconds)
+							</div>
+							<Input
+								sz="sm"
+								isError={false}
+								type="number"
+								min={0}
+								value={exportConfig.longVideoDurationThreshold}
+								onChange={(e) => {
+									setExportConfig({
+										...exportConfig,
+										longVideoDurationThreshold: isNaN(
+											parseInt(e.target.value)
+										)
+											? 0
+											: parseInt(e.target.value),
+									});
+								}}
+							/>
+						</div>
 					</div>
 				</div>
 			</div>
