@@ -27,3 +27,11 @@ export const updateRoleByIdSchema = z.object({
 });
 
 export type UpdateRoleByIdDto = z.infer<typeof updateRoleByIdSchema>;
+
+export type Log = {
+	id: number;
+	memberId: string;
+	memberName: string;
+	eventType: string;
+	createdAt: string;
+};

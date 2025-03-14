@@ -569,6 +569,17 @@ export const settingsGeneralMenuItems: HierarchicalMenuItem[] = [
 			];
 		},
 	},
+	{
+		pageUrlReg: /^\/settings\/general\/logs\/[0-9]*$/,
+		breadcrumbs: () => {
+			return [
+				{
+					href: "/settings/general/logs/1",
+					text: "Logs",
+				},
+			];
+		},
+	},
 ];
 
 export const settingsMyAccountMenuItems: HierarchicalMenuItem[] = [
