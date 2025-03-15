@@ -74,7 +74,7 @@ export const MoreMenu = () => {
 		>
 			<button
 				ref={entryRef}
-				className="flex justify-between items-center w-full px-2 py-1
+				className="flex justify-between items-center w-full px-2 py-1 gap-2
 				dark:hover:bg-white/5
 				rounded-lg"
 			>
@@ -107,10 +107,11 @@ export const MoreMenu = () => {
 					<div
 						className="flex justify-between items-center
 						text-sm font-normal
-						overflow-hidden whitespace-nowrap text-ellipsis
 						cursor-pointer"
 					>
-						{myInfoQuery.data?.name}
+						<div className="truncate max-w-[calc(176px-24px-12px-8px-15px)]">
+							{myInfoQuery.data?.name}
+						</div>
 					</div>
 				</div>
 				<div className="text-white/40">
