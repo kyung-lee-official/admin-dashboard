@@ -170,7 +170,11 @@ export const menuItems: HierarchicalMenuItem[] = [
 									return [
 										{
 											href: "/app/performance/stats",
-											text: "Performance Stats",
+											text: "Performance",
+										},
+										{
+											href: `/app/performance/stats`,
+											text: `Stats`,
 										},
 										{
 											href: `/app/performance/stats/${statId}`,
@@ -194,7 +198,11 @@ export const menuItems: HierarchicalMenuItem[] = [
 											return [
 												{
 													href: "/app/performance/stats",
-													text: "Performance Stats",
+													text: "Performance",
+												},
+												{
+													href: `/app/performance/stats`,
+													text: `Stats`,
 												},
 												{
 													href: `/app/performance/stats/${statId}`,
@@ -227,7 +235,11 @@ export const menuItems: HierarchicalMenuItem[] = [
 											return [
 												{
 													href: "/app/performance/stats",
-													text: "Performance Stats",
+													text: "Performance",
+												},
+												{
+													href: `/app/performance/stats`,
+													text: `Stats`,
 												},
 												{
 													href: `/app/performance/stats/${statId}`,
@@ -271,6 +283,10 @@ export const menuItems: HierarchicalMenuItem[] = [
 						breadcrumbs: (props: { templateId: number }) => {
 							const { templateId } = props;
 							return [
+								{
+									href: "/app/performance",
+									text: "Performance",
+								},
 								{
 									href: "/app/performance/event-templates",
 									text: "Event Templates",
