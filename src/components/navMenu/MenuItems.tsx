@@ -373,6 +373,10 @@ export const menuItems: HierarchicalMenuItem[] = [
 									const { taskId } = props;
 									return [
 										{
+											href: "/app/sns-crawler",
+											text: "SNS Crawler",
+										},
+										{
 											href: "/app/sns-crawler/facebook-group",
 											text: "Facebook Group",
 										},
