@@ -146,7 +146,7 @@ export const Dropdown = <T,>(props: DropdownProps<T>) => {
 	return (
 		<div
 			ref={dropdownRef}
-			className="relative w-full max-w-md
+			className="relative w-full max-w-xs
 			text-sm"
 		>
 			<div
@@ -213,9 +213,25 @@ export const Dropdown = <T,>(props: DropdownProps<T>) => {
 							onMouseLeave={() => setHover && setHover(null)}
 						>
 							{kind === "string" ? (
-								option
+								<div className="truncate" title={option}>
+									{option}
+								</div>
 							) : (
-								<div className="flex gap-1">
+								<div
+									className="flex gap-1"
+									title={
+										getDisplayValue(option) +
+										" " +
+										(objectProps!.label.secondaryKey
+											? String(
+													(option as any)[
+														objectProps!.label
+															.secondaryKey
+													]
+											  )
+											: "")
+									}
+								>
 									<div className="text-neutral-300">
 										{String(
 											(option as any)[
@@ -224,7 +240,7 @@ export const Dropdown = <T,>(props: DropdownProps<T>) => {
 										)}
 									</div>
 									{objectProps!.label.secondaryKey && (
-										<div className="text-sm text-neutral-400">
+										<div className="truncate text-sm text-neutral-400">
 											{String(
 												(option as any)[
 													objectProps!.label
