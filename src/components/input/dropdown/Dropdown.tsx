@@ -152,7 +152,7 @@ export const Dropdown = <T,>(props: DropdownProps<T>) => {
 			<div
 				className="flex items-center flex-wrap min-h-8 px-2 py-1 gap-2
 				bg-neutral-800
-				border-1 border-neutral-500 rounded-md cursor-pointer"
+				border-1 border-neutral-700 rounded-md cursor-pointer"
 				onClick={() => setIsOpen(!isOpen)}
 			>
 				{multiple && Array.isArray(selected) && selected.length > 0 ? (
@@ -163,7 +163,7 @@ export const Dropdown = <T,>(props: DropdownProps<T>) => {
 							text-xs
 							text-white/60
 							bg-neutral-700
-							border-1 border-neutral-500 rounded"
+							border-1 border-neutral-600 rounded"
 						>
 							<span>{getDisplayValue(item)}</span>
 							<button
@@ -190,7 +190,7 @@ export const Dropdown = <T,>(props: DropdownProps<T>) => {
 					className="absolute z-10 w-full mt-1
 					text-white/60
 					bg-neutral-800
-					border border-neutral-500 rounded-md overflow-auto"
+					border border-neutral-700 rounded-md overflow-auto"
 				>
 					{mode === "search" && (
 						<input
@@ -199,7 +199,7 @@ export const Dropdown = <T,>(props: DropdownProps<T>) => {
 							onChange={(e) => setSearchTerm(e.target.value)}
 							onClick={(e) => e.stopPropagation()}
 							placeholder="Search..."
-							className="w-full p-2 border-b border-neutral-500 outline-none"
+							className="w-full p-2 border-b border-neutral-700 outline-none"
 						/>
 					)}
 					{filteredOptions.map((option, i) => (
