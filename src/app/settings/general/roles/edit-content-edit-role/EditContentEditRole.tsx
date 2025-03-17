@@ -14,12 +14,12 @@ import { EditMembers } from "./EditMembers";
 import { Member, MemberRole } from "@/utils/types/internal";
 import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
 import { sortByProp } from "@/utils/data/data";
-import { Dropdown } from "@/components/input/dropdown-old/Dropdown";
+import { Dropdown } from "@/components/input/dropdown/Dropdown";
 
 export type EditRoleData = {
 	id: string;
 	name: string;
-	superRole: MemberRole | undefined;
+	superRole: MemberRole | null;
 	members: Member[];
 };
 
@@ -51,7 +51,7 @@ export const EditContentEditRole = (props: {
 	).concat({
 		id: "",
 		name: "No Super Role",
-		superRole: undefined,
+		superRole: null,
 	});
 
 	const roleQuery = useQuery<EditRoleData, AxiosError>({
@@ -67,13 +67,15 @@ export const EditContentEditRole = (props: {
 	const [oldData, setOldData] = useState<EditRoleData>({
 		id: "",
 		name: "",
-		superRole: undefined,
+		superRole: null,
 		members: [],
 	});
 	const [newData, setNewData] = useState<EditRoleData>(oldData);
 	const [id, setId] = useState(oldData.id);
 	const [name, setName] = useState(oldData.name);
-	const [superRole, setSuperRole] = useState<MemberRole>();
+	const [superRole, setSuperRole] = useState<
+		MemberRole | MemberRole[] | null
+	>(oldData.superRole);
 	const [members, setMembers] = useState<Member[]>(oldData.members);
 
 	useEffect(() => {
@@ -84,13 +86,12 @@ export const EditContentEditRole = (props: {
 				superRole: roleQuery.data.superRole,
 				members: sortByProp(roleQuery.data.members, "name"),
 			};
-			console.log("update");
-			
+
 			setOldData(dbData);
 			setNewData(dbData);
 			setId(dbData.id);
 			setName(dbData.name);
-			setSuperRole(dbData.superRole ? dbData.superRole : undefined);
+			setSuperRole(dbData.superRole ? dbData.superRole : null);
 			setMembers(dbData.members);
 		}
 	}, [roleQuery.data]);
@@ -99,7 +100,7 @@ export const EditContentEditRole = (props: {
 		setNewData({
 			id: id,
 			name: name,
-			superRole: superRole,
+			superRole: superRole as MemberRole | null,
 			members: sortByProp(members, "name"),
 		});
 	}, [id, name, superRole, members]);
