@@ -96,7 +96,7 @@ export const ObjectSearch = <T,>(props: {
 					{sortByProp(filteredOptions, sortBy).map(
 						(item: any, i: number) => {
 							let label = `${item[primaryKey]}`;
-							if (secondaryKey) {
+							if (secondaryKey && item[secondaryKey]) {
 								label += ` (${item[secondaryKey]})`;
 							}
 							return (

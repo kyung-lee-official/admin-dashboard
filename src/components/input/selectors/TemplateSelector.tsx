@@ -4,7 +4,7 @@ import { PerformanceEventTemplateResponse } from "@/utils/types/app/performance"
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { Dispatch, SetStateAction } from "react";
-import { Dropdown } from "../dropdown/Dropdown";
+import { Dropdown } from "../dropdown-old/Dropdown";
 
 type TemplateSelectorProps = {
 	template: PerformanceEventTemplateResponse | undefined;

@@ -7,7 +7,7 @@ import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
 import { createTemplate, PerformanceQK } from "@/utils/api/app/performance";
 import { MemberRole } from "@/utils/types/internal";
 import { CreatePerformanceEventTemplate } from "@/utils/types/app/performance";
-import { Dropdown } from "@/components/input/dropdown/Dropdown";
+import { Dropdown } from "@/components/input/dropdown-old/Dropdown";
 import { RolesQK, getAllRoles } from "@/utils/api/roles";
 import { AxiosError } from "axios";
 

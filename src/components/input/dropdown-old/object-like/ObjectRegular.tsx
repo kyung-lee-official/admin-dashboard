@@ -91,7 +91,7 @@ export const ObjectRegular = <T,>(props: {
 					{sortByProp<T>(options, sortBy).map(
 						(item: T, i: number) => {
 							let label = `${item[primaryKey]}`;
-							if (secondaryKey) {
+							if (secondaryKey && item[secondaryKey]) {
 								label += ` (${item[secondaryKey]})`;
 							}
 							return (

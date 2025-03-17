@@ -14,7 +14,7 @@ import { EditMembers } from "./EditMembers";
 import { Member, MemberRole } from "@/utils/types/internal";
 import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
 import { sortByProp } from "@/utils/data/data";
-import { Dropdown } from "@/components/input/dropdown/Dropdown";
+import { Dropdown } from "@/components/input/dropdown-old/Dropdown";
 
 export type EditRoleData = {
 	id: string;
@@ -34,7 +34,7 @@ export const EditContentEditRole = (props: {
 
 	const jwt = useAuthStore((state) => state.jwt);
 
-	const [role, setRole] = useState<MemberRole | undefined>(undefined);
+	// const [role, setRole] = useState<MemberRole | undefined>(undefined);
 	const rolesQuery = useQuery<MemberRole[], AxiosError>({
 		queryKey: [RolesQK.GET_ALL_ROLES],
 		queryFn: async () => {
@@ -44,6 +44,16 @@ export const EditContentEditRole = (props: {
 		retry: false,
 		refetchOnWindowFocus: false,
 	});
+
+	/* filter out current role, and add a null option for no super role */
+	const roles = (
+		rolesQuery.data?.filter((r) => r.id !== roleId) ?? []
+	).concat({
+		id: "",
+		name: "No Super Role",
+		superRole: undefined,
+	});
+
 	const roleQuery = useQuery<EditRoleData, AxiosError>({
 		queryKey: [RolesQK.GET_ROLE_BY_ID],
 		queryFn: async () => {
@@ -68,20 +78,20 @@ export const EditContentEditRole = (props: {
 
 	useEffect(() => {
 		if (roleQuery.isSuccess) {
-			const initialData = {
+			const dbData = {
 				id: roleQuery.data.id,
 				name: roleQuery.data.name,
 				superRole: roleQuery.data.superRole,
 				members: sortByProp(roleQuery.data.members, "name"),
 			};
-			setOldData(initialData);
-			setNewData(initialData);
-			setId(initialData.id);
-			setName(initialData.name);
-			setSuperRole(
-				initialData.superRole ? initialData.superRole : undefined
-			);
-			setMembers(initialData.members);
+			console.log("update");
+			
+			setOldData(dbData);
+			setNewData(dbData);
+			setId(dbData.id);
+			setName(dbData.name);
+			setSuperRole(dbData.superRole ? dbData.superRole : undefined);
+			setMembers(dbData.members);
 		}
 	}, [roleQuery.data]);
 
@@ -99,7 +109,10 @@ export const EditContentEditRole = (props: {
 			const dto = {
 				id: newData.id,
 				name: newData.name,
-				superRoleId: newData.superRole?.id,
+				superRoleId:
+					newData.superRole?.id === ""
+						? undefined
+						: newData.superRole?.id,
 				memberIds: newData.members.map((member) => member.id),
 			};
 			return updateRoleById(dto, jwt);
@@ -170,9 +183,9 @@ export const EditContentEditRole = (props: {
 					<Dropdown
 						kind="object"
 						mode="search"
-						selected={role}
-						setSelected={setRole}
-						options={rolesQuery.data ?? []}
+						selected={superRole}
+						setSelected={setSuperRole}
+						options={roles ?? []}
 						placeholder="Select a role"
 						label={{ primaryKey: "name", secondaryKey: "id" }}
 						sortBy="name"

@@ -1,4 +1,4 @@
-import { Dropdown } from "@/components/input/dropdown/Dropdown";
+import { Dropdown } from "@/components/input/dropdown-old/Dropdown";
 import { useAuthStore } from "@/stores/auth";
 import {
 	PerformanceQK,

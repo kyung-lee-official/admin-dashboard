@@ -14,7 +14,7 @@ import {
 } from "@/utils/types/app/performance";
 import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
 import { nanoid } from "nanoid";
-import { Dropdown } from "@/components/input/dropdown/Dropdown";
+import { Dropdown } from "@/components/input/dropdown-old/Dropdown";
 import { MyInfo } from "@/app/settings/my-account/profile/Content";
 import { AxiosError } from "axios";
 import { getMembers, getMyInfo, MembersQK } from "@/utils/api/members";
