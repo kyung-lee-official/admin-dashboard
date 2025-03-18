@@ -6,8 +6,8 @@ import { EditId, EditProps } from "@/components/edit-panel/EditPanel";
 import { createRole, getAllRoles, RolesQK } from "@/utils/api/roles";
 import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
 import { MemberRole } from "@/utils/types/internal";
-import { Dropdown } from "@/components/input/dropdown-old/Dropdown";
 import { AxiosError } from "axios";
+import { Dropdown } from "@/components/input/dropdown/Dropdown";
 
 export const EditContentAddRole = (props: {
 	edit: EditProps;
@@ -21,14 +21,15 @@ export const EditContentAddRole = (props: {
 	const oldData: MemberRole = {
 		id: "",
 		name: "",
-		superRole: undefined,
+		superRole: null,
 	};
 	const [newData, setNewData] = useState(oldData);
 	const [id, setId] = useState(oldData.id);
 	const [name, setName] = useState(oldData.name);
-	const [superRole, setSuperRole] = useState<MemberRole>();
+	const [superRole, setSuperRole] = useState<
+		MemberRole | MemberRole[] | null
+	>(null);
 
-	const [role, setRole] = useState<MemberRole | undefined>(undefined);
 	const rolesQuery = useQuery<MemberRole[], AxiosError>({
 		queryKey: [RolesQK.GET_ALL_ROLES],
 		queryFn: async () => {
@@ -63,7 +64,7 @@ export const EditContentAddRole = (props: {
 		setNewData({
 			id: id,
 			name: name,
-			superRole: superRole,
+			superRole: superRole as MemberRole | null,
 		});
 	}, [id, name, superRole]);
 
@@ -122,8 +123,8 @@ export const EditContentAddRole = (props: {
 					<Dropdown
 						kind="object"
 						mode="search"
-						selected={role}
-						setSelected={setRole}
+						selected={superRole}
+						setSelected={setSuperRole}
 						options={rolesQuery.data ?? []}
 						placeholder="Select a role"
 						label={{ primaryKey: "name", secondaryKey: "id" }}
