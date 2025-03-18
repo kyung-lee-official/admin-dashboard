@@ -17,7 +17,7 @@ export async function xlsxToJson(
 				const buffer = reader.result as ArrayBuffer;
 				const workbook = new ExcelJS.Workbook();
 				await workbook.xlsx.load(buffer);
-				const sheet = workbook.getWorksheet(1);
+				const sheet = workbook.worksheets[0];
 				if (sheet) {
 					for (let i = 1; i <= sheet.rowCount; i++) {
 						const row = sheet.getRow(i);
