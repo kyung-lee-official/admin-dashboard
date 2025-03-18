@@ -13,12 +13,12 @@ import {
 import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
 import { EditIcon } from "@/components/icons/Icons";
 import { createPortal } from "react-dom";
-import { Dropdown } from "@/components/input/dropdown-old/Dropdown";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useAuthStore } from "@/stores/auth";
 import { getMembers, getMyInfo, MembersQK } from "@/utils/api/members";
 import { MyInfo } from "@/app/settings/my-account/profile/Content";
+import { Dropdown } from "@/components/input/dropdown/Dropdown";
 
 export const Content = () => {
 	const [edit, setEdit] = useState<EditProps>({

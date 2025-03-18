@@ -71,7 +71,7 @@ export type PerformanceStatResponse = {
 export type CreatePerformanceEventTemplate = {
 	score: number;
 	description: string;
-	memberRole: MemberRole | undefined;
+	memberRole: MemberRole | null;
 };
 
 export type PerformanceEventTemplateResponse = {

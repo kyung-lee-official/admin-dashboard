@@ -7,9 +7,9 @@ import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
 import { createTemplate, PerformanceQK } from "@/utils/api/app/performance";
 import { MemberRole } from "@/utils/types/internal";
 import { CreatePerformanceEventTemplate } from "@/utils/types/app/performance";
-import { Dropdown } from "@/components/input/dropdown-old/Dropdown";
 import { RolesQK, getAllRoles } from "@/utils/api/roles";
 import { AxiosError } from "axios";
+import { Dropdown } from "@/components/input/dropdown/Dropdown";
 
 export const EditContentAddTemplate = (props: {
 	edit: EditProps;
@@ -24,12 +24,12 @@ export const EditContentAddTemplate = (props: {
 	const [oldData, setOldData] = useState<CreatePerformanceEventTemplate>({
 		score: 0,
 		description: "",
-		memberRole: undefined,
+		memberRole: null,
 	});
 	const [newData, setNewData] = useState(oldData);
 	const [score, setScore] = useState<number>(oldData.score);
 	const [description, setDescription] = useState<string>(oldData.description);
-	const [role, setRole] = useState<MemberRole | undefined>(
+	const [role, setRole] = useState<MemberRole | MemberRole[] | null>(
 		oldData.memberRole
 	);
 
@@ -47,7 +47,7 @@ export const EditContentAddTemplate = (props: {
 		setNewData({
 			score: score,
 			description: description,
-			memberRole: role,
+			memberRole: role as MemberRole | null,
 		});
 	}, [score, description, role]);
 

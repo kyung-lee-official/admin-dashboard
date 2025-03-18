@@ -1,4 +1,4 @@
-import { Dropdown } from "@/components/input/dropdown-old/Dropdown";
+import { useEffect, useState } from "react";
 import { useAuthStore } from "@/stores/auth";
 import {
 	PerformanceQK,
@@ -11,13 +11,17 @@ import {
 	UpdateApprovalDto,
 } from "@/utils/types/app/performance";
 import { useMutation } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { Dropdown } from "@/components/input/dropdown/Dropdown";
 
 export const Approval = (props: { event: EventResponse }) => {
 	const { event } = props;
 
-	const [oldData, setOldData] = useState<ApprovalType>(event.approval);
-	const [newData, setNewData] = useState<ApprovalType | undefined>(oldData);
+	const [oldData, setOldData] = useState<
+		ApprovalType | ApprovalType[] | null
+	>(event.approval);
+	const [newData, setNewData] = useState<
+		ApprovalType | ApprovalType[] | null
+	>(oldData);
 
 	const jwt = useAuthStore((state) => state.jwt);
 

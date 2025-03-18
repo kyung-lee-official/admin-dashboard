@@ -17,7 +17,7 @@ import { MembersQK, getMyInfo } from "@/utils/api/members";
 import { AxiosError } from "axios";
 import { useAuthStore } from "@/stores/auth";
 import { getAllRoles, RolesQK } from "@/utils/api/roles";
-import { Dropdown } from "@/components/input/dropdown-old/Dropdown";
+import { Dropdown } from "@/components/input/dropdown/Dropdown";
 
 export const Content = () => {
 	const [role, setRole] = useState<MemberRole | undefined>();

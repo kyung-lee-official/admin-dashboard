@@ -25,7 +25,7 @@ type ObjectProps<T extends object> = BaseProps<T> & {
 	};
 };
 
-type DropdownProps<T> = T extends string
+type DropdownProps<T> = [T] extends [string]
 	? StringProps<T>
 	: T extends object
 	? ObjectProps<T>
