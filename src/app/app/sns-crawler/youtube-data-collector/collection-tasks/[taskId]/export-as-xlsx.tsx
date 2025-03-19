@@ -143,7 +143,7 @@ export async function exportAsXlsx(
 		{ header: "Total Like Count", key: "totalLikeCount", width: 20 },
 	];
 	for (const s of summary) {
-		worksheet.getRow(s.excelRow).values = [
+		worksheet.getRow(s.excelRow + 1).values = [
 			s.keyword,
 			s.totalVideoCount,
 			s.totalViewCount,
