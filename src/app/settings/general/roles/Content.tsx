@@ -68,7 +68,7 @@ export const Content = () => {
 								<TitleMoreMenu
 									items={[
 										{
-											text: "Add a role",
+											content: "Add a role",
 											hideMenuOnClick: true,
 											icon: <EditIcon size={15} />,
 											onClick: () => {

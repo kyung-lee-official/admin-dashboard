@@ -71,7 +71,7 @@ export const Content = (props: { templateId: string }) => {
 						<TitleMoreMenu
 							items={[
 								{
-									text: "Delete Stat",
+									content: "Delete Stat",
 									hideMenuOnClick: true,
 									icon: <DeleteIcon size={15} />,
 									onClick: () => {

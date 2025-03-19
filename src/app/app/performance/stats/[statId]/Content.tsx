@@ -108,7 +108,7 @@ export const Content = (props: { statId: number }) => {
 						<TitleMoreMenu
 							items={[
 								{
-									text: "Edit Stat",
+									content: "Edit Stat",
 									hideMenuOnClick: true,
 									icon: <EditIcon size={15} />,
 									onClick: () => {
@@ -122,7 +122,7 @@ export const Content = (props: { statId: number }) => {
 									},
 								},
 								{
-									text: "Delete Stat",
+									content: "Delete Stat",
 									hideMenuOnClick: true,
 									icon: <DeleteIcon size={15} />,
 									onClick: () => {
