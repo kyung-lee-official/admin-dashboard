@@ -2,9 +2,8 @@ import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { MoreIcon } from "@/components/icons/Icons";
 
 export const TitleMoreMenu = (props: {
-	children?: any;
 	items: {
-		text: string;
+		content: string | ReactNode;
 		/* hide menu after clicking on one of the items */
 		hideMenuOnClick: boolean;
 		icon?: ReactNode;
@@ -91,7 +90,7 @@ export const TitleMoreMenu = (props: {
 										{item.icon}
 									</div>
 								)}
-								<div>{item.text}</div>
+								<div>{item.content}</div>
 							</button>
 						);
 					})}

@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/button/Button";
 import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
-import { ExportIcon } from "@/components/icons/Icons";
+import { DeleteIcon, ExportIcon } from "@/components/icons/Icons";
 import { Indicator } from "@/components/indecator/Indicator";
 import { useAuthStore } from "@/stores/auth";
 import {
@@ -100,12 +100,12 @@ export const Content = (props: { taskId: number }) => {
 			];
 			for (const record of getFacebookGroupCrawlerTaskByIdQuery.data
 				.records) {
-				worksheet.addRow([
+				worksheet.getRow(record.excelRow).values = [
 					record.groupAddress,
 					record.groupName,
 					record.memberCount,
 					record.monthlyPostCount,
-				]);
+				];
 			}
 			/* create blob from the workbook */
 			const buffer = await workbook.xlsx.writeBuffer();
@@ -184,7 +184,7 @@ export const Content = (props: { taskId: number }) => {
 					<TitleMoreMenu
 						items={[
 							{
-								text: "Export as xlsx",
+								content: "Export as xlsx",
 								hideMenuOnClick: true,
 								icon: <ExportIcon size={15} />,
 								onClick: () => {
@@ -192,9 +192,17 @@ export const Content = (props: { taskId: number }) => {
 								},
 							},
 							{
-								text: "Delete Task",
+								content: (
+									<div className="text-red-400">
+										Delete Task
+									</div>
+								),
 								hideMenuOnClick: true,
-								icon: <ExportIcon size={15} />,
+								icon: (
+									<div className="text-red-400">
+										<DeleteIcon size={15} />
+									</div>
+								),
 								onClick: () => {
 									deleteTaskMutation.mutate();
 								},
@@ -247,15 +255,20 @@ export const Content = (props: { taskId: number }) => {
 							className="w-full
 							border-t-[1px] border-white/10"
 						>
-							<th className="w-2/6">Group Address</th>
-							<th className="w-2/6">Group Name</th>
-							<th className="w-1/6">Member Count</th>
-							<th className="w-1/6">Monthly Post Count</th>
+							<th className="w-[10%]">Excel Row</th>
+							<th className="w-[30%]">Group Address</th>
+							<th className="w-[40%]">Group Name</th>
+							<th className="w-[10%]">Member Count</th>
+							<th className="w-[10%]">Monthly Post Count</th>
 						</tr>
 					</thead>
 					<tbody>
-						{getFacebookGroupCrawlerTaskByIdQuery.data?.records.map(
-							(record: any, i: number) => {
+						{/* sort by excel row */}
+						{getFacebookGroupCrawlerTaskByIdQuery.data?.records
+							.sort((a, b) => {
+								return a.excelRow - b.excelRow;
+							})
+							.map((record: any, i: number) => {
 								return (
 									<tr
 										key={i}
@@ -263,8 +276,9 @@ export const Content = (props: { taskId: number }) => {
 											record.status !== "SUCCESS" &&
 											"text-white/20"
 										}
-										border-t-[1px] border-white/10`}
+											border-t-[1px] border-white/10`}
 									>
+										<td>{record.excelRow}</td>
 										<td>
 											<Link
 												href={record.groupAddress}
@@ -278,8 +292,7 @@ export const Content = (props: { taskId: number }) => {
 										<td>{record.monthlyPostCount}</td>
 									</tr>
 								);
-							}
-						)}
+							})}
 					</tbody>
 				</table>
 			</div>

@@ -171,7 +171,7 @@ export const Content = (props: { taskId: number }) => {
 					<TitleMoreMenu
 						items={[
 							{
-								text: "Delete Task",
+								content: "Delete Task",
 								hideMenuOnClick: true,
 								onClick: () => {
 									setShowDeleteConfirmation(true);
@@ -317,6 +317,7 @@ export const Content = (props: { taskId: number }) => {
 							border-t-[1px] border-white/10"
 						>
 							<th>Id</th>
+							<th>Excel Row</th>
 							<th>Keyword</th>
 							<th>Status</th>
 						</tr>
@@ -339,6 +340,7 @@ export const Content = (props: { taskId: number }) => {
 											}}
 										>
 											<td>{k.id}</td>
+											<td>{k.excelRow}</td>
 											<td>{k.keyword}</td>
 											<td>{k.status}</td>
 										</tr>
@@ -475,8 +477,8 @@ export const Content = (props: { taskId: number }) => {
 			>
 				<div className="flex items-center px-6 py-4 gap-3">
 					<div>Videos</div>
-					{getYouTubeChannelsByTaskIdQuery.data && (
-						<div>{`(${getYouTubeChannelsByTaskIdQuery.data.length})`}</div>
+					{getYouTubeVideosByTaskIdQuery.data && (
+						<div>{`(${getYouTubeVideosByTaskIdQuery.data.length})`}</div>
 					)}
 				</div>
 				<table

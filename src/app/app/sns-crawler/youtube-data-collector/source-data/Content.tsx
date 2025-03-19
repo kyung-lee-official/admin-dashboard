@@ -51,7 +51,7 @@ export const Content = () => {
 					<TitleMoreMenu
 						items={[
 							{
-								text: "Overwrite Source Data",
+								content: "Overwrite Source Data",
 								hideMenuOnClick: true,
 								icon: <EditIcon size={15} />,
 								onClick: () => {
@@ -83,7 +83,8 @@ export const Content = () => {
 										hover:bg-white/5
 										border-t-[1px] border-white/10"
 									>
-										<td>{s.keyword}</td>
+										<td className="w-1/2">{s.excelRow}</td>
+										<td className="w-1/2">{s.keyword}</td>
 									</tr>
 								);
 							})}
