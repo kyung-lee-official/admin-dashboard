@@ -2,11 +2,6 @@ import { FacebookGroupOverwriteSourceDto } from "@/utils/types/app/sns-crawler";
 import * as ExcelJS from "exceljs";
 import { z } from "zod";
 
-type CellObj = {
-	text: string;
-	hyperlink: string;
-};
-
 export async function xlsxToJson(
 	file: File
 ): Promise<FacebookGroupOverwriteSourceDto> {
@@ -31,6 +26,12 @@ export async function xlsxToJson(
 				if (sheet) {
 					for (let i = 1; i <= sheet.rowCount; i++) {
 						const row = sheet.getRow(i);
+						// console.log(
+						// 	i,
+						// 	row.getCell(1).text,
+						// 	row.getCell(2).text
+						// );
+
 						/* ignore empty row */
 						if (!row.getCell(1).text || !row.getCell(2).text) {
 							console.error(
@@ -45,6 +46,7 @@ export async function xlsxToJson(
 								groupName: row.getCell(2).text as string,
 							});
 							json.push({
+								excelRow: i,
 								groupAddress: row.getCell(1).text as string,
 								groupName: row.getCell(2).text as string,
 							});

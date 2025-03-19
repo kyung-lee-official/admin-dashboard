@@ -33,6 +33,7 @@ export async function xlsxToJson(
 								keyword: row.getCell(1).text as string,
 							});
 							json.push({
+								excelRow: i,
 								keyword: row.getCell(1).text as string,
 							});
 						} catch (error) {

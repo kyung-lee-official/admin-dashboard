@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const overwriteSourceSchema = z.array(
 	z.object({
+		excelRow: z.number().int(),
 		groupAddress: z
 			.string()
 			.url()
@@ -41,6 +42,7 @@ export type Task = {
 	updatedAt: Date;
 	records: {
 		id: number;
+		excelRow: number;
 		groupAddress: string;
 		groupName: string;
 		status: "PENDING" | "SUCCESS" | "FAILED";
@@ -52,6 +54,7 @@ export type Task = {
 
 export const youtubeDataOverwriteSourceSchema = z.array(
 	z.object({
+		excelRow: z.number().int(),
 		keyword: z.string(),
 	})
 );

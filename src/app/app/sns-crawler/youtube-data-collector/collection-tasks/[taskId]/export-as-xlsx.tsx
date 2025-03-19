@@ -3,6 +3,7 @@ import { getCompositeDataByTaskId } from "@/utils/api/app/sns-crawler/youtube-da
 
 type Summary = {
 	keyword: string;
+	excelRow: number;
 	totalVideoCount: number;
 	totalViewCount: number;
 	totalVideoCountLong: number;
@@ -20,6 +21,7 @@ type ExportConfig = {
 
 export type CompositeData = {
 	keyword: string;
+	excelRow: number;
 	publishedAt: string;
 	videoId: string;
 	title: string;
@@ -50,6 +52,7 @@ export async function exportAsXlsx(
 	const summary: Summary[] = [];
 	for (const c of compositeData) {
 		const keyword = c.keyword;
+		const excelRow = c.excelRow;
 		const existing = summary.find((s) => s.keyword === keyword);
 		if (existing) {
 			existing.totalVideoCount++;
@@ -71,6 +74,7 @@ export async function exportAsXlsx(
 		} else {
 			summary.push({
 				keyword,
+				excelRow,
 				totalVideoCount: 1,
 				totalViewCount: c.viewCount,
 				totalVideoCountLong:
@@ -139,7 +143,7 @@ export async function exportAsXlsx(
 		{ header: "Total Like Count", key: "totalLikeCount", width: 20 },
 	];
 	for (const s of summary) {
-		worksheet.addRow([
+		worksheet.getRow(s.excelRow).values = [
 			s.keyword,
 			s.totalVideoCount,
 			s.totalViewCount,
@@ -149,7 +153,7 @@ export async function exportAsXlsx(
 			s.totalViewCountShort,
 			s.totalCommentCount,
 			s.totalLikeCount,
-		]);
+		];
 	}
 
 	for (const chunk of keywordChunks) {
