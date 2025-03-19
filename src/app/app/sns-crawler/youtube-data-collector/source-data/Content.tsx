@@ -73,12 +73,18 @@ export const Content = () => {
 						className="w-full
 						text-sm text-white/50"
 					>
+						<thead className="[&_>_tr_>th]:px-2 [&_>_tr_>th]:py-1">
+							<tr className="text-left">
+								<th className="w-1/2">Excel Row</th>
+								<th className="w-1/2">Keyword</th>
+							</tr>
+						</thead>
 						<tbody className="[&_>_tr_>_td]:px-2 [&_>_tr_>_td]:py-1">
 							{getYouTubeSourceDataQuery.data.map((s, i) => {
 								return (
 									<tr
 										key={i}
-										className="flex items-center px-3 py-1 gap-6
+										className="px-3 py-1
 										text-sm
 										hover:bg-white/5
 										border-t-[1px] border-white/10"

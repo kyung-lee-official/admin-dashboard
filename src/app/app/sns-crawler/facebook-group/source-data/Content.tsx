@@ -75,23 +75,30 @@ export const Content = () => {
 						className="w-full
 						text-sm text-white/50"
 					>
+						<thead className="[&_>_tr_>th]:px-2 [&_>_tr_>th]:py-1">
+							<tr className="text-left">
+								<th className="w-[10%]">Excel Row</th>
+								<th className="w-[50%]">Group Address</th>
+								<th className="w-[50%]">Group Name</th>
+							</tr>
+						</thead>
 						<tbody className="[&_>_tr_>_td]:px-2 [&_>_tr_>_td]:py-1">
 							{getFacebookSourceDataQuery.data.map((s, i) => {
 								return (
 									<tr
 										key={i}
-										className="flex items-center px-3 py-1 gap-6
+										className="px-3 py-1
 										text-sm
 										hover:bg-white/5
 										border-t-[1px] border-white/10"
 									>
-										<td className="w-[5%]">
+										<td className="w-[10%]">
 											{s.excelRow}
 										</td>
 										<td className="w-[50%]">
 											{s.groupAddress}
 										</td>
-										<td className="w-[45%]">
+										<td className="w-[50%]">
 											{s.groupName}
 										</td>
 									</tr>
