@@ -13,7 +13,7 @@ export const IsFrozen = () => {
 	return (
 		<AuthMask>
 			<div className="flex flex-col items-center w-full max-w-[280px] m-4 gap-6">
-				<h1 className="text-2xl">You've been frozen ❄️</h1>
+				<h1 className="text-2xl">You&apos;ve been frozen ❄️</h1>
 				<div className="flex flex-col items-center gap-6 w-full">
 					<div>
 						Sorry, your account has been frozen. Please contact the
