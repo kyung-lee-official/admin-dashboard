@@ -4,6 +4,7 @@ import { MoreIcon } from "@/components/icons/Icons";
 export const TitleMoreMenu = (props: {
 	items: {
 		content: string | ReactNode;
+		type?: "danger";
 		/* hide menu after clicking on one of the items */
 		hideMenuOnClick: boolean;
 		icon?: ReactNode;
@@ -52,11 +53,13 @@ export const TitleMoreMenu = (props: {
 	}, []);
 
 	return (
-		<div className="relative w-fit">
+		<div
+			className="relative w-fit
+			text-white/50"
+		>
 			<button
 				ref={entryRef}
 				className="flex justify-center items-center w-7 h-7
-				text-white/50
 				hover:bg-white/10 rounded-md"
 			>
 				<MoreIcon size={15} />
@@ -75,9 +78,10 @@ export const TitleMoreMenu = (props: {
 						return (
 							<button
 								key={i}
-								className="flex items-center px-2 py-1.5 gap-2
+								className={`flex items-center px-2 py-1.5 gap-2
+								${item.type && item.type === "danger" ? "text-red-500" : ""}
 								hover:bg-white/5
-								rounded cursor-pointer whitespace-nowrap"
+								rounded cursor-pointer whitespace-nowrap`}
 								onClick={() => {
 									item.onClick();
 									if (item.hideMenuOnClick) {
@@ -85,11 +89,7 @@ export const TitleMoreMenu = (props: {
 									}
 								}}
 							>
-								{item.icon && (
-									<div className="text-white/40">
-										{item.icon}
-									</div>
-								)}
+								{item.icon && <div>{item.icon}</div>}
 								<div>{item.content}</div>
 							</button>
 						);
