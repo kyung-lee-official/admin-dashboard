@@ -179,7 +179,7 @@ export const Dropdown = <T,>(props: DropdownProps<T>) => {
 						</div>
 					))
 				) : !multiple && selected ? (
-					<span>{getDisplayValue(selected as T)}</span>
+					<span className="text-white/60">{getDisplayValue(selected as T)}</span>
 				) : (
 					<span className="text-neutral-400">{placeholder}</span>
 				)}
