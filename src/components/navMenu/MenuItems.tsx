@@ -592,6 +592,17 @@ export const settingsGeneralMenuItems: HierarchicalMenuItem[] = [
 		},
 	},
 	{
+		pageUrlReg: /^\/settings\/general\/members$/,
+		breadcrumbs: () => {
+			return [
+				{
+					href: "/settings/general/members",
+					text: "Members",
+				},
+			];
+		},
+	},
+	{
 		pageUrlReg: /^\/settings\/general\/appearance$/,
 		breadcrumbs: () => {
 			return [
