@@ -4,6 +4,7 @@ import {
 	Manual,
 	PerformanceIcon,
 	ReturnIcon,
+	ShoppingBag,
 } from "@/components/icons/Icons";
 
 export type HierarchicalMenuItem = {
@@ -537,6 +538,18 @@ export const menuItems: HierarchicalMenuItem[] = [
 			},
 		],
 		icon: <Crawler size="20" />,
+	},
+	{
+		pageUrlReg: /^\/app\/retail$/,
+		breadcrumbs: () => {
+			return [
+				{
+					href: "/app/retail",
+					text: "ChituSystems",
+				},
+			];
+		},
+		icon: <ShoppingBag size={20} />,
 	},
 ];
 
