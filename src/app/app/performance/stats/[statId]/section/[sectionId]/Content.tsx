@@ -98,6 +98,10 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 						[&_>_tr_>_td]:border-t-[1px] [&_>_tr_>_td]:border-white/10"
 					>
 						<tr>
+							<td>Section Role</td>
+							<td>{section.memberRoleId}</td>
+						</tr>
+						<tr>
 							<td>Section Title</td>
 							<td>{section.title}</td>
 						</tr>

@@ -227,34 +227,51 @@ export const Content = (props: { statId: number }) => {
 							[&_>_tr_>_td]:border-t-[1px] [&_>_tr_>_td]:border-white/10
 							[&_>_tr]:cursor-pointer"
 						>
-							{statSections.map((s, i) => {
-								return (
-									<tr
-										key={i}
-										className="hover:bg-white/5"
-										onClick={() => {
-											router.push(
-												`${statId}/section/${s.id}`
-											);
-										}}
-									>
-										<td>{s.title}</td>
-										<td>
-											{s.events.some((e) => {
-												return (
-													e.approval ===
-													ApprovalType.PENDING
+							{statSections
+								.sort((a, b) => {
+									return a.createdAt.localeCompare(
+										b.createdAt
+									);
+								})
+								.map((s, i) => {
+									return (
+										<tr
+											key={i}
+											className="hover:bg-white/5"
+											onClick={() => {
+												router.push(
+													`${statId}/section/${s.id}`
 												);
-											})
-												? ApprovalType.PENDING
-												: "ALL REVIEWED"}
-										</td>
-										<td>{s.weight}</td>
-										<td>
-											<div className="flex items-center gap-2">
-												<CircularProgress
-													size={24}
-													progress={s.events.reduce(
+											}}
+										>
+											<td>{s.title}</td>
+											<td>
+												{s.events.some((e) => {
+													return (
+														e.approval ===
+														ApprovalType.PENDING
+													);
+												})
+													? ApprovalType.PENDING
+													: "ALL REVIEWED"}
+											</td>
+											<td>{s.weight}</td>
+											<td>
+												<div className="flex items-center gap-2">
+													<CircularProgress
+														size={24}
+														progress={s.events.reduce(
+															(acc, e) =>
+																acc +
+																(e.approval ===
+																ApprovalType.APPROVED
+																	? e.score *
+																	  e.amount
+																	: 0),
+															0
+														)}
+													/>
+													{s.events.reduce(
 														(acc, e) =>
 															acc +
 															(e.approval ===
@@ -264,29 +281,20 @@ export const Content = (props: { statId: number }) => {
 																: 0),
 														0
 													)}
-												/>
+												</div>
+											</td>
+											<td>
 												{s.events.reduce(
 													(acc, e) =>
 														acc +
-														(e.approval ===
-														ApprovalType.APPROVED
-															? e.score * e.amount
-															: 0),
+														e.score * e.amount,
 													0
 												)}
-											</div>
-										</td>
-										<td>
-											{s.events.reduce(
-												(acc, e) =>
-													acc + e.score * e.amount,
-												0
-											)}
-										</td>
-										<td>{s.description}</td>
-									</tr>
-								);
-							})}
+											</td>
+											<td>{s.description}</td>
+										</tr>
+									);
+								})}
 						</tbody>
 					</table>
 				</div>

@@ -5,6 +5,7 @@ export enum EditSectionType {
 	INITIALIZE = "initialize",
 	CREATE = "create",
 	UPDATE_TITLE = "update-title",
+	UPDATE_MEMBER_ROLE = "update-member-role",
 	UPDATE_WEIGHT = "update-weight",
 	UPDATE_DESCRIPTION = "update-description",
 	DELETE = "delete",
@@ -27,8 +28,10 @@ export function statSectionsReducer(
 			return state.concat({
 				tempId: nanoid(),
 				weight: 0,
+				memberRoleId: null,
 				title: "New Section",
 				description: "",
+				createdAt: "",
 			});
 		}
 		case EditSectionType.UPDATE_TITLE: {
@@ -39,8 +42,10 @@ export function statSectionsReducer(
 						id: s.id,
 						tempId: s.tempId,
 						weight: s.weight,
+						memberRoleId: s.memberRoleId,
 						title: title,
 						description: s.description,
+						createdAt: s.createdAt,
 					};
 				}
 				return s;
@@ -54,8 +59,27 @@ export function statSectionsReducer(
 						id: s.id,
 						tempId: s.tempId,
 						weight: weight,
+						memberRoleId: s.memberRoleId,
 						title: s.title,
 						description: s.description,
+						createdAt: s.createdAt,
+					};
+				}
+				return s;
+			});
+		}
+		case EditSectionType.UPDATE_MEMBER_ROLE: {
+			const { tempId, memberRoleId } = action.payload;
+			return state.map((s) => {
+				if (s.tempId === tempId) {
+					return {
+						id: s.id,
+						tempId: s.tempId,
+						weight: s.weight,
+						memberRoleId: memberRoleId,
+						title: s.title,
+						description: s.description,
+						createdAt: s.createdAt,
 					};
 				}
 				return s;
@@ -69,8 +93,10 @@ export function statSectionsReducer(
 						id: s.id,
 						tempId: s.tempId,
 						weight: s.weight,
+						memberRoleId: s.memberRoleId,
 						title: s.title,
 						description: description,
+						createdAt: s.createdAt,
 					};
 				}
 				return s;

@@ -5,6 +5,7 @@ import { Member, MemberRole } from "../internal";
 export type CreateSectionData = {
 	tempId: string /* a nanoId for new sections, used for distinguishing newly added sections in frontend only, for example, identifying which one to delete */;
 	weight: number;
+	memberRoleId: string | null;
 	title: string;
 	description?: string;
 };
@@ -19,8 +20,10 @@ export type EditSectionData = {
 	id?: number /* if id is present, it's an existing section */;
 	tempId: string /* a nanoId for new sections, used for distinguishing newly added sections in frontend only, for example, identifying which one to delete */;
 	weight: number;
+	memberRoleId: string | null;
 	title: string;
 	description: string;
+	createdAt: string;
 };
 
 export type EditPerformanceStatData = {
@@ -55,9 +58,11 @@ export type OwnerResponse = {
 export type SectionResponse = {
 	id: number;
 	weight: number;
+	memberRoleId: string;
 	title: string;
 	description: string;
 	events: EventResponse[];
+	createdAt: string;
 };
 
 export type PerformanceStatResponse = {

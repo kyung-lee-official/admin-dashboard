@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Button } from "@/components/button/Button";
 import { CreateSectionData } from "@/utils/types/app/performance";
 import { nanoid } from "nanoid";
+import { Section } from "./Section";
 
 type SectionProps = {
 	sections: CreateSectionData[];
@@ -43,6 +44,7 @@ export const Sections = (props: SectionProps) => {
 								sections.concat({
 									tempId: nanoid(),
 									weight: 0,
+									memberRoleId: null,
 									title: "New Section",
 								})
 							);
@@ -62,132 +64,12 @@ export const Sections = (props: SectionProps) => {
 				{sections.length > 0 &&
 					sections.map((s, i) => {
 						return (
-							<div
+							<Section
 								key={i}
-								className="flex flex-col
-								border-[1px] border-white/20 border-t-white/30
-								rounded"
-							>
-								<div
-									className="flex justify-between items-center px-2 py-1
-									bg-white/5"
-								>
-									<input
-										type="text"
-										className="w-40 px-2 py-0.5
-										bg-transparent
-										border-[1px] border-neutral-700 border-t-neutral-600
-										rounded"
-										placeholder="Title"
-										value={s.title}
-										onChange={(e) => {
-											setSections(
-												sections.map((section) => {
-													if (
-														s.tempId ===
-														section.tempId
-													) {
-														const title =
-															e.target.value;
-														return {
-															tempId: s.tempId,
-															weight: s.weight,
-															title: title,
-															description:
-																s.description,
-														};
-													}
-													return section;
-												})
-											);
-										}}
-									/>
-									<div className="flex items-center gap-2">
-										<div>Weight</div>
-										<input
-											type="number"
-											className="w-16 px-2 py-0.5
-											bg-transparent
-											border-[1px] border-neutral-700 border-t-neutral-600
-											rounded"
-											min={0}
-											max={100}
-											value={s.weight}
-											onChange={(e) => {
-												setSections(
-													sections.map((section) => {
-														if (
-															s.tempId ===
-															section.tempId
-														) {
-															const weight =
-																parseInt(
-																	e.target
-																		.value
-																);
-															return {
-																tempId: s.tempId,
-																weight: Number.isNaN(
-																	weight
-																)
-																	? 0
-																	: weight,
-																title: s.title,
-																description:
-																	s.description,
-															};
-														}
-														return section;
-													})
-												);
-											}}
-										/>
-									</div>
-									<Button
-										size="sm"
-										onClick={(e) => {
-											e.preventDefault();
-											setSections(
-												sections.filter(
-													(section) =>
-														s.tempId !==
-														section.tempId
-												)
-											);
-										}}
-									>
-										Delete
-									</Button>
-								</div>
-								<textarea
-									placeholder={"Description"}
-									className="p-2
-									bg-transparent
-									border-t-[1px] border-white/20
-									outline-none"
-									value={s.description || ""}
-									onChange={(e) => {
-										setSections(
-											sections.map((section) => {
-												if (
-													s.tempId === section.tempId
-												) {
-													const description =
-														e.target.value;
-													return {
-														tempId: s.tempId,
-														weight: s.weight,
-														title: s.title,
-														description:
-															description,
-													};
-												}
-												return section;
-											})
-										);
-									}}
-								/>
-							</div>
+								s={s}
+								sections={sections}
+								setSections={setSections}
+							/>
 						);
 					})}
 			</div>

@@ -36,6 +36,7 @@ export const EditContentAddStat = (props: {
 			{
 				tempId: nanoid(),
 				weight: 100,
+				memberRoleId: null,
 				title: "New Section",
 				description: "",
 			},
@@ -96,6 +97,7 @@ export const EditContentAddStat = (props: {
 				month: newData.month.startOf("month").format("YYYY-MM-DD"),
 				statSections: newData.statSections.map((s) => ({
 					weight: s.weight,
+					memberRoleId: s.memberRoleId,
 					title: s.title,
 					description: s.description,
 				})),

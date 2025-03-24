@@ -52,7 +52,6 @@ export const EditContentEditStat = (props: {
 		statSections: [],
 	});
 	const [newData, setNewData] = useState<EditPerformanceStatData>(oldData);
-	// const [statSections, setStatSections] = useState(oldData.statSections);
 	const [statSections, dispatchStatSections] = useReducer(
 		statSectionsReducer,
 		oldData.statSections
@@ -68,8 +67,10 @@ export const EditContentEditStat = (props: {
 						id: s.id,
 						tempId: nanoid(),
 						weight: s.weight,
+						memberRoleId: s.memberRoleId,
 						title: s.title,
 						description: s.description,
+						createdAt: s.createdAt,
 					};
 				}),
 			};
