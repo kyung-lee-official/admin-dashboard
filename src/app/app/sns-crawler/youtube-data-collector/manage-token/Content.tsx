@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/button/Button";
 import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
 import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
 import {
@@ -12,11 +13,13 @@ import { useAuthStore } from "@/stores/auth";
 import {
 	deleteToken,
 	getYouTubeTokens,
+	markTokenAsAvailable,
 	SnsYouTubeDataQK,
 } from "@/utils/api/app/sns-crawler/youtube-data-collector";
 import { queryClient } from "@/utils/react-query/react-query";
 import { YouTubeToken } from "@/utils/types/app/sns-crawler";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import dayjs from "dayjs";
 import { useState } from "react";
 import { createPortal } from "react-dom";
 
@@ -42,6 +45,18 @@ export const Content = () => {
 	const mutation = useMutation({
 		mutationFn: () => {
 			return deleteToken(tokenToDelete, jwt);
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: [SnsYouTubeDataQK.GET_YOUTUBE_TOKENS],
+			});
+		},
+		onError: () => {},
+	});
+
+	const markAsAvailableMutation = useMutation({
+		mutationFn: (data: string) => {
+			return markTokenAsAvailable(data, jwt);
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
@@ -106,7 +121,13 @@ export const Content = () => {
 										>
 											<td className="w-2/6">{t.token}</td>
 											<td className="w-2/6">
-												{t.quotaRunOutAt}
+												{t.quotaRunOutAt
+													? dayjs(
+															t.quotaRunOutAt
+													  ).format(
+															"MMM DD, YYYY HH:mm:ss"
+													  )
+													: "Unknown"}
 											</td>
 											<td className="w-1/6">
 												{t.isExpired
@@ -114,7 +135,19 @@ export const Content = () => {
 													: "Unknown"}
 											</td>
 											<td className="w-1/6">
-												<div className="flex justify-end items-center">
+												<div className="flex justify-end items-center gap-x-1.5">
+													<div className="w-fit truncate">
+														<Button
+															size="sm"
+															onClick={() => {
+																markAsAvailableMutation.mutate(
+																	t.token
+																);
+															}}
+														>
+															mark as available
+														</Button>
+													</div>
 													<button
 														className="flex justify-center items-center w-6 h-6
 														bg-white/5 hover:bg-white/15

@@ -192,6 +192,7 @@ export const Content = (props: { taskId: number }) => {
 						status={
 							getYouTubeTaskMetaQuery.data.status as TaskStatus
 						}
+						getYouTubeTaskByIdQuery={getYouTubeTaskByIdQuery}
 						range={range}
 						setRange={setRange}
 						targetResultCount={targetResultCount}

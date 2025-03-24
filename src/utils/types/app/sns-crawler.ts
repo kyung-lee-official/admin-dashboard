@@ -72,6 +72,9 @@ export type YouTubeToken = {
 export type YouTubeDataTask = {
 	id: number;
 	youTubeDataTaskKeywords: YouTubeDataTaskKeyword[];
+	timeRangeStart: string | null;
+	timeRangeEnd: string | null;
+	targetResultCount: number;
 	createdAt: string;
 	updatedAt: string;
 };

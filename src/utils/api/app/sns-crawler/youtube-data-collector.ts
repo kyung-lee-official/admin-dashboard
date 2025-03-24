@@ -75,6 +75,23 @@ export const deleteToken = async (youtubeToken: string, jwt: string) => {
 	return res.data;
 };
 
+export const markTokenAsAvailable = async (
+	youtubeToken: string,
+	jwt: string
+) => {
+	const res = await axios.patch(
+		`internal/applications/youtube-data-collector/mark-token-as-available/${youtubeToken}`,
+		{},
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+			},
+		}
+	);
+	return res.data;
+};
+
 export const overwriteYouTubeSourceData = async (
 	newData: YoutubeDataOverwriteSourceDto,
 	jwt: string
