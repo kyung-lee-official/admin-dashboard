@@ -1,4 +1,5 @@
 import axios, { AxiosError } from "axios";
+import { CreateMemberDto } from "../types/internal";
 
 export enum MembersQK {
 	GET_MY_INFO = "get-my-info",
@@ -18,6 +19,16 @@ export const getMyInfo = async (jwt: string) => {
 
 export const getMembers = async (jwt: string) => {
 	const res = await axios.post("/internal/members/search", null, {
+		baseURL: process.env.NEXT_PUBLIC_API_HOST,
+		headers: {
+			Authorization: jwt,
+		},
+	});
+	return res.data;
+};
+
+export const createMember = async (dto: CreateMemberDto, jwt: string) => {
+	const res = await axios.post("/internal/members/create", dto, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: jwt,

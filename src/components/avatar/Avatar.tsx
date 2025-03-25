@@ -2,9 +2,10 @@
 
 import { useAuthStore } from "@/stores/auth";
 import { downloadAvatar } from "@/utils/api/members";
+import { Member } from "@/utils/types/internal";
 import { useEffect, useState } from "react";
 
-export const Avatar = (props: { member: any; className?: string }) => {
+export const Avatar = (props: { member: Member; className?: string }) => {
 	const { member, className } = props;
 	const jwt = useAuthStore((state) => state.jwt);
 	const [avatar, setAvatar] = useState<Blob | null>(null);

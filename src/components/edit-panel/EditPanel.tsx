@@ -13,12 +13,14 @@ import { EditContentAddTemplate } from "@/app/app/performance/event-templates/ed
 import { EditContentOverwriteSourceData } from "@/app/app/sns-crawler/facebook-group/source-data/edit-content-overwrite-source-data/EditContentOverwriteSourceData";
 import { EditContentOverwriteYouTubeSourceData } from "@/app/app/sns-crawler/youtube-data-collector/source-data/edit-content-overwrite-youtube-source-data/EditContentOverwriteYouTubeSourceData";
 import { EditContentAddYouTubeToken } from "@/app/app/sns-crawler/youtube-data-collector/manage-token/edit-content-add-youtube-token/EditContentAddYouTubeToken";
+import EditContentAddMember from "@/app/settings/general/members/EditContentAddMember";
 
 export enum EditId {
 	/* settings */
 	SIGN_UP = "sign-up",
 	ADD_ROLE = "add-role",
 	EDIT_ROLE = "edit-role",
+	ADD_MEMBER = "add-member",
 	PROFILE = "profile",
 	AVATAR = "avatar",
 	EMAIL = "email",
@@ -66,6 +68,8 @@ const EditContent = (props: {
 			return <EditContentAddRole edit={edit} setEdit={setEdit} />;
 		case EditId.EDIT_ROLE:
 			return <EditContentEditRole edit={edit} setEdit={setEdit} />;
+		case EditId.ADD_MEMBER:
+			return <EditContentAddMember edit={edit} setEdit={setEdit} />;
 		case EditId.PROFILE:
 			return <EditContentProfile edit={edit} setEdit={setEdit} />;
 		case EditId.AVATAR:
