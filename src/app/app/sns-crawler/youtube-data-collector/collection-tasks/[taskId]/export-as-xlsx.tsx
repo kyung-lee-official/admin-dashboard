@@ -57,7 +57,7 @@ export async function exportAsXlsx(
 		try {
 			compositeDataSchema.parse(c);
 		} catch (e) {
-			console.error(e);
+			console.error(`video ${c.videoId} is invalid`);
 			continue;
 		}
 		const keyword = c.keyword;
