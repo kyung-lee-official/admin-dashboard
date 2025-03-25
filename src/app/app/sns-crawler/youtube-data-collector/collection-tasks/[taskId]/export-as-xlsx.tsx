@@ -1,5 +1,6 @@
 import * as ExcelJS from "exceljs";
 import { getCompositeDataByTaskId } from "@/utils/api/app/sns-crawler/youtube-data-collector";
+import { z } from "zod";
 
 type Summary = {
 	keyword: string;
@@ -19,23 +20,24 @@ type ExportConfig = {
 	longVideoDurationThreshold: number;
 };
 
-export type CompositeData = {
-	keyword: string;
-	excelRow: number;
-	publishedAt: string;
-	videoId: string;
-	title: string;
-	description: string;
-	durationAsSeconds: number;
-	viewCount: number | null;
-	likeCount: number | null;
-	favoriteCount: number | null;
-	commentCount: number | null;
-	channelTitle: string;
-	channelViewCount: number;
-	channelVideoCount: number;
-	subscriberCount: number;
-};
+const compositeDataSchema = z.object({
+	keyword: z.string(),
+	excelRow: z.number(),
+	publishedAt: z.string(),
+	videoId: z.string(),
+	title: z.string(),
+	description: z.string(),
+	durationAsSeconds: z.number(),
+	viewCount: z.number(),
+	likeCount: z.number(),
+	favoriteCount: z.number(),
+	commentCount: z.number(),
+	channelTitle: z.string(),
+	channelViewCount: z.number(),
+	channelVideoCount: z.number(),
+	subscriberCount: z.number(),
+});
+export type CompositeData = z.infer<typeof compositeDataSchema>;
 
 export async function exportAsXlsx(
 	taskId: number,
@@ -51,46 +53,53 @@ export async function exportAsXlsx(
 
 	const summary: Summary[] = [];
 	for (const c of compositeData) {
+		/* validate the data, drop it if it's invalid */
+		try {
+			compositeDataSchema.parse(c);
+		} catch (e) {
+			console.error(e);
+			continue;
+		}
 		const keyword = c.keyword;
 		const excelRow = c.excelRow;
 		const existing = summary.find((s) => s.keyword === keyword);
 		if (existing) {
 			existing.totalVideoCount++;
-			existing.totalViewCount += c.viewCount ?? 0;
+			existing.totalViewCount += c.viewCount;
 			existing.totalVideoCountLong +=
 				c.durationAsSeconds >= longVideoDurationThreshold ? 1 : 0;
 			existing.totalViewCountLong +=
 				c.durationAsSeconds >= longVideoDurationThreshold
-					? c.viewCount ?? 0
+					? c.viewCount
 					: 0;
 			existing.totalVideoCountShort +=
 				c.durationAsSeconds < longVideoDurationThreshold ? 1 : 0;
 			existing.totalViewCountShort +=
 				c.durationAsSeconds < longVideoDurationThreshold
-					? c.viewCount ?? 0
+					? c.viewCount
 					: 0;
-			existing.totalCommentCount += c.commentCount ?? 0;
-			existing.totalLikeCount += c.likeCount ?? 0;
+			existing.totalCommentCount += c.commentCount;
+			existing.totalLikeCount += c.likeCount;
 		} else {
 			summary.push({
 				keyword,
 				excelRow,
 				totalVideoCount: 1,
-				totalViewCount: c.viewCount ?? 0,
+				totalViewCount: c.viewCount,
 				totalVideoCountLong:
 					c.durationAsSeconds >= longVideoDurationThreshold ? 1 : 0,
 				totalViewCountLong:
 					c.durationAsSeconds >= longVideoDurationThreshold
-						? c.viewCount ?? 0
+						? c.viewCount
 						: 0,
 				totalVideoCountShort:
 					c.durationAsSeconds < longVideoDurationThreshold ? 1 : 0,
 				totalViewCountShort:
 					c.durationAsSeconds < longVideoDurationThreshold
-						? c.viewCount ?? 0
+						? c.viewCount
 						: 0,
-				totalCommentCount: c.commentCount ?? 0,
-				totalLikeCount: c.likeCount ?? 0,
+				totalCommentCount: c.commentCount,
+				totalLikeCount: c.likeCount,
 			});
 		}
 	}
