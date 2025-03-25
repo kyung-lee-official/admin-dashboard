@@ -27,10 +27,10 @@ export type CompositeData = {
 	title: string;
 	description: string;
 	durationAsSeconds: number;
-	viewCount: number;
-	likeCount: number;
-	favoriteCount: number;
-	commentCount: number;
+	viewCount: number | null;
+	likeCount: number | null;
+	favoriteCount: number | null;
+	commentCount: number | null;
 	channelTitle: string;
 	channelViewCount: number;
 	channelVideoCount: number;
@@ -56,41 +56,41 @@ export async function exportAsXlsx(
 		const existing = summary.find((s) => s.keyword === keyword);
 		if (existing) {
 			existing.totalVideoCount++;
-			existing.totalViewCount += c.viewCount;
+			existing.totalViewCount += c.viewCount ?? 0;
 			existing.totalVideoCountLong +=
 				c.durationAsSeconds >= longVideoDurationThreshold ? 1 : 0;
 			existing.totalViewCountLong +=
 				c.durationAsSeconds >= longVideoDurationThreshold
-					? c.viewCount
+					? c.viewCount ?? 0
 					: 0;
 			existing.totalVideoCountShort +=
 				c.durationAsSeconds < longVideoDurationThreshold ? 1 : 0;
 			existing.totalViewCountShort +=
 				c.durationAsSeconds < longVideoDurationThreshold
-					? c.viewCount
+					? c.viewCount ?? 0
 					: 0;
-			existing.totalCommentCount += c.commentCount;
-			existing.totalLikeCount += c.likeCount;
+			existing.totalCommentCount += c.commentCount ?? 0;
+			existing.totalLikeCount += c.likeCount ?? 0;
 		} else {
 			summary.push({
 				keyword,
 				excelRow,
 				totalVideoCount: 1,
-				totalViewCount: c.viewCount,
+				totalViewCount: c.viewCount ?? 0,
 				totalVideoCountLong:
 					c.durationAsSeconds >= longVideoDurationThreshold ? 1 : 0,
 				totalViewCountLong:
 					c.durationAsSeconds >= longVideoDurationThreshold
-						? c.viewCount
+						? c.viewCount ?? 0
 						: 0,
 				totalVideoCountShort:
 					c.durationAsSeconds < longVideoDurationThreshold ? 1 : 0,
 				totalViewCountShort:
 					c.durationAsSeconds < longVideoDurationThreshold
-						? c.viewCount
+						? c.viewCount ?? 0
 						: 0,
-				totalCommentCount: c.commentCount,
-				totalLikeCount: c.likeCount,
+				totalCommentCount: c.commentCount ?? 0,
+				totalLikeCount: c.likeCount ?? 0,
 			});
 		}
 	}
