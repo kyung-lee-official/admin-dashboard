@@ -12,7 +12,7 @@ export const PageContainer = (props: { children: ReactNode }) => {
 export const PageBlock = (props: {
 	title: string | ReactNode;
 	moreMenu?: ReactNode;
-	children: ReactNode;
+	children?: ReactNode;
 }) => {
 	const { title, moreMenu, children } = props;
 	return (
@@ -27,7 +27,7 @@ export const PageBlock = (props: {
 				</div>
 				{moreMenu && <div>{moreMenu}</div>}
 			</div>
-			<div className="text-neutral-400">{children}</div>
+			{children && <div className="text-neutral-400">{children}</div>}
 		</div>
 	);
 };
