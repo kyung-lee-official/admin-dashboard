@@ -22,7 +22,10 @@ export const PageBlock = (props: {
 			rounded-md"
 		>
 			<div className="flex justify-between items-center w-full px-6 py-4">
-				<div className="text-white/80 text-lg font-semibold">
+				<div
+					className="w-full
+					text-white/80 text-lg font-semibold"
+				>
 					{title}
 				</div>
 				{moreMenu && <div>{moreMenu}</div>}
