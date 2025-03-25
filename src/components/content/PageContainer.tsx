@@ -27,7 +27,7 @@ export const PageBlock = (props: {
 				</div>
 				{moreMenu && <div>{moreMenu}</div>}
 			</div>
-			<div>{children}</div>
+			<div className="text-neutral-400">{children}</div>
 		</div>
 	);
 };

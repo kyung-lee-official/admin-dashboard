@@ -31,7 +31,7 @@ export const Tbody = (props: { children: ReactNode }) => {
 		<tbody
 			className="[&_>_tr_>_td]:py-3 [&_>_tr_>_td]:px-6
 			[&_>_tr_>_td]:border-t-[1px] [&_>_tr_>_td]:border-white/10
-			[&_>_tr]:hover:bg-white/5 [&_>_tr]:cursor-pointer"
+			[&_>_tr]:hover:bg-white/5"
 		>
 			{children}
 		</tbody>
