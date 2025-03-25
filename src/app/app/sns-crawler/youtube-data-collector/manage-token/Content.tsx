@@ -2,6 +2,8 @@
 
 import { Button } from "@/components/button/Button";
 import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
+import { PageBlock, PageContainer } from "@/components/content/PageContainer";
+import { Table, Tbody, Thead } from "@/components/content/Table";
 import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
 import {
 	EditId,
@@ -67,58 +69,48 @@ export const Content = () => {
 	});
 
 	return (
-		<div className="flex flex-col w-full max-w-[1600px] min-h-[calc(100svh-56px)] p-3 mx-auto gap-y-3">
-			<div
-				className="text-white/90
-				bg-white/5
-				border-[1px] border-white/10 border-t-white/15
-				rounded-md"
-			>
-				<div className="relative flex justify-between items-center px-6 py-4">
-					<div className="text-lg font-semibold">Manage Token</div>
-					<TitleMoreMenu
-						items={[
-							{
-								content: "Add Token",
-								hideMenuOnClick: true,
-								icon: <EditIcon size={15} />,
-								onClick: () => {
-									setEdit({
-										show: true,
-										id: EditId.ADD_YOUTUBE_TOKEN,
-									});
+		<PageContainer>
+			<PageBlock
+				title="Manage Token"
+				moreMenu={
+					<>
+						<TitleMoreMenu
+							items={[
+								{
+									content: "Add Token",
+									hideMenuOnClick: true,
+									icon: <EditIcon size={15} />,
+									onClick: () => {
+										setEdit({
+											show: true,
+											id: EditId.ADD_YOUTUBE_TOKEN,
+										});
+									},
 								},
-							},
-						]}
-					/>
-					{createPortal(
-						<EditPanel edit={edit} setEdit={setEdit} />,
-						document.body
-					)}
-				</div>
+							]}
+						/>
+						{createPortal(
+							<EditPanel edit={edit} setEdit={setEdit} />,
+							document.body
+						)}
+					</>
+				}
+			>
 				{getYouTubeTokensQuery.data && (
-					<table
-						className="w-full
-						text-sm text-white/50"
-					>
-						<thead className="[&_>_tr_>_th]:px-6 [&_>_tr_>_th]:py-1 [&_>_tr_>_th]:text-left">
+					<Table>
+						<Thead>
 							<tr>
 								<th className="w-2/6">Token</th>
 								<th className="w-2/6">Quota Run Out At</th>
 								<th className="w-1/6">Is Expired</th>
 								<th className="w-1/6"></th>
 							</tr>
-						</thead>
-						<tbody className="[&_>_tr_>_td]:px-6 [&_>_tr_>_td]:py-1">
+						</Thead>
+						<Tbody>
 							{getYouTubeTokensQuery.data.map(
 								(t: any, i: number) => {
 									return (
-										<tr
-											key={i}
-											className="items-center px-3 py-1 gap-6
-											text-sm
-											border-t-[1px] border-white/10"
-										>
+										<tr key={i}>
 											<td className="w-2/6">{t.token}</td>
 											<td className="w-2/6">
 												{t.quotaRunOutAt
@@ -169,8 +161,8 @@ export const Content = () => {
 									);
 								}
 							)}
-						</tbody>
-					</table>
+						</Tbody>
+					</Table>
 				)}
 				<ConfirmDialog
 					show={showDeleteConfirmation}
@@ -181,7 +173,7 @@ export const Content = () => {
 						setShowDeleteConfirmation(false);
 					}}
 				/>
-			</div>
-		</div>
+			</PageBlock>
+		</PageContainer>
 	);
 };

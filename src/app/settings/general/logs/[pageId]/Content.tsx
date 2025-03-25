@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/button/Button";
+import { PageBlock, PageContainer } from "@/components/content/PageContainer";
 import { Input } from "@/components/input/Input";
 import { Loading } from "@/components/page-authorization/Loading";
 import { UnknownError } from "@/components/sacl/UnknownError";
@@ -24,8 +25,9 @@ const LogDetails = (props: { log: Log; i: number }) => {
 					text-sm
 					${i !== 0 ? "border-t border-white/10" : ""}`}
 				>
-					<div>
-						{memberName} {memberId}
+					<div className="flex items-center gap-2">
+						<div>{memberName}</div>
+						<div className="text-neutral-500">{memberId}</div>
 					</div>
 					<div>
 						signed in at{" "}
@@ -76,44 +78,45 @@ export const Content = (props: { pageId: number }) => {
 	}
 
 	return (
-		<div className="flex flex-col w-full max-w-[1600px] min-h-[calc(100svh-56px)] p-3 gap-y-3">
-			{!!logsQuery.data.length ? (
-				<div
-					className="text-white/60
-					bg-white/5
-					rounded-md border-[1px] border-white/10 border-t-white/15"
-				>
-					{logsQuery.data.map((log, i) => {
-						return <LogDetails key={i} i={i} log={log} />;
-					})}
-				</div>
-			) : (
-				<div className="text-white/50">No Data</div>
-			)}
-			<div className="flex justify-end items-center gap-3">
-				{pageId > 1 && (
-					<Button size={"sm"} onClick={handlePrev}>
-						Prev
-					</Button>
+		<PageContainer>
+			<PageBlock title="Logs">
+				{!!logsQuery.data.length ? (
+					<div
+						className="text-white/60
+						rounded-md border-y-[1px] border-white/10 border-t-white/15"
+					>
+						{logsQuery.data.map((log, i) => {
+							return <LogDetails key={i} i={i} log={log} />;
+						})}
+					</div>
+				) : (
+					<div className="text-white/50">No Data</div>
 				)}
-				<div
-					className="flex items-center gap-2
+				<div className="flex justify-end items-center p-3 gap-3">
+					{pageId > 1 && (
+						<Button size={"sm"} onClick={handlePrev}>
+							Prev
+						</Button>
+					)}
+					<div
+						className="flex items-center gap-2
 					text-white/50"
-				>
-					<Input
-						ref={inputRef}
-						type={"number"}
-						sz="sm"
-						isError={false}
-					/>
-					<Button size="sm" onClick={handleGotoPage}>
-						Go
+					>
+						<Input
+							ref={inputRef}
+							type={"number"}
+							sz="sm"
+							isError={false}
+						/>
+						<Button size="sm" onClick={handleGotoPage}>
+							Go
+						</Button>
+					</div>
+					<Button size={"sm"} onClick={handleNext}>
+						Next
 					</Button>
 				</div>
-				<Button size={"sm"} onClick={handleNext}>
-					Next
-				</Button>
-			</div>
-		</div>
+			</PageBlock>
+		</PageContainer>
 	);
 };

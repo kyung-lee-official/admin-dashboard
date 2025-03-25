@@ -1,6 +1,8 @@
 "use client";
 
 import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
+import { PageBlock, PageContainer } from "@/components/content/PageContainer";
+import { Table, Tbody } from "@/components/content/Table";
 import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
 import { DeleteIcon } from "@/components/icons/Icons";
 import { OneRowSkeleton } from "@/components/skeleton/OneRowSkeleton";
@@ -55,23 +57,16 @@ export const Content = (props: { templateId: string }) => {
 	}
 
 	return (
-		<div className="flex flex-col w-full max-w-[1600px] min-h-[calc(100svh-56px)] p-3 mx-auto gap-y-3">
-			<div
-				className="flex flex-col gap-3
-				text-white/90"
-			>
-				<div
-					className="relative flex flex-col
-					bg-white/5
-					border-[1px] border-white/10 border-t-white/15
-					rounded-md"
-				>
-					<div className="flex justify-between items-center w-full px-6 py-4">
-						<div className="text-lg font-semibold">Template</div>
+		<PageContainer>
+			<PageBlock
+				title="Template"
+				moreMenu={
+					<>
 						<TitleMoreMenu
 							items={[
 								{
 									content: "Delete Template",
+									type: "danger",
 									hideMenuOnClick: true,
 									icon: <DeleteIcon size={15} />,
 									onClick: () => {
@@ -88,53 +83,48 @@ export const Content = (props: { templateId: string }) => {
 							}
 							onOk={onDelete}
 						/>
-					</div>
-					<table
-						className="w-full
-						text-sm text-white/50"
-					>
-						<tbody
-							className="[&_>_tr_>_td]:px-6 [&_>_tr_>_td]:py-3
-							[&_>_tr_>_td]:border-t-[1px] [&_>_tr_>_td]:border-white/10"
-						>
-							<tr>
-								<td>Template ID</td>
-								<td>{templateId}</td>
-							</tr>
-							<tr>
-								<td>Role</td>
-								<td>
-									{templateQuery.data ? (
-										templateQuery.data.memberRole.name
-									) : (
-										<OneRowSkeleton />
-									)}
-								</td>
-							</tr>
-							<tr>
-								<td>Score</td>
-								<td>
-									{templateQuery.data ? (
-										templateQuery.data.score
-									) : (
-										<OneRowSkeleton />
-									)}
-								</td>
-							</tr>
-							<tr>
-								<td>Description</td>
-								<td>
-									{templateQuery.data ? (
-										templateQuery.data.description
-									) : (
-										<OneRowSkeleton />
-									)}
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
+					</>
+				}
+			>
+				<Table>
+					<Tbody>
+						<tr>
+							<td>Template ID</td>
+							<td>{templateId}</td>
+						</tr>
+						<tr>
+							<td>Role</td>
+							<td>
+								{templateQuery.data ? (
+									templateQuery.data.memberRole.name
+								) : (
+									<OneRowSkeleton />
+								)}
+							</td>
+						</tr>
+						<tr>
+							<td>Score</td>
+							<td>
+								{templateQuery.data ? (
+									templateQuery.data.score
+								) : (
+									<OneRowSkeleton />
+								)}
+							</td>
+						</tr>
+						<tr>
+							<td>Description</td>
+							<td>
+								{templateQuery.data ? (
+									templateQuery.data.description
+								) : (
+									<OneRowSkeleton />
+								)}
+							</td>
+						</tr>
+					</Tbody>
+				</Table>
+			</PageBlock>
+		</PageContainer>
 	);
 };

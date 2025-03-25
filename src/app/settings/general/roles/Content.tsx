@@ -18,6 +18,8 @@ import { Exception } from "@/components/page-authorization/Exception";
 import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
 import { EditIcon } from "@/components/icons/Icons";
 import { sortByProp } from "@/utils/data/data";
+import { PageBlock, PageContainer } from "@/components/content/PageContainer";
+import { Table, Tbody } from "@/components/content/Table";
 
 export const Content = () => {
 	const jwt = useAuthStore((state) => state.jwt);
@@ -55,36 +57,36 @@ export const Content = () => {
 				return <Forbidden />;
 			case "EFFECT_ALLOW":
 				return (
-					<div className="w-full max-w-[1600px] min-h-[calc(100svh-56px)] p-3 gap-y-3">
-						<div
-							className="text-white/90
-							bg-white/5
-							rounded-md border-[1px] border-white/10 border-t-white/15"
-						>
-							<div className="relative flex justify-between items-center px-6 py-4">
-								<div className="text-lg font-semibold">
-									Roles
-								</div>
-								<TitleMoreMenu
-									items={[
-										{
-											content: "Add a role",
-											hideMenuOnClick: true,
-											icon: <EditIcon size={15} />,
-											onClick: () => {
-												setEdit({
-													show: true,
-													id: EditId.ADD_ROLE,
-												});
+					<PageContainer>
+						<PageBlock
+							title="Roles"
+							moreMenu={
+								<>
+									<TitleMoreMenu
+										items={[
+											{
+												content: "Add a role",
+												hideMenuOnClick: true,
+												icon: <EditIcon size={15} />,
+												onClick: () => {
+													setEdit({
+														show: true,
+														id: EditId.ADD_ROLE,
+													});
+												},
 											},
-										},
-									]}
-								/>
-								{createPortal(
-									<EditPanel edit={edit} setEdit={setEdit} />,
-									document.body
-								)}
-							</div>
+										]}
+									/>
+									{createPortal(
+										<EditPanel
+											edit={edit}
+											setEdit={setEdit}
+										/>,
+										document.body
+									)}
+								</>
+							}
+						>
 							{/* <div
 								className="flex justify-end items-center px-6 py-4
 								text-sm
@@ -92,11 +94,8 @@ export const Content = () => {
 							>
 								Search
 							</div> */}
-							<table className="text-sm text-white/50 font-semibold">
-								<tbody
-									className="[&_>_tr_>_td]:py-3 [&_>_tr_>_td]:px-6
-									[&_>_tr_>_td]:border-t-[1px] [&_>_tr_>_td]:border-white/10"
-								>
+							<Table>
+								<Tbody>
 									<tr>
 										<td className="w-1/2">Name</td>
 										<td className="w-1/2">Role ID</td>
@@ -134,14 +133,10 @@ export const Content = () => {
 												);
 											}
 										)}
-								</tbody>
-							</table>
-						</div>
-						{createPortal(
-							<EditPanel edit={edit} setEdit={setEdit} />,
-							document.body
-						)}
-					</div>
+								</Tbody>
+							</Table>
+						</PageBlock>
+					</PageContainer>
 				);
 			default:
 				return <Exception />;

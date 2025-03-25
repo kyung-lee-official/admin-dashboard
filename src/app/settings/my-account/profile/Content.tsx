@@ -14,6 +14,8 @@ import {
 } from "@/components/edit-panel/EditPanel";
 import { OneRowSkeleton } from "@/components/skeleton/OneRowSkeleton";
 import { MyAvatar } from "./edit-content-avatar/MyAvatar";
+import { PageBlock, PageContainer } from "@/components/content/PageContainer";
+import { Table, Tbody } from "@/components/content/Table";
 
 type MemberRole = {
 	id: string;
@@ -52,20 +54,10 @@ export const Content = () => {
 
 	if (myInfoQuery.data) {
 		return (
-			<div className="flex flex-col w-full max-w-[1600px] min-h-[calc(100svh-56px)] p-3 mx-auto gap-y-3">
-				<div
-					className="text-white/90
-					bg-white/5
-					rounded-md border-[1px] border-white/10 border-t-white/15"
-				>
-					<div className="flex justify-between items-center px-6 py-4">
-						<div className="text-lg font-semibold">Profile</div>
-					</div>
-					<table className="text-sm text-white/50 font-semibold">
-						<tbody
-							className="[&_>_tr_>_td]:py-3 [&_>_tr_>_td]:px-6
-							[&_>_tr_>_td]:border-t-[1px] [&_>_tr_>_td]:border-white/10"
-						>
+			<PageContainer>
+				<PageBlock title="Profile">
+					<Table>
+						<Tbody>
 							<tr>
 								<td className="w-1/2">
 									<MyAvatar />
@@ -169,22 +161,12 @@ export const Content = () => {
 									</div>
 								</td>
 							</tr>
-						</tbody>
-					</table>
-				</div>
-				<div
-					className="text-white/90
-					bg-white/5
-					rounded-md border-[1px] border-white/10 border-t-white/15"
-				>
-					<div className="flex justify-between items-center px-6 py-4">
-						<div className="text-lg font-semibold">Security</div>
-					</div>
-					<table className="text-sm text-white/50 font-semibold">
-						<tbody
-							className="[&_>_tr_>_td]:py-3 [&_>_tr_>_td]:px-6
-							[&_>_tr_>_td]:border-t-[1px] [&_>_tr_>_td]:border-white/10"
-						>
+						</Tbody>
+					</Table>
+				</PageBlock>
+				<PageBlock title="Security">
+					<Table>
+						<Tbody>
 							<tr>
 								<td className="w-1/2">Email</td>
 								<td className="w-1/2">
@@ -242,14 +224,14 @@ export const Content = () => {
 									</button>
 								</td>
 							</tr>
-						</tbody>
-					</table>
-				</div>
+						</Tbody>
+					</Table>
+				</PageBlock>
 				{createPortal(
 					<EditPanel edit={edit} setEdit={setEdit} />,
 					document.body
 				)}
-			</div>
+			</PageContainer>
 		);
 	} else {
 		return null;

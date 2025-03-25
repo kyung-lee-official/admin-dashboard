@@ -1,5 +1,7 @@
 "use client";
 
+import { PageBlock, PageContainer } from "@/components/content/PageContainer";
+import { Table, Tbody } from "@/components/content/Table";
 import { useAuthStore } from "@/stores/auth";
 import {
 	getSearchesByTaskIdAndKeyword,
@@ -49,27 +51,11 @@ export const Content = (props: { taskId: number; keywordId: number }) => {
 	});
 
 	return (
-		<div className="flex flex-col w-full max-w-[1600px] min-h-[calc(100svh-56px)] p-3 mx-auto gap-y-3">
-			<div
-				className="text-white/90
-				bg-white/5
-				border-[1px] border-white/10 border-t-white/15
-				rounded-md"
-			>
-				<div className="relative flex justify-between items-center px-6 py-4">
-					<div className="text-lg font-semibold">
-						Keyword Id {keywordId}
-					</div>
-				</div>
-				<table
-					className="w-full
-					text-sm text-white/50"
-				>
+		<PageContainer>
+			<PageBlock title={`Keyword Id ${keywordId}`}>
+				<Table>
 					{getYouTubeDataTaskKeywordByIdQuery.data && (
-						<tbody
-							className="[&_>_tr_>_td]:px-6 [&_>_tr_>_td]:py-2
-							[&_>_tr]:border-t-[1px] [&_>_tr]:border-white/10"
-						>
+						<Tbody>
 							<tr>
 								<td>Keyword</td>
 								<td>
@@ -88,32 +74,19 @@ export const Content = (props: { taskId: number; keywordId: number }) => {
 									}
 								</td>
 							</tr>
-						</tbody>
+						</Tbody>
 					)}
-				</table>
-			</div>
-			<div
-				className="text-white/90
-				bg-white/5
-				border-[1px] border-white/10 border-t-white/15
-				rounded-md"
+				</Table>
+			</PageBlock>
+			<PageBlock
+				title={`Videos ${
+					getYouTubeSearchesByTaskIdAndKeywordQuery.data &&
+					`(${getYouTubeSearchesByTaskIdAndKeywordQuery.data.length})`
+				}`}
 			>
-				<div className="relative flex justify-between items-center px-6 py-4">
-					<div className="text-lg font-semibold">
-						Videos{" "}
-						{getYouTubeSearchesByTaskIdAndKeywordQuery.data &&
-							`(${getYouTubeSearchesByTaskIdAndKeywordQuery.data.length})`}
-					</div>
-				</div>
-				<table
-					className="w-full
-					text-sm text-white/50"
-				>
+				<Table>
 					{getYouTubeSearchesByTaskIdAndKeywordQuery.data && (
-						<tbody
-							className="[&_>_tr_>_td]:px-6 [&_>_tr_>_td]:py-2
-							[&_>_tr]:border-t-[1px] [&_>_tr]:border-white/10"
-						>
+						<Tbody>
 							{getYouTubeSearchesByTaskIdAndKeywordQuery.data &&
 								getYouTubeSearchesByTaskIdAndKeywordQuery.data.map(
 									(video: any, i: number) => {
@@ -130,10 +103,10 @@ export const Content = (props: { taskId: number; keywordId: number }) => {
 										);
 									}
 								)}
-						</tbody>
+						</Tbody>
 					)}
-				</table>
-			</div>
-		</div>
+				</Table>
+			</PageBlock>
+		</PageContainer>
 	);
 };

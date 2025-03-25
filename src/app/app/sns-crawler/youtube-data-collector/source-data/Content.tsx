@@ -1,5 +1,7 @@
 "use client";
 
+import { PageBlock, PageContainer } from "@/components/content/PageContainer";
+import { Table, Tbody, Thead } from "@/components/content/Table";
 import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
 import {
 	EditId,
@@ -39,65 +41,54 @@ export const Content = () => {
 	});
 
 	return (
-		<div className="flex flex-col w-full max-w-[1600px] min-h-[calc(100svh-56px)] p-3 mx-auto gap-y-3">
-			<div
-				className="text-white/90
-				bg-white/5
-				border-[1px] border-white/10 border-t-white/15
-				rounded-md"
-			>
-				<div className="relative flex justify-between items-center px-6 py-4">
-					<div className="text-lg font-semibold">Source Data</div>
-					<TitleMoreMenu
-						items={[
-							{
-								content: "Overwrite Source Data",
-								hideMenuOnClick: true,
-								icon: <EditIcon size={15} />,
-								onClick: () => {
-									setEdit({
-										show: true,
-										id: EditId.OVERWRITE_YOUTUBE_SOURCE_DATA,
-									});
+		<PageContainer>
+			<PageBlock
+				title="Source Data"
+				moreMenu={
+					<>
+						<TitleMoreMenu
+							items={[
+								{
+									content: "Overwrite Source Data",
+									hideMenuOnClick: true,
+									icon: <EditIcon size={15} />,
+									onClick: () => {
+										setEdit({
+											show: true,
+											id: EditId.OVERWRITE_YOUTUBE_SOURCE_DATA,
+										});
+									},
 								},
-							},
-						]}
-					/>
-					{createPortal(
-						<EditPanel edit={edit} setEdit={setEdit} />,
-						document.body
-					)}
-				</div>
+							]}
+						/>
+						{createPortal(
+							<EditPanel edit={edit} setEdit={setEdit} />,
+							document.body
+						)}
+					</>
+				}
+			>
 				{getYouTubeSourceDataQuery.data && (
-					<table
-						className="w-full
-						text-sm text-white/50"
-					>
-						<thead className="[&_>_tr_>th]:px-2 [&_>_tr_>th]:py-1">
-							<tr className="text-left">
+					<Table>
+						<Thead>
+							<tr>
 								<th className="w-1/2">Excel Row</th>
 								<th className="w-1/2">Keyword</th>
 							</tr>
-						</thead>
-						<tbody className="[&_>_tr_>_td]:px-2 [&_>_tr_>_td]:py-1">
+						</Thead>
+						<Tbody>
 							{getYouTubeSourceDataQuery.data.map((s, i) => {
 								return (
-									<tr
-										key={i}
-										className="px-3 py-1
-										text-sm
-										hover:bg-white/5
-										border-t-[1px] border-white/10"
-									>
+									<tr key={i}>
 										<td className="w-1/2">{s.excelRow}</td>
 										<td className="w-1/2">{s.keyword}</td>
 									</tr>
 								);
 							})}
-						</tbody>
-					</table>
+						</Tbody>
+					</Table>
 				)}
-			</div>
-		</div>
+			</PageBlock>
+		</PageContainer>
 	);
 };

@@ -12,6 +12,7 @@ import {
 } from "@/utils/api/chitubox-manual-feedbacks";
 import { Button } from "@/components/button/Button";
 import { DateRangePicker } from "@/components/date/date-range-picker/DateRangePicker";
+import { PageBlock, PageContainer } from "@/components/content/PageContainer";
 
 export const Content = () => {
 	const pathname = usePathname();
@@ -44,28 +45,29 @@ export const Content = () => {
 	};
 
 	return (
-		<div className="w-full max-w-[1600px] min-h-[calc(100svh-56px)] p-3 gap-y-3">
-			<div
-				className="flex justify-start items-center w-full
-				text-xl"
-			>
-				Select Date Rage
-			</div>
-
-			<div className="flex justify-start items-end gap-3 w-full">
-				<DateRangePicker range={range} setRange={setRange} />
-				<Button
-					size="sm"
-					disabled={isEndBeforeStart}
-					isLoading={feedbacksQuery.isFetching}
-					onClick={onQuery}
-				>
-					Query
-				</Button>
-			</div>
-			<div className="flex justify-start w-full">
-				{/* <Geo feedbacks={feedbacksQuery.data} /> */}
-			</div>
-		</div>
+		<PageContainer>
+			<PageBlock
+				title={
+					<div className="flex items-center gap-2">
+						<div>Select Date Rage</div>
+						<div className="flex items-center gap-3">
+							<DateRangePicker
+								range={range}
+								setRange={setRange}
+							/>
+							<Button
+								size="sm"
+								disabled={isEndBeforeStart}
+								isLoading={feedbacksQuery.isFetching}
+								onClick={onQuery}
+							>
+								Query
+							</Button>
+						</div>
+					</div>
+				}
+			></PageBlock>
+			<div className="flex justify-start w-full"></div>
+		</PageContainer>
 	);
 };

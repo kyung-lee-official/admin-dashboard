@@ -123,6 +123,7 @@ export const ItemMoreMenu = (props: ItemMoreMenuProps) => {
 					<hr className="-m-1 my-1 border-white/10" />
 					<button
 						className="flex items-center px-2 py-1.5 gap-2
+						text-red-500
 						hover:bg-white/5
 						rounded whitespace-nowrap"
 						onClick={() => {
@@ -130,10 +131,10 @@ export const ItemMoreMenu = (props: ItemMoreMenuProps) => {
 							setShowDeleteConfirmation(true);
 						}}
 					>
-						<div className="text-white/40">
+						<div>
 							<DeleteIcon size={15} />
 						</div>
-						Remove Role
+						Delete Role
 					</button>
 				</div>
 			)}

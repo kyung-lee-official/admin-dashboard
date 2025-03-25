@@ -1,9 +1,12 @@
 "use client";
 
 import { Button } from "@/components/button/Button";
+import { PageBlock, PageContainer } from "@/components/content/PageContainer";
+import { Table, Tbody, Thead } from "@/components/content/Table";
 import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
 import { DeleteIcon, ExportIcon } from "@/components/icons/Icons";
 import { Indicator } from "@/components/indecator/Indicator";
+import { HorizontalProgress } from "@/components/progress/horizontal-progress/HorizontalProgress";
 import { useAuthStore } from "@/stores/auth";
 import {
 	abortFacebookGroupCrawler,
@@ -123,17 +126,12 @@ export const Content = (props: { taskId: number }) => {
 	}
 
 	return (
-		<div className="flex flex-col w-full max-w-[1600px] min-h-[calc(100svh-56px)] p-3 mx-auto gap-y-3">
-			<div
-				className="text-white/90
-				bg-white/5
-				border-[1px] border-white/10 border-t-white/15
-				rounded-md"
-			>
-				<div className="relative flex justify-between items-center px-6 py-4">
+		<PageContainer>
+			<PageBlock
+				title={
 					<div
 						className="flex items-center gap-4
-						text-lg font-semibold"
+					text-lg font-semibold"
 					>
 						<div>Crawler Task {taskId}</div>
 						<Indicator
@@ -181,88 +179,39 @@ export const Content = (props: { taskId: number }) => {
 								</Button>
 							)}
 					</div>
-					<TitleMoreMenu
-						items={[
-							{
-								content: "Export as xlsx",
-								hideMenuOnClick: true,
-								icon: <ExportIcon size={15} />,
-								onClick: () => {
-									exportAsXlsx();
-								},
-							},
-							{
-								content: (
-									<div className="text-red-400">
-										Delete Task
-									</div>
-								),
-								hideMenuOnClick: true,
-								icon: (
-									<div className="text-red-400">
-										<DeleteIcon size={15} />
-									</div>
-								),
-								onClick: () => {
-									deleteTaskMutation.mutate();
-								},
-							},
-						]}
-					/>
-				</div>
-			</div>
+				}
+			></PageBlock>
 			<div
-				className="w-full h-1.5
-				rounded
-				border-[1px] border-white/10 overflow-hidden"
+				className="w-full h-1
+				border-[1px] border-white/10 overflow-hidden rounded"
 			>
 				{getFacebookGroupCrawlerTaskByIdQuery.data && (
-					<div
-						style={{
-							width: `${
-								(getFacebookGroupCrawlerTaskByIdQuery.data.records.filter(
-									(record) => {
-										return record.status === "SUCCESS";
-									}
-								).length /
-									getFacebookGroupCrawlerTaskByIdQuery.data
-										.sourceLength) *
-								100
-							}%`,
-						}}
-						className={`h-1.5
-						bg-white/70 duration-200`}
-					></div>
+					<HorizontalProgress
+						progress={
+							(getFacebookGroupCrawlerTaskByIdQuery.data.records.filter(
+								(record) => {
+									return record.status === "SUCCESS";
+								}
+							).length /
+								getFacebookGroupCrawlerTaskByIdQuery.data
+									.sourceLength) *
+							100
+						}
+					/>
 				)}
 			</div>
-			<div
-				className="text-white/90
-				bg-white/5
-				border-[1px] border-white/10 border-t-white/15
-				rounded-md"
-			>
-				<div className="relative flex items-center px-6 py-4">
-					<div>Records</div>
-				</div>
-				<table
-					className="w-full
-					text-white/50
-					[&_>_thead_>_tr_>_th]:px-6 [&_>_thead_>_tr_>_th]:py-3 [&_>_thead_>_tr_>_th]:text-left
-					[&_>_tbody_>_tr_>_td]:px-6 [&_>_tbody_>_tr_>_td]:py-3"
-				>
-					<thead>
-						<tr
-							className="w-full
-							border-t-[1px] border-white/10"
-						>
+			<PageBlock title="Records">
+				<Table>
+					<Thead>
+						<tr>
 							<th className="w-[10%]">Excel Row</th>
 							<th className="w-[30%]">Group Address</th>
 							<th className="w-[40%]">Group Name</th>
 							<th className="w-[10%]">Member Count</th>
 							<th className="w-[10%]">Monthly Post Count</th>
 						</tr>
-					</thead>
-					<tbody>
+					</Thead>
+					<Tbody>
 						{/* sort by excel row */}
 						{getFacebookGroupCrawlerTaskByIdQuery.data?.records
 							.sort((a, b) => {
@@ -293,9 +242,9 @@ export const Content = (props: { taskId: number }) => {
 									</tr>
 								);
 							})}
-					</tbody>
-				</table>
-			</div>
-		</div>
+					</Tbody>
+				</Table>
+			</PageBlock>
+		</PageContainer>
 	);
 };

@@ -2,6 +2,9 @@
 
 import { Button } from "@/components/button/Button";
 import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
+import { PageBlock, PageContainer } from "@/components/content/PageContainer";
+import { Table, Tbody } from "@/components/content/Table";
+import { Indicator } from "@/components/indecator/Indicator";
 import { useAuthStore } from "@/stores/auth";
 import {
 	getFacebookGroupCrawlerStatus,
@@ -56,16 +59,8 @@ export const Content = () => {
 	});
 
 	return (
-		<div className="flex flex-col w-full max-w-[1600px] min-h-[calc(100svh-56px)] p-3 mx-auto gap-y-3">
-			<div
-				className="text-white/90
-				bg-white/5
-				border-[1px] border-white/10 border-t-white/15
-				rounded-md"
-			>
-				<div className="relative flex items-center px-6 py-4">
-					<div className="text-lg font-semibold">Crawler Tasks</div>
-				</div>
+		<PageContainer>
+			<PageBlock title="Crawler Tasks">
 				<div
 					className="flex items-center px-6 py-4 gap-6
 					text-sm
@@ -86,11 +81,7 @@ export const Content = () => {
 								</Link>{" "}
 								is running
 							</div>
-							<div
-								className="w-2.5 h-2.5
-								bg-green-500
-								rounded-full border-1 border-green-500"
-							></div>
+							<Indicator isActive={true} />
 						</div>
 					) : (
 						<div className="flex items-center gap-4">
@@ -102,14 +93,12 @@ export const Content = () => {
 							>
 								Start
 							</Button>
-							<div
-								className="w-2.5 h-2.5
-								rounded-full border-1 border-white/30"
-							></div>
-							<div className="text-white/50">Crawler Idle</div>
+							<Indicator
+								isActive={false}
+								labelText="Crawler Idle"
+							/>
 						</div>
 					)}
-
 					<ConfirmDialog
 						show={showStartConfirmation}
 						setShow={setShowStartConfirmation}
@@ -120,18 +109,10 @@ export const Content = () => {
 						}}
 					/>
 				</div>
-			</div>
-			<div
-				className="text-white/90
-				bg-white/5
-				border-[1px] border-white/10 border-t-white/15
-				rounded-md"
-			>
-				<div className="relative flex items-center px-6 py-4">
-					<div>Tasks</div>
-				</div>
-				<table className="w-full">
-					<tbody>
+			</PageBlock>
+			<PageBlock title="Tasks">
+				<Table>
+					<Tbody>
 						{getFacebookGroupCrawlerTasksQuery.data &&
 							/* sort by createdAt */
 							getFacebookGroupCrawlerTasksQuery.data
@@ -166,9 +147,9 @@ export const Content = () => {
 										</tr>
 									);
 								})}
-					</tbody>
-				</table>
-			</div>
-		</div>
+					</Tbody>
+				</Table>
+			</PageBlock>
+		</PageContainer>
 	);
 };

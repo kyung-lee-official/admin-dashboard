@@ -14,6 +14,7 @@ import { useAuthStore } from "@/stores/auth";
 import { Forbidden } from "@/components/page-authorization/Forbidden";
 import { Loading } from "@/components/page-authorization/Loading";
 import { Exception } from "@/components/page-authorization/Exception";
+import { PageBlock, PageContainer } from "@/components/content/PageContainer";
 
 export const Content = () => {
 	const [edit, setEdit] = useState<EditProps>({
@@ -40,36 +41,35 @@ export const Content = () => {
 				return <Forbidden />;
 			case "EFFECT_ALLOW":
 				return (
-					<div className="w-full max-w-[1600px] min-h-[calc(100svh-56px)] p-3 gap-y-3">
-						<div
-							className="text-white/90
-							bg-white/5
-							rounded-md border-[1px] border-white/10 border-t-white/15"
-						>
-							<div className="flex justify-between items-center px-6 py-4">
-								<div className="text-lg font-semibold">
-									Sign Up
-								</div>
-								<button
-									className="flex justify-center items-center w-7 h-7
+					<PageContainer>
+						<PageBlock
+							title="Sign Up"
+							moreMenu={
+								<>
+									<button
+										className="flex justify-center items-center w-7 h-7
 									text-white/50
 									hover:bg-white/10 rounded-md"
-									onClick={() => {
-										setEdit({
-											show: true,
-											id: EditId.SIGN_UP,
-										});
-									}}
-								>
-									<EditIcon size={15} />
-								</button>
-							</div>
-						</div>
-						{createPortal(
-							<EditPanel edit={edit} setEdit={setEdit} />,
-							document.body
-						)}
-					</div>
+										onClick={() => {
+											setEdit({
+												show: true,
+												id: EditId.SIGN_UP,
+											});
+										}}
+									>
+										<EditIcon size={15} />
+									</button>
+									{createPortal(
+										<EditPanel
+											edit={edit}
+											setEdit={setEdit}
+										/>,
+										document.body
+									)}
+								</>
+							}
+						></PageBlock>
+					</PageContainer>
 				);
 			default:
 				return <Exception />;

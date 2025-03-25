@@ -8,6 +8,8 @@ import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import dayjs from "dayjs";
 import { CreateEvent } from "./CreateEvent";
+import { PageBlock, PageContainer } from "@/components/content/PageContainer";
+import { Table, Tbody } from "@/components/content/Table";
 
 export const Content = (props: { statId: string; sectionId: string }) => {
 	const { statId, sectionId } = props;
@@ -39,24 +41,10 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 	}
 
 	return (
-		<div className="flex flex-col w-full max-w-[1600px] min-h-[calc(100svh-56px)] p-3 mx-auto gap-y-3">
-			<div
-				className="text-white/90
-				bg-white/5
-				border-[1px] border-white/10 border-t-white/15
-				rounded-md"
-			>
-				<div className="flex justify-between items-center w-full px-6 py-4">
-					<div className="text-lg font-semibold">Stat</div>
-				</div>
-				<table
-					className="w-full
-					text-sm text-white/50"
-				>
-					<tbody
-						className="[&_>_tr_>_td]:px-6 [&_>_tr_>_td]:py-3
-						[&_>_tr_>_td]:border-t-[1px] [&_>_tr_>_td]:border-white/10"
-					>
+		<PageContainer>
+			<PageBlock title="Stat">
+				<Table>
+					<Tbody>
 						<tr>
 							<td>Month</td>
 							<td>{dayjs(month).format("MMMM YYYY")}</td>
@@ -67,26 +55,12 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 								{owner.name} ({owner.email})
 							</td>
 						</tr>
-					</tbody>
-				</table>
-			</div>
-			<div
-				className="text-white/50
-				bg-white/5
-				border-[1px] border-white/10 border-t-white/15
-				rounded-md"
-			>
-				<div className="flex justify-between items-center w-full px-6 py-4">
-					<div className="text-lg font-semibold">Section</div>
-				</div>
-				<table
-					className="w-full
-					text-sm text-white/50"
-				>
-					<tbody
-						className="[&_>_tr_>_td]:px-6 [&_>_tr_>_td]:py-3
-						[&_>_tr_>_td]:border-t-[1px] [&_>_tr_>_td]:border-white/10"
-					>
+					</Tbody>
+				</Table>
+			</PageBlock>
+			<PageBlock title="Section">
+				<Table>
+					<Tbody>
 						<tr>
 							<td>Section Title</td>
 							<td>{section.title}</td>
@@ -99,10 +73,10 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 							<td>Section Description</td>
 							<td>{section.description}</td>
 						</tr>
-					</tbody>
-				</table>
-			</div>
+					</Tbody>
+				</Table>
+			</PageBlock>
 			<CreateEvent statId={statId} sectionId={sectionId} />
-		</div>
+		</PageContainer>
 	);
 };

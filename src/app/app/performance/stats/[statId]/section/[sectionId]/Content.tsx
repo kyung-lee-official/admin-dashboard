@@ -15,6 +15,8 @@ import { AxiosError } from "axios";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { PageBlock, PageContainer } from "@/components/content/PageContainer";
+import { Table, Tbody } from "@/components/content/Table";
 
 export const Content = (props: { statId: string; sectionId: string }) => {
 	const { statId, sectionId } = props;
@@ -47,25 +49,10 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 	}
 
 	return (
-		<div className="flex flex-col w-full max-w-[1600px] min-h-[calc(100svh-56px)] p-3 mx-auto gap-y-3">
-			<div
-				className="text-white/90
-				bg-white/5
-				border-[1px] border-white/10 border-t-white/15
-				rounded-md"
-			>
-				<div className="flex justify-between items-center w-full px-6 py-4">
-					<div className="text-lg font-semibold">Stat</div>
-					{/* <TitleMoreMenu /> */}
-				</div>
-				<table
-					className="w-full
-					text-sm text-white/50"
-				>
-					<tbody
-						className="[&_>_tr_>_td]:px-6 [&_>_tr_>_td]:py-3
-						[&_>_tr_>_td]:border-t-[1px] [&_>_tr_>_td]:border-white/10"
-					>
+		<PageContainer>
+			<PageBlock title="Stat">
+				<Table>
+					<Tbody>
 						<tr>
 							<td>Month</td>
 							<td>{dayjs(month).format("MMMM YYYY")}</td>
@@ -76,27 +63,12 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 								{owner.name} ({owner.email})
 							</td>
 						</tr>
-					</tbody>
-				</table>
-			</div>
-			<div
-				className="text-white/50
-				bg-white/5
-				border-[1px] border-white/10 border-t-white/15
-				rounded-md"
-			>
-				<div className="flex justify-between items-center w-full px-6 py-4">
-					<div className="text-lg font-semibold">Section</div>
-					{/* <TitleMoreMenu /> */}
-				</div>
-				<table
-					className="w-full
-					text-sm text-white/50"
-				>
-					<tbody
-						className="[&_>_tr_>_td]:px-6 [&_>_tr_>_td]:py-3
-						[&_>_tr_>_td]:border-t-[1px] [&_>_tr_>_td]:border-white/10"
-					>
+					</Tbody>
+				</Table>
+			</PageBlock>
+			<PageBlock title="Section">
+				<Table>
+					<Tbody>
 						<tr>
 							<td>Section Role</td>
 							<td>{section.memberRoleId}</td>
@@ -153,17 +125,12 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 								)}
 							</td>
 						</tr>
-					</tbody>
-				</table>
-			</div>
-			<div
-				className="text-white/50
-				bg-white/5
-				border-[1px] border-white/10 border-t-white/15
-				rounded-md"
-			>
-				<div className="relative flex justify-between items-center px-6 py-4">
-					<div className="">Events</div>
+					</Tbody>
+				</Table>
+			</PageBlock>
+			<PageBlock
+				title="Events"
+				moreMenu={
 					<Button
 						size="sm"
 						onClick={() => {
@@ -172,11 +139,12 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 					>
 						Create Event
 					</Button>
-				</div>
+				}
+			>
 				<table className="text-sm text-white/50">
 					<tbody
 						className="[&_>_tr_>_td]:py-3 [&_>_tr_>_td]:px-6
-						[&_>_tr_>_td]:border-t-[1px] [&_>_tr_>_td]:border-white/10"
+				[&_>_tr_>_td]:border-t-[1px] [&_>_tr_>_td]:border-white/10"
 					>
 						<tr>
 							<td className="w-2/6">Description</td>
@@ -211,7 +179,7 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 						})}
 					</tbody>
 				</table>
-			</div>
-		</div>
+			</PageBlock>
+		</PageContainer>
 	);
 };

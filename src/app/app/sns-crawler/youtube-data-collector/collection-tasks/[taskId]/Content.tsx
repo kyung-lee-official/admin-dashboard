@@ -31,6 +31,8 @@ import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
 import { Input } from "@/components/input/Input";
 import { exportAsXlsx } from "./export-as-xlsx";
 import { chunkify } from "@/utils/data/data";
+import { PageBlock, PageContainer } from "@/components/content/PageContainer";
+import { Table, Tbody, Thead } from "@/components/content/Table";
 
 export enum TaskStatus {
 	IDLE = "idle",
@@ -159,33 +161,34 @@ export const Content = (props: { taskId: number }) => {
 	});
 
 	return (
-		<div className="flex flex-col w-full max-w-[1600px] min-h-[calc(100svh-56px)] p-3 mx-auto gap-y-3">
-			<div
-				className="text-white/90
-				bg-white/5
-				border-[1px] border-white/10 border-t-white/15
-				rounded-md"
-			>
-				<div className="relative flex justify-between items-center px-6 py-4">
-					<div className="text-lg font-semibold">Tasks {taskId} </div>
-					<TitleMoreMenu
-						items={[
-							{
-								content: "Delete Task",
-								hideMenuOnClick: true,
-								onClick: () => {
-									setShowDeleteConfirmation(true);
+		<PageContainer>
+			<PageBlock
+				title={`Task ${taskId}`}
+				moreMenu={
+					<>
+						<TitleMoreMenu
+							items={[
+								{
+									content: "Delete Task",
+									type: "danger",
+									hideMenuOnClick: true,
+									onClick: () => {
+										setShowDeleteConfirmation(true);
+									},
 								},
-							},
-						]}
-					/>
-					<ConfirmDialog
-						show={showDeleteConfirmation}
-						setShow={setShowDeleteConfirmation}
-						question={"Are you sure you want to delete this task?"}
-						onOk={onDelete}
-					/>
-				</div>
+							]}
+						/>
+						<ConfirmDialog
+							show={showDeleteConfirmation}
+							setShow={setShowDeleteConfirmation}
+							question={
+								"Are you sure you want to delete this task?"
+							}
+							onOk={onDelete}
+						/>
+					</>
+				}
+			>
 				{getYouTubeTaskMetaQuery.data && (
 					<ControlBar
 						taskId={taskId}
@@ -264,76 +267,53 @@ export const Content = (props: { taskId: number }) => {
 						</div>
 					</div>
 				</div>
-			</div>
-			<div
-				className="text-white/90
-				bg-white/5
-				border-[1px] border-white/10 border-t-white/15
-				rounded-md"
-			>
-				<div className="flex items-center px-6 py-4">
-					YouTube Data Collector Service Status
-					<Indicator
-						isActive={
-							getYouTubeTaskMetaQuery.data?.status !==
-							TaskStatus.IDLE
-						}
-					/>
-				</div>
-			</div>
-			<div
-				className="text-white/90
-				bg-white/5
-				border-[1px] border-white/10 border-t-white/15
-				rounded-md"
-			>
-				<div>
-					<div className="relative flex justify-between items-center px-6 py-4">
-						<div className="text-lg font-semibold">Keywords</div>
+			</PageBlock>
+			<PageBlock
+				title={
+					<div className="flex items-center">
+						<div>YouTube Data Collector Service Status</div>
+						<Indicator
+							isActive={
+								getYouTubeTaskMetaQuery.data?.status !==
+								TaskStatus.IDLE
+							}
+						/>
 					</div>
-					<HorizontalProgress
-						progress={
-							getYouTubeTaskByIdQuery.data
-								? (getYouTubeTaskByIdQuery.data.youTubeDataTaskKeywords.filter(
-										(k) => {
-											return k.status === "SUCCESS";
-										}
-								  ).length /
-										getYouTubeTaskByIdQuery.data
-											.youTubeDataTaskKeywords.length) *
-								  100
-								: 0
-						}
-						borderRadius="rounded-none"
-					/>
-				</div>
-				<table
-					className="w-full
-					text-sm text-white/50"
-				>
-					<thead className="[&_>_tr_>_th]:px-6 [&_>_tr_>_th]:py-2 [&_>_tr_>th]:text-left">
-						<tr
-							className="px-3 py-1
-							text-sm
-							border-t-[1px] border-white/10"
-						>
+				}
+			></PageBlock>
+			<PageBlock title="Keywords">
+				<HorizontalProgress
+					progress={
+						getYouTubeTaskByIdQuery.data
+							? (getYouTubeTaskByIdQuery.data.youTubeDataTaskKeywords.filter(
+									(k) => {
+										return k.status === "SUCCESS";
+									}
+							  ).length /
+									getYouTubeTaskByIdQuery.data
+										.youTubeDataTaskKeywords.length) *
+							  100
+							: 0
+					}
+					borderRadius="rounded-none"
+				/>
+				<Table>
+					<Thead>
+						<tr>
 							<th>Id</th>
 							<th>Excel Row</th>
 							<th>Keyword</th>
 							<th>Status</th>
 						</tr>
-					</thead>
-					<tbody className="[&_>_tr_>_td]:px-6 [&_>_tr_>_td]:py-2">
+					</Thead>
+					<Tbody>
 						{getYouTubeTaskByIdQuery.data &&
 							getYouTubeTaskByIdQuery.data.youTubeDataTaskKeywords.map(
 								(k: any, i: number) => {
 									return (
 										<tr
 											key={i}
-											className="px-3 py-1
-											text-sm
-											hover:bg-white/10
-											border-t-[1px] border-white/10 cursor-pointer"
+											className="cursor-pointer"
 											onClick={() => {
 												router.push(
 													`${taskId}/keyword/${k.id}`
@@ -348,52 +328,40 @@ export const Content = (props: { taskId: number }) => {
 									);
 								}
 							)}
-					</tbody>
-				</table>
-			</div>
-			<div
-				className="text-white/90
-				bg-white/5
-				border-[1px] border-white/10 border-t-white/15
-				rounded-md"
+					</Tbody>
+				</Table>
+			</PageBlock>
+			<PageBlock
+				title={
+					<div className="flex gap-3">
+						<div>Fetch Channel Info Based on Search Results</div>
+						{getYouTubeTaskMetaQuery.data?.status ===
+							TaskStatus.IDLE && (
+							<Button
+								size="sm"
+								onClick={() => {
+									fetchChannelsMutation.mutate();
+								}}
+							>
+								Fetch
+							</Button>
+						)}
+					</div>
+				}
+			></PageBlock>
+			<PageBlock
+				title={
+					<div className="flex items-center gap-3">
+						<div>Channels</div>
+						{getYouTubeChannelsByTaskIdQuery.data && (
+							<div>{`(${getYouTubeChannelsByTaskIdQuery.data.length})`}</div>
+						)}
+					</div>
+				}
 			>
-				<div className="flex items-center px-6 py-4 gap-3">
-					<div>Fetch Channel Info Based on Search Results</div>
-					{getYouTubeTaskMetaQuery.data?.status ===
-						TaskStatus.IDLE && (
-						<Button
-							size="sm"
-							onClick={() => {
-								fetchChannelsMutation.mutate();
-							}}
-						>
-							Fetch
-						</Button>
-					)}
-				</div>
-			</div>
-			<div
-				className="text-white/90
-				bg-white/5
-				border-[1px] border-white/10 border-t-white/15
-				rounded-md"
-			>
-				<div className="flex items-center px-6 py-4 gap-3">
-					<div>Channels</div>
-					{getYouTubeChannelsByTaskIdQuery.data && (
-						<div>{`(${getYouTubeChannelsByTaskIdQuery.data.length})`}</div>
-					)}
-				</div>
-				<table
-					className="w-full
-					text-sm text-white/50"
-				>
-					<thead className="[&_>_tr_>_th]:px-6 [&_>_tr_>_th]:py-2 [&_>_tr_>th]:text-left">
-						<tr
-							className="px-3 py-1
-							text-sm
-							border-t-[1px] border-white/10"
-						>
+				<Table>
+					<Thead>
+						<tr>
 							<th>Id</th>
 							<th>Channel Id</th>
 							<th>Channel Name</th>
@@ -401,19 +369,14 @@ export const Content = (props: { taskId: number }) => {
 							<th>Subscriber Count</th>
 							<th>Video Count</th>
 						</tr>
-					</thead>
-					<tbody className="[&_>_tr_>_td]:px-6 [&_>_tr_>_td]:py-2">
+					</Thead>
+					<Tbody>
 						{!!getYouTubeChannelsByTaskIdQuery.data?.length &&
 							chunkify(getYouTubeChannelsByTaskIdQuery.data, 10)[
 								channelPage - 1
 							].map((c, i) => {
 								return (
-									<tr
-										key={i}
-										className="px-3 py-1
-										text-sm
-										border-t-[1px] border-white/10"
-									>
+									<tr key={i}>
 										<td>{c.id}</td>
 										<td>{c.channelId}</td>
 										<td>{c.channelTitle}</td>
@@ -423,8 +386,8 @@ export const Content = (props: { taskId: number }) => {
 									</tr>
 								);
 							})}
-					</tbody>
-				</table>
+					</Tbody>
+				</Table>
 				<div
 					className="text-white/90
 					border-t-[1px] border-white/10 border-t-white/15"
@@ -448,50 +411,38 @@ export const Content = (props: { taskId: number }) => {
 						)}
 					</div>
 				</div>
-			</div>
-			<div
-				className="text-white/90
-				bg-white/5
-				border-[1px] border-white/10 border-t-white/15
-				rounded-md"
+			</PageBlock>
+			<PageBlock
+				title={
+					<div className="flex items-center gap-3">
+						<div>Fetch Video Info Based on Search Results</div>
+						{getYouTubeTaskMetaQuery.data?.status ===
+							TaskStatus.IDLE && (
+							<Button
+								size="sm"
+								onClick={() => {
+									fetchVideosMutation.mutate();
+								}}
+							>
+								Fetch
+							</Button>
+						)}
+					</div>
+				}
+			></PageBlock>
+			<PageBlock
+				title={
+					<div className="flex items-center gap-3">
+						<div>Videos</div>
+						{getYouTubeVideosByTaskIdQuery.data && (
+							<div>{`(${getYouTubeVideosByTaskIdQuery.data.length})`}</div>
+						)}
+					</div>
+				}
 			>
-				<div className="flex items-center px-6 py-4 gap-3">
-					<div>Fetch Video Info Based on Search Results</div>
-					{getYouTubeTaskMetaQuery.data?.status ===
-						TaskStatus.IDLE && (
-						<Button
-							size="sm"
-							onClick={() => {
-								fetchVideosMutation.mutate();
-							}}
-						>
-							Fetch
-						</Button>
-					)}
-				</div>
-			</div>
-			<div
-				className="text-white/90
-				bg-white/5
-				border-[1px] border-white/10 border-t-white/15
-				rounded-md"
-			>
-				<div className="flex items-center px-6 py-4 gap-3">
-					<div>Videos</div>
-					{getYouTubeVideosByTaskIdQuery.data && (
-						<div>{`(${getYouTubeVideosByTaskIdQuery.data.length})`}</div>
-					)}
-				</div>
-				<table
-					className="w-full
-					text-sm text-white/50"
-				>
-					<thead className="[&_>_tr_>_th]:px-6 [&_>_tr_>_th]:py-2 [&_>_tr_>th]:text-left">
-						<tr
-							className="px-3 py-1
-							text-sm
-							border-t-[1px] border-white/10"
-						>
+				<Table>
+					<Thead>
+						<tr>
 							<th>Id</th>
 							<th>Video</th>
 							<th>Video Title</th>
@@ -499,8 +450,8 @@ export const Content = (props: { taskId: number }) => {
 							<th>Favorite Count</th>
 							<th>Comment Count</th>
 						</tr>
-					</thead>
-					<tbody className="[&_>_tr_>_td]:px-6 [&_>_tr_>_td]:py-2">
+					</Thead>
+					<Tbody>
 						{!!getYouTubeVideosByTaskIdQuery.data?.length &&
 							chunkify(getYouTubeVideosByTaskIdQuery.data, 10)[
 								videoPage - 1
@@ -529,8 +480,8 @@ export const Content = (props: { taskId: number }) => {
 									</tr>
 								);
 							})}
-					</tbody>
-				</table>
+					</Tbody>
+				</Table>
 				<div
 					className="text-white/90
 					border-t-[1px] border-white/10 border-t-white/15"
@@ -554,7 +505,7 @@ export const Content = (props: { taskId: number }) => {
 						)}
 					</div>
 				</div>
-			</div>
-		</div>
+			</PageBlock>
+		</PageContainer>
 	);
 };

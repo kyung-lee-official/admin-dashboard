@@ -1,4 +1,6 @@
 import { Button } from "@/components/button/Button";
+import { PageBlock } from "@/components/content/PageContainer";
+import { Table, Tbody } from "@/components/content/Table";
 import { TemplateSelector } from "@/components/input/selectors/TemplateSelector";
 import { Toggle } from "@/components/toggle/Toggle";
 import { useAuthStore } from "@/stores/auth";
@@ -83,15 +85,10 @@ export const CreateEvent = (props: { statId: string; sectionId: string }) => {
 	}
 
 	return (
-		<div className="flex flex-col gap-y-3">
-			<div
-				className="text-white/50
-				bg-white/5
-				border-[1px] border-white/10 border-t-white/15
-				rounded-md"
-			>
-				<div className="relative flex justify-between items-center px-6 py-4">
-					<div>Create Event</div>
+		<>
+			<PageBlock
+				title="Create Event"
+				moreMenu={
 					<Button
 						size="sm"
 						onClick={() => {
@@ -100,15 +97,10 @@ export const CreateEvent = (props: { statId: string; sectionId: string }) => {
 					>
 						Create
 					</Button>
-				</div>
-				<table
-					className="w-full
-					text-sm text-white/50"
-				>
-					<tbody
-						className="[&_>_tr_>_td]:py-3 [&_>_tr_>_td]:px-6
-						[&_>_tr_>_td]:border-t-[1px] [&_>_tr_>_td]:border-white/10"
-					>
+				}
+			>
+				<Table>
+					<Tbody>
 						<tr>
 							<td className="w-1/2">Use Template</td>
 							<td className="w-1/2">
@@ -121,27 +113,13 @@ export const CreateEvent = (props: { statId: string; sectionId: string }) => {
 								/>
 							</td>
 						</tr>
-					</tbody>
-				</table>
-			</div>
+					</Tbody>
+				</Table>
+			</PageBlock>
 			{useTemplate ? (
-				<div
-					className="text-white/50
-					bg-white/5
-					border-[1px] border-white/10 border-t-white/15
-					rounded-md"
-				>
-					<div className="relative flex justify-between items-center px-6 py-4">
-						<div>Template</div>
-					</div>
-					<table
-						className="w-full
-						text-sm text-white/50"
-					>
-						<tbody
-							className="[&_>_tr_>_td]:py-3 [&_>_tr_>_td]:px-6
-							[&_>_tr_>_td]:border-t-[1px] [&_>_tr_>_td]:border-white/10"
-						>
+				<PageBlock title="Template">
+					<Table>
+						<Tbody>
 							<tr className={useTemplate ? "" : "text-white/20"}>
 								<td className="w-1/2">
 									<TemplateSelector
@@ -160,27 +138,13 @@ export const CreateEvent = (props: { statId: string; sectionId: string }) => {
 									{hover ? hover.score : 0}
 								</td>
 							</tr>
-						</tbody>
-					</table>
-				</div>
+						</Tbody>
+					</Table>
+				</PageBlock>
 			) : (
-				<div
-					className="text-white/50
-					bg-white/5
-					border-[1px] border-white/10 border-t-white/15
-					rounded-md"
-				>
-					<div className="relative flex justify-between items-center px-6 py-4">
-						<div>Content</div>
-					</div>
-					<table
-						className="w-full
-						text-sm text-white/50"
-					>
-						<tbody
-							className="[&_>_tr_>_td]:py-3 [&_>_tr_>_td]:px-6
-							[&_>_tr_>_td]:border-t-[1px] [&_>_tr_>_td]:border-white/10"
-						>
+				<PageBlock title="Content">
+					<Table>
+						<Tbody>
 							<tr>
 								<td className="w-1/2">Score</td>
 								<td className="w-1/2">
@@ -213,10 +177,10 @@ export const CreateEvent = (props: { statId: string; sectionId: string }) => {
 									/>
 								</td>
 							</tr>
-						</tbody>
-					</table>
-				</div>
+						</Tbody>
+					</Table>
+				</PageBlock>
 			)}
-		</div>
+		</>
 	);
 };

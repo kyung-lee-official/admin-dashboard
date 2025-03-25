@@ -202,6 +202,7 @@ export const Content = (props: { statId: number }) => {
 								return (
 									<tr
 										key={i}
+										className="cursor-pointer"
 										onClick={() => {
 											router.push(
 												`${statId}/section/${s.id}`

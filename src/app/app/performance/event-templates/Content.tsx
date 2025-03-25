@@ -18,6 +18,7 @@ import { AxiosError } from "axios";
 import { useAuthStore } from "@/stores/auth";
 import { getAllRoles, RolesQK } from "@/utils/api/roles";
 import { Dropdown } from "@/components/input/dropdown/Dropdown";
+import { PageBlock, PageContainer } from "@/components/content/PageContainer";
 
 export const Content = () => {
 	const [role, setRole] = useState<MemberRole | undefined>();
@@ -73,37 +74,35 @@ export const Content = () => {
 	}, [myInfoQuery.data, rolesQuery.data]);
 
 	return (
-		<div className="flex flex-col w-full max-w-[1600px] min-h-[calc(100svh-56px)] p-3 mx-auto gap-y-3">
-			<div
-				className="text-white/90
-				bg-white/5
-				border-[1px] border-white/10 border-t-white/15
-				rounded-md"
-			>
-				<div className="relative flex justify-between items-center px-6 py-4">
-					<div className="text-lg font-semibold">Events Template</div>
-					{iAmAdmin && (
-						<TitleMoreMenu
-							items={[
-								{
-									content: "Add Template",
-									hideMenuOnClick: true,
-									icon: <EditIcon size={15} />,
-									onClick: () => {
-										setEdit({
-											show: true,
-											id: EditId.ADD_TEMPLATE,
-										});
+		<PageContainer>
+			<PageBlock
+				title="Events Template"
+				moreMenu={
+					iAmAdmin && (
+						<>
+							<TitleMoreMenu
+								items={[
+									{
+										content: "Add Template",
+										hideMenuOnClick: true,
+										icon: <EditIcon size={15} />,
+										onClick: () => {
+											setEdit({
+												show: true,
+												id: EditId.ADD_TEMPLATE,
+											});
+										},
 									},
-								},
-							]}
-						/>
-					)}
-					{createPortal(
-						<EditPanel edit={edit} setEdit={setEdit} />,
-						document.body
-					)}
-				</div>
+								]}
+							/>
+							{createPortal(
+								<EditPanel edit={edit} setEdit={setEdit} />,
+								document.body
+							)}
+						</>
+					)
+				}
+			>
 				<div
 					className="flex items-center px-6 py-4 gap-6
 					text-sm
@@ -121,7 +120,7 @@ export const Content = () => {
 					/>
 				</div>
 				<TemplateList role={role} />
-			</div>
-		</div>
+			</PageBlock>
+		</PageContainer>
 	);
 };
