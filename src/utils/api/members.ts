@@ -87,42 +87,6 @@ export const uploadMyAvatar = async (blob: Blob, jwt: string) => {
 	return res;
 };
 
-export const editMemberRoles = async (
-	id: string,
-	roleIds: number[],
-	jwt: string
-) => {
-	const res = await axios.patch(
-		`/internal/members/roles/${id}`,
-		{ roleIds },
-		{
-			baseURL: process.env.NEXT_PUBLIC_API_HOST,
-			headers: {
-				Authorization: jwt,
-			},
-		}
-	);
-	return res.data;
-};
-
-export const editMemberGroups = async (
-	id: string,
-	groupIds: number[],
-	jwt: string
-) => {
-	const res = await axios.patch(
-		`/internal/members/groups/${id}`,
-		{ groupIds },
-		{
-			baseURL: process.env.NEXT_PUBLIC_API_HOST,
-			headers: {
-				Authorization: jwt,
-			},
-		}
-	);
-	return res.data;
-};
-
 export const downloadAvatar = async (id: string, jwt: string) => {
 	try {
 		const res = await axios.get(`/internal/members/download-avatar/${id}`, {
@@ -144,20 +108,6 @@ export const downloadAvatar = async (id: string, jwt: string) => {
 			throw error;
 		}
 	}
-};
-
-export const transferOwnership = async (id: string, jwt: string) => {
-	const res = await axios.patch(
-		`/internal/members/transferOwnership/${id}`,
-		{},
-		{
-			baseURL: process.env.NEXT_PUBLIC_API_HOST,
-			headers: {
-				Authorization: jwt,
-			},
-		}
-	);
-	return res.data;
 };
 
 export const setIsFrozenMemberById = async (
