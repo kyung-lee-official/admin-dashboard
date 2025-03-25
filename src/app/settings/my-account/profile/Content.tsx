@@ -16,14 +16,7 @@ import { OneRowSkeleton } from "@/components/skeleton/OneRowSkeleton";
 import { MyAvatar } from "./edit-content-avatar/MyAvatar";
 import { PageBlock, PageContainer } from "@/components/content/PageContainer";
 import { Table, Tbody } from "@/components/content/Table";
-
-type MemberRole = {
-	id: string;
-	name: string;
-	superRoleId: string | null;
-	createdAt: string;
-	updatedAt: string;
-};
+import { MemberRole } from "@/utils/types/internal";
 
 export type MyInfo = {
 	id: string;
