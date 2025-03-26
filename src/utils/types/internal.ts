@@ -25,6 +25,7 @@ export type MemberRole = {
 	id: string;
 	name: string;
 	superRole: MemberRole | null;
+	superRoleId: string | null;
 };
 
 export const updateRoleByIdSchema = z.object({

@@ -136,6 +136,7 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 						onClick={() => {
 							router.push(`${section.id}/create-event`);
 						}}
+						className="truncate"
 					>
 						Create Event
 					</Button>

@@ -22,6 +22,7 @@ export const EditContentAddRole = (props: {
 		id: "",
 		name: "",
 		superRole: null,
+		superRoleId: null,
 	};
 	const [newData, setNewData] = useState(oldData);
 	const [id, setId] = useState(oldData.id);
@@ -65,6 +66,7 @@ export const EditContentAddRole = (props: {
 			id: id,
 			name: name,
 			superRole: superRole as MemberRole | null,
+			superRoleId: (superRole as MemberRole)?.id ?? null,
 		});
 	}, [id, name, superRole]);
 

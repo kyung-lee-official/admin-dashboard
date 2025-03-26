@@ -62,6 +62,10 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 				<Table>
 					<Tbody>
 						<tr>
+							<td>Section Role</td>
+							<td>{section.memberRoleId}</td>
+						</tr>
+						<tr>
 							<td>Section Title</td>
 							<td>{section.title}</td>
 						</tr>

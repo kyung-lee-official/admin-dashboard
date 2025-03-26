@@ -52,6 +52,7 @@ export const EditContentEditRole = (props: {
 		id: "",
 		name: "No Super Role",
 		superRole: null,
+		superRoleId: null,
 	});
 
 	const roleQuery = useQuery<EditRoleData, AxiosError>({

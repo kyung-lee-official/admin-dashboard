@@ -590,6 +590,23 @@ export const settingsGeneralMenuItems: HierarchicalMenuItem[] = [
 				},
 			];
 		},
+		subMenu: [
+			{
+				pageUrlReg: /^\/settings\/general\/roles\/graph$/,
+				breadcrumbs: () => {
+					return [
+						{
+							href: "/settings/general/roles",
+							text: "Roles",
+						},
+						{
+							href: `/settings/general/roles/graph`,
+							text: `Roles Graph`,
+						},
+					];
+				},
+			},
+		],
 	},
 	{
 		pageUrlReg: /^\/settings\/general\/members$/,
