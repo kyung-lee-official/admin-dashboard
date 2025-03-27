@@ -9,17 +9,21 @@ import { queryClient } from "@/utils/react-query/react-query";
 import {
 	CreateEventDto,
 	PerformanceEventTemplateResponse,
+	SectionResponse,
 } from "@/utils/types/app/performance";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export const CreateEvent = (props: { statId: string; sectionId: string }) => {
-	const { statId, sectionId } = props;
+export const CreateEvent = (props: {
+	statId: string;
+	section: SectionResponse;
+}) => {
+	const { statId, section } = props;
 
 	const [oldData, setOldData] = useState<CreateEventDto>({
 		templateId: undefined,
-		sectionId: parseInt(sectionId),
+		sectionId: section.id,
 		score: 0,
 		description: "",
 	});
@@ -40,14 +44,14 @@ export const CreateEvent = (props: { statId: string; sectionId: string }) => {
 			if (template?.id) {
 				setNewData({
 					templateId: template.id,
-					sectionId: parseInt(sectionId),
+					sectionId: section.id,
 					score: template.score,
 					description: template.description,
 				});
 			} else {
 				setNewData({
 					templateId: undefined,
-					sectionId: parseInt(sectionId),
+					sectionId: section.id,
 					score: score,
 					description: description,
 				});
@@ -55,12 +59,12 @@ export const CreateEvent = (props: { statId: string; sectionId: string }) => {
 		} else {
 			setNewData({
 				templateId: undefined,
-				sectionId: parseInt(sectionId),
+				sectionId: section.id,
 				score: score,
 				description: description,
 			});
 		}
-	}, [useTemplate, template, sectionId, score, description]);
+	}, [useTemplate, template, section.id, score, description]);
 
 	const jwt = useAuthStore((state) => state.jwt);
 
@@ -74,7 +78,7 @@ export const CreateEvent = (props: { statId: string; sectionId: string }) => {
 				queryKey: [PerformanceQK.GET_STATS],
 			});
 			router.push(
-				`/app/performance/stats/${statId}/section/${sectionId}/event/${data.id}`
+				`/app/performance/stats/${statId}/section/${section.id}/event/${data.id}`
 			);
 		},
 		onError: () => {},
@@ -123,6 +127,7 @@ export const CreateEvent = (props: { statId: string; sectionId: string }) => {
 							<tr className={useTemplate ? "" : "text-white/20"}>
 								<td className="w-1/2">
 									<TemplateSelector
+										section={section}
 										template={template}
 										setTemplate={setTemplate}
 										setHover={setHover}

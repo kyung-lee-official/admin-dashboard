@@ -12,7 +12,7 @@ export enum PerformanceQK {
 	GET_STAT_BY_ID = "get-stat-by-id",
 	SEARCH_STATS = "search-stats",
 	GET_TEMPLATES_BY_ROLE_ID = "get-templates-by-role-id",
-	GET_MY_ROLE_TEMPLATES = "get-my-role-templates",
+	GET_TEMPLATES_BY_SECTION_ROLE_ID = "get-templates-by-section-role-id",
 	GET_TEMPLATE_BY_ID = "get-template-by-id",
 	GET_EVENT_BY_ID = "get-event-by-id",
 	GET_APPROVAL_PERMISSIONS = "get-approval-permissions",
@@ -106,9 +106,12 @@ export const getTemplatesByRoleId = async (roleId: string, jwt: string) => {
 	return res.data;
 };
 
-export const getMyRoleTemplates = async (jwt: string) => {
+export const getTemplatesBySectionRoleId = async (
+	sectionRoleId: string,
+	jwt: string
+) => {
 	const res = await axios.get(
-		`/performance/event-templates/get-by-my-role-templates`,
+		`/performance/event-templates/get-templates-by-section-role-id/${sectionRoleId}`,
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
 			headers: {

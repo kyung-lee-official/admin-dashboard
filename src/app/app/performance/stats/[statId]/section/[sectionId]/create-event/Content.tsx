@@ -80,7 +80,7 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 					</Tbody>
 				</Table>
 			</PageBlock>
-			<CreateEvent statId={statId} sectionId={sectionId} />
+			<CreateEvent statId={statId} section={section} />
 		</PageContainer>
 	);
 };
