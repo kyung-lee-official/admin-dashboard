@@ -15,6 +15,7 @@ export enum PerformanceQK {
 	GET_MY_ROLE_TEMPLATES = "get-my-role-templates",
 	GET_TEMPLATE_BY_ID = "get-template-by-id",
 	GET_EVENT_BY_ID = "get-event-by-id",
+	GET_APPROVAL_PERMISSIONS = "get-approval-permissions",
 	GET_ATTACHMENT_LIST = "get-attachment-list",
 	GET_ATTACHMENT = "get-attachment",
 }
@@ -185,6 +186,19 @@ export const deleteEventById = async (id: number, jwt: string) => {
 			Authorization: jwt,
 		},
 	});
+	return res.data;
+};
+
+export const getApprovalPermissions = async (eventId: number, jwt: string) => {
+	const res = await axios.get(
+		`/performance/events/get-approval-permissions/${eventId}`,
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+			},
+		}
+	);
 	return res.data;
 };
 

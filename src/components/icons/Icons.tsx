@@ -248,8 +248,8 @@ export const CircleCheckIcon = ({ size, fill }: any) => {
 	return (
 		<svg
 			viewBox="0 0 16 16"
-			height="48"
-			width="48"
+			height={size}
+			width={size}
 			focusable="false"
 			role="img"
 			fill="currentColor"
