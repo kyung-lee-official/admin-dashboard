@@ -56,6 +56,7 @@ export const TemplateList = (props: { role?: MemberRole }) => {
 								href={`event-templates/${template.id}`}
 								key={i}
 								className="flex items-center h-11 px-6
+								text-sm
 								hover:bg-white/5
 								border-t-[1px] border-white/10"
 							>
