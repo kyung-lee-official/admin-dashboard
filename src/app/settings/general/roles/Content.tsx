@@ -52,7 +52,7 @@ export const Content = () => {
 	}
 
 	if (rolePermQuery.isSuccess) {
-		switch (rolePermQuery.data.actions["*"]) {
+		switch (rolePermQuery.data.actions["read"]) {
 			case "EFFECT_DENY":
 				return <Forbidden />;
 			case "EFFECT_ALLOW":
@@ -61,30 +61,35 @@ export const Content = () => {
 						<PageBlock
 							title="Roles"
 							moreMenu={
-								<>
-									<TitleMoreMenu
-										items={[
-											{
-												content: "Add a role",
-												hideMenuOnClick: true,
-												icon: <EditIcon size={15} />,
-												onClick: () => {
-													setEdit({
-														show: true,
-														id: EditId.ADD_ROLE,
-													});
+								rolePermQuery.data.actions["*"] ===
+									"EFFECT_ALLOW" && (
+									<>
+										<TitleMoreMenu
+											items={[
+												{
+													content: "Add a role",
+													hideMenuOnClick: true,
+													icon: (
+														<EditIcon size={15} />
+													),
+													onClick: () => {
+														setEdit({
+															show: true,
+															id: EditId.ADD_ROLE,
+														});
+													},
 												},
-											},
-										]}
-									/>
-									{createPortal(
-										<EditPanel
-											edit={edit}
-											setEdit={setEdit}
-										/>,
-										document.body
-									)}
-								</>
+											]}
+										/>
+										{createPortal(
+											<EditPanel
+												edit={edit}
+												setEdit={setEdit}
+											/>,
+											document.body
+										)}
+									</>
+								)
 							}
 						>
 							{/* <div
@@ -117,17 +122,24 @@ export const Content = () => {
 															{role.id}
 														</td>
 														<td>
-															<ItemMoreMenu
-																edit={{
-																	...edit,
-																	auxData: {
-																		roleId: role.id,
-																	},
-																}}
-																setEdit={
-																	setEdit
-																}
-															/>
+															{rolePermQuery.data
+																.actions[
+																"*"
+															] ===
+																"EFFECT_ALLOW" && (
+																<ItemMoreMenu
+																	edit={{
+																		...edit,
+																		auxData:
+																			{
+																				roleId: role.id,
+																			},
+																	}}
+																	setEdit={
+																		setEdit
+																	}
+																/>
+															)}
 														</td>
 													</tr>
 												);
