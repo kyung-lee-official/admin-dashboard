@@ -1,16 +1,16 @@
 import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { MoreIcon } from "@/components/icons/Icons";
 
-export const TitleMoreMenu = (props: {
-	items: {
-		content: string | ReactNode;
-		type?: "danger";
-		/* hide menu after clicking on one of the items */
-		hideMenuOnClick: boolean;
-		icon?: ReactNode;
-		onClick: Function;
-	}[];
-}) => {
+export type TitleMoreMenuItem = {
+	content: string | ReactNode;
+	type?: "danger";
+	/* hide menu after clicking on one of the items */
+	hideMenuOnClick: boolean;
+	icon?: ReactNode;
+	onClick: Function;
+};
+
+export const TitleMoreMenu = (props: { items: TitleMoreMenuItem[] }) => {
 	const { items } = props;
 
 	const [show, setShow] = useState(false);

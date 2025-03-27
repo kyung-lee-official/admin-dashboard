@@ -2,10 +2,21 @@ import axios, { AxiosError } from "axios";
 import { CreateMemberDto } from "../types/internal";
 
 export enum MembersQK {
+	GET_MY_MEMBER_PERMISSIONS = "get-my-member-permissions",
 	GET_MY_INFO = "get-my-info",
 	GET_AVATAR_BY_ID = "get-avatar-by-id",
 	GET_MEMBERS = "get-members",
 }
+
+export const getPermissions = async (jwt: string): Promise<any> => {
+	const res = await axios.get("/internal/members/permissions", {
+		baseURL: process.env.NEXT_PUBLIC_API_HOST,
+		headers: {
+			Authorization: jwt,
+		},
+	});
+	return res.data;
+};
 
 export const getMyInfo = async (jwt: string) => {
 	const res = await axios.get("/internal/members/me", {
