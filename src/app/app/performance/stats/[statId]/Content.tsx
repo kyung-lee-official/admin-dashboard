@@ -10,6 +10,7 @@ import {
 import {
 	ApprovalType,
 	PerformanceStatResponse,
+	SectionResponse,
 } from "@/utils/types/app/performance";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
@@ -23,12 +24,13 @@ import {
 	EditProps,
 } from "@/components/edit-panel/EditPanel";
 import { queryClient } from "@/utils/react-query/react-query";
-import { DeleteIcon, EditIcon } from "@/components/icons/Icons";
+import { DeleteIcon, EditIcon, InfoIcon } from "@/components/icons/Icons";
 import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
 import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
 import { createPortal } from "react-dom";
 import { PageBlock, PageContainer } from "@/components/content/PageContainer";
 import { Table, Tbody, Thead } from "@/components/content/Table";
+import Tooltip from "@/components/tooltip/Tooltip";
 
 export const Content = (props: { statId: number }) => {
 	const { statId } = props;
@@ -93,6 +95,71 @@ export const Content = (props: { statId: number }) => {
 				100,
 		0
 	);
+
+	const statStatus = (sections: SectionResponse[]) => {
+		if (
+			statSections.some((s) => {
+				return s.events.some(
+					(e) => e.approval === ApprovalType.PENDING
+				);
+			})
+		) {
+			return (
+				<div className="flex items-center gap-2">
+					<div>HAS PENDING</div>
+					<Tooltip text="Some sections have pending events">
+						<InfoIcon size={15} />
+					</Tooltip>
+				</div>
+			);
+		} else {
+			if (
+				statSections.some((s) => {
+					return s.events.some(
+						(e) => e.approval === ApprovalType.REJECTED
+					);
+				})
+			) {
+				return (
+					<div className="flex items-center gap-2">
+						<div>HAS REJECTED</div>
+						<Tooltip text="All events are reviewed but some are rejected">
+							<InfoIcon size={15} />
+						</Tooltip>
+					</div>
+				);
+			} else {
+				return "ALL APPROVED";
+			}
+		}
+	};
+
+	const sectionStatus = (s: SectionResponse) => {
+		if (s.events.some((e) => e.approval === ApprovalType.PENDING)) {
+			return (
+				<div className="flex items-center gap-2">
+					<div>HAS PENDING</div>
+					<Tooltip text="Some sections have pending events">
+						<InfoIcon size={15} />
+					</Tooltip>
+				</div>
+			);
+		} else {
+			if (s.events.some((e) => e.approval === ApprovalType.REJECTED)) {
+				return (
+					<div className="flex items-center gap-2">
+						<div>HAS REJECTED</div>
+						<Tooltip text="All events are reviewed but some are rejected">
+							<InfoIcon size={15} />
+						</Tooltip>
+					</div>
+				);
+			} else {
+				return "ALL APPROVED";
+			}
+		}
+	};
+
 	return (
 		<PageContainer>
 			<PageBlock
@@ -167,16 +234,7 @@ export const Content = (props: { statId: number }) => {
 						</tr>
 						<tr>
 							<td>Approval</td>
-							<td>
-								{statSections.some((s) => {
-									return s.events.some(
-										(e) =>
-											e.approval === ApprovalType.PENDING
-									);
-								})
-									? ApprovalType.PENDING
-									: "ALL REVIEWED"}
-							</td>
+							<td>{statStatus(statSections)}</td>
 						</tr>
 					</Tbody>
 				</Table>
@@ -185,6 +243,7 @@ export const Content = (props: { statId: number }) => {
 				<Table>
 					<Thead>
 						<tr>
+							<th className="w-2/12">Section Role</th>
 							<th className="w-2/12">Title</th>
 							<th className="w-2/12">Approval</th>
 							<th className="w-1/12">Weight</th>
@@ -209,17 +268,14 @@ export const Content = (props: { statId: number }) => {
 											);
 										}}
 									>
-										<td>{s.title}</td>
 										<td>
-											{s.events.some((e) => {
-												return (
-													e.approval ===
-													ApprovalType.PENDING
-												);
-											})
-												? ApprovalType.PENDING
-												: "ALL REVIEWED"}
+											<div>{s.memberRole.name}</div>
+											<div className="text-xs text-neutral-500">
+												{s.memberRole.id}
+											</div>
 										</td>
+										<td>{s.title}</td>
+										<td>{sectionStatus(s)}</td>
 										<td>{s.weight}</td>
 										<td>
 											<div className="flex items-center gap-2">

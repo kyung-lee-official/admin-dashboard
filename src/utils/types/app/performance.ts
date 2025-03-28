@@ -58,6 +58,7 @@ export type OwnerResponse = {
 export type SectionResponse = {
 	id: number;
 	weight: number;
+	memberRole: MemberRole;
 	memberRoleId: string;
 	title: string;
 	description: string;

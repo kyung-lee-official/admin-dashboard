@@ -294,6 +294,32 @@ export const VerifiedIcon = ({ size, fill }: any) => {
 	);
 };
 
+export const InfoIcon = ({ size, fill }: any) => {
+	return (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 15 15"
+			width={size}
+			height={size}
+			fill="none"
+		>
+			<g stroke="currentColor" strokeWidth="1.5" clipPath="url(#a)">
+				<path
+					strokeLinecap="round"
+					strokeLinejoin="round"
+					d="m6.829 6.784.037-.018a.671.671 0 0 1 .95.763l-.633 2.537a.67.67 0 0 0 .951.763l.037-.018M7.5 4.1h.007v.007H7.5z"
+				></path>
+				<circle cx="7.5" cy="7.5" r="6.36"></circle>
+			</g>
+			<defs>
+				<clipPath id="a">
+					<path fill="#fff" d="M0 0h15v15H0z"></path>
+				</clipPath>
+			</defs>
+		</svg>
+	);
+};
+
 export const CopyIcon = ({ size, fill }: any) => {
 	return (
 		<svg
