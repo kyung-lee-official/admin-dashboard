@@ -1,6 +1,7 @@
 import { Button } from "@/components/button/Button";
 import { PageBlock } from "@/components/content/PageContainer";
 import { Table, Tbody } from "@/components/content/Table";
+import { IntegerInput } from "@/components/input/integer-input/IntegerInput";
 import { TemplateSelector } from "@/components/input/selectors/TemplateSelector";
 import { Toggle } from "@/components/toggle/Toggle";
 import { useAuthStore } from "@/stores/auth";
@@ -153,16 +154,10 @@ export const CreateEvent = (props: {
 							<tr>
 								<td className="w-1/2">Score</td>
 								<td className="w-1/2">
-									<input
-										type="number"
-										className="px-2 py-1.5
-										bg-white/10
-										rounded-md outline-none
-										border-[1px] border-white/10"
-										placeholder="integer only"
+									<IntegerInput
 										value={score}
-										onChange={(e) => {
-											setScore(parseInt(e.target.value));
+										onChange={(v) => {
+											setScore(v);
 										}}
 									/>
 								</td>
