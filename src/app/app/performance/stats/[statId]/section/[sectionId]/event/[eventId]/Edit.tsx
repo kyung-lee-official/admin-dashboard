@@ -76,6 +76,7 @@ export const Edit = (props: {
 					<td>Amount</td>
 					<td>
 						<IntegerInput
+							min={1}
 							value={amount}
 							onChange={(v) => {
 								setScore(v);
