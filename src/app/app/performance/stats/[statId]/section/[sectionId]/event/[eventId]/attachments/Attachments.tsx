@@ -77,7 +77,12 @@ export const Attachments = (props: { eventId: number }) => {
 				</Button>
 			</div>
 			<div
-				className="grid grid-cols-8 justify-items-stretch w-full min-h-32 p-2 gap-6
+				className="grid justify-items-stretch 
+				xl:grid-cols-8
+				lg:grid-cols-6
+				sm:grid-cols-3
+				grid-cols-2
+				w-full min-h-32 p-2 gap-6
 				rounded-md
 				border-t-[1px] border-white/10"
 			>
