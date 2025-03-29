@@ -84,6 +84,24 @@ export const Content = (props: {
 				<Table>
 					<Tbody>
 						<tr>
+							<td>Section Role</td>
+							<td>
+								{section ? (
+									<div
+										className="flex w-fit px-1 gap-2
+										border border-neutral-500 rounded"
+									>
+										<div>{section.memberRole.name}</div>
+										<div className="text-neutral-500">
+											{section.memberRole.id}
+										</div>
+									</div>
+								) : (
+									<OneRowSkeleton />
+								)}
+							</td>
+						</tr>
+						<tr>
 							<td>Section Title</td>
 							<td>
 								{section ? section.title : <OneRowSkeleton />}

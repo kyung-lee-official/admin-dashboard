@@ -71,7 +71,17 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 					<Tbody>
 						<tr>
 							<td>Section Role</td>
-							<td>{section.memberRoleId}</td>
+							<td>
+								<div
+									className="flex w-fit px-1 gap-2
+									border border-neutral-500 rounded"
+								>
+									<div>{section.memberRole.name}</div>
+									<div className="text-neutral-500">
+										{section.memberRole.id}
+									</div>
+								</div>
+							</td>
 						</tr>
 						<tr>
 							<td>Section Title</td>
