@@ -1,5 +1,6 @@
 import { Button } from "@/components/button/Button";
 import { Dropdown } from "@/components/input/dropdown/Dropdown";
+import { IntegerInput } from "@/components/input/integer-input/IntegerInput";
 import { useAuthStore } from "@/stores/auth";
 import { getAllRoles, RolesQK } from "@/utils/api/roles";
 import { CreateSectionData } from "@/utils/types/app/performance";
@@ -82,20 +83,15 @@ export const Section = (props: {
 				/>
 				<div className="flex items-center gap-2">
 					<div>Weight</div>
-					<input
-						type="number"
-						className="w-16 px-2 py-0.5
-						bg-transparent
-						border-[1px] border-neutral-700 border-t-neutral-600
-						rounded"
+					<IntegerInput
 						min={0}
 						max={100}
 						value={s.weight}
-						onChange={(e) => {
+						onChange={(v: number) => {
 							setSections(
 								sections.map((section) => {
 									if (s.tempId === section.tempId) {
-										const weight = parseInt(e.target.value);
+										const weight = v;
 										return {
 											tempId: s.tempId,
 											weight: Number.isNaN(weight)

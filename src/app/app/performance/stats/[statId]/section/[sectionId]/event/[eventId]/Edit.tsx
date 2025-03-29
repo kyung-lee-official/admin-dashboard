@@ -1,3 +1,4 @@
+import { IntegerInput } from "@/components/input/integer-input/IntegerInput";
 import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction } from "react";
 
@@ -63,16 +64,10 @@ export const Edit = (props: {
 				<tr>
 					<td>Score</td>
 					<td>
-						<input
-							type="number"
-							min={0}
-							className="px-2 py-1.5
-							bg-white/10
-							rounded-md outline-none
-							border-[1px] border-white/10"
+						<IntegerInput
 							value={score}
-							onChange={(e) => {
-								setScore(parseInt(e.target.value));
+							onChange={(v) => {
+								setScore(v);
 							}}
 						/>
 					</td>
@@ -80,16 +75,10 @@ export const Edit = (props: {
 				<tr>
 					<td>Amount</td>
 					<td>
-						<input
-							type="number"
-							min={0}
-							className="px-2 py-1.5
-							bg-white/10
-							rounded-md outline-none
-							border-[1px] border-white/10"
+						<IntegerInput
 							value={amount}
-							onChange={(e) => {
-								setAmount(parseInt(e.target.value));
+							onChange={(v) => {
+								setScore(v);
 							}}
 						/>
 					</td>

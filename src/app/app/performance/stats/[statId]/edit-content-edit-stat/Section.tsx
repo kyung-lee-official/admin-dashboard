@@ -1,5 +1,5 @@
 import { EditSectionData } from "@/utils/types/app/performance";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { EditSectionAction, EditSectionType } from "./Reducers";
 import { Button } from "@/components/button/Button";
 import { useAuthStore } from "@/stores/auth";
@@ -8,6 +8,7 @@ import { MemberRole } from "@/utils/types/internal";
 import { AxiosError } from "axios";
 import { getAllRoles, RolesQK } from "@/utils/api/roles";
 import { Dropdown } from "@/components/input/dropdown/Dropdown";
+import { IntegerInput } from "@/components/input/integer-input/IntegerInput";
 
 export const Section = (props: {
 	s: EditSectionData;
@@ -69,15 +70,10 @@ export const Section = (props: {
 				/>
 				<div className="flex items-center gap-2">
 					<div>Weight</div>
-					<input
-						type="number"
-						className="w-16 px-2 py-0.5
-						bg-transparent
-						border-[1px] border-white/20 border-t-white/30
-						rounded"
+					<IntegerInput
 						value={s.weight}
-						onChange={(e) => {
-							const weight = parseInt(e.target.value);
+						onChange={(v: number) => {
+							const weight = v;
 							dispatchStatSections({
 								type: EditSectionType.UPDATE_WEIGHT,
 								payload: {
