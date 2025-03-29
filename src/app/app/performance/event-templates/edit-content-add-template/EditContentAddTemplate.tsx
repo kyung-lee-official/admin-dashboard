@@ -10,6 +10,7 @@ import { CreatePerformanceEventTemplate } from "@/utils/types/app/performance";
 import { RolesQK, getAllRoles } from "@/utils/api/roles";
 import { AxiosError } from "axios";
 import { Dropdown } from "@/components/input/dropdown/Dropdown";
+import { IntegerInput } from "@/components/input/integer-input/IntegerInput";
 
 export const EditContentAddTemplate = (props: {
 	edit: EditProps;
@@ -99,15 +100,9 @@ export const EditContentAddTemplate = (props: {
 					text-sm"
 				>
 					Score
-					<input
-						type="number"
-						className="px-2 py-1.5
-						bg-white/10
-						rounded-md outline-none
-						border-[1px] border-white/10"
-						placeholder="integer only"
-						onChange={(e) => {
-							setScore(parseInt(e.target.value));
+					<IntegerInput
+						onChange={(v) => {
+							setScore(v);
 						}}
 					/>
 				</div>
