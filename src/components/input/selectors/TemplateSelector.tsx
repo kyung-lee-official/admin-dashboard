@@ -1,6 +1,6 @@
 import { useAuthStore } from "@/stores/auth";
 import {
-	getTemplatesBySectionRoleId,
+	getTemplatesByRoleId,
 	PerformanceQK,
 } from "@/utils/api/app/performance";
 import {
@@ -32,9 +32,9 @@ export const TemplateSelector = (props: TemplateSelectorProps) => {
 		PerformanceEventTemplateResponse[],
 		AxiosError
 	>({
-		queryKey: [PerformanceQK.GET_TEMPLATES_BY_SECTION_ROLE_ID],
+		queryKey: [PerformanceQK.GET_TEMPLATES_BY_ROLE_ID],
 		queryFn: async () => {
-			const templates = await getTemplatesBySectionRoleId(
+			const templates = await getTemplatesByRoleId(
 				section.memberRoleId,
 				jwt
 			);

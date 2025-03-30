@@ -11,6 +11,7 @@ export enum PerformanceQK {
 	GET_STATS = "get-stats",
 	GET_STAT_BY_ID = "get-stat-by-id",
 	SEARCH_STATS = "search-stats",
+	GET_MY_TEMPLATE_PERMISSIONS = "get-my-template-permissions",
 	GET_TEMPLATES_BY_ROLE_ID = "get-templates-by-role-id",
 	GET_TEMPLATES_BY_SECTION_ROLE_ID = "get-templates-by-section-role-id",
 	GET_TEMPLATE_BY_ID = "get-template-by-id",
@@ -83,19 +84,12 @@ export const deleteStatById = async (id: number, jwt: string) => {
 	return res.data;
 };
 
-export const createTemplate = async (newData: any, jwt: string) => {
-	const res = await axios.post("/performance/event-templates", newData, {
-		baseURL: process.env.NEXT_PUBLIC_API_HOST,
-		headers: {
-			Authorization: jwt,
-		},
-	});
-	return res.data;
-};
-
-export const getTemplatesByRoleId = async (roleId: string, jwt: string) => {
+export const getTemplatePermissions = async (
+	templateId: number,
+	jwt: string
+): Promise<any> => {
 	const res = await axios.get(
-		`/performance/event-templates/get-by-role-id/${roleId}`,
+		`/internal/performance/event-templates/permissions/${templateId}`,
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
 			headers: {
@@ -106,12 +100,19 @@ export const getTemplatesByRoleId = async (roleId: string, jwt: string) => {
 	return res.data;
 };
 
-export const getTemplatesBySectionRoleId = async (
-	sectionRoleId: string,
-	jwt: string
-) => {
+export const createTemplate = async (newData: any, jwt: string) => {
+	const res = await axios.post("/internal/performance/event-templates", newData, {
+		baseURL: process.env.NEXT_PUBLIC_API_HOST,
+		headers: {
+			Authorization: jwt,
+		},
+	});
+	return res.data;
+};
+
+export const getTemplatesByRoleId = async (roleId: string, jwt: string) => {
 	const res = await axios.get(
-		`/performance/event-templates/get-templates-by-section-role-id/${sectionRoleId}`,
+		`/internal/performance/event-templates/get-by-role-id/${roleId}`,
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
 			headers: {
@@ -124,7 +125,7 @@ export const getTemplatesBySectionRoleId = async (
 
 export const getTemplateById = async (id: string, jwt: string) => {
 	const res = await axios.get(
-		`/performance/event-templates/get-by-id/${id}`,
+		`/internal/performance/event-templates/get-by-id/${id}`,
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
 			headers: {
@@ -136,7 +137,7 @@ export const getTemplateById = async (id: string, jwt: string) => {
 };
 
 export const deleteTemplateById = async (id: string, jwt: string) => {
-	const res = await axios.delete(`/performance/event-templates/${id}`, {
+	const res = await axios.delete(`/internal/performance/event-templates/${id}`, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: jwt,
