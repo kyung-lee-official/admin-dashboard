@@ -80,21 +80,24 @@ export const Content = () => {
 							</tr>
 						</Thead>
 						<Tbody>
-							{getFacebookSourceDataQuery.data.map((s, i) => {
-								return (
-									<tr key={i}>
-										<td className="w-[10%]">
-											{s.excelRow}
-										</td>
-										<td className="w-[50%]">
-											{s.groupAddress}
-										</td>
-										<td className="w-[50%]">
-											{s.groupName}
-										</td>
-									</tr>
-								);
-							})}
+							{getFacebookSourceDataQuery.data &&
+								[...getFacebookSourceDataQuery.data].map(
+									(s, i) => {
+										return (
+											<tr key={i}>
+												<td className="w-[10%]">
+													{s.excelRow}
+												</td>
+												<td className="w-[50%]">
+													{s.groupAddress}
+												</td>
+												<td className="w-[50%]">
+													{s.groupName}
+												</td>
+											</tr>
+										);
+									}
+								)}
 						</Tbody>
 					</Table>
 				)}

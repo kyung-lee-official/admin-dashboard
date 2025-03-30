@@ -171,7 +171,7 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 						</tr>
 						{section.events.map((ev: EventResponse, i) => {
 							return (
-								<tr key={i}>
+								<tr key={ev.id}>
 									<td>{ev.description}</td>
 									<td>{ev.approval}</td>
 									<td>{ev.score}</td>

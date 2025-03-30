@@ -62,10 +62,10 @@ export const Sections = (props: SectionProps) => {
 			</div>
 			<div className="flex flex-col gap-2">
 				{sections.length > 0 &&
-					sections.map((s, i) => {
+					[...sections].map((s, i) => {
 						return (
 							<Section
-								key={i}
+								key={s.tempId}
 								s={s}
 								sections={sections}
 								setSections={setSections}

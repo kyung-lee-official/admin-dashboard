@@ -44,7 +44,7 @@ export const TemplateList = (props: { role?: MemberRole }) => {
 		>
 			{role &&
 				templatesQuery.isSuccess &&
-				templatesQuery.data
+				[...templatesQuery.data]
 					.sort((a, b) => {
 						return dayjs(a.createdAt).isBefore(dayjs(b.createdAt))
 							? 1
@@ -53,8 +53,8 @@ export const TemplateList = (props: { role?: MemberRole }) => {
 					.map((template, i) => {
 						return (
 							<Link
+								key={template.id}
 								href={`event-templates/${template.id}`}
-								key={i}
 								className="flex items-center h-11 px-6
 								text-sm
 								hover:bg-white/5

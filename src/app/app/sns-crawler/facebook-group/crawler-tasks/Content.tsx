@@ -115,7 +115,7 @@ export const Content = () => {
 					<Tbody>
 						{getFacebookGroupCrawlerTasksQuery.data &&
 							/* sort by createdAt */
-							getFacebookGroupCrawlerTasksQuery.data
+							[...getFacebookGroupCrawlerTasksQuery.data]
 								.sort((a: any, b: any) => {
 									return (
 										new Date(b.createdAt).getTime() -
@@ -125,7 +125,7 @@ export const Content = () => {
 								.map((task: any, i: number) => {
 									return (
 										<tr
-											key={i}
+											key={task.id}
 											onClick={() => {
 												router.push(
 													`crawler-tasks/${task.id}`

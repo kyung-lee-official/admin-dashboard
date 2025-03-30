@@ -253,14 +253,14 @@ export const Content = (props: { statId: number }) => {
 						</tr>
 					</Thead>
 					<Tbody>
-						{statSections
+						{[...statSections]
 							.sort((a, b) => {
 								return a.createdAt.localeCompare(b.createdAt);
 							})
 							.map((s, i) => {
 								return (
 									<tr
-										key={i}
+										key={s.id}
 										className="cursor-pointer"
 										onClick={() => {
 											router.push(

@@ -91,7 +91,7 @@ export const Content = (props: { taskId: number; keywordId: number }) => {
 								getYouTubeSearchesByTaskIdAndKeywordQuery.data.map(
 									(video: any, i: number) => {
 										return (
-											<tr key={i}>
+											<tr key={video.id}>
 												<td>
 													<Link
 														className="underline"

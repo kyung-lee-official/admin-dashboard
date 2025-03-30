@@ -77,11 +77,11 @@ export const Content = () => {
 						</Thead>
 						<Tbody>
 							{getYouTubeTasksQuery.data &&
-								getYouTubeTasksQuery.data.map(
-									(t: any, i: number) => {
+								[...getYouTubeTasksQuery.data].map(
+									(t, i: number) => {
 										return (
 											<tr
-												key={i}
+												key={t.id}
 												className="cursor-pointer"
 												onClick={() => {
 													router.push(
@@ -90,7 +90,11 @@ export const Content = () => {
 												}}
 											>
 												<td>{t.id}</td>
-												<td>{dayjs(t.createdAt).format("MMM DD, YYYY HH:mm:ss")}</td>
+												<td>
+													{dayjs(t.createdAt).format(
+														"MMM DD, YYYY HH:mm:ss"
+													)}
+												</td>
 											</tr>
 										);
 									}

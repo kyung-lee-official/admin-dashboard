@@ -213,35 +213,39 @@ export const Content = (props: { taskId: number }) => {
 					</Thead>
 					<Tbody>
 						{/* sort by excel row */}
-						{getFacebookGroupCrawlerTaskByIdQuery.data?.records
-							.sort((a, b) => {
-								return a.excelRow - b.excelRow;
-							})
-							.map((record: any, i: number) => {
-								return (
-									<tr
-										key={i}
-										className={`${
-											record.status !== "SUCCESS" &&
-											"text-white/20"
-										}
+						{getFacebookGroupCrawlerTaskByIdQuery.data &&
+							[
+								...getFacebookGroupCrawlerTaskByIdQuery.data
+									.records,
+							]
+								.sort((a, b) => {
+									return a.excelRow - b.excelRow;
+								})
+								.map((record, i: number) => {
+									return (
+										<tr
+											key={record.id}
+											className={`${
+												record.status !== "SUCCESS" &&
+												"text-white/20"
+											}
 											border-t-[1px] border-white/10`}
-									>
-										<td>{record.excelRow}</td>
-										<td>
-											<Link
-												href={record.groupAddress}
-												className="underline hover:text-white/70"
-											>
-												{record.groupAddress}
-											</Link>
-										</td>
-										<td>{record.groupName}</td>
-										<td>{record.memberCount}</td>
-										<td>{record.monthlyPostCount}</td>
-									</tr>
-								);
-							})}
+										>
+											<td>{record.excelRow}</td>
+											<td>
+												<Link
+													href={record.groupAddress}
+													className="underline hover:text-white/70"
+												>
+													{record.groupAddress}
+												</Link>
+											</td>
+											<td>{record.groupName}</td>
+											<td>{record.memberCount}</td>
+											<td>{record.monthlyPostCount}</td>
+										</tr>
+									);
+								})}
 					</Tbody>
 				</Table>
 			</PageBlock>

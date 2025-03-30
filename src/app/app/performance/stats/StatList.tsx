@@ -42,15 +42,15 @@ export const StatList = (props: { member?: Member; year: dayjs.Dayjs }) => {
 		>
 			{member &&
 				statsQuery.isSuccess &&
-				statsQuery.data
+				[...statsQuery.data]
 					.sort((a, b) => {
 						return dayjs(a.month).isBefore(dayjs(b.month)) ? 1 : -1;
 					})
 					.map((stat, i) => {
 						return (
 							<Link
+								key={stat.id}
 								href={`stats/${stat.id}`}
-								key={i}
 								className="flex items-center h-11 px-6
 								hover:bg-white/5
 								border-t-[1px] border-white/10"

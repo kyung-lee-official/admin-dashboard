@@ -158,14 +158,14 @@ export const Content = () => {
 								</Thead>
 								<Tbody>
 									{membersQuery.data &&
-										membersQuery.data
+										[...membersQuery.data]
 											/* sort by name */
 											.sort((a, b) =>
 												a.name.localeCompare(b.name)
 											)
-											.map((m, i) => {
+											.map((m) => {
 												return (
-													<tr key={i}>
+													<tr key={m.id}>
 														<td>
 															<div className="flex items-center gap-x-6">
 																<div className="w-8 h-8">
@@ -194,7 +194,7 @@ export const Content = () => {
 																		return (
 																			<div
 																				key={
-																					j
+																					r.id
 																				}
 																				className="flex gap-x-1 px-1
 																				border-neutral-500 border-1
