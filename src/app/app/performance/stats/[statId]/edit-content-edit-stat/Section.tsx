@@ -126,6 +126,8 @@ export const Section = (props: {
 						sortBy="name"
 					/>
 				)}
+				{/* For debug only */}
+				{/* <div>{s.tempId}</div> */}
 			</div>
 			<textarea
 				placeholder={"Description"}

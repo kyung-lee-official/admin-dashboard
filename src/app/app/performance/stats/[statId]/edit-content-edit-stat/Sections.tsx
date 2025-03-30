@@ -57,15 +57,18 @@ export const Sections = (props: {
 			</div>
 			<div className="flex flex-col gap-2">
 				{statSections.length > 0 &&
-					/* sort by createdAt */
-					statSections
+					[...statSections]
+						/* sort by createdAt */
 						.sort((a, b) => {
-							return a.createdAt.localeCompare(b.createdAt);
+							return (
+								new Date(b.createdAt).getTime() -
+								new Date(a.createdAt).getTime()
+							);
 						})
-						.map((s, i) => {
+						.map((s) => {
 							return (
 								<Section
-									key={i}
+									key={s.tempId}
 									s={s}
 									dispatchStatSections={dispatchStatSections}
 									setDeleteTempId={setDeleteTempId}

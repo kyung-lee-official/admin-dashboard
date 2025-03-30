@@ -25,14 +25,15 @@ export function statSectionsReducer(
 			return action.payload;
 		}
 		case EditSectionType.CREATE: {
-			return state.concat({
+			const newState = state.concat({
 				tempId: nanoid(),
 				weight: 0,
 				memberRoleId: null,
 				title: "New Section",
 				description: "",
-				createdAt: "",
+				createdAt: new Date().toISOString(),
 			});
+			return newState;
 		}
 		case EditSectionType.UPDATE_TITLE: {
 			const { tempId, title } = action.payload;
