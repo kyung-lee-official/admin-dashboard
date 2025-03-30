@@ -71,6 +71,8 @@ export const Section = (props: {
 				<div className="flex items-center gap-2">
 					<div>Weight</div>
 					<IntegerInput
+						min={0}
+						max={100}
 						value={s.weight}
 						onChange={(v: number) => {
 							const weight = v;
