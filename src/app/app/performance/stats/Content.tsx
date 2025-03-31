@@ -16,8 +16,7 @@ import { createPortal } from "react-dom";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useAuthStore } from "@/stores/auth";
-import { getMembers, getMyInfo, MembersQK } from "@/utils/api/members";
-import { MyInfo } from "@/app/settings/my-account/profile/Content";
+import { getMeAndMembersOfMySubRoles, MembersQK } from "@/utils/api/members";
 import { Dropdown } from "@/components/input/dropdown/Dropdown";
 import { PageBlock, PageContainer } from "@/components/content/PageContainer";
 
@@ -32,37 +31,21 @@ export const Content = () => {
 	const [year, setYear] = useState<dayjs.Dayjs>(dayjs());
 	const jwt = useAuthStore((state) => state.jwt);
 
-	const membersQuery = useQuery<Member[], AxiosError>({
-		queryKey: [MembersQK.GET_MEMBERS],
+	const meAndMembersOfMySubRolesQuery = useQuery<Member[], AxiosError>({
+		queryKey: [MembersQK.GET_ME_AND_MEMBERS_OF_MY_SUBROLES],
 		queryFn: async () => {
-			const members = await getMembers(jwt);
+			const members = await getMeAndMembersOfMySubRoles(jwt);
 			return members;
 		},
 		retry: false,
 		refetchOnWindowFocus: false,
 	});
 
-	const myInfoQuery = useQuery<MyInfo, AxiosError>({
-		queryKey: [MembersQK.GET_MY_INFO, jwt],
-		queryFn: async () => {
-			const isSignedIn = await getMyInfo(jwt);
-			return isSignedIn;
-		},
-		retry: false,
-		refetchOnWindowFocus: false,
-	});
-
 	useEffect(() => {
-		if (membersQuery.data && myInfoQuery.data) {
-			const myRoles = myInfoQuery.data.memberRoles;
-			const iAmAdmin = myRoles.some((role) => role.id === "admin");
-			if (!iAmAdmin) {
-				setMemberOptions([myInfoQuery.data]);
-			} else {
-				setMemberOptions(membersQuery.data);
-			}
+		if (meAndMembersOfMySubRolesQuery.data) {
+			setMemberOptions(meAndMembersOfMySubRolesQuery.data);
 		}
-	}, [membersQuery.data, myInfoQuery.data]);
+	}, [meAndMembersOfMySubRolesQuery.data]);
 
 	return (
 		<PageContainer>

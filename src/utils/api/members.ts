@@ -6,6 +6,7 @@ export enum MembersQK {
 	GET_MY_INFO = "get-my-info",
 	GET_AVATAR_BY_ID = "get-avatar-by-id",
 	GET_MEMBERS = "get-members",
+	GET_ME_AND_MEMBERS_OF_MY_SUBROLES = "get-me-and-members-of-my-subroles",
 }
 
 export const getPermissions = async (jwt: string): Promise<any> => {
@@ -35,6 +36,19 @@ export const getMembers = async (jwt: string) => {
 			Authorization: jwt,
 		},
 	});
+	return res.data;
+};
+
+export const getMeAndMembersOfMySubRoles = async (jwt: string) => {
+	const res = await axios.get(
+		"/internal/members/get-me-and-members-of-my-subroles",
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+			},
+		}
+	);
 	return res.data;
 };
 
