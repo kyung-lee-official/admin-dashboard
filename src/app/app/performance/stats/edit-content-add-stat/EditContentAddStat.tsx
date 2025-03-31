@@ -39,6 +39,7 @@ export const EditContentAddStat = (props: {
 				memberRoleId: null,
 				title: "New Section",
 				description: "",
+				createdAt: new Date().toISOString(),
 			},
 		],
 	});

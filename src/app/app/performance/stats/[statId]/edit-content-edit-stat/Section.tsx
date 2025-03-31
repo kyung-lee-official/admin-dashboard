@@ -108,28 +108,53 @@ export const Section = (props: {
 				>
 					Delete
 				</Button>
-				{rolesQuery.data && (
-					<Dropdown
-						kind="object"
-						mode="search"
-						selected={
-							rolesQuery.data.find((role) => {
-								return role.id === s.memberRoleId;
-							}) as MemberRole | MemberRole[] | null
-						}
-						setSelected={
-							setRole as Dispatch<
-								SetStateAction<MemberRole | MemberRole[] | null>
-							>
-						}
-						options={rolesQuery.data ?? []}
-						placeholder="Select a role"
-						label={{ primaryKey: "name", secondaryKey: "id" }}
-						sortBy="name"
-					/>
-				)}
+
 				{/* For debug only */}
 				{/* <div>{s.tempId}</div> */}
+			</div>
+			<div
+				className="flex flex-wrap justify-between items-center px-2 py-1 gap-y-1.5
+				bg-white/5"
+			>
+				{rolesQuery.data &&
+					(s.id ? (
+						/* existing section, do not allow to change role */
+						<div
+							className="flex items-center h-fit px-1.5 py-0.5 gap-1
+							text-xs
+							text-white/60
+							bg-neutral-700
+							border-1 border-neutral-600 rounded"
+						>
+							{
+								rolesQuery.data.find((role) => {
+									return role.id === s.memberRoleId;
+								})?.name
+							}
+						</div>
+					) : (
+						/* new section, show dropdown */
+						<Dropdown
+							kind="object"
+							mode="search"
+							selected={
+								rolesQuery.data.find((role) => {
+									return role.id === s.memberRoleId;
+								}) as MemberRole | MemberRole[] | null
+							}
+							setSelected={
+								setRole as Dispatch<
+									SetStateAction<
+										MemberRole | MemberRole[] | null
+									>
+								>
+							}
+							options={rolesQuery.data ?? []}
+							placeholder="Select a role"
+							label={{ primaryKey: "name", secondaryKey: "id" }}
+							sortBy="name"
+						/>
+					))}
 			</div>
 			<textarea
 				placeholder={"Description"}

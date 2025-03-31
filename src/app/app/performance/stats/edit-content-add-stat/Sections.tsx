@@ -46,6 +46,7 @@ export const Sections = (props: SectionProps) => {
 									weight: 0,
 									memberRoleId: null,
 									title: "New Section",
+									createdAt: new Date().toISOString(),
 								})
 							);
 						}}
@@ -62,16 +63,24 @@ export const Sections = (props: SectionProps) => {
 			</div>
 			<div className="flex flex-col gap-2">
 				{sections.length > 0 &&
-					[...sections].map((s, i) => {
-						return (
-							<Section
-								key={s.tempId}
-								s={s}
-								sections={sections}
-								setSections={setSections}
-							/>
-						);
-					})}
+					[...sections]
+						/* sort by createdAt in descending order */
+						.sort((a, b) => {
+							return (
+								new Date(b.createdAt).getTime() -
+								new Date(a.createdAt).getTime()
+							);
+						})
+						.map((s, i) => {
+							return (
+								<Section
+									key={s.tempId}
+									s={s}
+									sections={sections}
+									setSections={setSections}
+								/>
+							);
+						})}
 			</div>
 		</div>
 	);

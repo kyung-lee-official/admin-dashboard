@@ -38,6 +38,7 @@ export const Section = (props: {
 						memberRoleId: role?.id ?? null,
 						title: s.title,
 						description: s.description,
+						createdAt: s.createdAt,
 					};
 				}
 				return section;
@@ -74,6 +75,7 @@ export const Section = (props: {
 										memberRoleId: s.memberRoleId,
 										title: title,
 										description: s.description,
+										createdAt: s.createdAt,
 									};
 								}
 								return section;
@@ -100,6 +102,7 @@ export const Section = (props: {
 											memberRoleId: s.memberRoleId,
 											title: s.title,
 											description: s.description,
+											createdAt: s.createdAt,
 										};
 									}
 									return section;
@@ -150,6 +153,7 @@ export const Section = (props: {
 									memberRoleId: s.memberRoleId,
 									title: s.title,
 									description: description,
+									createdAt: s.createdAt,
 								};
 							}
 							return section;

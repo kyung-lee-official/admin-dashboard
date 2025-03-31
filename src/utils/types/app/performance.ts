@@ -8,6 +8,7 @@ export type CreateSectionData = {
 	memberRoleId: string | null;
 	title: string;
 	description?: string;
+	createdAt: string;
 };
 
 export type CreatePerformanceStatData = {
