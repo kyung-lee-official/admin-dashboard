@@ -15,6 +15,7 @@ import {
 } from "@/utils/api/app/sns-crawler/facebook-group-crawler";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import dayjs from "dayjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -140,9 +141,9 @@ export const Content = () => {
 											</td>
 											<td className="w-1/3 px-6 py-4">
 												Created at:{" "}
-												{new Date(
-													task.createdAt
-												).toLocaleString()}
+												{dayjs(task.createdAt).format(
+													"MMM DD YYYY, HH:mm:ss"
+												)}
 											</td>
 										</tr>
 									);

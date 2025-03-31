@@ -131,7 +131,7 @@ export const Content = (props: { taskId: number }) => {
 				title={
 					<div
 						className="flex items-center gap-4
-					text-lg font-semibold"
+						text-lg font-semibold"
 					>
 						<div>Crawler Task {taskId}</div>
 						<Indicator
@@ -179,6 +179,29 @@ export const Content = (props: { taskId: number }) => {
 								</Button>
 							)}
 					</div>
+				}
+				moreMenu={
+					<TitleMoreMenu
+						items={[
+							{
+								content: "Export as xlsx",
+								hideMenuOnClick: true,
+								icon: <ExportIcon size={15} />,
+								onClick: () => {
+									exportAsXlsx();
+								},
+							},
+							{
+								content: "Delete Task",
+								hideMenuOnClick: true,
+								type: "danger",
+								icon: <DeleteIcon size={15} />,
+								onClick: () => {
+									deleteTaskMutation.mutate();
+								},
+							},
+						]}
+					/>
 				}
 			></PageBlock>
 			<div
