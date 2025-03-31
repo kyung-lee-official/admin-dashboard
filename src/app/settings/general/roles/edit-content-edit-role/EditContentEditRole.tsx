@@ -109,6 +109,7 @@ export const EditContentEditRole = (props: {
 	const mutation = useMutation({
 		mutationFn: () => {
 			const dto = {
+				oldId: oldData.id,
 				id: newData.id,
 				name: newData.name,
 				superRoleId:
