@@ -14,7 +14,6 @@ export type CreateSectionData = {
 export type CreatePerformanceStatData = {
 	member: Member | undefined;
 	month: dayjs.Dayjs;
-	statSections: CreateSectionData[];
 };
 
 export type EditSectionData = {

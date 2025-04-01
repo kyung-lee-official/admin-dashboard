@@ -14,7 +14,7 @@ import { getAllRoles, RolesQK } from "@/utils/api/roles";
 import {
 	EditContentRegularForm,
 	EditContentRegularFormBlock,
-} from "@/app/settings/general/roles/EditContentRegularForm";
+} from "@/components/edit-panel/EditContentRegularForm";
 
 export const EditContentAddSection = (props: {
 	edit: EditProps;

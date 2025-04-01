@@ -7,22 +7,15 @@ import dayjs from "dayjs";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { MonthPicker } from "@/components/date/date-picker/month-picker/MonthPicker";
 import { Member } from "@/utils/types/internal";
-import { Sections } from "./Sections";
-import {
-	CreatePerformanceStatData,
-	CreateSectionData,
-} from "@/utils/types/app/performance";
+import { CreatePerformanceStatData } from "@/utils/types/app/performance";
 import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
-import { nanoid } from "nanoid";
-import { MyInfo } from "@/app/settings/my-account/profile/Content";
 import { AxiosError } from "axios";
-import {
-	getMeAndMembersOfMySubRoles,
-	getMembers,
-	getMyInfo,
-	MembersQK,
-} from "@/utils/api/members";
+import { getMeAndMembersOfMySubRoles, MembersQK } from "@/utils/api/members";
 import { Dropdown } from "@/components/input/dropdown/Dropdown";
+import {
+	EditContentRegularForm,
+	EditContentRegularFormBlock,
+} from "@/components/edit-panel/EditContentRegularForm";
 
 export const EditContentAddStat = (props: {
 	edit: EditProps;
@@ -37,24 +30,11 @@ export const EditContentAddStat = (props: {
 	const [oldData, setOldData] = useState<CreatePerformanceStatData>({
 		member: undefined,
 		month: dayjs(),
-		statSections: [
-			{
-				tempId: nanoid(),
-				weight: 100,
-				memberRoleId: null,
-				title: "New Section",
-				description: "",
-				createdAt: new Date().toISOString(),
-			},
-		],
 	});
 	const [newData, setNewData] = useState<CreatePerformanceStatData>(oldData);
 	const [member, setMember] = useState<Member | undefined>(undefined);
 	const [memberOptions, setMemberOptions] = useState<Member[]>([]);
 	const [month, setMonth] = useState<dayjs.Dayjs>(oldData.month);
-	const [statSections, setStatSections] = useState<CreateSectionData[]>(
-		oldData.statSections
-	);
 
 	const meAndMembersOfMySubRolesQuery = useQuery<Member[], AxiosError>({
 		queryKey: [MembersQK.GET_ME_AND_MEMBERS_OF_MY_SUBROLES],
@@ -76,21 +56,14 @@ export const EditContentAddStat = (props: {
 		setNewData({
 			member: member,
 			month: month,
-			statSections: statSections,
 		});
-	}, [member, month, statSections]);
+	}, [member, month]);
 
 	const mutation = useMutation({
 		mutationFn: () => {
 			const dto = {
 				ownerId: newData.member?.id,
 				month: newData.month.startOf("month").format("YYYY-MM-DD"),
-				statSections: newData.statSections.map((s) => ({
-					weight: s.weight,
-					memberRoleId: s.memberRoleId,
-					title: s.title,
-					description: s.description,
-				})),
 			};
 			return createStat(dto, jwt);
 		},
@@ -117,12 +90,8 @@ export const EditContentAddStat = (props: {
 			newData={newData}
 			oldData={oldData}
 		>
-			<form className="px-6 py-4 h-full">
-				<div
-					className="mb-6
-					text-sm"
-				>
-					<div className="mb-1.5">Member</div>
+			<EditContentRegularForm>
+				<EditContentRegularFormBlock title="Member">
 					<Dropdown
 						kind="object"
 						mode="search"
@@ -133,21 +102,11 @@ export const EditContentAddStat = (props: {
 						label={{ primaryKey: "name", secondaryKey: "email" }}
 						sortBy="name"
 					/>
-				</div>
-				<div
-					className="mb-6
-					text-sm"
-				>
-					<div className="mb-1.5">Month</div>
+				</EditContentRegularFormBlock>
+				<EditContentRegularFormBlock title="Month">
 					<MonthPicker date={month} setDate={setMonth} />
-				</div>
-				{/* <div className="text-sm">
-					<Sections
-						sections={statSections}
-						setSections={setStatSections}
-					/>
-				</div> */}
-			</form>
+				</EditContentRegularFormBlock>
+			</EditContentRegularForm>
 		</EditContentRegular>
 	);
 };
