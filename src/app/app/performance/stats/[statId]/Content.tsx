@@ -189,13 +189,13 @@ export const Content = (props: { statId: number }) => {
 						<TitleMoreMenu
 							items={[
 								{
-									content: "Edit Stat",
+									content: "Add a section",
 									hideMenuOnClick: true,
 									icon: <EditIcon size={15} />,
 									onClick: () => {
 										setEdit({
 											show: true,
-											id: EditId.EDIT_STAT,
+											id: EditId.ADD_SECTION,
 											auxData: {
 												statId: statId,
 											},

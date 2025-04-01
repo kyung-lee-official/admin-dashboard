@@ -14,6 +14,7 @@ import { EditContentOverwriteSourceData } from "@/app/app/sns-crawler/facebook-g
 import { EditContentOverwriteYouTubeSourceData } from "@/app/app/sns-crawler/youtube-data-collector/source-data/edit-content-overwrite-youtube-source-data/EditContentOverwriteYouTubeSourceData";
 import { EditContentAddYouTubeToken } from "@/app/app/sns-crawler/youtube-data-collector/manage-token/edit-content-add-youtube-token/EditContentAddYouTubeToken";
 import EditContentAddMember from "@/app/settings/general/members/EditContentAddMember";
+import { EditContentAddSection } from "@/app/app/performance/stats/[statId]/edit-content-add-section/EditContentAddSection";
 
 export enum EditId {
 	/* settings */
@@ -27,6 +28,7 @@ export enum EditId {
 	CHANGE_PASSWORD = "change-password",
 	/* app/performance */
 	ADD_STAT = "add-stat",
+	ADD_SECTION = "add-section",
 	EDIT_STAT = "edit-stat",
 	ADD_TEMPLATE = "add-template",
 	/* app/sns-crawler */
@@ -80,6 +82,8 @@ const EditContent = (props: {
 			return <EditContentPassword edit={edit} setEdit={setEdit} />;
 		case EditId.ADD_STAT:
 			return <EditContentAddStat edit={edit} setEdit={setEdit} />;
+		case EditId.ADD_SECTION:
+			return <EditContentAddSection edit={edit} setEdit={setEdit} />;
 		case EditId.EDIT_STAT:
 			return <EditContentEditStat edit={edit} setEdit={setEdit} />;
 		case EditId.ADD_TEMPLATE:

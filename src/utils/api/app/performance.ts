@@ -10,6 +10,7 @@ import { Dispatch, SetStateAction } from "react";
 export enum PerformanceQK {
 	GET_STAT_BY_ID = "get-stat-by-id",
 	SEARCH_STATS = "search-stats",
+	GET_SECTION_BY_ID = "get-section-by-id",
 	GET_MY_TEMPLATE_PERMISSIONS = "get-my-template-permissions",
 	GET_TEMPLATES_BY_ROLE_ID = "get-templates-by-role-id",
 	GET_TEMPLATES_BY_SECTION_ROLE_ID = "get-templates-by-section-role-id",
@@ -73,6 +74,26 @@ export const deleteStatById = async (id: number, jwt: string) => {
 	return res.data;
 };
 
+export const addSection = async (newData: any, jwt: string) => {
+	const res = await axios.post(`/internal/performance/sections`, newData, {
+		baseURL: process.env.NEXT_PUBLIC_API_HOST,
+		headers: {
+			Authorization: jwt,
+		},
+	});
+	return res.data;
+};
+
+export const getSectionById = async (id: number, jwt: string) => {
+	const res = await axios.get(`/internal/performance/sections/${id}`, {
+		baseURL: process.env.NEXT_PUBLIC_API_HOST,
+		headers: {
+			Authorization: jwt,
+		},
+	});
+	return res.data;
+};
+
 export const getTemplatePermissions = async (
 	templateId: number,
 	jwt: string
@@ -90,12 +111,16 @@ export const getTemplatePermissions = async (
 };
 
 export const createTemplate = async (newData: any, jwt: string) => {
-	const res = await axios.post("/internal/performance/event-templates", newData, {
-		baseURL: process.env.NEXT_PUBLIC_API_HOST,
-		headers: {
-			Authorization: jwt,
-		},
-	});
+	const res = await axios.post(
+		"/internal/performance/event-templates",
+		newData,
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+			},
+		}
+	);
 	return res.data;
 };
 
@@ -126,12 +151,15 @@ export const getTemplateById = async (id: string, jwt: string) => {
 };
 
 export const deleteTemplateById = async (id: string, jwt: string) => {
-	const res = await axios.delete(`/internal/performance/event-templates/${id}`, {
-		baseURL: process.env.NEXT_PUBLIC_API_HOST,
-		headers: {
-			Authorization: jwt,
-		},
-	});
+	const res = await axios.delete(
+		`/internal/performance/event-templates/${id}`,
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+			},
+		}
+	);
 };
 
 export const createEvent = async (body: CreateEventDto, jwt: string) => {

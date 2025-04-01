@@ -16,7 +16,12 @@ import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
 import { nanoid } from "nanoid";
 import { MyInfo } from "@/app/settings/my-account/profile/Content";
 import { AxiosError } from "axios";
-import { getMembers, getMyInfo, MembersQK } from "@/utils/api/members";
+import {
+	getMeAndMembersOfMySubRoles,
+	getMembers,
+	getMyInfo,
+	MembersQK,
+} from "@/utils/api/members";
 import { Dropdown } from "@/components/input/dropdown/Dropdown";
 
 export const EditContentAddStat = (props: {
@@ -51,20 +56,10 @@ export const EditContentAddStat = (props: {
 		oldData.statSections
 	);
 
-	const myInfoQuery = useQuery<MyInfo, AxiosError>({
-		queryKey: [MembersQK.GET_MY_INFO, jwt],
+	const meAndMembersOfMySubRolesQuery = useQuery<Member[], AxiosError>({
+		queryKey: [MembersQK.GET_ME_AND_MEMBERS_OF_MY_SUBROLES],
 		queryFn: async () => {
-			const isSignedIn = await getMyInfo(jwt);
-			return isSignedIn;
-		},
-		retry: false,
-		refetchOnWindowFocus: false,
-	});
-
-	const membersQuery = useQuery<Member[], AxiosError>({
-		queryKey: [MembersQK.GET_MEMBERS],
-		queryFn: async () => {
-			const members = await getMembers(jwt);
+			const members = await getMeAndMembersOfMySubRoles(jwt);
 			return members;
 		},
 		retry: false,
@@ -72,16 +67,10 @@ export const EditContentAddStat = (props: {
 	});
 
 	useEffect(() => {
-		if (membersQuery.data && myInfoQuery.data) {
-			const myRoles = myInfoQuery.data.memberRoles;
-			const iAmAdmin = myRoles.some((role) => role.id === "admin");
-			if (!iAmAdmin) {
-				setMemberOptions([myInfoQuery.data]);
-			} else {
-				setMemberOptions(membersQuery.data);
-			}
+		if (meAndMembersOfMySubRolesQuery.data) {
+			setMemberOptions(meAndMembersOfMySubRolesQuery.data);
 		}
-	}, [membersQuery.data, myInfoQuery.data]);
+	}, [meAndMembersOfMySubRolesQuery.data]);
 
 	useEffect(() => {
 		setNewData({
@@ -152,12 +141,12 @@ export const EditContentAddStat = (props: {
 					<div className="mb-1.5">Month</div>
 					<MonthPicker date={month} setDate={setMonth} />
 				</div>
-				<div className="text-sm">
+				{/* <div className="text-sm">
 					<Sections
 						sections={statSections}
 						setSections={setStatSections}
 					/>
-				</div>
+				</div> */}
 			</form>
 		</EditContentRegular>
 	);

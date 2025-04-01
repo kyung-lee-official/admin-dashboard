@@ -4,11 +4,11 @@ import { Button } from "@/components/button/Button";
 import { CircularProgress } from "@/components/progress/circular-progress/CircularProgress";
 import { Loading } from "@/components/page-authorization/Loading";
 import { useAuthStore } from "@/stores/auth";
-import { getStatById, PerformanceQK } from "@/utils/api/app/performance";
+import { getSectionById, PerformanceQK } from "@/utils/api/app/performance";
 import {
 	ApprovalType,
 	EventResponse,
-	PerformanceStatResponse,
+	SectionResponse,
 } from "@/utils/types/app/performance";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
@@ -17,6 +17,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { PageBlock, PageContainer } from "@/components/content/PageContainer";
 import { Table, Tbody } from "@/components/content/Table";
+import { Exception } from "@/components/page-authorization/Exception";
+import { Forbidden } from "@/components/page-authorization/Forbidden";
 
 export const Content = (props: { statId: string; sectionId: string }) => {
 	const { statId, sectionId } = props;
@@ -24,29 +26,51 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 	const jwt = useAuthStore((state) => state.jwt);
 	const router = useRouter();
 
-	const statsQuery = useQuery<PerformanceStatResponse, AxiosError>({
-		queryKey: [PerformanceQK.GET_STAT_BY_ID],
+	const sectionQuery = useQuery<SectionResponse, AxiosError>({
+		queryKey: [PerformanceQK.GET_SECTION_BY_ID],
 		queryFn: async () => {
-			const stats = await getStatById(parseInt(statId), jwt);
-			return stats;
+			const section = await getSectionById(parseInt(sectionId), jwt);
+			return section;
 		},
 		retry: false,
 		refetchOnWindowFocus: false,
 	});
 
-	if (statsQuery.isLoading) return <Loading />;
-
-	if (statsQuery.isError) return <div>Error: {statsQuery.error.message}</div>;
-
-	if (!statsQuery.data) {
-		return null;
+	if (sectionQuery.isLoading) {
+		return <Loading />;
 	}
-	const { month, owner, statSections } = statsQuery.data!;
 
-	const section = statSections.find((s) => s.id === parseInt(sectionId));
-	if (!section) {
-		return null;
+	if (sectionQuery.isError) {
+		if (sectionQuery.error.code === "ERR_BAD_REQUEST") {
+			return (
+				<PageContainer>
+					<Forbidden />
+				</PageContainer>
+			);
+		} else {
+			return (
+				<PageContainer>
+					<PageBlock
+						title={
+							<div
+								className="flex justify-center w-full
+								text-lg font-semibold"
+							>
+								Error: {sectionQuery.error.message}
+							</div>
+						}
+					></PageBlock>
+				</PageContainer>
+			);
+		}
 	}
+
+	if (!sectionQuery.data) {
+		return <Exception />;
+	}
+
+	const { stat, memberRole, events } = sectionQuery.data;
+	const { month, owner } = stat;
 
 	return (
 		<PageContainer>
@@ -76,24 +100,26 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 									className="flex w-fit px-1 gap-2
 									border border-neutral-500 rounded"
 								>
-									<div>{section.memberRole.name}</div>
+									<div>
+										{sectionQuery.data.memberRole.name}
+									</div>
 									<div className="text-neutral-500">
-										{section.memberRole.id}
+										{sectionQuery.data.memberRole.id}
 									</div>
 								</div>
 							</td>
 						</tr>
 						<tr>
 							<td>Section Title</td>
-							<td>{section.title}</td>
+							<td>{sectionQuery.data.title}</td>
 						</tr>
 						<tr>
 							<td>Section Weight</td>
-							<td>{section.weight}</td>
+							<td>{sectionQuery.data.weight}</td>
 						</tr>
 						<tr>
 							<td>Section Description</td>
-							<td>{section.description}</td>
+							<td>{sectionQuery.data.description}</td>
 						</tr>
 						<tr>
 							<td>Section Score</td>
@@ -102,7 +128,7 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 									<CircularProgress
 										size={24}
 										progress={Math.min(
-											section.events.reduce(
+											sectionQuery.data.events.reduce(
 												(acc, e) =>
 													acc +
 													(e.approval ===
@@ -114,7 +140,7 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 											100
 										)}
 									/>
-									{section.events.reduce(
+									{sectionQuery.data.events.reduce(
 										(acc, e) =>
 											acc +
 											(e.approval ===
@@ -129,7 +155,7 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 						<tr>
 							<td>Submitted Score</td>
 							<td>
-								{section.events.reduce(
+								{sectionQuery.data.events.reduce(
 									(acc, e) => acc + e.score * e.amount,
 									0
 								)}
@@ -144,7 +170,7 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 					<Button
 						size="sm"
 						onClick={() => {
-							router.push(`${section.id}/create-event`);
+							router.push(`${sectionQuery.data.id}/create-event`);
 						}}
 						className="truncate"
 					>
@@ -169,25 +195,27 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 								</div>
 							</td>
 						</tr>
-						{section.events.map((ev: EventResponse, i) => {
-							return (
-								<tr key={ev.id}>
-									<td>{ev.description}</td>
-									<td>{ev.approval}</td>
-									<td>{ev.score}</td>
-									<td>{ev.amount}</td>
-									<td>{ev.score * ev.amount}</td>
-									<td>
-										<Link
-											href={`${section.id}/event/${ev.id}`}
-											className="underline"
-										>
-											Details
-										</Link>
-									</td>
-								</tr>
-							);
-						})}
+						{sectionQuery.data.events.map(
+							(ev: EventResponse, i) => {
+								return (
+									<tr key={ev.id}>
+										<td>{ev.description}</td>
+										<td>{ev.approval}</td>
+										<td>{ev.score}</td>
+										<td>{ev.amount}</td>
+										<td>{ev.score * ev.amount}</td>
+										<td>
+											<Link
+												href={`${sectionQuery.data.id}/event/${ev.id}`}
+												className="underline"
+											>
+												Details
+											</Link>
+										</td>
+									</tr>
+								);
+							}
+						)}
 					</tbody>
 				</table>
 			</PageBlock>

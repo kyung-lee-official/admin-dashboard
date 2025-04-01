@@ -18,13 +18,10 @@ export type CreatePerformanceStatData = {
 };
 
 export type EditSectionData = {
-	id?: number /* if id is present, it's an existing section */;
-	tempId: string /* a nanoId for new sections, used for distinguishing newly added sections in frontend only, for example, identifying which one to delete */;
 	weight: number;
-	memberRoleId: string | null;
+	memberRole: MemberRole | null;
 	title: string;
 	description: string;
-	createdAt: string;
 };
 
 export type EditPerformanceStatData = {
@@ -59,6 +56,7 @@ export type OwnerResponse = {
 export type SectionResponse = {
 	id: number;
 	weight: number;
+	stat: PerformanceStatResponse;
 	memberRole: MemberRole;
 	memberRoleId: string;
 	title: string;
