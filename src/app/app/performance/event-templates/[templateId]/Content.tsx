@@ -60,7 +60,7 @@ export const Content = (props: { templateId: string }) => {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: [PerformanceQK.GET_STATS],
+				queryKey: [PerformanceQK.GET_TEMPLATE_BY_ID],
 			});
 			router.push("/app/performance/event-templates");
 		},

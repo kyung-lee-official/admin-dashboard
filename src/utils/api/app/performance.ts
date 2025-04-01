@@ -8,7 +8,6 @@ import axios from "axios";
 import { Dispatch, SetStateAction } from "react";
 
 export enum PerformanceQK {
-	GET_STATS = "get-stats",
 	GET_STAT_BY_ID = "get-stat-by-id",
 	SEARCH_STATS = "search-stats",
 	GET_MY_TEMPLATE_PERMISSIONS = "get-my-template-permissions",
@@ -33,16 +32,6 @@ export const createStat = async (newData: any, jwt: string) => {
 
 export const updateStat = async (id: number, newData: any, jwt: string) => {
 	const res = await axios.patch(`/performance/stats/${id}`, newData, {
-		baseURL: process.env.NEXT_PUBLIC_API_HOST,
-		headers: {
-			Authorization: jwt,
-		},
-	});
-	return res.data;
-};
-
-export const getStats = async (jwt: string) => {
-	const res = await axios.get("/performance/stats", {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: jwt,

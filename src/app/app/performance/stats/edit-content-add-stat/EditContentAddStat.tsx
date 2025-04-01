@@ -107,7 +107,7 @@ export const EditContentAddStat = (props: {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: [PerformanceQK.GET_STATS],
+				queryKey: [PerformanceQK.SEARCH_STATS],
 			});
 			setEdit({ show: false, id: editId });
 		},

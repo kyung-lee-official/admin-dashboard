@@ -75,9 +75,6 @@ export const CreateEvent = (props: {
 			return createEvent(newData, jwt);
 		},
 		onSuccess: (data) => {
-			queryClient.invalidateQueries({
-				queryKey: [PerformanceQK.GET_STATS],
-			});
 			router.push(
 				`/app/performance/stats/${statId}/section/${section.id}/event/${data.id}`
 			);

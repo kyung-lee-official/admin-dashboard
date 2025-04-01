@@ -48,9 +48,6 @@ export const Content = (props: { statId: number }) => {
 			return deleteStatById(statId, jwt);
 		},
 		onSuccess: () => {
-			queryClient.invalidateQueries({
-				queryKey: [PerformanceQK.GET_STATS],
-			});
 			router.push("/app/performance/stats");
 		},
 		onError: () => {},
