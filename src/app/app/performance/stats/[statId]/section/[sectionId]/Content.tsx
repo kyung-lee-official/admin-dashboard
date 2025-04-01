@@ -4,13 +4,17 @@ import { Button } from "@/components/button/Button";
 import { CircularProgress } from "@/components/progress/circular-progress/CircularProgress";
 import { Loading } from "@/components/page-authorization/Loading";
 import { useAuthStore } from "@/stores/auth";
-import { getSectionById, PerformanceQK } from "@/utils/api/app/performance";
+import {
+	deleteSectionById,
+	getSectionById,
+	PerformanceQK,
+} from "@/utils/api/app/performance";
 import {
 	ApprovalType,
 	EventResponse,
 	SectionResponse,
 } from "@/utils/types/app/performance";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import dayjs from "dayjs";
 import Link from "next/link";
@@ -19,22 +23,43 @@ import { PageBlock, PageContainer } from "@/components/content/PageContainer";
 import { Table, Tbody } from "@/components/content/Table";
 import { Exception } from "@/components/page-authorization/Exception";
 import { Forbidden } from "@/components/page-authorization/Forbidden";
+import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
+import { EditIcon } from "@/components/icons/Icons";
+import { EditId } from "@/components/edit-panel/EditPanel";
+import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
+import { useState } from "react";
+import { queryClient } from "@/utils/react-query/react-query";
 
-export const Content = (props: { statId: string; sectionId: string }) => {
+export const Content = (props: { statId: number; sectionId: number }) => {
 	const { statId, sectionId } = props;
 
 	const jwt = useAuthStore((state) => state.jwt);
 	const router = useRouter();
+	const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
 	const sectionQuery = useQuery<SectionResponse, AxiosError>({
 		queryKey: [PerformanceQK.GET_SECTION_BY_ID],
 		queryFn: async () => {
-			const section = await getSectionById(parseInt(sectionId), jwt);
+			const section = await getSectionById(sectionId, jwt);
 			return section;
 		},
 		retry: false,
 		refetchOnWindowFocus: false,
 	});
+
+	const mutation = useMutation({
+		mutationFn: () => {
+			return deleteSectionById(sectionId, jwt);
+		},
+		onSuccess: () => {
+			router.push("/app/performance/stats");
+		},
+		onError: () => {},
+	});
+
+	function onDelete() {
+		mutation.mutate();
+	}
 
 	if (sectionQuery.isLoading) {
 		return <Loading />;
@@ -90,7 +115,46 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 					</Tbody>
 				</Table>
 			</PageBlock>
-			<PageBlock title="Section">
+			<PageBlock
+				title="Section"
+				moreMenu={
+					<>
+						<TitleMoreMenu
+							items={[
+								{
+									content: "Edit Section",
+									hideMenuOnClick: true,
+									icon: <EditIcon size={15} />,
+									onClick: () => {
+										// setEdit({
+										// 	show: true,
+										// 	id: EditId.Edit_SECTION,
+										// });
+									},
+								},
+								{
+									content: "Delete Section",
+									type: "danger",
+									hideMenuOnClick: true,
+									icon: <EditIcon size={15} />,
+									onClick: () => {
+										setShowDeleteConfirmation(true);
+									},
+								},
+							]}
+						/>
+						<ConfirmDialog
+							show={showDeleteConfirmation}
+							setShow={setShowDeleteConfirmation}
+							question={
+								"Are you sure you want to delete this section?"
+							}
+							description="Associated events will be deleted as well."
+							onOk={onDelete}
+						/>
+					</>
+				}
+			>
 				<Table>
 					<Tbody>
 						<tr>
