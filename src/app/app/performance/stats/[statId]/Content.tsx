@@ -23,7 +23,6 @@ import {
 	EditPanel,
 	EditProps,
 } from "@/components/edit-panel/EditPanel";
-import { queryClient } from "@/utils/react-query/react-query";
 import { DeleteIcon, EditIcon, InfoIcon } from "@/components/icons/Icons";
 import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
 import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
@@ -31,6 +30,7 @@ import { createPortal } from "react-dom";
 import { PageBlock, PageContainer } from "@/components/content/PageContainer";
 import { Table, Tbody, Thead } from "@/components/content/Table";
 import Tooltip from "@/components/tooltip/Tooltip";
+import { Forbidden } from "@/components/page-authorization/Forbidden";
 
 export const Content = (props: { statId: number }) => {
 	const { statId } = props;
@@ -68,7 +68,30 @@ export const Content = (props: { statId: number }) => {
 
 	if (statsQuery.isLoading) return <Loading />;
 
-	if (statsQuery.isError) return <div>Error: {statsQuery.error.message}</div>;
+	if (statsQuery.isError) {
+		if (statsQuery.error.code === "ERR_BAD_REQUEST") {
+			return (
+				<PageContainer>
+					<Forbidden />
+				</PageContainer>
+			);
+		} else {
+			return (
+				<PageContainer>
+					<PageBlock
+						title={
+							<div
+								className="flex justify-center w-full
+								text-lg font-semibold"
+							>
+								{statsQuery.error.message}
+							</div>
+						}
+					></PageBlock>
+				</PageContainer>
+			);
+		}
+	}
 
 	if (!statsQuery.data) {
 		return null;
