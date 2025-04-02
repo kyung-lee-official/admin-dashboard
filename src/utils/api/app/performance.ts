@@ -10,6 +10,7 @@ import { Dispatch, SetStateAction } from "react";
 export enum PerformanceQK {
 	GET_STAT_BY_ID = "get-stat-by-id",
 	SEARCH_STATS = "search-stats",
+	GET_MY_SECTION_PERMISSIONS = "get-my-section-permissions",
 	GET_SECTION_BY_ID = "get-section-by-id",
 	GET_MY_TEMPLATE_PERMISSIONS = "get-my-template-permissions",
 	GET_TEMPLATES_BY_ROLE_ID = "get-templates-by-role-id",
@@ -71,6 +72,22 @@ export const deleteStatById = async (id: number, jwt: string) => {
 			Authorization: jwt,
 		},
 	});
+	return res.data;
+};
+
+export const getMySectionPermissions = async (
+	sectionId: number,
+	jwt: string
+): Promise<any> => {
+	const res = await axios.get(
+		`/internal/performance/sections/permissions/${sectionId}`,
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+			},
+		}
+	);
 	return res.data;
 };
 

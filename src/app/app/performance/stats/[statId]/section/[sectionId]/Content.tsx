@@ -6,6 +6,7 @@ import { Loading } from "@/components/page-authorization/Loading";
 import { useAuthStore } from "@/stores/auth";
 import {
 	deleteSectionById,
+	getMySectionPermissions,
 	getSectionById,
 	PerformanceQK,
 } from "@/utils/api/app/performance";
@@ -22,25 +23,22 @@ import { useRouter } from "next/navigation";
 import { PageBlock, PageContainer } from "@/components/content/PageContainer";
 import { Table, Tbody } from "@/components/content/Table";
 import { Exception } from "@/components/page-authorization/Exception";
-import { Forbidden } from "@/components/page-authorization/Forbidden";
 import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
 import { EditIcon } from "@/components/icons/Icons";
 import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
 import { useState } from "react";
-import { ResourceNotFound } from "@/components/page-authorization/ResourceNotFound";
 import { AxiosExceptions } from "@/components/page-authorization/AxiosExceptions";
 
-export const Content = (props: { statId: number; sectionId: number }) => {
-	const { statId, sectionId } = props;
-
+const SectionMoreMenu = (props: { sectionId: number }) => {
+	const { sectionId } = props;
 	const jwt = useAuthStore((state) => state.jwt);
 	const router = useRouter();
 	const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
-	const sectionQuery = useQuery<SectionResponse, AxiosError>({
-		queryKey: [PerformanceQK.GET_SECTION_BY_ID],
+	const mySectionPermissionsQuery = useQuery({
+		queryKey: [PerformanceQK.GET_MY_SECTION_PERMISSIONS],
 		queryFn: async () => {
-			const section = await getSectionById(sectionId, jwt);
+			const section = await getMySectionPermissions(sectionId, jwt);
 			return section;
 		},
 		retry: false,
@@ -60,6 +58,73 @@ export const Content = (props: { statId: number; sectionId: number }) => {
 	function onDelete() {
 		mutation.mutate();
 	}
+
+	if (
+		mySectionPermissionsQuery.data &&
+		(mySectionPermissionsQuery.data.actions["update"] === "EFFECT_ALLOW" ||
+			mySectionPermissionsQuery.data.actions["delete"] === "EFFECT_ALLOW")
+	) {
+		const items = [];
+		if (
+			mySectionPermissionsQuery.data.actions["update"] === "EFFECT_ALLOW"
+		) {
+			items.push({
+				content: "Edit Section",
+				hideMenuOnClick: true,
+				icon: <EditIcon size={15} />,
+				onClick: () => {
+					// setEdit({
+					// 	show: true,
+					// 	id: EditId.Edit_SECTION,
+					// });
+				},
+			});
+		}
+		if (
+			mySectionPermissionsQuery.data.actions["delete"] === "EFFECT_ALLOW"
+		) {
+			items.push({
+				content: "Delete Section",
+				type: "danger" as const,
+				hideMenuOnClick: true,
+				icon: <EditIcon size={15} />,
+				onClick: () => {
+					setShowDeleteConfirmation(true);
+				},
+			});
+		}
+		return (
+			<>
+				{<TitleMoreMenu items={items} />}
+				<ConfirmDialog
+					show={showDeleteConfirmation}
+					setShow={setShowDeleteConfirmation}
+					question={"Are you sure you want to delete this section?"}
+					description="Associated events will be deleted as well."
+					onOk={onDelete}
+				/>
+			</>
+		);
+	} else {
+		return null;
+	}
+};
+
+export const Content = (props: { statId: number; sectionId: number }) => {
+	const { statId, sectionId } = props;
+
+	const jwt = useAuthStore((state) => state.jwt);
+	const router = useRouter();
+
+	const sectionQuery = useQuery<SectionResponse, AxiosError>({
+		queryKey: [PerformanceQK.GET_SECTION_BY_ID],
+		queryFn: async () => {
+			const section = await getSectionById(sectionId, jwt);
+			return section;
+		},
+		retry: false,
+		refetchOnWindowFocus: false,
+	});
 
 	if (sectionQuery.isLoading) {
 		return <Loading />;
@@ -96,43 +161,7 @@ export const Content = (props: { statId: number; sectionId: number }) => {
 			</PageBlock>
 			<PageBlock
 				title="Section"
-				moreMenu={
-					<>
-						<TitleMoreMenu
-							items={[
-								{
-									content: "Edit Section",
-									hideMenuOnClick: true,
-									icon: <EditIcon size={15} />,
-									onClick: () => {
-										// setEdit({
-										// 	show: true,
-										// 	id: EditId.Edit_SECTION,
-										// });
-									},
-								},
-								{
-									content: "Delete Section",
-									type: "danger",
-									hideMenuOnClick: true,
-									icon: <EditIcon size={15} />,
-									onClick: () => {
-										setShowDeleteConfirmation(true);
-									},
-								},
-							]}
-						/>
-						<ConfirmDialog
-							show={showDeleteConfirmation}
-							setShow={setShowDeleteConfirmation}
-							question={
-								"Are you sure you want to delete this section?"
-							}
-							description="Associated events will be deleted as well."
-							onOk={onDelete}
-						/>
-					</>
-				}
+				moreMenu={<SectionMoreMenu sectionId={sectionId} />}
 			>
 				<Table>
 					<Tbody>
