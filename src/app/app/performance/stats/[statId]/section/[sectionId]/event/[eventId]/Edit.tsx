@@ -79,7 +79,7 @@ export const Edit = (props: {
 							min={1}
 							value={amount}
 							onChange={(v) => {
-								setScore(v);
+								setAmount(v);
 							}}
 						/>
 					</td>
