@@ -1,3 +1,4 @@
+import { Table, Tbody, Thead } from "@/components/content/Table";
 import { useAuthStore } from "@/stores/auth";
 import {
 	getTemplatesByRoleId,
@@ -9,12 +10,13 @@ import { MemberRole } from "@/utils/types/internal";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import dayjs from "dayjs";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export const TemplateList = (props: { role?: MemberRole }) => {
 	const { role } = props;
 
+	const router = useRouter();
 	const jwt = useAuthStore((state) => state.jwt);
 
 	const templatesQuery = useQuery<
@@ -38,32 +40,41 @@ export const TemplateList = (props: { role?: MemberRole }) => {
 	}, [role]);
 
 	return (
-		<div
-			className="flex flex-col
-			text-white/50"
-		>
-			{role &&
-				templatesQuery.isSuccess &&
-				[...templatesQuery.data]
-					.sort((a, b) => {
-						return dayjs(a.createdAt).isBefore(dayjs(b.createdAt))
-							? 1
-							: -1;
-					})
-					.map((template, i) => {
-						return (
-							<Link
-								key={template.id}
-								href={`event-templates/${template.id}`}
-								className="flex items-center h-11 px-6
-								text-sm
-								hover:bg-white/5
-								border-t-[1px] border-white/10"
-							>
-								{template.description}
-							</Link>
-						);
-					})}
-		</div>
+		<Table>
+			<Thead>
+				<tr>
+					<th className="w-1/6">Template Score</th>
+					<th>Template Description</th>
+				</tr>
+			</Thead>
+			<Tbody>
+				{role &&
+					templatesQuery.isSuccess &&
+					[...templatesQuery.data]
+						.sort((a, b) => {
+							return dayjs(a.createdAt).isBefore(
+								dayjs(b.createdAt)
+							)
+								? 1
+								: -1;
+						})
+						.map((template, i) => {
+							return (
+								<tr
+									key={template.id}
+									className="cursor-pointer"
+									onClick={() => {
+										router.push(
+											`event-templates/${template.id}`
+										);
+									}}
+								>
+									<td>{template.score}</td>
+									<td>{template.description}</td>
+								</tr>
+							);
+						})}
+			</Tbody>
+		</Table>
 	);
 };
