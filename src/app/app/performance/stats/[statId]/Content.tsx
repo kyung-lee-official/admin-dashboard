@@ -31,6 +31,7 @@ import { PageBlock, PageContainer } from "@/components/content/PageContainer";
 import { Table, Tbody, Thead } from "@/components/content/Table";
 import Tooltip from "@/components/tooltip/Tooltip";
 import { Forbidden } from "@/components/page-authorization/Forbidden";
+import { SectionSumAdmonition } from "./SectionSumAdmonition";
 
 export const Content = (props: { statId: number }) => {
 	const { statId } = props;
@@ -182,6 +183,15 @@ export const Content = (props: { statId: number }) => {
 
 	return (
 		<PageContainer>
+			{statSections.reduce((acc, e) => {
+				return acc + e.weight;
+			}, 0) === 100 ? null : (
+				<SectionSumAdmonition
+					currentValue={statSections.reduce((acc, e) => {
+						return acc + e.weight;
+					}, 0)}
+				/>
+			)}
 			<PageBlock
 				title="Stat"
 				moreMenu={
