@@ -28,11 +28,26 @@ import { EditIcon } from "@/components/icons/Icons";
 import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
 import { useState } from "react";
 import { AxiosExceptions } from "@/components/page-authorization/AxiosExceptions";
+import {
+	EditId,
+	EditPanel,
+	EditProps,
+} from "@/components/edit-panel/EditPanel";
+import { createPortal } from "react-dom";
 
 const SectionMoreMenu = (props: { sectionId: number }) => {
 	const { sectionId } = props;
 	const jwt = useAuthStore((state) => state.jwt);
 	const router = useRouter();
+
+	const [edit, setEdit] = useState<EditProps>({
+		show: false,
+		id: EditId.EDIT_SECTION,
+		auxData: {
+			sectionId: sectionId,
+		},
+	});
+
 	const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
 	const mySectionPermissionsQuery = useQuery({
@@ -73,10 +88,13 @@ const SectionMoreMenu = (props: { sectionId: number }) => {
 				hideMenuOnClick: true,
 				icon: <EditIcon size={15} />,
 				onClick: () => {
-					// setEdit({
-					// 	show: true,
-					// 	id: EditId.Edit_SECTION,
-					// });
+					setEdit({
+						show: true,
+						id: EditId.EDIT_SECTION,
+						auxData: {
+							sectionId: sectionId,
+						},
+					});
 				},
 			});
 		}
@@ -95,7 +113,11 @@ const SectionMoreMenu = (props: { sectionId: number }) => {
 		}
 		return (
 			<>
-				{<TitleMoreMenu items={items} />}
+				<TitleMoreMenu items={items} />
+				{createPortal(
+					<EditPanel edit={edit} setEdit={setEdit} />,
+					document.body
+				)}
 				<ConfirmDialog
 					show={showDeleteConfirmation}
 					setShow={setShowDeleteConfirmation}

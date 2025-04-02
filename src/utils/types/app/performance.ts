@@ -3,12 +3,10 @@ import dayjs from "dayjs";
 import { Member, MemberRole } from "../internal";
 
 export type CreateSectionData = {
-	tempId: string /* a nanoId for new sections, used for distinguishing newly added sections in frontend only, for example, identifying which one to delete */;
 	weight: number;
-	memberRoleId: string | null;
+	memberRole: MemberRole | null;
 	title: string;
 	description?: string;
-	createdAt: string;
 };
 
 export type CreatePerformanceStatData = {
@@ -18,15 +16,8 @@ export type CreatePerformanceStatData = {
 
 export type EditSectionData = {
 	weight: number;
-	memberRole: MemberRole | null;
 	title: string;
 	description: string;
-};
-
-export type EditPerformanceStatData = {
-	ownerId: string;
-	month: dayjs.Dayjs;
-	statSections: EditSectionData[];
 };
 
 export type EventResponse = {

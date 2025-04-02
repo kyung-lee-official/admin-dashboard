@@ -39,7 +39,7 @@ export const Content = (props: { statId: number }) => {
 
 	const [edit, setEdit] = useState<EditProps>({
 		show: false,
-		id: EditId.EDIT_STAT,
+		id: EditId.ADD_SECTION,
 	});
 	const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 

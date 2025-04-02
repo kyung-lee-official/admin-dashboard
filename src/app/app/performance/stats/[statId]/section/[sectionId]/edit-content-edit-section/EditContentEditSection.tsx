@@ -1,82 +1,94 @@
 import { EditId, EditProps } from "@/components/edit-panel/EditPanel";
 import { useAuthStore } from "@/stores/auth";
-import { PerformanceQK, addSection } from "@/utils/api/app/performance";
+import {
+	getSectionById,
+	PerformanceQK,
+	updateSectionById,
+} from "@/utils/api/app/performance";
 import { queryClient } from "@/utils/react-query/react-query";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
-	CreateSectionData,
 	EditSectionData,
+	SectionResponse,
 } from "@/utils/types/app/performance";
 import { AxiosError } from "axios";
 import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
-import { IntegerInput } from "@/components/input/integer-input/IntegerInput";
-import { Dropdown } from "@/components/input/dropdown/Dropdown";
-import { MemberRole } from "@/utils/types/internal";
-import { getAllRoles, RolesQK } from "@/utils/api/roles";
 import {
 	EditContentRegularForm,
 	EditContentRegularFormBlock,
 } from "@/components/edit-panel/EditContentRegularForm";
+import { IntegerInput } from "@/components/input/integer-input/IntegerInput";
 
-export const EditContentAddSection = (props: {
+export const EditContentEditSection = (props: {
 	edit: EditProps;
 	setEdit: Dispatch<SetStateAction<EditProps>>;
 }) => {
-	const editId = EditId.ADD_SECTION;
-	const title = "Add Section";
+	const editId = EditId.EDIT_SECTION;
+	const panelTitle = "Edit Section";
 	const { edit, setEdit } = props;
-	const { statId } = edit.auxData;
+	const { sectionId } = edit.auxData;
+
+	const [oldData, setOldData] = useState<EditSectionData>({
+		weight: 0,
+		title: "",
+		description: "",
+	});
+	const [newData, setNewData] = useState<EditSectionData>(oldData);
+	const [weight, setWeight] = useState(oldData.weight);
+	const [title, setTitle] = useState(oldData.title);
+	const [description, setDescription] = useState(oldData.description);
 
 	const jwt = useAuthStore((state) => state.jwt);
-	const rolesQuery = useQuery<MemberRole[], AxiosError>({
-		queryKey: [RolesQK.GET_ALL_ROLES],
+
+	const sectionQuery = useQuery<SectionResponse, AxiosError>({
+		queryKey: [PerformanceQK.GET_SECTION_BY_ID],
 		queryFn: async () => {
-			const roles = await getAllRoles(jwt);
-			return roles;
+			const section = await getSectionById(sectionId, jwt);
+			return section;
 		},
 		retry: false,
 		refetchOnWindowFocus: false,
 	});
 
-	const [oldData, setOldData] = useState<CreateSectionData>({
-		weight: 0,
-		memberRole: null,
-		title: "",
-		description: "",
-	});
-	const [newData, setNewData] = useState<CreateSectionData>(oldData);
-	const [weight, setWeight] = useState(oldData.weight);
-	const [memberRole, setMemberRole] = useState<
-		MemberRole | MemberRole[] | null
-	>(oldData.memberRole);
-	const [sectionTitle, setSectionTitle] = useState(oldData.title);
-	const [description, setDescription] = useState(oldData.description);
+	/* for initializing data */
+	useEffect(() => {
+		if (sectionQuery.data) {			
+			const initialData = {
+				weight: sectionQuery.data.weight,
+				title: sectionQuery.data.title,
+				description: sectionQuery.data.description,
+			};
+			setOldData(initialData);
+			setNewData(initialData);
+			setWeight(initialData.weight);
+			setTitle(initialData.title);
+			setDescription(initialData.description);
+		}
+	}, [sectionQuery.data]);
 
 	/* for updating data */
 	useEffect(() => {
 		setNewData({
 			weight: weight,
-			memberRole: memberRole as MemberRole | null,
-			title: sectionTitle,
+			title: title,
 			description: description,
 		});
-	}, [weight, memberRole, sectionTitle, description]);
+	}, [weight, title, description]);
 
 	const mutation = useMutation({
 		mutationFn: () => {
 			const dto = {
-				statId: statId as number,
+				sectionId: sectionId,
 				weight: newData.weight,
-				memberRoleId: newData.memberRole?.id,
 				title: newData.title,
 				description: newData.description,
 			};
-			return addSection(dto, jwt);
+			return updateSectionById(dto, jwt);
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: [PerformanceQK.GET_STAT_BY_ID],
+				queryKey: [PerformanceQK.GET_SECTION_BY_ID],
 			});
 			setEdit({ show: false, id: editId });
 		},
@@ -89,7 +101,7 @@ export const EditContentAddSection = (props: {
 
 	return (
 		<EditContentRegular
-			title={title}
+			title={panelTitle}
 			editId={editId}
 			edit={edit}
 			setEdit={setEdit}
@@ -98,19 +110,6 @@ export const EditContentAddSection = (props: {
 			oldData={oldData}
 		>
 			<EditContentRegularForm>
-				<EditContentRegularFormBlock title="Title">
-					<input
-						type="text"
-						className="w-40 px-2 py-0.5
-						border-[1px] border-neutral-700 border-t-neutral-600
-						rounded"
-						placeholder="Title"
-						value={sectionTitle}
-						onChange={(e) => {
-							setSectionTitle(e.target.value);
-						}}
-					/>
-				</EditContentRegularFormBlock>
 				<EditContentRegularFormBlock title="Weight">
 					<IntegerInput
 						min={0}
@@ -121,19 +120,17 @@ export const EditContentAddSection = (props: {
 						}}
 					/>
 				</EditContentRegularFormBlock>
-				<EditContentRegularFormBlock title="Section Role">
-					<Dropdown
-						kind="object"
-						mode="search"
-						selected={memberRole}
-						setSelected={setMemberRole}
-						options={rolesQuery.data ?? []}
-						placeholder="Select a role"
-						label={{
-							primaryKey: "name",
-							secondaryKey: "id",
+				<EditContentRegularFormBlock title="Title">
+					<input
+						type="text"
+						className="w-40 px-2 py-0.5
+						border-[1px] border-neutral-700 border-t-neutral-600
+						rounded"
+						placeholder="Title"
+						value={title}
+						onChange={(e) => {
+							setTitle(e.target.value);
 						}}
-						sortBy="name"
 					/>
 				</EditContentRegularFormBlock>
 				<EditContentRegularFormBlock title="Description">

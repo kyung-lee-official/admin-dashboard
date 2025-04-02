@@ -8,13 +8,13 @@ import { EditContentAvatar } from "../../app/settings/my-account/profile/edit-co
 import { EditContentAddRole } from "../../app/settings/general/roles/EditContentAddRole";
 import { EditContentEditRole } from "../../app/settings/general/roles/edit-content-edit-role/EditContentEditRole";
 import { EditContentAddStat } from "@/app/app/performance/stats/edit-content-add-stat/EditContentAddStat";
-import { EditContentEditStat } from "@/app/app/performance/stats/[statId]/edit-content-edit-stat/EditContentEditStat";
 import { EditContentAddTemplate } from "@/app/app/performance/event-templates/edit-content-add-template/EditContentAddTemplate";
 import { EditContentOverwriteSourceData } from "@/app/app/sns-crawler/facebook-group/source-data/edit-content-overwrite-source-data/EditContentOverwriteSourceData";
 import { EditContentOverwriteYouTubeSourceData } from "@/app/app/sns-crawler/youtube-data-collector/source-data/edit-content-overwrite-youtube-source-data/EditContentOverwriteYouTubeSourceData";
 import { EditContentAddYouTubeToken } from "@/app/app/sns-crawler/youtube-data-collector/manage-token/edit-content-add-youtube-token/EditContentAddYouTubeToken";
 import EditContentAddMember from "@/app/settings/general/members/EditContentAddMember";
 import { EditContentAddSection } from "@/app/app/performance/stats/[statId]/edit-content-add-section/EditContentAddSection";
+import { EditContentEditSection } from "@/app/app/performance/stats/[statId]/section/[sectionId]/edit-content-edit-section/EditContentEditSection";
 
 export enum EditId {
 	/* settings */
@@ -29,7 +29,7 @@ export enum EditId {
 	/* app/performance */
 	ADD_STAT = "add-stat",
 	ADD_SECTION = "add-section",
-	EDIT_STAT = "edit-stat",
+	EDIT_SECTION = "edit-section",
 	ADD_TEMPLATE = "add-template",
 	/* app/sns-crawler */
 	OVERWRITE_FACEBOOK_GROUP_SOURCE_DATA = "overwrite-facebook-group-source-data",
@@ -84,8 +84,8 @@ const EditContent = (props: {
 			return <EditContentAddStat edit={edit} setEdit={setEdit} />;
 		case EditId.ADD_SECTION:
 			return <EditContentAddSection edit={edit} setEdit={setEdit} />;
-		case EditId.EDIT_STAT:
-			return <EditContentEditStat edit={edit} setEdit={setEdit} />;
+		case EditId.EDIT_SECTION:
+			return <EditContentEditSection edit={edit} setEdit={setEdit} />;
 		case EditId.ADD_TEMPLATE:
 			return <EditContentAddTemplate edit={edit} setEdit={setEdit} />;
 		case EditId.OVERWRITE_FACEBOOK_GROUP_SOURCE_DATA:

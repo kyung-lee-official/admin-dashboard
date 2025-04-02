@@ -111,6 +111,16 @@ export const getSectionById = async (id: number, jwt: string) => {
 	return res.data;
 };
 
+export const updateSectionById = async (newData: any, jwt: string) => {
+	const res = await axios.patch(`/internal/performance/sections`, newData, {
+		baseURL: process.env.NEXT_PUBLIC_API_HOST,
+		headers: {
+			Authorization: jwt,
+		},
+	});
+	return res.data;
+};
+
 export const deleteSectionById = async (id: number, jwt: string) => {
 	const res = await axios.delete(`/internal/performance/sections/${id}`, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
