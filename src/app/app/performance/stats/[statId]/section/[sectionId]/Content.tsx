@@ -25,10 +25,10 @@ import { Exception } from "@/components/page-authorization/Exception";
 import { Forbidden } from "@/components/page-authorization/Forbidden";
 import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
 import { EditIcon } from "@/components/icons/Icons";
-import { EditId } from "@/components/edit-panel/EditPanel";
 import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
 import { useState } from "react";
-import { queryClient } from "@/utils/react-query/react-query";
+import { ResourceNotFound } from "@/components/page-authorization/ResourceNotFound";
+import { AxiosExceptions } from "@/components/page-authorization/AxiosExceptions";
 
 export const Content = (props: { statId: number; sectionId: number }) => {
 	const { statId, sectionId } = props;
@@ -66,28 +66,7 @@ export const Content = (props: { statId: number; sectionId: number }) => {
 	}
 
 	if (sectionQuery.isError) {
-		if (sectionQuery.error.code === "ERR_BAD_REQUEST") {
-			return (
-				<PageContainer>
-					<Forbidden />
-				</PageContainer>
-			);
-		} else {
-			return (
-				<PageContainer>
-					<PageBlock
-						title={
-							<div
-								className="flex justify-center w-full
-								text-lg font-semibold"
-							>
-								Error: {sectionQuery.error.message}
-							</div>
-						}
-					></PageBlock>
-				</PageContainer>
-			);
-		}
+		return <AxiosExceptions error={sectionQuery.error} />;
 	}
 
 	if (!sectionQuery.data) {
