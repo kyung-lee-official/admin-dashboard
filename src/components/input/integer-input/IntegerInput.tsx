@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface IntegerInputProps {
 	min?: number;
@@ -18,6 +18,11 @@ export const IntegerInput = ({
 	const [inputValue, setInputValue] = useState<string>(
 		value?.toString() || ""
 	);
+
+	/* sync inputValue state with value prop */
+	useEffect(() => {
+		setInputValue(value?.toString() || "");
+	}, [value]);
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const val = e.target.value;
