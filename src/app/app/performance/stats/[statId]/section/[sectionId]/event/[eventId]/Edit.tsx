@@ -1,3 +1,4 @@
+import { DecimalInput } from "@/components/input/decimal-input/DecimalInput";
 import { IntegerInput } from "@/components/input/integer-input/IntegerInput";
 import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction } from "react";
@@ -64,10 +65,10 @@ export const Edit = (props: {
 				<tr>
 					<td>Score</td>
 					<td>
-						<IntegerInput
+						<DecimalInput
 							value={score}
 							onChange={(v) => {
-								setScore(v);
+								setScore(v as number);
 							}}
 						/>
 					</td>

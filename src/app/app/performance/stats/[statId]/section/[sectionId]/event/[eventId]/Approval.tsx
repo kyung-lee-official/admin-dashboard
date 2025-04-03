@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useAuthStore } from "@/stores/auth";
 import {
 	getApprovalPermissions,
@@ -15,8 +15,11 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { Dropdown } from "@/components/input/dropdown/Dropdown";
 import { VerifiedIcon } from "@/components/icons/Icons";
 
-export const Approval = (props: { event: EventResponse }) => {
-	const { event } = props;
+export const Approval = (props: {
+	event: EventResponse;
+	setIsEditing: Dispatch<SetStateAction<boolean>>;
+}) => {
+	const { event, setIsEditing } = props;
 
 	const [oldData, setOldData] = useState<
 		ApprovalType | ApprovalType[] | null
@@ -39,6 +42,9 @@ export const Approval = (props: { event: EventResponse }) => {
 			const dto = {
 				approval: newData,
 			};
+			if (dto.approval === "APPROVED") {
+				setIsEditing(false);
+			}
 			return await updateApprovalByEventId(
 				event.id,
 				dto as UpdateApprovalDto,

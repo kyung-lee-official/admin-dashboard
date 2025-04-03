@@ -137,7 +137,7 @@ export const Details = (props: {
 
 	return (
 		<div className="flex flex-col gap-y-3">
-			<Approval event={event} />
+			<Approval event={event} setIsEditing={setIsEditing} />
 			<div
 				className="text-white/50
 				bg-white/5
@@ -146,7 +146,7 @@ export const Details = (props: {
 			>
 				<div className="relative flex justify-between items-center px-6 py-4">
 					<div>Details</div>
-					{isEditing ? (
+					{event.approval !== "APPROVED" && isEditing ? (
 						<div className="flex gap-x-2">
 							<Button size="sm" onClick={onSave}>
 								Save
@@ -162,14 +162,16 @@ export const Details = (props: {
 						</div>
 					) : (
 						<div className="flex gap-x-2">
-							<Button
-								size="sm"
-								onClick={() => {
-									setIsEditing(true);
-								}}
-							>
-								Edit
-							</Button>
+							{event.approval !== "APPROVED" && (
+								<Button
+									size="sm"
+									onClick={() => {
+										setIsEditing(true);
+									}}
+								>
+									Edit
+								</Button>
+							)}
 							<Button
 								size="sm"
 								onClick={() => {

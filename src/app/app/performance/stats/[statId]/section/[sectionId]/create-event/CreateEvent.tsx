@@ -1,12 +1,11 @@
 import { Button } from "@/components/button/Button";
 import { PageBlock } from "@/components/content/PageContainer";
 import { Table, Tbody } from "@/components/content/Table";
-import { IntegerInput } from "@/components/input/integer-input/IntegerInput";
+import { DecimalInput } from "@/components/input/decimal-input/DecimalInput";
 import { TemplateSelector } from "@/components/input/selectors/TemplateSelector";
 import { Toggle } from "@/components/toggle/Toggle";
 import { useAuthStore } from "@/stores/auth";
-import { createEvent, PerformanceQK } from "@/utils/api/app/performance";
-import { queryClient } from "@/utils/react-query/react-query";
+import { createEvent } from "@/utils/api/app/performance";
 import {
 	CreateEventDto,
 	PerformanceEventTemplateResponse,
@@ -153,10 +152,10 @@ export const CreateEvent = (props: {
 							<tr>
 								<td className="w-1/2">Score</td>
 								<td className="w-1/2">
-									<IntegerInput
+									<DecimalInput
 										value={score}
 										onChange={(v) => {
-											setScore(v);
+											setScore(v as number);
 										}}
 									/>
 								</td>

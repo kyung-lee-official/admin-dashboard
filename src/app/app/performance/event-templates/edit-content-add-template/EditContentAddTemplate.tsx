@@ -10,7 +10,7 @@ import { CreatePerformanceEventTemplate } from "@/utils/types/app/performance";
 import { RolesQK, getAllRoles } from "@/utils/api/roles";
 import { AxiosError } from "axios";
 import { Dropdown } from "@/components/input/dropdown/Dropdown";
-import { IntegerInput } from "@/components/input/integer-input/IntegerInput";
+import { DecimalInput } from "@/components/input/decimal-input/DecimalInput";
 
 export const EditContentAddTemplate = (props: {
 	edit: EditProps;
@@ -100,9 +100,9 @@ export const EditContentAddTemplate = (props: {
 					text-sm"
 				>
 					Score
-					<IntegerInput
+					<DecimalInput
 						onChange={(v) => {
-							setScore(v);
+							setScore(v as number);
 						}}
 					/>
 				</div>
