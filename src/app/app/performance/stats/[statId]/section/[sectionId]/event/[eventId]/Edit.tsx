@@ -88,7 +88,7 @@ export const Edit = (props: {
 				</tr>
 				<tr>
 					<td>Total Score</td>
-					<td>{score * amount}</td>
+					<td>{(score * amount).toFixed(2)}</td>
 				</tr>
 				{templateId && (
 					<>
