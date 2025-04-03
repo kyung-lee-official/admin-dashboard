@@ -56,6 +56,7 @@ export const Edit = (props: {
 							rounded-md outline-none
 							border-[1px] border-white/10"
 							value={description || ""}
+							placeholder="Required"
 							onChange={(e) => {
 								setDescription(e.target.value);
 							}}
