@@ -58,7 +58,7 @@ export const Data = (props: {
 				</tr>
 				<tr>
 					<td>Total Score</td>
-					<td>{score * amount}</td>
+					<td>{(score * amount).toFixed(3)}</td>
 				</tr>
 				{templateId && (
 					<>
