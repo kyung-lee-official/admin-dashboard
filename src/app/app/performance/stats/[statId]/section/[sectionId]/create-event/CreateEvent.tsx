@@ -91,14 +91,16 @@ export const CreateEvent = (props: {
 			<PageBlock
 				title="Create Event"
 				moreMenu={
-					<Button
-						size="sm"
-						onClick={() => {
-							onCreate();
-						}}
-					>
-						Create
-					</Button>
+					((useTemplate && template) || !useTemplate) && (
+						<Button
+							size="sm"
+							onClick={() => {
+								onCreate();
+							}}
+						>
+							Create
+						</Button>
+					)
 				}
 			>
 				<Table>
@@ -167,6 +169,7 @@ export const CreateEvent = (props: {
 										bg-white/10
 										rounded-md outline-none
 										border-[1px] border-white/10"
+										placeholder="Required"
 										value={description || ""}
 										onChange={(e) => {
 											setDescription(e.target.value);
