@@ -2,6 +2,7 @@ import { Button } from "@/components/button/Button";
 import { useAuthStore } from "@/stores/auth";
 import {
 	deleteEventById,
+	getMyPermissionOfEvent,
 	PerformanceQK,
 	updateEventById,
 } from "@/utils/api/app/performance";
@@ -10,23 +11,23 @@ import {
 	EventResponse,
 	SectionResponse,
 } from "@/utils/types/app/performance";
-import { useMutation } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Edit } from "./Edit";
-import { Attachments } from "./attachments/Attachments";
 import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
 import { queryClient } from "@/utils/react-query/react-query";
 import { Data } from "./Data";
 import { useRouter } from "next/navigation";
-import { Approval } from "./Approval";
+import { PageBlock } from "@/components/content/PageContainer";
 
 export const Details = (props: {
 	statId: number;
 	sectionId: number;
 	event: EventResponse;
+	isEditing: boolean;
+	setIsEditing: Dispatch<SetStateAction<boolean>>;
 }) => {
-	const { statId, sectionId, event } = props;
-	const [isEditing, setIsEditing] = useState(false);
+	const { statId, sectionId, event, isEditing, setIsEditing } = props;
 
 	const jwt = useAuthStore((state) => state.jwt);
 	const router = useRouter();
@@ -51,6 +52,16 @@ export const Details = (props: {
 
 	const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 	const [showUnsaved, setShowUnsaved] = useState(false);
+
+	const myEventPermissionsQuery = useQuery({
+		queryKey: [PerformanceQK.GET_MY_PERMISSION_OF_EVENT],
+		queryFn: async () => {
+			const eventPerms = await getMyPermissionOfEvent(event.id, jwt);
+			return eventPerms;
+		},
+		retry: false,
+		refetchOnWindowFocus: false,
+	});
 
 	const updateMutation = useMutation({
 		mutationFn: () => {
@@ -143,33 +154,29 @@ export const Details = (props: {
 	}
 
 	return (
-		<div className="flex flex-col gap-y-3">
-			<Approval event={event} setIsEditing={setIsEditing} />
-			<div
-				className="text-white/50
-				bg-white/5
-				border-[1px] border-white/10 border-t-white/15
-				rounded-md"
-			>
-				<div className="relative flex justify-between items-center px-6 py-4">
-					<div>Details</div>
-					{event.approval !== "APPROVED" && isEditing ? (
-						<div className="flex gap-x-2">
-							<Button size="sm" onClick={onSave}>
-								Save
-							</Button>
-							<Button
-								size="sm"
-								onClick={() => {
-									cancel();
-								}}
-							>
-								Cancel
-							</Button>
-						</div>
-					) : (
-						<div className="flex gap-x-2">
-							{event.approval !== "APPROVED" && (
+		<PageBlock
+			title="Details"
+			moreMenu={
+				event.approval !== "APPROVED" && isEditing ? (
+					<div className="flex gap-x-2">
+						<Button size="sm" onClick={onSave}>
+							Save
+						</Button>
+						<Button
+							size="sm"
+							onClick={() => {
+								cancel();
+							}}
+						>
+							Cancel
+						</Button>
+					</div>
+				) : (
+					<div className="flex gap-x-2">
+						{event.approval !== "APPROVED" &&
+							myEventPermissionsQuery.data &&
+							myEventPermissionsQuery.data.actions["update"] ===
+								"EFFECT_ALLOW" && (
 								<Button
 									size="sm"
 									onClick={() => {
@@ -179,50 +186,49 @@ export const Details = (props: {
 									Edit
 								</Button>
 							)}
-							<Button
-								size="sm"
-								onClick={() => {
-									setShowDeleteConfirmation(true);
-								}}
-							>
-								Delete
-							</Button>
-						</div>
-					)}
-				</div>
-				{isEditing ? (
-					<Edit
-						setIsEditing={setIsEditing}
-						id={event.id}
-						templateId={event.templateId}
-						templateScore={event.templateScore}
-						templateDescription={event.templateDescription}
-						score={score}
-						setScore={setScore}
-						amount={amount}
-						setAmount={setAmount}
-						description={description}
-						setDescription={setDescription}
-						attachments={event.attachments}
-					/>
-				) : (
-					<Data
-						setIsEditing={setIsEditing}
-						id={event.id}
-						templateId={event.templateId}
-						templateScore={event.templateScore}
-						templateDescription={event.templateDescription}
-						score={score}
-						setScore={setScore}
-						amount={amount}
-						setAmount={setAmount}
-						description={description}
-						setDescription={setDescription}
-						attachments={event.attachments}
-					/>
-				)}
-			</div>
-			<Attachments eventId={event.id} />
+						<Button
+							size="sm"
+							onClick={() => {
+								setShowDeleteConfirmation(true);
+							}}
+						>
+							Delete
+						</Button>
+					</div>
+				)
+			}
+		>
+			{isEditing ? (
+				<Edit
+					setIsEditing={setIsEditing}
+					id={event.id}
+					templateId={event.templateId}
+					templateScore={event.templateScore}
+					templateDescription={event.templateDescription}
+					score={score}
+					setScore={setScore}
+					amount={amount}
+					setAmount={setAmount}
+					description={description}
+					setDescription={setDescription}
+					attachments={event.attachments}
+				/>
+			) : (
+				<Data
+					setIsEditing={setIsEditing}
+					id={event.id}
+					templateId={event.templateId}
+					templateScore={event.templateScore}
+					templateDescription={event.templateDescription}
+					score={score}
+					setScore={setScore}
+					amount={amount}
+					setAmount={setAmount}
+					description={description}
+					setDescription={setDescription}
+					attachments={event.attachments}
+				/>
+			)}
 			<ConfirmDialog
 				show={showDeleteConfirmation}
 				setShow={setShowDeleteConfirmation}
@@ -239,6 +245,6 @@ export const Details = (props: {
 					setShowUnsaved(false);
 				}}
 			/>
-		</div>
+		</PageBlock>
 	);
 };

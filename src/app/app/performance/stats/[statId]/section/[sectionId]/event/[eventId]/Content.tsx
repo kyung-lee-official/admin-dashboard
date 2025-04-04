@@ -11,6 +11,9 @@ import { Details } from "./Details";
 import { PageBlock, PageContainer } from "@/components/content/PageContainer";
 import { Table, Tbody } from "@/components/content/Table";
 import { AxiosExceptions } from "@/components/page-authorization/AxiosExceptions";
+import { Approval } from "./Approval";
+import { useState } from "react";
+import { Attachments } from "./attachments/Attachments";
 
 export const Content = (props: {
 	statId: number;
@@ -19,8 +22,9 @@ export const Content = (props: {
 }) => {
 	const { statId, sectionId, eventId } = props;
 
-	const jwt = useAuthStore((state) => state.jwt);
+	const [isEditing, setIsEditing] = useState(false);
 
+	const jwt = useAuthStore((state) => state.jwt);
 	const eventQuery = useQuery<EventResponse, AxiosError>({
 		queryKey: [PerformanceQK.GET_EVENT_BY_ID],
 		queryFn: async () => {
@@ -97,11 +101,15 @@ export const Content = (props: {
 						</Tbody>
 					</Table>
 				</PageBlock>
+				<Approval event={eventQuery.data} setIsEditing={setIsEditing} />
 				<Details
 					statId={statId}
 					sectionId={sectionId}
 					event={eventQuery.data}
+					isEditing={isEditing}
+					setIsEditing={setIsEditing}
 				/>
+				<Attachments eventId={eventQuery.data.id} />
 			</PageContainer>
 		);
 	} else {

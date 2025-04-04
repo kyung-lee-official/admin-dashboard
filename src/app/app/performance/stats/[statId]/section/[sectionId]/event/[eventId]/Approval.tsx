@@ -14,6 +14,7 @@ import {
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Dropdown } from "@/components/input/dropdown/Dropdown";
 import { VerifiedIcon } from "@/components/icons/Icons";
+import { PageBlock } from "@/components/content/PageContainer";
 
 export const Approval = (props: {
 	event: EventResponse;
@@ -53,7 +54,7 @@ export const Approval = (props: {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: [PerformanceQK.GET_STAT_BY_ID],
+				queryKey: [PerformanceQK.GET_EVENT_BY_ID],
 			});
 		},
 		onError: () => {},
@@ -67,40 +68,35 @@ export const Approval = (props: {
 		switch (getApprovalPermPermQuery.data.actions["update"]) {
 			case "EFFECT_ALLOW":
 				return (
-					<div
-						className="text-white/50
-						bg-white/5
-						border-[1px] border-white/10 border-t-white/15
-						rounded-md"
-					>
-						<div className="relative flex justify-between items-center px-6 py-4">
-							<div>Approval</div>
-							<Dropdown<ApprovalType>
-								kind="string"
-								mode="regular"
-								selected={newData}
-								setSelected={setNewData}
-								options={[
-									ApprovalType.PENDING,
-									ApprovalType.APPROVED,
-									ApprovalType.REJECTED,
-								]}
-								placeholder=""
-							/>
-						</div>
-					</div>
+					<PageBlock
+						title="Approval"
+						moreMenu={
+							<div className="w-40">
+								<Dropdown<ApprovalType>
+									kind="string"
+									mode="regular"
+									selected={newData}
+									setSelected={setNewData}
+									options={[
+										ApprovalType.PENDING,
+										ApprovalType.APPROVED,
+										ApprovalType.REJECTED,
+									]}
+									placeholder=""
+								/>
+							</div>
+						}
+					></PageBlock>
 				);
 			case "EFFECT_DENY":
 				return (
-					<div
-						className="text-white/50
-						bg-white/5
-						border-[1px] border-white/10 border-t-white/15
-						rounded-md"
-					>
-						<div className="relative flex justify-between items-center px-6 py-4">
-							<div>Approval</div>
-							<div className="flex items-center gap-x-2">
+					<PageBlock
+						title="Approval"
+						moreMenu={
+							<div
+								className="flex items-center gap-x-2
+								text-neutral-400 "
+							>
 								<div
 									className="flex items-center min-h-8 px-2 py-1
 									text-sm
@@ -113,8 +109,8 @@ export const Approval = (props: {
 									<VerifiedIcon size={20} />
 								)}
 							</div>
-						</div>
-					</div>
+						}
+					></PageBlock>
 				);
 			default:
 				return null;

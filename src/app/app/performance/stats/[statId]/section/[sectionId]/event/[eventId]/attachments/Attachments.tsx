@@ -6,9 +6,11 @@ import { FileToUpload } from "./FileToUpload";
 import { FileToPreview } from "./file-to-preview/FileToPreview";
 import {
 	getAttachmentListByEventId,
+	getMyPermissionOfEvent,
 	PerformanceQK,
 } from "@/utils/api/app/performance";
 import { useAuthStore } from "@/stores/auth";
+import { PageBlock } from "@/components/content/PageContainer";
 
 export type Item = File | Preview;
 export type Preview = {
@@ -25,6 +27,15 @@ export const Attachments = (props: { eventId: number }) => {
 	const [displayList, setDisplayList] = useState<Item[]>([]);
 
 	const jwt = useAuthStore((state) => state.jwt);
+	const myEventPermissionsQuery = useQuery({
+		queryKey: [PerformanceQK.GET_MY_PERMISSION_OF_EVENT],
+		queryFn: async () => {
+			const eventPerms = await getMyPermissionOfEvent(eventId, jwt);
+			return eventPerms;
+		},
+		retry: false,
+		refetchOnWindowFocus: false,
+	});
 	const previewQuery = useQuery<Preview[], AxiosError>({
 		queryKey: [PerformanceQK.GET_ATTACHMENT_LIST],
 		queryFn: async () => {
@@ -55,27 +66,27 @@ export const Attachments = (props: { eventId: number }) => {
 	}, [serverData, uploadList]);
 
 	return (
-		<div
-			className="text-white/50
-			bg-white/5
-			border-[1px] border-white/10 border-t-white/15
-			rounded-md"
+		<PageBlock
+			title="Attachments"
+			moreMenu={
+				myEventPermissionsQuery.data &&
+				myEventPermissionsQuery.data.actions["update"] ===
+					"EFFECT_ALLOW" && (
+					<Button
+						size="sm"
+						onClick={() => {
+							/* clear the input field */
+							inputRef.current!.value = "";
+							setUploadList([]);
+							/* trigger the input field */
+							inputRef.current?.click();
+						}}
+					>
+						Upload
+					</Button>
+				)
+			}
 		>
-			<div className="flex justify-between items-center w-full px-6 py-4">
-				<div>Attachments</div>
-				<Button
-					size="sm"
-					onClick={() => {
-						/* clear the input field */
-						inputRef.current!.value = "";
-						setUploadList([]);
-						/* trigger the input field */
-						inputRef.current?.click();
-					}}
-				>
-					Upload
-				</Button>
-			</div>
 			<div
 				className="grid justify-items-stretch 
 				xl:grid-cols-8
@@ -83,7 +94,6 @@ export const Attachments = (props: { eventId: number }) => {
 				sm:grid-cols-3
 				grid-cols-2
 				w-full min-h-32 p-2 gap-6
-				rounded-md
 				border-t-[1px] border-white/10"
 			>
 				<input
@@ -115,6 +125,6 @@ export const Attachments = (props: { eventId: number }) => {
 						}
 					})}
 			</div>
-		</div>
+		</PageBlock>
 	);
 };
