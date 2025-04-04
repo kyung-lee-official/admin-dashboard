@@ -26,6 +26,7 @@ export type EventResponse = {
 	templateId?: number;
 	templateScore?: number;
 	templateDescription?: string;
+	section: SectionResponse;
 	sectionId: number;
 	score: number;
 	amount: number;

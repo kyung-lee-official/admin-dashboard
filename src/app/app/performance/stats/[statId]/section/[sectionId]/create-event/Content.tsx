@@ -2,43 +2,80 @@
 
 import { Loading } from "@/components/page-authorization/Loading";
 import { useAuthStore } from "@/stores/auth";
-import { getStatById, PerformanceQK } from "@/utils/api/app/performance";
-import { PerformanceStatResponse } from "@/utils/types/app/performance";
+import {
+	getMySectionPermissions,
+	getSectionById,
+	getStatById,
+	PerformanceQK,
+} from "@/utils/api/app/performance";
+import {
+	PerformanceStatResponse,
+	SectionResponse,
+} from "@/utils/types/app/performance";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import dayjs from "dayjs";
 import { CreateEvent } from "./CreateEvent";
 import { PageBlock, PageContainer } from "@/components/content/PageContainer";
 import { Table, Tbody } from "@/components/content/Table";
+import { AxiosExceptions } from "@/components/page-authorization/AxiosExceptions";
+import { Exception } from "@/components/page-authorization/Exception";
+import { Forbidden } from "@/components/page-authorization/Forbidden";
 
-export const Content = (props: { statId: string; sectionId: string }) => {
+export const Content = (props: { statId: number; sectionId: number }) => {
 	const { statId, sectionId } = props;
 
 	const jwt = useAuthStore((state) => state.jwt);
 
-	const statsQuery = useQuery<PerformanceStatResponse, AxiosError>({
-		queryKey: [PerformanceQK.GET_STAT_BY_ID],
+	const mySectionPermissionsQuery = useQuery<any, AxiosError>({
+		queryKey: [PerformanceQK.GET_MY_SECTION_PERMISSIONS],
 		queryFn: async () => {
-			const stats = await getStatById(parseInt(statId), jwt);
-			return stats;
+			const section = await getMySectionPermissions(sectionId, jwt);
+			return section;
 		},
 		retry: false,
 		refetchOnWindowFocus: false,
 	});
 
-	if (statsQuery.isLoading) return <Loading />;
+	const sectionQuery = useQuery<SectionResponse, AxiosError>({
+		queryKey: [PerformanceQK.GET_SECTION_BY_ID],
+		queryFn: async () => {
+			const section = await getSectionById(sectionId, jwt);
+			return section;
+		},
+		retry: false,
+		refetchOnWindowFocus: false,
+	});
 
-	if (statsQuery.isError) return <div>Error: {statsQuery.error.message}</div>;
-
-	if (!statsQuery.data) {
-		return null;
+	if (mySectionPermissionsQuery.isLoading) {
+		return <Loading />;
 	}
-	const { month, owner, statSections } = statsQuery.data!;
 
-	const section = statSections.find((s) => s.id === parseInt(sectionId));
-	if (!section) {
-		return null;
+	if (mySectionPermissionsQuery.isError) {
+		return <AxiosExceptions error={mySectionPermissionsQuery.error} />;
 	}
+
+	if (
+		mySectionPermissionsQuery.data &&
+		mySectionPermissionsQuery.data.actions["create-event"] === "EFFECT_DENY"
+	) {
+		return <Forbidden />;
+	}
+
+	if (sectionQuery.isLoading) {
+		return <Loading />;
+	}
+
+	if (sectionQuery.isError) {
+		return <AxiosExceptions error={sectionQuery.error} />;
+	}
+
+	if (!sectionQuery.data) {
+		return <Exception />;
+	}
+
+	const { stat, memberRole, events } = sectionQuery.data;
+	const { month, owner } = stat;
 
 	return (
 		<PageContainer>
@@ -63,24 +100,24 @@ export const Content = (props: { statId: string; sectionId: string }) => {
 					<Tbody>
 						<tr>
 							<td>Section Role</td>
-							<td>{section.memberRoleId}</td>
+							<td>{memberRole.id}</td>
 						</tr>
 						<tr>
 							<td>Section Title</td>
-							<td>{section.title}</td>
+							<td>{sectionQuery.data.title}</td>
 						</tr>
 						<tr>
 							<td>Section Weight</td>
-							<td>{section.weight}</td>
+							<td>{sectionQuery.data.weight}</td>
 						</tr>
 						<tr>
 							<td>Section Description</td>
-							<td>{section.description}</td>
+							<td>{sectionQuery.data.description}</td>
 						</tr>
 					</Tbody>
 				</Table>
 			</PageBlock>
-			<CreateEvent statId={statId} section={section} />
+			<CreateEvent statId={statId} section={sectionQuery.data} />
 		</PageContainer>
 	);
 };

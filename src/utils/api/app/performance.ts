@@ -16,6 +16,7 @@ export enum PerformanceQK {
 	GET_TEMPLATES_BY_ROLE_ID = "get-templates-by-role-id",
 	GET_TEMPLATES_BY_SECTION_ROLE_ID = "get-templates-by-section-role-id",
 	GET_TEMPLATE_BY_ID = "get-template-by-id",
+	GET_MY_PERMISSION_OF_EVENT = "get-my-permission-of-event",
 	GET_EVENT_BY_ID = "get-event-by-id",
 	GET_APPROVAL_PERMISSIONS = "get-approval-permissions",
 	GET_ATTACHMENT_LIST = "get-attachment-list",
@@ -199,8 +200,24 @@ export const deleteTemplateById = async (id: string, jwt: string) => {
 	);
 };
 
+export const getMyPermissionOfEvent = async (
+	eventId: number,
+	jwt: string
+): Promise<any> => {
+	const res = await axios.get(
+		`/internal/performance/events/permissions/${eventId}`,
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+			},
+		}
+	);
+	return res.data;
+};
+
 export const createEvent = async (body: CreateEventDto, jwt: string) => {
-	const res = await axios.post("/performance/events", body, {
+	const res = await axios.post("/internal/performance/events", body, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: jwt,
@@ -209,8 +226,8 @@ export const createEvent = async (body: CreateEventDto, jwt: string) => {
 	return res.data;
 };
 
-export const getEventById = async (id: string, jwt: string) => {
-	const res = await axios.get(`/performance/events/${id}`, {
+export const getEventById = async (id: number, jwt: string) => {
+	const res = await axios.get(`/internal/performance/events/${id}`, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: jwt,
@@ -225,7 +242,7 @@ export const updateEventById = async (
 	jwt: string
 ) => {
 	const res = await axios.patch(
-		`/performance/events/update-event-by-id/${id}`,
+		`/internal/performance/events/update-event-by-id/${id}`,
 		body,
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
@@ -238,7 +255,7 @@ export const updateEventById = async (
 };
 
 export const deleteEventById = async (id: number, jwt: string) => {
-	const res = await axios.delete(`/performance/events/${id}`, {
+	const res = await axios.delete(`/internal/performance/events/${id}`, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: jwt,
@@ -249,7 +266,7 @@ export const deleteEventById = async (id: number, jwt: string) => {
 
 export const getApprovalPermissions = async (eventId: number, jwt: string) => {
 	const res = await axios.get(
-		`/performance/events/get-approval-permissions/${eventId}`,
+		`/internal/performance/events/get-approval-permissions/${eventId}`,
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
 			headers: {
@@ -266,7 +283,7 @@ export const updateApprovalByEventId = async (
 	jwt: string
 ) => {
 	const res = await axios.patch(
-		`/performance/events/update-approval-by-event-id/${id}`,
+		`/internal/performance/events/update-approval-by-event-id/${id}`,
 		dto,
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
@@ -280,7 +297,7 @@ export const updateApprovalByEventId = async (
 
 export const getAttachmentListByEventId = async (id: number, jwt: string) => {
 	const res = await axios.get(
-		`/performance/events/get-attachment-list-by-event-id/${id}`,
+		`/internal/performance/events/get-attachment-list-by-event-id/${id}`,
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
 			headers: {
@@ -297,7 +314,7 @@ export const getAttachment = async (
 	jwt: string
 ) => {
 	const res = await axios.get<Blob>(
-		`/performance/events/get-attachment/${id}/${filename}`,
+		`/internal/performance/events/get-attachment/${id}/${filename}`,
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
 			responseType: "blob",
@@ -316,7 +333,7 @@ export const uploadAttachmentsByEventId = async (
 	jwt: string
 ) => {
 	const res = await axios.put(
-		`/performance/events/upload-attachments-by-event-id/${id}`,
+		`/internal/performance/events/upload-attachments-by-event-id/${id}`,
 		data,
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
@@ -341,7 +358,7 @@ export const deleteAttachment = async (
 	jwt: string
 ) => {
 	const res = await axios.delete(
-		`/performance/events/delete-attachment/${id}/${filename}`,
+		`/internal/performance/events/delete-attachment/${id}/${filename}`,
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
 			headers: {

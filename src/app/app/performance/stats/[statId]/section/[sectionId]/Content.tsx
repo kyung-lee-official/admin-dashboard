@@ -138,6 +138,16 @@ export const Content = (props: { statId: number; sectionId: number }) => {
 	const jwt = useAuthStore((state) => state.jwt);
 	const router = useRouter();
 
+	const mySectionPermissionsQuery = useQuery({
+		queryKey: [PerformanceQK.GET_MY_SECTION_PERMISSIONS],
+		queryFn: async () => {
+			const section = await getMySectionPermissions(sectionId, jwt);
+			return section;
+		},
+		retry: false,
+		refetchOnWindowFocus: false,
+	});
+
 	const sectionQuery = useQuery<SectionResponse, AxiosError>({
 		queryKey: [PerformanceQK.GET_SECTION_BY_ID],
 		queryFn: async () => {
@@ -261,21 +271,27 @@ export const Content = (props: { statId: number; sectionId: number }) => {
 			<PageBlock
 				title="Events"
 				moreMenu={
-					<Button
-						size="sm"
-						onClick={() => {
-							router.push(`${sectionQuery.data.id}/create-event`);
-						}}
-						className="truncate"
-					>
-						Create Event
-					</Button>
+					mySectionPermissionsQuery.data &&
+					mySectionPermissionsQuery.data.actions["create-event"] ===
+						"EFFECT_ALLOW" && (
+						<Button
+							size="sm"
+							onClick={() => {
+								router.push(
+									`${sectionQuery.data.id}/create-event`
+								);
+							}}
+							className="truncate"
+						>
+							Create Event
+						</Button>
+					)
 				}
 			>
 				<table className="text-sm text-white/50">
 					<tbody
 						className="[&_>_tr_>_td]:py-3 [&_>_tr_>_td]:px-6
-				[&_>_tr_>_td]:border-t-[1px] [&_>_tr_>_td]:border-white/10"
+						[&_>_tr_>_td]:border-t-[1px] [&_>_tr_>_td]:border-white/10"
 					>
 						<tr>
 							<td className="w-2/6">Description</td>

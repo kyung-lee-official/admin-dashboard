@@ -3,8 +3,28 @@ import { PageBlock, PageContainer } from "../content/PageContainer";
 import { Forbidden } from "./Forbidden";
 import { ResourceNotFound } from "./ResourceNotFound";
 
-export const AxiosExceptions = (props: { error: AxiosError<unknown, any> }) => {
+export const AxiosExceptions = (props: {
+	error?: AxiosError<unknown, any>;
+}) => {
 	const { error } = props;
+
+	if (!error) {
+		return (
+			<PageContainer>
+				<PageBlock
+					title={
+						<div
+							className="flex justify-center w-full
+							text-lg font-semibold"
+						>
+							Error: Unknown Error
+						</div>
+					}
+				></PageBlock>
+			</PageContainer>
+		);
+	}
+
 	switch (error.status) {
 		case 403:
 			return (
@@ -25,7 +45,7 @@ export const AxiosExceptions = (props: { error: AxiosError<unknown, any> }) => {
 						title={
 							<div
 								className="flex justify-center w-full
-							text-lg font-semibold"
+								text-lg font-semibold"
 							>
 								Error: {error.message}
 							</div>

@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export const CreateEvent = (props: {
-	statId: string;
+	statId: number;
 	section: SectionResponse;
 }) => {
 	const { statId, section } = props;
@@ -66,9 +66,9 @@ export const CreateEvent = (props: {
 		}
 	}, [useTemplate, template, section.id, score, description]);
 
-	const jwt = useAuthStore((state) => state.jwt);
-
 	const router = useRouter();
+
+	const jwt = useAuthStore((state) => state.jwt);
 	const mutation = useMutation({
 		mutationFn: () => {
 			return createEvent(newData, jwt);

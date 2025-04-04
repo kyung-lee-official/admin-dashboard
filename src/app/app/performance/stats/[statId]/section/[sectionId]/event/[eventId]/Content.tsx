@@ -2,135 +2,109 @@
 
 import { Loading } from "@/components/page-authorization/Loading";
 import { useAuthStore } from "@/stores/auth";
-import { getStatById, PerformanceQK } from "@/utils/api/app/performance";
-import {
-	EventResponse,
-	PerformanceStatResponse,
-	SectionResponse,
-} from "@/utils/types/app/performance";
+import { getEventById, PerformanceQK } from "@/utils/api/app/performance";
+import { EventResponse } from "@/utils/types/app/performance";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
 import { Details } from "./Details";
-import { OneRowSkeleton } from "@/components/skeleton/OneRowSkeleton";
 import { PageBlock, PageContainer } from "@/components/content/PageContainer";
 import { Table, Tbody } from "@/components/content/Table";
+import { AxiosExceptions } from "@/components/page-authorization/AxiosExceptions";
 
 export const Content = (props: {
-	statId: string;
-	sectionId: string;
-	eventId: string;
+	statId: number;
+	sectionId: number;
+	eventId: number;
 }) => {
-	const statId = parseInt(props.statId);
-	const sectionId = parseInt(props.sectionId);
-	const eventId = parseInt(props.eventId);
+	const { statId, sectionId, eventId } = props;
 
 	const jwt = useAuthStore((state) => state.jwt);
 
-	const statsQuery = useQuery<PerformanceStatResponse, AxiosError>({
-		queryKey: [PerformanceQK.GET_STAT_BY_ID],
+	const eventQuery = useQuery<EventResponse, AxiosError>({
+		queryKey: [PerformanceQK.GET_EVENT_BY_ID],
 		queryFn: async () => {
-			const stats = await getStatById(statId, jwt);
-			return stats;
+			const event = await getEventById(eventId, jwt);
+			return event;
 		},
 		retry: false,
 		refetchOnWindowFocus: false,
 	});
-	const [section, setSection] = useState<SectionResponse>();
-	const [event, setEvent] = useState<EventResponse>();
-	useEffect(() => {
-		if (statsQuery.isSuccess) {
-			const section = statsQuery.data.statSections.find(
-				(s) => s.id === sectionId
-			);
-			setSection(section);
-			if (section) {
-				const event = section.events.find((e) => e.id === eventId);
-				if (event) {
-					setEvent(event);
-				}
-			}
-		}
-	}, [statsQuery.data]);
 
-	if (statsQuery.isLoading) return <Loading />;
-	if (statsQuery.isError) return <div>Error: {statsQuery.error.message}</div>;
-
-	return (
-		<PageContainer>
-			<PageBlock title="Stat">
-				<Table>
-					<Tbody>
-						<tr>
-							<td>Month</td>
-							<td>
-								{dayjs(statsQuery.data?.month).format(
-									"MMMM YYYY"
-								)}
-							</td>
-						</tr>
-						<tr>
-							<td>Owner</td>
-							<td>
-								{statsQuery.data?.owner.name} (
-								{statsQuery.data?.owner.email})
-							</td>
-						</tr>
-					</Tbody>
-				</Table>
-			</PageBlock>
-			<PageBlock title="Section">
-				<Table>
-					<Tbody>
-						<tr>
-							<td>Section Role</td>
-							<td>
-								{section ? (
+	if (eventQuery.isLoading) return <Loading />;
+	if (eventQuery.isError) return <AxiosExceptions error={eventQuery.error} />;
+	if (eventQuery.data) {
+		return (
+			<PageContainer>
+				<PageBlock title="Stat">
+					<Table>
+						<Tbody>
+							<tr>
+								<td>Month</td>
+								<td>
+									{dayjs(
+										eventQuery.data.section.stat.month
+									).format("MMMM YYYY")}
+								</td>
+							</tr>
+							<tr>
+								<td>Owner</td>
+								<td>
+									{eventQuery.data.section.stat.owner.name} (
+									{eventQuery.data.section.stat.owner.email})
+								</td>
+							</tr>
+						</Tbody>
+					</Table>
+				</PageBlock>
+				<PageBlock title="Section">
+					<Table>
+						<Tbody>
+							<tr>
+								<td>Section Role</td>
+								<td>
 									<div
 										className="flex w-fit px-1 gap-2
-										border border-neutral-500 rounded"
+											border border-neutral-500 rounded"
 									>
-										<div>{section.memberRole.name}</div>
+										<div>
+											{
+												eventQuery.data.section
+													.memberRole.name
+											}
+										</div>
 										<div className="text-neutral-500">
-											{section.memberRole.id}
+											{
+												eventQuery.data.section
+													.memberRole.id
+											}
 										</div>
 									</div>
-								) : (
-									<OneRowSkeleton />
-								)}
-							</td>
-						</tr>
-						<tr>
-							<td>Section Title</td>
-							<td>
-								{section ? section.title : <OneRowSkeleton />}
-							</td>
-						</tr>
-						<tr>
-							<td>Section Weight</td>
-							<td>
-								{section ? section.weight : <OneRowSkeleton />}
-							</td>
-						</tr>
-						<tr>
-							<td>Section Description</td>
-							<td>
-								{section ? (
-									section.description
-								) : (
-									<OneRowSkeleton />
-								)}
-							</td>
-						</tr>
-					</Tbody>
-				</Table>
-			</PageBlock>
-			{event ? (
-				<Details statId={statId} sectionId={sectionId} event={event} />
-			) : (
-				<OneRowSkeleton />
-			)}
-		</PageContainer>
-	);
+								</td>
+							</tr>
+							<tr>
+								<td>Section Title</td>
+								<td>{eventQuery.data.section.title}</td>
+							</tr>
+							<tr>
+								<td>Section Weight</td>
+								<td>{eventQuery.data.section.weight}</td>
+							</tr>
+							<tr>
+								<td>Section Description</td>
+								<td>{eventQuery.data.section.description}</td>
+							</tr>
+						</Tbody>
+					</Table>
+				</PageBlock>
+				<Details
+					statId={statId}
+					sectionId={sectionId}
+					event={eventQuery.data}
+				/>
+			</PageContainer>
+		);
+	} else {
+		return <AxiosExceptions />;
+	}
 };

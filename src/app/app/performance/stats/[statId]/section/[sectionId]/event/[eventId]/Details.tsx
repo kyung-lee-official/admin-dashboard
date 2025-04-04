@@ -5,7 +5,11 @@ import {
 	PerformanceQK,
 	updateEventById,
 } from "@/utils/api/app/performance";
-import { ApprovalType, EventResponse } from "@/utils/types/app/performance";
+import {
+	ApprovalType,
+	EventResponse,
+	SectionResponse,
+} from "@/utils/types/app/performance";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Edit } from "./Edit";
@@ -33,6 +37,7 @@ export const Details = (props: {
 		templateId: undefined,
 		templateScore: 0,
 		templateDescription: "",
+		section: {} as unknown as SectionResponse,
 		sectionId: 0,
 		score: 0,
 		amount: 0,
@@ -91,6 +96,7 @@ export const Details = (props: {
 			templateId: event.templateId,
 			templateScore: event.templateScore,
 			templateDescription: event.templateDescription,
+			section: event.section,
 			sectionId: event.sectionId,
 			score: event.score,
 			amount: event.amount,
@@ -111,6 +117,7 @@ export const Details = (props: {
 			templateId: oldData.templateId,
 			templateScore: oldData.templateScore,
 			templateDescription: oldData.templateDescription,
+			section: oldData.section,
 			sectionId: oldData.sectionId,
 			score: score,
 			amount: amount,
