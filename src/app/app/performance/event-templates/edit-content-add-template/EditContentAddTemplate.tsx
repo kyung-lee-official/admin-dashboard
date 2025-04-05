@@ -7,7 +7,11 @@ import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
 import { createTemplate, PerformanceQK } from "@/utils/api/app/performance";
 import { MemberRole } from "@/utils/types/internal";
 import { CreatePerformanceEventTemplate } from "@/utils/types/app/performance";
-import { RolesQK, getAllRoles } from "@/utils/api/roles";
+import {
+	RolesQK,
+	getMyRoleAndSubRoles,
+	getMySubRoles,
+} from "@/utils/api/roles";
 import { AxiosError } from "axios";
 import { Dropdown } from "@/components/input/dropdown/Dropdown";
 import { DecimalInput } from "@/components/input/decimal-input/DecimalInput";
@@ -19,8 +23,6 @@ export const EditContentAddTemplate = (props: {
 	const editId = EditId.ADD_TEMPLATE;
 	const title = "Add Template";
 	const { edit, setEdit } = props;
-
-	const jwt = useAuthStore((state) => state.jwt);
 
 	const [oldData, setOldData] = useState<CreatePerformanceEventTemplate>({
 		score: 0,
@@ -34,10 +36,11 @@ export const EditContentAddTemplate = (props: {
 		oldData.memberRole
 	);
 
-	const rolesQuery = useQuery<MemberRole[], AxiosError>({
-		queryKey: [RolesQK.GET_ALL_ROLES],
+	const jwt = useAuthStore((state) => state.jwt);
+	const mySubRolesQuery = useQuery<MemberRole[], AxiosError>({
+		queryKey: [RolesQK.GET_MY_SUB_ROLES],
 		queryFn: async () => {
-			const roles = await getAllRoles(jwt);
+			const roles = await getMySubRoles(jwt);
 			return roles;
 		},
 		retry: false,
@@ -90,7 +93,7 @@ export const EditContentAddTemplate = (props: {
 					mode="search"
 					selected={role}
 					setSelected={setRole}
-					options={rolesQuery.data ?? []}
+					options={mySubRolesQuery.data ?? []}
 					placeholder="Select a role"
 					label={{ primaryKey: "name", secondaryKey: "id" }}
 					sortBy="name"
