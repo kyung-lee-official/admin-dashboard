@@ -2,16 +2,21 @@ import { Button } from "@/components/button/Button";
 import { PageBlock } from "@/components/content/PageContainer";
 import { Table, Tbody } from "@/components/content/Table";
 import { DecimalInput } from "@/components/input/decimal-input/DecimalInput";
-import { TemplateSelector } from "@/components/input/selectors/TemplateSelector";
+import { Dropdown } from "@/components/input/dropdown/Dropdown";
 import { Toggle } from "@/components/toggle/Toggle";
 import { useAuthStore } from "@/stores/auth";
-import { createEvent } from "@/utils/api/app/performance";
+import {
+	createEvent,
+	getTemplatesByRoleId,
+	PerformanceQK,
+} from "@/utils/api/app/performance";
 import {
 	CreateEventDto,
 	PerformanceEventTemplateResponse,
 	SectionResponse,
 } from "@/utils/types/app/performance";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -20,6 +25,22 @@ export const CreateEvent = (props: {
 	section: SectionResponse;
 }) => {
 	const { statId, section } = props;
+
+	const templatesQuery = useQuery<
+		PerformanceEventTemplateResponse[],
+		AxiosError
+	>({
+		queryKey: [PerformanceQK.GET_TEMPLATES_BY_ROLE_ID],
+		queryFn: async () => {
+			const templates = await getTemplatesByRoleId(
+				section.memberRoleId,
+				jwt
+			);
+			return templates;
+		},
+		retry: false,
+		refetchOnWindowFocus: false,
+	});
 
 	const [oldData, setOldData] = useState<CreateEventDto>({
 		templateId: undefined,
@@ -125,11 +146,16 @@ export const CreateEvent = (props: {
 						<Tbody>
 							<tr className={useTemplate ? "" : "text-white/20"}>
 								<td className="w-1/2">
-									<TemplateSelector
-										section={section}
-										template={template}
-										setTemplate={setTemplate}
+									<Dropdown
+										kind="object"
+										mode="search"
+										selected={template}
+										setSelected={setTemplate}
 										setHover={setHover}
+										options={templatesQuery.data ?? []}
+										placeholder="Select a template"
+										label={{ primaryKey: "description" }}
+										sortBy="description"
 									/>
 								</td>
 								<td className="w-1/2">

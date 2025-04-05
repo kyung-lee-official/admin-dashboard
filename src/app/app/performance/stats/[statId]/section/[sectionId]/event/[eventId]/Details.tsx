@@ -54,7 +54,7 @@ export const Details = (props: {
 	const [showUnsaved, setShowUnsaved] = useState(false);
 
 	const myEventPermissionsQuery = useQuery({
-		queryKey: [PerformanceQK.GET_MY_PERMISSION_OF_EVENT],
+		queryKey: [PerformanceQK.GET_MY_PERMISSION_OF_EVENT, event.id],
 		queryFn: async () => {
 			const eventPerms = await getMyPermissionOfEvent(event.id, jwt);
 			return eventPerms;
@@ -186,14 +186,18 @@ export const Details = (props: {
 									Edit
 								</Button>
 							)}
-						<Button
-							size="sm"
-							onClick={() => {
-								setShowDeleteConfirmation(true);
-							}}
-						>
-							Delete
-						</Button>
+						{myEventPermissionsQuery.data &&
+							myEventPermissionsQuery.data.actions["delete"] ===
+								"EFFECT_ALLOW" && (
+								<Button
+									size="sm"
+									onClick={() => {
+										setShowDeleteConfirmation(true);
+									}}
+								>
+									Delete
+								</Button>
+							)}
 					</div>
 				)
 			}

@@ -29,7 +29,7 @@ export const Attachments = (props: { event: EventResponse }) => {
 
 	const jwt = useAuthStore((state) => state.jwt);
 	const myEventPermissionsQuery = useQuery({
-		queryKey: [PerformanceQK.GET_MY_PERMISSION_OF_EVENT],
+		queryKey: [PerformanceQK.GET_MY_PERMISSION_OF_EVENT, event.id],
 		queryFn: async () => {
 			const eventPerms = await getMyPermissionOfEvent(event.id, jwt);
 			return eventPerms;
