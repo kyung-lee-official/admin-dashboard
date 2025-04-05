@@ -1,3 +1,4 @@
+import Tooltip from "@/components/tooltip/Tooltip";
 import { useAuthStore } from "@/stores/auth";
 import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction } from "react";
@@ -29,7 +30,6 @@ export const Data = (props: {
 	} = props;
 
 	const router = useRouter();
-	const jwt = useAuthStore((state) => state.jwt);
 
 	return (
 		<table
@@ -46,11 +46,31 @@ export const Data = (props: {
 				</tr>
 				<tr>
 					<td>Description</td>
-					<td>{description}</td>
+					<td>
+						{description === templateDescription ? (
+							description
+						) : (
+							<Tooltip text="Description and template description are different">
+								<div className="text-yellow-600 cursor-default">
+									{description}
+								</div>
+							</Tooltip>
+						)}
+					</td>
 				</tr>
 				<tr>
 					<td>Score</td>
-					<td>{score}</td>
+					<td>
+						{score === templateScore ? (
+							score
+						) : (
+							<Tooltip text="Score and template score are different">
+								<div className="text-yellow-600 cursor-default">
+									{score}
+								</div>
+							</Tooltip>
+						)}
+					</td>
 				</tr>
 				<tr>
 					<td>Amount</td>

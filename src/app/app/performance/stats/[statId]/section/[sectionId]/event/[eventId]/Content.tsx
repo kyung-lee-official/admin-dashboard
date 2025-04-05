@@ -109,7 +109,7 @@ export const Content = (props: {
 					isEditing={isEditing}
 					setIsEditing={setIsEditing}
 				/>
-				<Attachments eventId={eventQuery.data.id} />
+				<Attachments event={eventQuery.data} />
 			</PageContainer>
 		);
 	} else {

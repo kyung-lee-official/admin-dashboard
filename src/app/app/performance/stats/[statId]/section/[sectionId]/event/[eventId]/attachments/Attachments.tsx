@@ -11,14 +11,15 @@ import {
 } from "@/utils/api/app/performance";
 import { useAuthStore } from "@/stores/auth";
 import { PageBlock } from "@/components/content/PageContainer";
+import { EventResponse } from "@/utils/types/app/performance";
 
 export type Item = File | Preview;
 export type Preview = {
 	name: string;
 };
 
-export const Attachments = (props: { eventId: number }) => {
-	const { eventId } = props;
+export const Attachments = (props: { event: EventResponse }) => {
+	const { event } = props;
 	const inputRef = useRef<HTMLInputElement>(null);
 
 	/* displayList = serverData + uploadList */
@@ -30,7 +31,7 @@ export const Attachments = (props: { eventId: number }) => {
 	const myEventPermissionsQuery = useQuery({
 		queryKey: [PerformanceQK.GET_MY_PERMISSION_OF_EVENT],
 		queryFn: async () => {
-			const eventPerms = await getMyPermissionOfEvent(eventId, jwt);
+			const eventPerms = await getMyPermissionOfEvent(event.id, jwt);
 			return eventPerms;
 		},
 		retry: false,
@@ -39,7 +40,7 @@ export const Attachments = (props: { eventId: number }) => {
 	const previewQuery = useQuery<Preview[], AxiosError>({
 		queryKey: [PerformanceQK.GET_ATTACHMENT_LIST],
 		queryFn: async () => {
-			const data = await getAttachmentListByEventId(eventId, jwt);
+			const data = await getAttachmentListByEventId(event.id, jwt);
 			return data;
 		},
 		retry: false,
@@ -71,7 +72,8 @@ export const Attachments = (props: { eventId: number }) => {
 			moreMenu={
 				myEventPermissionsQuery.data &&
 				myEventPermissionsQuery.data.actions["update"] ===
-					"EFFECT_ALLOW" && (
+					"EFFECT_ALLOW" &&
+				event.approval !== "APPROVED" && (
 					<Button
 						size="sm"
 						onClick={() => {
@@ -108,8 +110,8 @@ export const Attachments = (props: { eventId: number }) => {
 						if (file instanceof File) {
 							return (
 								<FileToUpload
-									key={i}
-									eventId={eventId}
+									key={file.name + i}
+									eventId={event.id}
 									file={file}
 									setUploadList={setUploadList}
 								/>
@@ -117,8 +119,8 @@ export const Attachments = (props: { eventId: number }) => {
 						} else {
 							return (
 								<FileToPreview
-									key={i}
-									eventId={eventId}
+									key={file.name + i}
+									eventId={event.id}
 									preview={file}
 								/>
 							);

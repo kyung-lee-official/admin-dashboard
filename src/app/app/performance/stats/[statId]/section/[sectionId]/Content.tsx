@@ -34,6 +34,7 @@ import {
 	EditProps,
 } from "@/components/edit-panel/EditPanel";
 import { createPortal } from "react-dom";
+import Tooltip from "@/components/tooltip/Tooltip";
 
 const SectionMoreMenu = (props: { sectionId: number }) => {
 	const { sectionId } = props;
@@ -309,9 +310,30 @@ export const Content = (props: { statId: number; sectionId: number }) => {
 							(ev: EventResponse, i) => {
 								return (
 									<tr key={ev.id}>
-										<td>{ev.description}</td>
+										<td>
+											{ev.description ===
+											ev.templateDescription ? (
+												ev.description
+											) : (
+												<Tooltip text="Description and template description are different">
+													<div className="text-yellow-600 cursor-default">
+														{ev.description}
+													</div>
+												</Tooltip>
+											)}
+										</td>
 										<td>{ev.approval}</td>
-										<td>{ev.score}</td>
+										<td>
+											{ev.score === ev.templateScore ? (
+												ev.score
+											) : (
+												<Tooltip text="Score and template score are different">
+													<div className="text-yellow-600 cursor-default">
+														{ev.score}
+													</div>
+												</Tooltip>
+											)}
+										</td>
 										<td>{ev.amount}</td>
 										<td>{ev.score * ev.amount}</td>
 										<td>
