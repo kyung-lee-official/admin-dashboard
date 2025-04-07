@@ -114,9 +114,8 @@ export const EditContentAddTemplate = (props: {
 					text-sm"
 				>
 					Description
-					<input
-						type="text"
-						className="px-2 py-1.5
+					<textarea
+						className="h-28 px-2 py-1.5
 						bg-white/10
 						rounded-md outline-none
 						border-[1px] border-white/10"
