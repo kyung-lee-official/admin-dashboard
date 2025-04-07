@@ -4,6 +4,7 @@ import { Loading } from "@/components/page-authorization/Loading";
 import { useAuthStore } from "@/stores/auth";
 import {
 	deleteStatById,
+	getMyPermissionOfStat,
 	getStatById,
 	PerformanceQK,
 } from "@/utils/api/app/performance";
@@ -44,6 +45,26 @@ export const Content = (props: { statId: number }) => {
 	});
 	const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
+	const myStatPermissionsQuery = useQuery<any, AxiosError>({
+		queryKey: [PerformanceQK.GET_MY_STAT_PERMISSIONS, statId],
+		queryFn: async () => {
+			const statPerms = await getMyPermissionOfStat(statId, jwt);
+			return statPerms;
+		},
+		retry: false,
+		refetchOnWindowFocus: false,
+	});
+
+	const statsQuery = useQuery<PerformanceStatResponse, AxiosError>({
+		queryKey: [PerformanceQK.GET_STAT_BY_ID],
+		queryFn: async () => {
+			const stats = await getStatById(statId, jwt);
+			return stats;
+		},
+		retry: false,
+		refetchOnWindowFocus: false,
+	});
+
 	const mutation = useMutation({
 		mutationFn: () => {
 			return deleteStatById(statId, jwt);
@@ -56,16 +77,6 @@ export const Content = (props: { statId: number }) => {
 	function onDelete() {
 		mutation.mutate();
 	}
-
-	const statsQuery = useQuery<PerformanceStatResponse, AxiosError>({
-		queryKey: [PerformanceQK.GET_STAT_BY_ID],
-		queryFn: async () => {
-			const stats = await getStatById(statId, jwt);
-			return stats;
-		},
-		retry: false,
-		refetchOnWindowFocus: false,
-	});
 
 	if (statsQuery.isLoading) return <Loading />;
 
@@ -198,20 +209,27 @@ export const Content = (props: { statId: number }) => {
 					<>
 						<TitleMoreMenu
 							items={[
-								{
-									content: "Add a section",
-									hideMenuOnClick: true,
-									icon: <EditIcon size={15} />,
-									onClick: () => {
-										setEdit({
-											show: true,
-											id: EditId.ADD_SECTION,
-											auxData: {
-												statId: statId,
+								...(myStatPermissionsQuery.data &&
+								myStatPermissionsQuery.data.actions[
+									"create-section"
+								] === "EFFECT_ALLOW"
+									? [
+											{
+												content: "Add a section",
+												hideMenuOnClick: true,
+												icon: <EditIcon size={15} />,
+												onClick: () => {
+													setEdit({
+														show: true,
+														id: EditId.ADD_SECTION,
+														auxData: {
+															statId: statId,
+														},
+													});
+												},
 											},
-										});
-									},
-								},
+									  ]
+									: []),
 								{
 									content: "Delete Stat",
 									type: "danger",

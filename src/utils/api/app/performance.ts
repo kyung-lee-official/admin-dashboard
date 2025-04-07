@@ -8,6 +8,7 @@ import axios from "axios";
 import { Dispatch, SetStateAction } from "react";
 
 export enum PerformanceQK {
+	GET_MY_STAT_PERMISSIONS = "get-my-stat-permissions",
 	GET_STAT_BY_ID = "get-stat-by-id",
 	SEARCH_STATS = "search-stats",
 	GET_MY_SECTION_PERMISSIONS = "get-my-section-permissions",
@@ -23,8 +24,24 @@ export enum PerformanceQK {
 	GET_ATTACHMENT = "get-attachment",
 }
 
+export const getMyPermissionOfStat = async (
+	statId: number,
+	jwt: string
+): Promise<any> => {
+	const res = await axios.get(
+		`/internal/performance/stats/permissions/${statId}`,
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+			},
+		}
+	);
+	return res.data;
+};
+
 export const createStat = async (newData: any, jwt: string) => {
-	const res = await axios.post("/performance/stats", newData, {
+	const res = await axios.post("/internal/performance/stats", newData, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: jwt,
@@ -34,7 +51,7 @@ export const createStat = async (newData: any, jwt: string) => {
 };
 
 export const updateStat = async (id: number, newData: any, jwt: string) => {
-	const res = await axios.patch(`/performance/stats/${id}`, newData, {
+	const res = await axios.patch(`/internal/performance/stats/${id}`, newData, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: jwt,
@@ -47,7 +64,7 @@ export const searchStats = async (
 	searchStatDto: SearchStatDto,
 	jwt: string
 ) => {
-	const res = await axios.post("/performance/stats/search", searchStatDto, {
+	const res = await axios.post("/internal/performance/stats/search", searchStatDto, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: jwt,
@@ -57,7 +74,7 @@ export const searchStats = async (
 };
 
 export const getStatById = async (id: number, jwt: string) => {
-	const res = await axios.get(`/performance/stats/${id}`, {
+	const res = await axios.get(`/internal/performance/stats/${id}`, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: jwt,
@@ -67,7 +84,7 @@ export const getStatById = async (id: number, jwt: string) => {
 };
 
 export const deleteStatById = async (id: number, jwt: string) => {
-	const res = await axios.delete(`/performance/stats/${id}`, {
+	const res = await axios.delete(`/internal/performance/stats/${id}`, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
 		headers: {
 			Authorization: jwt,
