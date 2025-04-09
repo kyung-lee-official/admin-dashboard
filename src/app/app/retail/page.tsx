@@ -1,7 +1,7 @@
-import { Content } from "./Content";
+import { redirect } from "next/navigation";
 
 const Page = () => {
-	return <Content />;
+	redirect("/app/retail/sales-data");
 };
 
 export default Page;

@@ -550,6 +550,45 @@ export const menuItems: HierarchicalMenuItem[] = [
 			];
 		},
 		icon: <ShoppingBag size={20} />,
+		subMenu: [
+			{
+				pageUrlReg: /^\/app\/retail\/sales-data$/,
+				breadcrumbs: () => {
+					return [
+						{
+							href: "/app/retail",
+							text: "ChituSystems",
+						},
+						{
+							href: "/app/retail/sales-data",
+							text: "Sales Data",
+						},
+					];
+				},
+				subMenu: [
+					{
+						pageUrlReg:
+							/^\/app\/retail\/sales-data\/import-records$/,
+						breadcrumbs: () => {
+							return [
+								{
+									href: "/app/retail",
+									text: "ChituSystems",
+								},
+								{
+									href: "/app/retail/sales-data",
+									text: "Sales Data",
+								},
+								{
+									href: `/app/retail/sales-data/import-records`,
+									text: `Import Records`,
+								},
+							];
+						},
+					},
+				],
+			},
+		],
 	},
 ];
 
