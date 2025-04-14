@@ -14,11 +14,11 @@ export const Content = () => {
 							className="cursor-pointer"
 							onClick={() => {
 								redirect(
-									"/app/retail/sales-data/import-records"
+									"/app/retail/sales-data/import-batches"
 								);
 							}}
 						>
-							<td>Manage Import Records</td>
+							<td>Manage Import Batches</td>
 						</tr>
 					</Tbody>
 				</Table>

@@ -568,7 +568,7 @@ export const menuItems: HierarchicalMenuItem[] = [
 				subMenu: [
 					{
 						pageUrlReg:
-							/^\/app\/retail\/sales-data\/import-records$/,
+							/^\/app\/retail\/sales-data\/import-batches$/,
 						breadcrumbs: () => {
 							return [
 								{
@@ -580,8 +580,8 @@ export const menuItems: HierarchicalMenuItem[] = [
 									text: "Sales Data",
 								},
 								{
-									href: `/app/retail/sales-data/import-records`,
-									text: `Import Records`,
+									href: `/app/retail/sales-data/import-batches`,
+									text: `Import Batches`,
 								},
 							];
 						},

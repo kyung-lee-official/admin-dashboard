@@ -12,9 +12,10 @@ import { EditContentAddTemplate } from "@/app/app/performance/event-templates/ed
 import { EditContentOverwriteSourceData } from "@/app/app/sns-crawler/facebook-group/source-data/edit-content-overwrite-source-data/EditContentOverwriteSourceData";
 import { EditContentOverwriteYouTubeSourceData } from "@/app/app/sns-crawler/youtube-data-collector/source-data/edit-content-overwrite-youtube-source-data/EditContentOverwriteYouTubeSourceData";
 import { EditContentAddYouTubeToken } from "@/app/app/sns-crawler/youtube-data-collector/manage-token/edit-content-add-youtube-token/EditContentAddYouTubeToken";
-import EditContentAddMember from "@/app/settings/general/members/EditContentAddMember";
+import { EditContentAddMember } from "@/app/settings/general/members/EditContentAddMember";
 import { EditContentAddSection } from "@/app/app/performance/stats/[statId]/edit-content-add-section/EditContentAddSection";
 import { EditContentEditSection } from "@/app/app/performance/stats/[statId]/section/[sectionId]/edit-content-edit-section/EditContentEditSection";
+import { EditContentImportRetailSalesData } from "@/app/app/retail/sales-data/import-batches/EditContentImportSalesData";
 
 export enum EditId {
 	/* settings */
@@ -36,6 +37,8 @@ export enum EditId {
 	EDIT_FACEBOOK_GROUP_SOURCE_DATA = "edit-facebook-group-source-data",
 	ADD_YOUTUBE_TOKEN = "add-youtube-token",
 	OVERWRITE_YOUTUBE_SOURCE_DATA = "overwrite-youtube-source-data",
+	/* app/retail/sales-data */
+	RETAIL_IMPORT_SALES_DATA = "retail-import-sales-data",
 }
 
 export type EditProps = {
@@ -99,6 +102,13 @@ const EditContent = (props: {
 		case EditId.OVERWRITE_YOUTUBE_SOURCE_DATA:
 			return (
 				<EditContentOverwriteYouTubeSourceData
+					edit={edit}
+					setEdit={setEdit}
+				/>
+			);
+		case EditId.RETAIL_IMPORT_SALES_DATA:
+			return (
+				<EditContentImportRetailSalesData
 					edit={edit}
 					setEdit={setEdit}
 				/>

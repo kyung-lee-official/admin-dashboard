@@ -8,7 +8,7 @@ import { CreateMemberDto } from "@/utils/types/internal";
 import { useMutation } from "@tanstack/react-query";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
-const EditContentAddMember = (props: {
+export const EditContentAddMember = (props: {
 	edit: EditProps;
 	setEdit: Dispatch<SetStateAction<EditProps>>;
 }) => {
@@ -95,5 +95,3 @@ const EditContentAddMember = (props: {
 		</EditContentRegular>
 	);
 };
-
-export default EditContentAddMember;
