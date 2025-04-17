@@ -46,24 +46,25 @@ export const YearCalendar = (props: CalendarProps) => {
 	const { date, setDate, setShow } = props;
 	const [calendarDate, setCalendarDate] = useState<dayjs.Dayjs>(date);
 
-	const calendar: dayjs.Dayjs[] = [];
-	/* get years from 1970 to 2070 */
-	for (let i = 1970; i < 2070; i++) {
-		calendar.push(dayjs(`${i}`));
-	}
-
-	/* cluster years into 12 */
-	const clusters: dayjs.Dayjs[][] = useMemo(() => {
-		return cluster(calendar, 12);
+	/* generate years from 1970 to 2070 */
+	const calendar = useMemo(() => {
+		return Array.from({ length: 100 }, (_, i) => dayjs(`${1970 + i}`));
 	}, []);
 
-	const currentClusterIndex = clusters.findIndex((c) => {
-		return c.some((d) => {
-			return d.year() === calendarDate.year();
-		});
-	});
+	/* cluster years into 12 */
+	const clusters = useMemo(() => {
+		return cluster(calendar, 12);
+	}, [calendar]);
 
-	const [page, setPage] = useState(currentClusterIndex);
+	/* find the initial cluster index */
+	const initialClusterIndex = useMemo(() => {
+		return clusters.findIndex((c) =>
+			c.some((d) => d.year() === calendarDate.year())
+		);
+	}, [clusters, calendarDate]);
+
+	/* state for the current page (cluster index) */
+	const [page, setPage] = useState(initialClusterIndex);
 
 	return (
 		<div

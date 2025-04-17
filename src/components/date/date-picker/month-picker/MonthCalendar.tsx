@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useMemo, useState } from "react";
 import dayjs from "dayjs";
 import { DatePickerProps } from "../date-picker/DatePicker";
 import { ChevronLeft, ChevronRight } from "./Icons";
@@ -11,11 +11,11 @@ export const MonthCalendar = (props: CalendarProps) => {
 	const { date, setDate, setShow } = props;
 	const [calendarDate, setCalendarDate] = useState<dayjs.Dayjs>(date);
 
-	const calendar: dayjs.Dayjs[] = [];
-	/* get first date of each month */
-	for (let i = 0; i < 12; i++) {
-		calendar.push(calendarDate.set("month", i).startOf("month"));
-	}
+	const calendar = useMemo(() => {
+		return Array.from({ length: 12 }, (_, i) =>
+			calendarDate.set("month", i).startOf("month")
+		);
+	}, [calendarDate]);
 
 	return (
 		<div
