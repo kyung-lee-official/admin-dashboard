@@ -586,6 +586,25 @@ export const menuItems: HierarchicalMenuItem[] = [
 							];
 						},
 					},
+					{
+						pageUrlReg: /^\/app\/retail\/sales-data\/kanban$/,
+						breadcrumbs: () => {
+							return [
+								{
+									href: "/app/retail",
+									text: "ChituSystems",
+								},
+								{
+									href: "/app/retail/sales-data",
+									text: "Sales Data",
+								},
+								{
+									href: `/app/retail/sales-data/kanban`,
+									text: `Kanban`,
+								},
+							];
+						},
+					},
 				],
 			},
 		],

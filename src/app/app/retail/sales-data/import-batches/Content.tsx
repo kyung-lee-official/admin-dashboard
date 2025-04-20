@@ -33,7 +33,6 @@ export const Content = () => {
 			const feedbacks = await getRetailSalesDataImportBatches(1, jwt);
 			return feedbacks;
 		},
-		enabled: true,
 		retry: false,
 		refetchOnWindowFocus: false,
 	});

@@ -20,6 +20,14 @@ export const Content = () => {
 						>
 							<td>Manage Import Batches</td>
 						</tr>
+						<tr
+							className="cursor-pointer"
+							onClick={() => {
+								redirect("/app/retail/sales-data/kanban");
+							}}
+						>
+							<td>Kanban</td>
+						</tr>
 					</Tbody>
 				</Table>
 			</PageBlock>
