@@ -58,6 +58,7 @@ export const Content = () => {
 	const [kanbanFilter, dispatchKanbanFilter] = useReducer(
 		kanbanFilterReducer,
 		{
+			dateMode: "range",
 			dateRange: {
 				start: dayjs().subtract(1, "month"),
 				end: dayjs(),
@@ -118,18 +119,20 @@ export const Content = () => {
 		<PageContainer>
 			<PageBlock title={"Kanban"}>
 				<TagContainer>
-					<DateRangePicker
-						range={kanbanFilter.dateRange}
-						setRange={() => {
-							dispatchKanbanFilter({
-								type: "SET_DATE_RANGE",
-								payload: {
-									start: dayjs().subtract(1, "month"),
-									end: dayjs(),
-								},
-							});
-						}}
-					/>
+					{kanbanFilter.dateMode === "range" && (
+						<DateRangePicker
+							range={kanbanFilter.dateRange}
+							setRange={() => {
+								dispatchKanbanFilter({
+									type: "SET_DATE_RANGE",
+									payload: {
+										start: dayjs().subtract(1, "month"),
+										end: dayjs(),
+									},
+								});
+							}}
+						/>
+					)}
 				</TagContainer>
 			</PageBlock>
 			<PageBlock title={"Clients"}>

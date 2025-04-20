@@ -1,3 +1,4 @@
+import { KanbanFilterState } from "@/app/app/retail/sales-data/kanban/kanbanFilterReducer";
 import { RetailSalesData } from "@/app/app/retail/sales-data/types";
 import axios from "axios";
 import pako from "pako";
@@ -102,12 +103,51 @@ export async function getRetailSalesDataCategories(jwt: string) {
 }
 
 export async function getRetailSalesDataSearchSku(term: string, jwt: string) {
-	const res = await axios.get(`internal/retail/sales-data/search-sku/${term}`, {
-		baseURL: process.env.NEXT_PUBLIC_API_HOST,
-		headers: {
-			Authorization: jwt,
-			"Content-Type": "application/json",
-		},
-	});
+	const res = await axios.get(
+		`internal/retail/sales-data/search-sku/${term}`,
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+				"Content-Type": "application/json",
+			},
+		}
+	);
+	return res.data;
+}
+
+export async function filterRetailSalesData(
+	kfs: KanbanFilterState,
+	jwt: string
+) {
+	let dto;
+	switch (kfs.dateMode) {
+		case "range":
+			dto = {
+				...kfs,
+				dateRange: {
+					start: kfs.dateRange.start.format("YYYY-MM-DD"),
+					end: kfs.dateRange.end.format("YYYY-MM-DD"),
+				},
+			};
+			break;
+		case "month":
+			dto = kfs;
+			break;
+		default:
+			dto = {};
+			break;
+	}
+	const res = await axios.post(
+		`internal/retail/sales-data/filter-sales-data`,
+		dto,
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+				"Content-Type": "application/json",
+			},
+		}
+	);
 	return res.data;
 }

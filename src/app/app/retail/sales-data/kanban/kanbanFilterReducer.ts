@@ -1,18 +1,42 @@
 import { DateRange } from "@/components/date/date-range-picker/DateRangePicker";
+import dayjs from "dayjs";
+import { z } from "zod";
 
-export type Sku = {
-	id: number;
-	sku: string;
-	nameZhCn: string;
-};
+export const SkuSchema = z.object({
+	id: z.number(),
+	sku: z.string(),
+	nameZhCn: z.string(),
+});
 
-export type KanbanFilterState = {
-	dateRange: DateRange;
-	clients: string[];
-	storehouses: string[];
-	categories: string[];
-	skus: Sku | Sku[] | null;
-};
+export type Sku = z.infer<typeof SkuSchema>;
+
+const SharedKanbanFilterStateSchema = z.object({
+	clients: z.array(z.string()),
+	storehouses: z.array(z.string()),
+	categories: z.array(z.string()),
+	skus: z.union([SkuSchema, z.array(SkuSchema), z.null()]),
+});
+
+export const KanbanFilterStateSchema = z.discriminatedUnion("dateMode", [
+	z
+		.object({
+			dateMode: z.literal("range"),
+			dateRange: z.object({
+				start: z.custom<dayjs.Dayjs>(),
+				end: z.custom<dayjs.Dayjs>(),
+			}),
+		})
+		.merge(SharedKanbanFilterStateSchema),
+	z
+		.object({
+			dateMode: z.literal("month"),
+			/* restrict to 0-11 */
+			months: z.array(z.number().int().min(0).max(11)),
+		})
+		.merge(SharedKanbanFilterStateSchema),
+]);
+
+export type KanbanFilterState = z.infer<typeof KanbanFilterStateSchema>;
 
 export type KanbanFilterAction =
 	| { type: "SET_DATE_RANGE"; payload: DateRange }
