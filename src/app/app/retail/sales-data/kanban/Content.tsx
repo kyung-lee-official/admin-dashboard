@@ -15,26 +15,59 @@ import {
 	getRetailSalesDataStorehouses,
 	RetailSalesDataQK,
 } from "@/utils/api/app/retail/sales-data";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useReducer, useState } from "react";
+import { kanbanFilterReducer, Sku } from "./kanbanFilterReducer";
+
+const TagContainer = (props: any) => {
+	const { children } = props;
+	return (
+		<div
+			className="flex flex-wrap px-6 py-3 gap-1.5
+			border-t border-neutral-700"
+		>
+			{children}
+		</div>
+	);
+};
+
+const TagButton = (props: any) => {
+	const { children, selected, onClick } = props;
+	return (
+		<button
+			onClick={onClick}
+			className={`px-1
+			text-sm
+			${selected && "text-neutral-300 bg-neutral-600"}
+			border border-neutral-700
+			rounded cursor-pointer`}
+		>
+			{children}
+		</button>
+	);
+};
 
 export const Content = () => {
 	const [edit, setEdit] = useState<EditProps>({
 		show: false,
 		id: EditId.RETAIL_IMPORT_SALES_DATA,
 	});
-	const [range, setRange] = useState<DateRange>({
-		start: dayjs().subtract(1, "month"),
-		end: dayjs(),
-	});
-	type Sku = {
-		id: number;
-		sku: string;
-		nameZhCn: string;
-	};
-	const [sku, setSku] = useState<Sku | Sku[] | null>(null);
+
+	const [kanbanFilter, dispatchKanbanFilter] = useReducer(
+		kanbanFilterReducer,
+		{
+			dateRange: {
+				start: dayjs().subtract(1, "month"),
+				end: dayjs(),
+			},
+			clients: [],
+			storehouses: [],
+			categories: [],
+			skus: [],
+		}
+	);
 
 	const jwt = useAuthStore((state) => state.jwt);
 	const getRetailSalesDataClientsQuery = useQuery<any, AxiosError>({
@@ -65,108 +98,152 @@ export const Content = () => {
 		refetchOnWindowFocus: false,
 	});
 
-	// const searchSkuMutation = useMutation({
-	// 	mutationFn: async (term: string) => {},
-	// 	onSuccess: (data) => {},
-	// 	onError: (error) => {
-	// 		console.error(error);
-	// 	},
-	// });
-
 	async function handleSearchSku(term: string) {
 		const sku = await getRetailSalesDataSearchSku(term, jwt);
 		return sku;
 	}
 	/* function to handle deselection of an sku */
 	const handleDeselect = (option: Sku) => {
-		if (Array.isArray(sku)) {
-			setSku(sku.filter((s) => s.id !== option.id));
+		if (kanbanFilter.skus) {
+			dispatchKanbanFilter({
+				type: "SET_SKUS",
+				payload: (kanbanFilter.skus as Sku[]).filter(
+					(s: Sku) => s.id !== option.id
+				),
+			});
 		}
 	};
 
 	return (
 		<PageContainer>
 			<PageBlock title={"Kanban"}>
-				<div
-					className="px-6 py-3
-					border-t border-neutral-700"
-				>
-					<DateRangePicker range={range} setRange={setRange} />
-					{/* {searchSkuMutation.data && (
-						<Dropdown<Sku>
-							placeholder="Search for an option..."
-							selected={sku}
-							setSelected={setSku}
-							endpoint={`${process.env.NEXT_PUBLIC_NESTJS}/mock-data/online-dropdown`}
-							labelKey="nameZhCn"
-						/>
-					)} */}
-				</div>
+				<TagContainer>
+					<DateRangePicker
+						range={kanbanFilter.dateRange}
+						setRange={() => {
+							dispatchKanbanFilter({
+								type: "SET_DATE_RANGE",
+								payload: {
+									start: dayjs().subtract(1, "month"),
+									end: dayjs(),
+								},
+							});
+						}}
+					/>
+				</TagContainer>
 			</PageBlock>
 			<PageBlock title={"Clients"}>
-				<div
-					className="flex flex-wrap px-6 py-3 gap-1.5
-					border-t border-neutral-700"
-				>
+				<TagContainer>
 					{getRetailSalesDataClientsQuery.data &&
 						getRetailSalesDataClientsQuery.data.map((c: any) => {
 							return (
-								<button
+								<TagButton
 									key={c.id}
-									className="px-1
-									text-sm
-									border border-neutral-700
-									rounded cursor-pointer"
+									selected={kanbanFilter.clients.includes(
+										c.client
+									)}
+									onClick={() => {
+										dispatchKanbanFilter({
+											type: "SET_CLIENTS",
+											payload:
+												kanbanFilter.clients.includes(
+													c.client
+												)
+													? (
+															kanbanFilter.clients as string[]
+													  ).filter(
+															(client) =>
+																client !==
+																c.client
+													  )
+													: [
+															...(kanbanFilter.clients as string[]),
+															c.client,
+													  ],
+										});
+									}}
 								>
 									{c.client}
-								</button>
+								</TagButton>
 							);
 						})}
-				</div>
+				</TagContainer>
 			</PageBlock>
 			<PageBlock title={"Storehouses"}>
-				<div
-					className="flex flex-wrap px-6 py-3 gap-1.5
-					border-t border-neutral-700"
-				>
+				<TagContainer>
 					{getRetailSalesDataStorehousesQuery.data &&
 						getRetailSalesDataStorehousesQuery.data.map(
 							(s: any) => {
 								return (
-									<button
+									<TagButton
 										key={s.id}
-										className="px-1
-										text-sm
-										border border-neutral-700
-										rounded cursor-pointer"
+										selected={kanbanFilter.storehouses.includes(
+											s.storehouse
+										)}
+										onClick={() => {
+											dispatchKanbanFilter({
+												type: "SET_STOREHOUSES",
+												payload:
+													kanbanFilter.storehouses.includes(
+														s.storehouse
+													)
+														? (
+																kanbanFilter.storehouses as string[]
+														  ).filter(
+																(storehouse) =>
+																	storehouse !==
+																	s.storehouse
+														  )
+														: [
+																...(kanbanFilter.storehouses as string[]),
+																s.storehouse,
+														  ],
+											});
+										}}
 									>
 										{s.storehouse}
-									</button>
+									</TagButton>
 								);
 							}
 						)}
-				</div>
+				</TagContainer>
 			</PageBlock>
 			<PageBlock title={"Categories"}>
-				<div
-					className="flex flex-wrap px-6 py-3 gap-1.5
-					border-t border-neutral-700"
-				>
+				<TagContainer>
 					{getRetailSalesDataCategoriesQuery.data &&
 						getRetailSalesDataCategoriesQuery.data.map((c: any) => {
 							return (
-								<button
+								<TagButton
 									key={c.id}
-									className="px-1
-									text-sm
-									border border-neutral-700
-									rounded cursor-pointer"
+									selected={kanbanFilter.categories.includes(
+										c.category
+									)}
+									onClick={() => {
+										dispatchKanbanFilter({
+											type: "SET_CATEGORIES",
+											payload:
+												kanbanFilter.categories.includes(
+													c.category
+												)
+													? (
+															kanbanFilter.categories as string[]
+													  ).filter(
+															(category) =>
+																category !==
+																c.category
+													  )
+													: [
+															...(kanbanFilter.categories as string[]),
+															c.category,
+													  ],
+										});
+									}}
 								>
 									{c.category}
-								</button>
+								</TagButton>
 							);
 						})}
-				</div>
+				</TagContainer>
 			</PageBlock>
 			<PageBlock
 				title={
@@ -174,8 +251,13 @@ export const Content = () => {
 						<div>SKU</div>
 						<OnlineDropdown<Sku>
 							placeholder="Search SKU..."
-							selected={sku}
-							setSelected={setSku}
+							selected={kanbanFilter.skus}
+							setSelected={(selected) =>
+								dispatchKanbanFilter({
+									type: "SET_SKUS",
+									payload: selected as Sku[],
+								})
+							}
 							multiple
 							fetchOptions={handleSearchSku}
 							labelKey="nameZhCn"
@@ -192,26 +274,26 @@ export const Content = () => {
 					</div>
 				}
 			>
-				<div
-					className="flex flex-wrap px-6 py-3 gap-1.5
-					border-t border-neutral-700"
-				>
-					{sku &&
-						(sku as Sku[]).map((s: Sku) => {
+				<TagContainer>
+					{kanbanFilter.skus &&
+						(kanbanFilter.skus as Sku[]).map((s: Sku) => {
 							return (
 								<button
 									key={s.id}
 									onClick={() => handleDeselect(s)}
 									className="flex flex-col items-start px-1
-									text-xs text-neutral-400 hover:line-through
-									border border-neutral-700 cursor-pointer"
+									text-xs text-neutral-300 hover:line-through
+									bg-neutral-600
+									border border-neutral-700 cursor-pointer rounded"
 								>
 									<span>{s.nameZhCn}</span>
-									<span>{s.sku}</span>
+									<span className="text-neutral-400">
+										{s.sku}
+									</span>
 								</button>
 							);
 						})}
-				</div>
+				</TagContainer>
 			</PageBlock>
 		</PageContainer>
 	);
