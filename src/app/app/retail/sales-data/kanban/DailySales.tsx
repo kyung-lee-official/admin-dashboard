@@ -5,8 +5,10 @@ import { Group } from "@visx/group";
 import { Bar } from "@visx/shape";
 import { AxisLeft } from "@visx/axis";
 import dayjs from "dayjs";
+import { Table, Tbody, Thead } from "@/components/content/Table";
 
 export const DailySales = (props: {
+	showChartDailySales: boolean;
 	fetchFilteredSalesData: RetailSalesDataResponse[];
 }) => {
 	const width = 900;
@@ -15,7 +17,7 @@ export const DailySales = (props: {
 	const margin = { top: 20, left: 30, right: 0, bottom: 20 };
 	const xMax = width;
 	const yMax = height - margin.top - margin.bottom;
-	const { fetchFilteredSalesData } = props;
+	const { showChartDailySales, fetchFilteredSalesData } = props;
 	/**
 	 * convert to array of date-salesVolume objects
 	 * accumulate salesVolume for each date
@@ -47,70 +49,100 @@ export const DailySales = (props: {
 		range: [yMax, 0],
 	});
 
-	return (
-		<div className="relative px-6 py-3 border-t border-neutral-700">
-			<svg width={width} height={height}>
-				<rect
-					x={0}
-					y={0}
-					width={width}
-					height={height}
-					rx={14}
-					className="fill-neutral-700"
-				/>
-				<Grid
-					top={margin.top}
-					left={margin.left}
-					xScale={dateScale}
-					yScale={salesVolumeScale}
-					width={width}
-					height={height}
-					stroke="white"
-					strokeOpacity={0.1}
-					xOffset={dateScale.bandwidth() / 2}
-				/>
-				<Group top={margin.top}>
-					{reducedData.map((d) => {
-						const date = d.date;
-						const barWidth = dateScale.bandwidth() * 0.5;
-						const barHeight =
-							yMax - salesVolumeScale(d.salesVolume);
-						const barX = dateScale(date) ?? 0;
-						const barY = yMax - barHeight;
-						return (
-							<Bar
-								key={`bar-${date}`}
-								x={barX + margin.left}
-								y={barY}
-								width={barWidth}
-								height={barHeight}
-								className="fill-neutral-500"
-								onClick={() => {
-									if (events)
-										alert(
-											`clicked: ${JSON.stringify(
-												Object.values(d)
-											)}`
-										);
-								}}
+	switch (showChartDailySales) {
+		case true:
+			return (
+				<div className="relative px-6 py-3 border-t border-neutral-700">
+					<svg width={width} height={height}>
+						<rect
+							x={0}
+							y={0}
+							width={width}
+							height={height}
+							rx={14}
+							className="fill-neutral-700"
+						/>
+						<Grid
+							top={margin.top}
+							left={margin.left}
+							xScale={dateScale}
+							yScale={salesVolumeScale}
+							width={width}
+							height={height}
+							stroke="white"
+							strokeOpacity={0.1}
+							xOffset={dateScale.bandwidth() / 2}
+						/>
+						<Group top={margin.top}>
+							{reducedData.map((d) => {
+								const date = d.date;
+								const barWidth = dateScale.bandwidth() * 0.2;
+								const barHeight =
+									yMax - salesVolumeScale(d.salesVolume);
+								const barX = dateScale(date) ?? 0;
+								const barY = yMax - barHeight;
+								return (
+									<Bar
+										key={`bar-${date}`}
+										x={barX + margin.left}
+										y={barY}
+										width={barWidth}
+										height={barHeight}
+										className="fill-neutral-500"
+										onClick={() => {
+											if (events)
+												alert(
+													`clicked: ${JSON.stringify(
+														Object.values(d)
+													)}`
+												);
+										}}
+									/>
+								);
+							})}
+							<AxisLeft
+								scale={salesVolumeScale}
+								left={margin.left}
+								stroke="white"
+								tickStroke="white"
+								tickLabelProps={() => ({
+									fill: "white",
+									fontSize: 11,
+									textAnchor: "end",
+								})}
+								hideAxisLine
+								hideTicks={false}
 							/>
-						);
-					})}
-					<AxisLeft
-						scale={salesVolumeScale}
-						left={margin.left}
-						stroke="white"
-						tickStroke="white"
-						tickLabelProps={() => ({
-							fill: "white",
-							fontSize: 11,
-							textAnchor: "end",
+						</Group>
+					</svg>
+				</div>
+			);
+		case false:
+			return (
+				<Table>
+					<Thead>
+						<tr>
+							<th className="text-left">
+								Date ({reducedData.length})
+							</th>
+							<th className="text-left">Sales Volume</th>
+						</tr>
+					</Thead>
+					<Tbody>
+						{reducedData.map((d) => {
+							return (
+								<tr key={d.date}>
+									<td>
+										{dayjs(d.date).format("MMM DD, YYYY")}
+									</td>
+									<td>{d.salesVolume}</td>
+								</tr>
+							);
 						})}
-						hideAxisLine
-						hideTicks={false}
-					/>
-				</Group>
-			</svg>
-		</div>
-	);
+					</Tbody>
+				</Table>
+			);
+		default:
+			return null;
+	}
 };

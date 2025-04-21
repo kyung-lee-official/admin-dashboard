@@ -18,13 +18,15 @@ import {
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import dayjs from "dayjs";
-import { SetStateAction, useEffect, useReducer } from "react";
+import { SetStateAction, useEffect, useReducer, useState } from "react";
 import {
 	kanbanFilterReducer,
 	KanbanFilterState,
 	Sku,
 } from "./kanbanFilterReducer";
 import { DailySales } from "./DailySales";
+import { Toggle } from "@/components/toggle/Toggle";
+import { GridOnOutlined, PollOutlined } from "./Icons";
 
 const TagContainer = (props: any) => {
 	const { children } = props;
@@ -55,6 +57,7 @@ const TagButton = (props: any) => {
 };
 
 export const Content = () => {
+	const [showChartDailySales, setShowChartDailySales] = useState(false);
 	const [kanbanFilter, dispatchKanbanFilter] = useReducer(
 		kanbanFilterReducer,
 		{
@@ -332,9 +335,29 @@ export const Content = () => {
 						})}
 				</TagContainer>
 			</PageBlock>
-			<PageBlock title={"Daily Sales"}>
+			<PageBlock
+				title={
+					<div className="flex items-center gap-6">
+						<div>Daily Sales</div>
+						<div className="flex items-center gap-2">
+							<GridOnOutlined size={16} />
+							<Toggle
+								isOn={showChartDailySales}
+								onClick={() => {
+									setShowChartDailySales(
+										!showChartDailySales
+									);
+								}}
+								isAllowed={true}
+							/>
+							<PollOutlined size={16} />
+						</div>
+					</div>
+				}
+			>
 				{fetchFilteredSalesDataMutation.data && (
 					<DailySales
+						showChartDailySales={showChartDailySales}
 						fetchFilteredSalesData={
 							fetchFilteredSalesDataMutation.data
 						}
