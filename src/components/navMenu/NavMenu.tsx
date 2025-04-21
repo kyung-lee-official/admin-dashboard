@@ -124,7 +124,7 @@ export const NavMenu = () => {
 			className="flex-[0_0_224px] flex flex-col max-w-[224px] h-svh
 			font-semibold
 			border-r-[1px] border-white/5
-			z-10"
+			z-5"
 		>
 			<div className="flex-[1_1_52px]">
 				<div
