@@ -92,6 +92,9 @@ export async function xlsxToJson(file: File): Promise<RetailSalesData[]> {
 							const unitPriceCny = isNaN(parsedUnitPriceCnyText)
 								? null
 								: parsedUnitPriceCnyText;
+							/* source attribute */
+							const sourceAttribute = row.getCell("T")
+								.text as string;
 
 							retailSalesDataSchema.parse({
 								date: date,
@@ -108,6 +111,7 @@ export async function xlsxToJson(file: File): Promise<RetailSalesData[]> {
 								taxInclusivePriceCny: taxInclusivePriceCny,
 								priceCny: priceCny,
 								unitPriceCny: unitPriceCny,
+								sourceAttribute: sourceAttribute,
 							});
 
 							json.push({
@@ -127,6 +131,7 @@ export async function xlsxToJson(file: File): Promise<RetailSalesData[]> {
 								taxInclusivePriceCny: taxInclusivePriceCny,
 								priceCny: priceCny,
 								unitPriceCny: unitPriceCny,
+								sourceAttribute: sourceAttribute,
 							});
 						} catch (error) {
 							console.error(
