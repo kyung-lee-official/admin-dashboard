@@ -24,6 +24,7 @@ import {
 	KanbanFilterState,
 	Sku,
 } from "./kanbanFilterReducer";
+import { DailySales } from "./DailySales";
 
 const TagContainer = (props: any) => {
 	const { children } = props;
@@ -121,7 +122,7 @@ export const Content = () => {
 			return response;
 		},
 		onSuccess: (data) => {
-			console.log("Filtered sales data:", data);
+			// console.log("Filtered sales data:", data);
 			/* handle the fetched data (e.g., update state or UI) */
 		},
 		onError: (error) => {
@@ -161,45 +162,52 @@ export const Content = () => {
 			<PageBlock title={"Clients"}>
 				<TagContainer>
 					{getRetailSalesDataClientsQuery.data &&
-						getRetailSalesDataClientsQuery.data.map((c: any) => {
-							return (
-								<TagButton
-									key={c.id}
-									selected={kanbanFilter.clients.includes(
-										c.client
-									)}
-									onClick={() => {
-										dispatchKanbanFilter({
-											type: "SET_CLIENTS",
-											payload:
-												kanbanFilter.clients.includes(
-													c.client
-												)
-													? (
-															kanbanFilter.clients as string[]
-													  ).filter(
-															(client) =>
-																client !==
-																c.client
-													  )
-													: [
-															...(kanbanFilter.clients as string[]),
-															c.client,
-													  ],
-										});
-									}}
-								>
-									{c.client}
-								</TagButton>
-							);
-						})}
+						getRetailSalesDataClientsQuery.data
+							.sort((a: any, b: any) =>
+								a.client.localeCompare(b.client)
+							)
+							.map((c: any) => {
+								return (
+									<TagButton
+										key={c.id}
+										selected={kanbanFilter.clients.includes(
+											c.client
+										)}
+										onClick={() => {
+											dispatchKanbanFilter({
+												type: "SET_CLIENTS",
+												payload:
+													kanbanFilter.clients.includes(
+														c.client
+													)
+														? (
+																kanbanFilter.clients as string[]
+														  ).filter(
+																(client) =>
+																	client !==
+																	c.client
+														  )
+														: [
+																...(kanbanFilter.clients as string[]),
+																c.client,
+														  ],
+											});
+										}}
+									>
+										{c.client}
+									</TagButton>
+								);
+							})}
 				</TagContainer>
 			</PageBlock>
 			<PageBlock title={"Storehouses"}>
 				<TagContainer>
 					{getRetailSalesDataStorehousesQuery.data &&
-						getRetailSalesDataStorehousesQuery.data.map(
-							(s: any) => {
+						getRetailSalesDataStorehousesQuery.data
+							.sort((a: any, b: any) =>
+								a.storehouse.localeCompare(b.storehouse)
+							)
+							.map((s: any) => {
 								return (
 									<TagButton
 										key={s.id}
@@ -230,45 +238,48 @@ export const Content = () => {
 										{s.storehouse}
 									</TagButton>
 								);
-							}
-						)}
+							})}
 				</TagContainer>
 			</PageBlock>
 			<PageBlock title={"Categories"}>
 				<TagContainer>
 					{getRetailSalesDataCategoriesQuery.data &&
-						getRetailSalesDataCategoriesQuery.data.map((c: any) => {
-							return (
-								<TagButton
-									key={c.id}
-									selected={kanbanFilter.categories.includes(
-										c.category
-									)}
-									onClick={() => {
-										dispatchKanbanFilter({
-											type: "SET_CATEGORIES",
-											payload:
-												kanbanFilter.categories.includes(
-													c.category
-												)
-													? (
-															kanbanFilter.categories as string[]
-													  ).filter(
-															(category) =>
-																category !==
-																c.category
-													  )
-													: [
-															...(kanbanFilter.categories as string[]),
-															c.category,
-													  ],
-										});
-									}}
-								>
-									{c.category}
-								</TagButton>
-							);
-						})}
+						getRetailSalesDataCategoriesQuery.data
+							.sort((a: any, b: any) =>
+								a.category.localeCompare(b.category)
+							)
+							.map((c: any) => {
+								return (
+									<TagButton
+										key={c.id}
+										selected={kanbanFilter.categories.includes(
+											c.category
+										)}
+										onClick={() => {
+											dispatchKanbanFilter({
+												type: "SET_CATEGORIES",
+												payload:
+													kanbanFilter.categories.includes(
+														c.category
+													)
+														? (
+																kanbanFilter.categories as string[]
+														  ).filter(
+																(category) =>
+																	category !==
+																	c.category
+														  )
+														: [
+																...(kanbanFilter.categories as string[]),
+																c.category,
+														  ],
+											});
+										}}
+									>
+										{c.category}
+									</TagButton>
+								);
+							})}
 				</TagContainer>
 			</PageBlock>
 			<PageBlock
@@ -320,6 +331,15 @@ export const Content = () => {
 							);
 						})}
 				</TagContainer>
+			</PageBlock>
+			<PageBlock title={"Daily Sales"}>
+				{fetchFilteredSalesDataMutation.data && (
+					<DailySales
+						fetchFilteredSalesData={
+							fetchFilteredSalesDataMutation.data
+						}
+					/>
+				)}
 			</PageBlock>
 		</PageContainer>
 	);
