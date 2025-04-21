@@ -2,22 +2,22 @@ import { DateRange } from "@/components/date/date-range-picker/DateRangePicker";
 import dayjs from "dayjs";
 import { z } from "zod";
 
-export const SkuSchema = z.object({
+export const skuSchema = z.object({
 	id: z.number(),
 	sku: z.string(),
 	nameZhCn: z.string(),
 });
 
-export type Sku = z.infer<typeof SkuSchema>;
+export type Sku = z.infer<typeof skuSchema>;
 
-const SharedKanbanFilterStateSchema = z.object({
+const SharedkanbanFilterStateSchema = z.object({
 	clients: z.array(z.string()),
 	storehouses: z.array(z.string()),
 	categories: z.array(z.string()),
-	skus: z.union([SkuSchema, z.array(SkuSchema), z.null()]),
+	skus: z.union([skuSchema, z.array(skuSchema), z.null()]),
 });
 
-export const KanbanFilterStateSchema = z.discriminatedUnion("dateMode", [
+export const kanbanFilterStateSchema = z.discriminatedUnion("dateMode", [
 	z
 		.object({
 			dateMode: z.literal("range"),
@@ -26,17 +26,17 @@ export const KanbanFilterStateSchema = z.discriminatedUnion("dateMode", [
 				end: z.custom<dayjs.Dayjs>(),
 			}),
 		})
-		.merge(SharedKanbanFilterStateSchema),
+		.merge(SharedkanbanFilterStateSchema),
 	z
 		.object({
 			dateMode: z.literal("month"),
 			/* restrict to 0-11 */
 			months: z.array(z.number().int().min(0).max(11)),
 		})
-		.merge(SharedKanbanFilterStateSchema),
+		.merge(SharedkanbanFilterStateSchema),
 ]);
 
-export type KanbanFilterState = z.infer<typeof KanbanFilterStateSchema>;
+export type KanbanFilterState = z.infer<typeof kanbanFilterStateSchema>;
 
 export type KanbanFilterAction =
 	| { type: "SET_DATE_RANGE"; payload: DateRange }

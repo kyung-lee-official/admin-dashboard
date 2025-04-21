@@ -5,21 +5,25 @@ import {
 	DateRange,
 	DateRangePicker,
 } from "@/components/date/date-range-picker/DateRangePicker";
-import { EditId, EditProps } from "@/components/edit-panel/EditPanel";
 import { Dropdown as OnlineDropdown } from "@/components/input/online-dropdown/Dropdown";
 import { useAuthStore } from "@/stores/auth";
 import {
+	filterRetailSalesData,
 	getRetailSalesDataCategories,
 	getRetailSalesDataClients,
 	getRetailSalesDataSearchSku,
 	getRetailSalesDataStorehouses,
 	RetailSalesDataQK,
 } from "@/utils/api/app/retail/sales-data";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import dayjs from "dayjs";
-import { useReducer, useState } from "react";
-import { kanbanFilterReducer, Sku } from "./kanbanFilterReducer";
+import { SetStateAction, useEffect, useReducer } from "react";
+import {
+	kanbanFilterReducer,
+	KanbanFilterState,
+	Sku,
+} from "./kanbanFilterReducer";
 
 const TagContainer = (props: any) => {
 	const { children } = props;
@@ -50,11 +54,6 @@ const TagButton = (props: any) => {
 };
 
 export const Content = () => {
-	const [edit, setEdit] = useState<EditProps>({
-		show: false,
-		id: EditId.RETAIL_IMPORT_SALES_DATA,
-	});
-
 	const [kanbanFilter, dispatchKanbanFilter] = useReducer(
 		kanbanFilterReducer,
 		{
@@ -115,6 +114,26 @@ export const Content = () => {
 		}
 	};
 
+	/* mutation to fetch filtered sales data */
+	const fetchFilteredSalesDataMutation = useMutation({
+		mutationFn: async (filter: KanbanFilterState) => {
+			const response = await filterRetailSalesData(filter, jwt);
+			return response;
+		},
+		onSuccess: (data) => {
+			console.log("Filtered sales data:", data);
+			/* handle the fetched data (e.g., update state or UI) */
+		},
+		onError: (error) => {
+			console.error("Error fetching filtered sales data:", error);
+		},
+	});
+
+	/* trigger the mutation whenever kanbanFilter changes */
+	useEffect(() => {
+		fetchFilteredSalesDataMutation.mutate(kanbanFilter);
+	}, [kanbanFilter]);
+
 	return (
 		<PageContainer>
 			<PageBlock title={"Kanban"}>
@@ -122,12 +141,16 @@ export const Content = () => {
 					{kanbanFilter.dateMode === "range" && (
 						<DateRangePicker
 							range={kanbanFilter.dateRange}
-							setRange={() => {
+							setRange={(value: SetStateAction<DateRange>) => {
+								const newRange =
+									typeof value === "function"
+										? value(kanbanFilter.dateRange)
+										: value;
 								dispatchKanbanFilter({
 									type: "SET_DATE_RANGE",
 									payload: {
-										start: dayjs().subtract(1, "month"),
-										end: dayjs(),
+										start: newRange.start,
+										end: newRange.end,
 									},
 								});
 							}}

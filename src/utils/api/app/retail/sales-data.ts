@@ -126,8 +126,8 @@ export async function filterRetailSalesData(
 			dto = {
 				...kfs,
 				dateRange: {
-					start: kfs.dateRange.start.format("YYYY-MM-DD"),
-					end: kfs.dateRange.end.format("YYYY-MM-DD"),
+					start: kfs.dateRange.start.toISOString(),
+					end: kfs.dateRange.end.toISOString(),
 				},
 			};
 			break;
