@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { DateRange, RangePickerProps } from "./DateRangePicker";
 import { Button } from "./Button";
-import { Debug } from "./Debug";
+// import { Debug } from "./Debug";
 import { ChevronLeft, ChevronRight } from "./Icons";
 
 type CalendarProps = RangePickerProps & {
@@ -165,7 +165,7 @@ export const Calendar = (props: CalendarProps) => {
 					);
 				})}
 			</div>
-			<Debug calendarRange={calendarRange} />
+			{/* <Debug calendarRange={calendarRange} /> */}
 		</div>
 	);
 };
