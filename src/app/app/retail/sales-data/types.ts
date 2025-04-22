@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const retailSalesDataSchema = z.object({
+export const importRetailSalesDataSchema = z.object({
 	date: z.string().datetime(),
 	receiptType: z.string({ message: "Receipt Type is required" }),
 	client: z.string({ message: "Client is required" }),
@@ -19,55 +19,56 @@ export const retailSalesDataSchema = z.object({
 	unitPriceCny: z.number().nullable(),
 	sourceAttribute: z.string().nullable(),
 });
-export type RetailSalesData = z.infer<typeof retailSalesDataSchema>;
+export type ImportRetailSalesData = z.infer<typeof importRetailSalesDataSchema>;
 
-export const retailSalesDataResponseSchema = z.object({
+const retailSalesDataResponseSchema = z.object({
 	id: z.string(),
 	batchId: z.number(),
 	date: z.string().datetime({ message: "Date is required" }),
-	receiptTypeId: z.number(),
-	clientId: z.number(),
-	departmentId: z.number(),
+	receiptType: z.string(),
 	productId: z.number(),
 	salesVolume: z.number(),
-	platformAddressId: z.number().nullable(),
+	client: z.string(),
 	platformOrderId: z.string(),
-	storehouseId: z.number(),
-	categoryId: z.number().nullable(),
-	sourceAttributeId: z.number().nullable(),
+	storehouse: z.string(),
+	category: z.string().nullable(),
+	sourceAttribute: z.string().nullable(),
 	taxInclusivePriceCny: z.number().nullable(),
 	priceCny: z.number().nullable(),
 	unitPriceCny: z.number().nullable(),
-	receiptType: z.object({
-		id: z.number(),
-		receiptType: z.string(),
-	}),
-	client: z.object({
-		id: z.number(),
-		client: z.string(),
-	}),
 	product: z.object({
 		id: z.number(),
 		sku: z.string(),
 		nameZhCn: z.string(),
 	}),
-	storehouse: z.object({
-		id: z.number(),
-		storehouse: z.string(),
-	}),
-	category: z
-		.object({
-			id: z.number(),
-			category: z.string(),
-		})
-		.nullable(),
-	sourceAttribute: z
-		.object({
-			id: z.number(),
-			sourceAttribute: z.string(),
-		})
-		.nullable(),
 });
 export type RetailSalesDataResponse = z.infer<
 	typeof retailSalesDataResponseSchema
+>;
+
+export const filteredRetailSalesDataResponseSchema = z.object({
+	retailSalesData: z.array(retailSalesDataResponseSchema),
+	clients: z.object({
+		availableClients: z.array(z.string()),
+		allClients: z.array(z.string()),
+	}),
+	storehouses: z.object({
+		availableStorehouses: z.array(z.string()),
+		allStorehouses: z.array(z.string()),
+	}),
+	categories: z.object({
+		availableCategories: z.array(z.string()),
+		allCategories: z.array(z.string()),
+	}),
+	receiptTypes: z.object({
+		availableReceiptTypes: z.array(z.string()),
+		allReceiptTypes: z.array(z.string()),
+	}),
+	sourceAttributes: z.object({
+		availableSourceAttributes: z.array(z.string()),
+		allSourceAttributes: z.array(z.string()),
+	}),
+});
+export type FilteredRetailSalesDataResponse = z.infer<
+	typeof filteredRetailSalesDataResponseSchema
 >;

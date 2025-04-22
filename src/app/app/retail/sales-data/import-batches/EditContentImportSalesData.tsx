@@ -7,7 +7,7 @@ import { xlsxToJson } from "./xlsxToJson";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/utils/react-query/react-query";
 import { Button } from "@/components/button/Button";
-import { RetailSalesData } from "../types";
+import { ImportRetailSalesData } from "../types";
 import {
 	importRetailSalesData,
 	RetailSalesDataQK,
@@ -25,7 +25,7 @@ export const EditContentImportRetailSalesData = (props: {
 
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
-	const [oldData, setOldData] = useState<RetailSalesData[]>([]);
+	const [oldData, setOldData] = useState<ImportRetailSalesData[]>([]);
 	const [newData, setNewData] = useState(oldData);
 	const [file, setFile] = useState<File | null>(null);
 

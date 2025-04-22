@@ -20,7 +20,15 @@ import {
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import dayjs from "dayjs";
-import { SetStateAction, useEffect, useReducer, useRef, useState } from "react";
+import {
+	MouseEventHandler,
+	ReactNode,
+	SetStateAction,
+	useEffect,
+	useReducer,
+	useRef,
+	useState,
+} from "react";
 import {
 	kanbanFilterReducer,
 	KanbanFilterState,
@@ -32,6 +40,7 @@ import { FilterAltOutlined, GridOnOutlined, PollOutlined } from "./Icons";
 import { motion, useInView } from "motion/react";
 import { createPortal } from "react-dom";
 import { FullModal } from "@/components/full-modal/FullModal";
+import { FilteredRetailSalesDataResponse } from "../types";
 
 const TagContainer = (props: any) => {
 	const { children } = props;
@@ -45,16 +54,22 @@ const TagContainer = (props: any) => {
 	);
 };
 
-const TagButton = (props: any) => {
-	const { children, selected, onClick } = props;
+const TagButton = (props: {
+	children: ReactNode;
+	isSelected: any;
+	isAvailable: boolean;
+	onClick: MouseEventHandler<HTMLButtonElement>;
+}) => {
+	const { children, isSelected, isAvailable, onClick } = props;
 	return (
 		<button
 			onClick={onClick}
+			disabled={!isAvailable}
 			className={`px-1
 			text-sm
-			${selected && "text-neutral-300 bg-neutral-600"}
+			${isSelected && "text-neutral-300 bg-neutral-600"}
 			border border-neutral-700
-			rounded cursor-pointer`}
+			rounded ${isAvailable ? "cursor-pointer" : "cursor-not-allowed opacity-50"}`}
 		>
 			{children}
 		</button>
@@ -81,53 +96,6 @@ export const Content = () => {
 	);
 
 	const jwt = useAuthStore((state) => state.jwt);
-	const getRetailSalesDataClientsQuery = useQuery<any, AxiosError>({
-		queryKey: [RetailSalesDataQK.GET_SALES_DATA_CLIENTS],
-		queryFn: async () => {
-			const clients = await getRetailSalesDataClients(jwt);
-			return clients;
-		},
-		retry: false,
-		refetchOnWindowFocus: false,
-	});
-	const getRetailSalesDataStorehousesQuery = useQuery<any, AxiosError>({
-		queryKey: [RetailSalesDataQK.GET_SALES_DATA_STOREHOUSES],
-		queryFn: async () => {
-			const storehouses = await getRetailSalesDataStorehouses(jwt);
-			return storehouses;
-		},
-		retry: false,
-		refetchOnWindowFocus: false,
-	});
-	const getRetailSalesDataCategoriesQuery = useQuery<any, AxiosError>({
-		queryKey: [RetailSalesDataQK.GET_SALES_DATA_CATEGORIES],
-		queryFn: async () => {
-			const categories = await getRetailSalesDataCategories(jwt);
-			return categories;
-		},
-		retry: false,
-		refetchOnWindowFocus: false,
-	});
-	const getRetailSalesDataReceiptTypesQuery = useQuery<any, AxiosError>({
-		queryKey: [RetailSalesDataQK.GET_SALES_DATA_RECEIPT_TYPES],
-		queryFn: async () => {
-			const receiptTypes = await getRetailSalesDataReceiptTypes(jwt);
-			return receiptTypes;
-		},
-		retry: false,
-		refetchOnWindowFocus: false,
-	});
-	const getRetailSalesDataSourceAttributesQuery = useQuery<any, AxiosError>({
-		queryKey: [RetailSalesDataQK.GET_SALES_DATA_SOURCE_ATTRIBUTES],
-		queryFn: async () => {
-			const sourceAttributes = await getRetailSalesDataSourceAttributes(
-				jwt
-			);
-			return sourceAttributes;
-		},
-		retry: false,
-		refetchOnWindowFocus: false,
-	});
 
 	async function handleSearchSku(term: string) {
 		const sku = await getRetailSalesDataSearchSku(term, jwt);
@@ -219,40 +187,39 @@ export const Content = () => {
 			</PageBlock>
 			<PageBlock title={"Clients"}>
 				<TagContainer>
-					{getRetailSalesDataClientsQuery.data &&
-						getRetailSalesDataClientsQuery.data
-							.sort((a: any, b: any) =>
-								a.client.localeCompare(b.client)
-							)
-							.map((c: any) => {
+					{fetchFilteredSalesDataMutation.data &&
+						fetchFilteredSalesDataMutation.data.clients.allClients
+							.sort((a: string, b: string) => a.localeCompare(b))
+							.map((c: string) => {
+								const isSelected =
+									kanbanFilter.clients.includes(c);
+								const isAvailable =
+									fetchFilteredSalesDataMutation.data.clients.availableClients.includes(
+										c
+									);
 								return (
 									<TagButton
-										key={c.id}
-										selected={kanbanFilter.clients.includes(
-											c.client
-										)}
+										key={c}
+										isSelected={isSelected}
+										isAvailable={isAvailable}
 										onClick={() => {
 											dispatchKanbanFilter({
 												type: "SET_CLIENTS",
-												payload:
-													kanbanFilter.clients.includes(
-														c.client
-													)
-														? (
-																kanbanFilter.clients as string[]
-														  ).filter(
-																(client) =>
-																	client !==
-																	c.client
-														  )
-														: [
-																...(kanbanFilter.clients as string[]),
-																c.client,
-														  ],
+												payload: isSelected
+													? (
+															kanbanFilter.clients as string[]
+													  ).filter(
+															(client) =>
+																client !== c
+													  )
+													: [
+															...(kanbanFilter.clients as string[]),
+															c,
+													  ],
 											});
 										}}
 									>
-										{c.client}
+										{c}
 									</TagButton>
 								);
 							})}
@@ -260,40 +227,39 @@ export const Content = () => {
 			</PageBlock>
 			<PageBlock title={"Storehouses"}>
 				<TagContainer>
-					{getRetailSalesDataStorehousesQuery.data &&
-						getRetailSalesDataStorehousesQuery.data
-							.sort((a: any, b: any) =>
-								a.storehouse.localeCompare(b.storehouse)
-							)
-							.map((s: any) => {
+					{fetchFilteredSalesDataMutation.data &&
+						fetchFilteredSalesDataMutation.data.storehouses.allStorehouses
+							.sort((a: string, b: string) => a.localeCompare(b))
+							.map((s: string) => {
+								const isSelected =
+									kanbanFilter.storehouses.includes(s);
+								const isAvailable =
+									fetchFilteredSalesDataMutation.data.storehouses.availableStorehouses.includes(
+										s
+									);
 								return (
 									<TagButton
-										key={s.id}
-										selected={kanbanFilter.storehouses.includes(
-											s.storehouse
-										)}
+										key={s}
+										isSelected={isSelected}
+										isAvailable={isAvailable}
 										onClick={() => {
 											dispatchKanbanFilter({
 												type: "SET_STOREHOUSES",
-												payload:
-													kanbanFilter.storehouses.includes(
-														s.storehouse
-													)
-														? (
-																kanbanFilter.storehouses as string[]
-														  ).filter(
-																(storehouse) =>
-																	storehouse !==
-																	s.storehouse
-														  )
-														: [
-																...(kanbanFilter.storehouses as string[]),
-																s.storehouse,
-														  ],
+												payload: isSelected
+													? (
+															kanbanFilter.storehouses as string[]
+													  ).filter(
+															(storehouse) =>
+																storehouse !== s
+													  )
+													: [
+															...(kanbanFilter.storehouses as string[]),
+															s,
+													  ],
 											});
 										}}
 									>
-										{s.storehouse}
+										{s}
 									</TagButton>
 								);
 							})}
@@ -301,40 +267,39 @@ export const Content = () => {
 			</PageBlock>
 			<PageBlock title={"Categories"}>
 				<TagContainer>
-					{getRetailSalesDataCategoriesQuery.data &&
-						getRetailSalesDataCategoriesQuery.data
-							.sort((a: any, b: any) =>
-								a.category.localeCompare(b.category)
-							)
-							.map((c: any) => {
+					{fetchFilteredSalesDataMutation.data &&
+						fetchFilteredSalesDataMutation.data.categories.allCategories
+							.sort((a: string, b: string) => a.localeCompare(b))
+							.map((c: string) => {
+								const isSelected =
+									kanbanFilter.categories.includes(c);
+								const isAvailable =
+									fetchFilteredSalesDataMutation.data.categories.availableCategories.includes(
+										c
+									);
 								return (
 									<TagButton
-										key={c.id}
-										selected={kanbanFilter.categories.includes(
-											c.category
-										)}
+										key={c}
+										isSelected={isSelected}
+										isAvailable={isAvailable}
 										onClick={() => {
 											dispatchKanbanFilter({
 												type: "SET_CATEGORIES",
-												payload:
-													kanbanFilter.categories.includes(
-														c.category
-													)
-														? (
-																kanbanFilter.categories as string[]
-														  ).filter(
-																(category) =>
-																	category !==
-																	c.category
-														  )
-														: [
-																...(kanbanFilter.categories as string[]),
-																c.category,
-														  ],
+												payload: isSelected
+													? (
+															kanbanFilter.categories as string[]
+													  ).filter(
+															(category) =>
+																category !== c
+													  )
+													: [
+															...(kanbanFilter.categories as string[]),
+															c,
+													  ],
 											});
 										}}
 									>
-										{c.category}
+										{c}
 									</TagButton>
 								);
 							})}
@@ -342,40 +307,40 @@ export const Content = () => {
 			</PageBlock>
 			<PageBlock title={"Receipt Types"}>
 				<TagContainer>
-					{getRetailSalesDataReceiptTypesQuery.data &&
-						getRetailSalesDataReceiptTypesQuery.data
-							.sort((a: any, b: any) =>
-								a.receiptType.localeCompare(b.receiptType)
-							)
-							.map((r: any) => {
+					{fetchFilteredSalesDataMutation.data &&
+						fetchFilteredSalesDataMutation.data.receiptTypes.allReceiptTypes
+							.sort((a: string, b: string) => a.localeCompare(b))
+							.map((rt: string) => {
+								const isSelected =
+									kanbanFilter.receiptTypes.includes(rt);
+								const isAvailable =
+									fetchFilteredSalesDataMutation.data.receiptTypes.availableReceiptTypes.includes(
+										rt
+									);
 								return (
 									<TagButton
-										key={r.id}
-										selected={kanbanFilter.receiptTypes.includes(
-											r.receiptType
-										)}
+										key={rt}
+										isSelected={isSelected}
+										isAvailable={isAvailable}
 										onClick={() => {
 											dispatchKanbanFilter({
 												type: "SET_RECEIPT_TYPES",
-												payload:
-													kanbanFilter.receiptTypes.includes(
-														r.receiptType
-													)
-														? (
-																kanbanFilter.receiptTypes as string[]
-														  ).filter(
-																(receiptType) =>
-																	receiptType !==
-																	r.receiptType
-														  )
-														: [
-																...(kanbanFilter.receiptTypes as string[]),
-																r.receiptType,
-														  ],
+												payload: isSelected
+													? (
+															kanbanFilter.receiptTypes as string[]
+													  ).filter(
+															(receiptType) =>
+																receiptType !==
+																rt
+													  )
+													: [
+															...(kanbanFilter.receiptTypes as string[]),
+															rt,
+													  ],
 											});
 										}}
 									>
-										{r.receiptType}
+										{rt}
 									</TagButton>
 								);
 							})}
@@ -383,44 +348,40 @@ export const Content = () => {
 			</PageBlock>
 			<PageBlock title={"Source Attributes"}>
 				<TagContainer>
-					{getRetailSalesDataSourceAttributesQuery.data &&
-						getRetailSalesDataSourceAttributesQuery.data
-							.sort((a: any, b: any) =>
-								a.sourceAttribute.localeCompare(
-									b.sourceAttribute
-								)
-							)
-							.map((sa: any) => {
+					{fetchFilteredSalesDataMutation.data &&
+						fetchFilteredSalesDataMutation.data.sourceAttributes.allSourceAttributes
+							.sort((a: string, b: string) => a.localeCompare(b))
+							.map((sa: string) => {
+								const isSelected =
+									kanbanFilter.sourceAttributes.includes(sa);
+								const isAvailable =
+									fetchFilteredSalesDataMutation.data.sourceAttributes.availableSourceAttributes.includes(
+										sa
+									);
 								return (
 									<TagButton
-										key={sa.id}
-										selected={kanbanFilter.sourceAttributes.includes(
-											sa.sourceAttribute
-										)}
+										key={sa}
+										isSelected={isSelected}
+										isAvailable={isAvailable}
 										onClick={() => {
 											dispatchKanbanFilter({
 												type: "SET_SOURCE_ATTRIBUTES",
-												payload:
-													kanbanFilter.sourceAttributes.includes(
-														sa.sourceAttribute
-													)
-														? (
-																kanbanFilter.sourceAttributes as string[]
-														  ).filter(
-																(
-																	sourceAttribute
-																) =>
-																	sourceAttribute !==
-																	sa.sourceAttribute
-														  )
-														: [
-																...(kanbanFilter.sourceAttributes as string[]),
-																sa.sourceAttribute,
-														  ],
+												payload: isSelected
+													? (
+															kanbanFilter.sourceAttributes as string[]
+													  ).filter(
+															(sourceAttribute) =>
+																sourceAttribute !==
+																sa
+													  )
+													: [
+															...(kanbanFilter.sourceAttributes as string[]),
+															sa,
+													  ],
 											});
 										}}
 									>
-										{sa.sourceAttribute}
+										{sa}
 									</TagButton>
 								);
 							})}
@@ -500,7 +461,7 @@ export const Content = () => {
 					<DailySales
 						showChartDailySales={showChartDailySales}
 						fetchFilteredSalesData={
-							fetchFilteredSalesDataMutation.data
+							fetchFilteredSalesDataMutation.data.retailSalesData
 						}
 					/>
 				)}

@@ -1,12 +1,12 @@
 import * as ExcelJS from "exceljs";
-import { RetailSalesData, retailSalesDataSchema } from "../types";
+import { ImportRetailSalesData, importRetailSalesDataSchema } from "../types";
 import { parseHumanReadableNumber } from "human-readable-to-number";
 import dayjs from "dayjs";
 
-export async function xlsxToJson(file: File): Promise<RetailSalesData[]> {
+export async function xlsxToJson(file: File): Promise<ImportRetailSalesData[]> {
 	return new Promise(async (resolve, reject) => {
 		const reader = new FileReader();
-		const json: RetailSalesData[] = [];
+		const json: ImportRetailSalesData[] = [];
 
 		reader.onload = async (e) => {
 			try {
@@ -96,7 +96,7 @@ export async function xlsxToJson(file: File): Promise<RetailSalesData[]> {
 							const sourceAttribute = row.getCell("T")
 								.text as string;
 
-							retailSalesDataSchema.parse({
+							importRetailSalesDataSchema.parse({
 								date: date,
 								receiptType: receiptType,
 								client: client,

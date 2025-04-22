@@ -1,7 +1,7 @@
 import { KanbanFilterState } from "@/app/app/retail/sales-data/kanban/kanbanFilterReducer";
 import {
-	RetailSalesData,
-	RetailSalesDataResponse,
+	ImportRetailSalesData,
+	FilteredRetailSalesDataResponse,
 } from "@/app/app/retail/sales-data/types";
 import axios from "axios";
 import pako from "pako";
@@ -16,7 +16,7 @@ export enum RetailSalesDataQK {
 }
 
 export async function importRetailSalesData(
-	dto: RetailSalesData[],
+	dto: ImportRetailSalesData[],
 	jwt: string
 ) {
 	const compressedData = pako.gzip(JSON.stringify(dto));
@@ -152,7 +152,7 @@ export async function getRetailSalesDataSearchSku(term: string, jwt: string) {
 export async function filterRetailSalesData(
 	kfs: KanbanFilterState,
 	jwt: string
-): Promise<RetailSalesDataResponse[]> {
+): Promise<FilteredRetailSalesDataResponse> {
 	let dto;
 	switch (kfs.dateMode) {
 		case "range":
