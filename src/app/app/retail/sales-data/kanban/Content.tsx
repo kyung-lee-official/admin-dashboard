@@ -11,7 +11,9 @@ import {
 	filterRetailSalesData,
 	getRetailSalesDataCategories,
 	getRetailSalesDataClients,
+	getRetailSalesDataReceiptTypes,
 	getRetailSalesDataSearchSku,
+	getRetailSalesDataSourceAttributes,
 	getRetailSalesDataStorehouses,
 	RetailSalesDataQK,
 } from "@/utils/api/app/retail/sales-data";
@@ -72,6 +74,8 @@ export const Content = () => {
 			clients: [],
 			storehouses: [],
 			categories: [],
+			receiptTypes: [],
+			sourceAttributes: [],
 			skus: [],
 		}
 	);
@@ -100,6 +104,26 @@ export const Content = () => {
 		queryFn: async () => {
 			const categories = await getRetailSalesDataCategories(jwt);
 			return categories;
+		},
+		retry: false,
+		refetchOnWindowFocus: false,
+	});
+	const getRetailSalesDataReceiptTypesQuery = useQuery<any, AxiosError>({
+		queryKey: [RetailSalesDataQK.GET_SALES_DATA_RECEIPT_TYPES],
+		queryFn: async () => {
+			const receiptTypes = await getRetailSalesDataReceiptTypes(jwt);
+			return receiptTypes;
+		},
+		retry: false,
+		refetchOnWindowFocus: false,
+	});
+	const getRetailSalesDataSourceAttributesQuery = useQuery<any, AxiosError>({
+		queryKey: [RetailSalesDataQK.GET_SALES_DATA_SOURCE_ATTRIBUTES],
+		queryFn: async () => {
+			const sourceAttributes = await getRetailSalesDataSourceAttributes(
+				jwt
+			);
+			return sourceAttributes;
 		},
 		retry: false,
 		refetchOnWindowFocus: false,
@@ -187,124 +211,7 @@ export const Content = () => {
 					)}
 					{createPortal(
 						<FullModal show={showModel} setShow={setShowModel}>
-							<PageBlock title={"Kanban"}>
-								<TagContainer>
-									{kanbanFilter.dateMode === "range" && (
-										<DateRangePicker
-											range={kanbanFilter.dateRange}
-											setRange={(
-												value: SetStateAction<DateRange>
-											) => {
-												const newRange =
-													typeof value === "function"
-														? value(
-																kanbanFilter.dateRange
-														  )
-														: value;
-												dispatchKanbanFilter({
-													type: "SET_DATE_RANGE",
-													payload: {
-														start: newRange.start,
-														end: newRange.end,
-													},
-												});
-											}}
-										/>
-									)}
-								</TagContainer>
-							</PageBlock>
-							<PageBlock title={"Clients"}>
-								<TagContainer>
-									{getRetailSalesDataClientsQuery.data &&
-										getRetailSalesDataClientsQuery.data
-											.sort((a: any, b: any) =>
-												a.client.localeCompare(b.client)
-											)
-											.map((c: any) => {
-												return (
-													<TagButton
-														key={c.id}
-														selected={kanbanFilter.clients.includes(
-															c.client
-														)}
-														onClick={() => {
-															dispatchKanbanFilter(
-																{
-																	type: "SET_CLIENTS",
-																	payload:
-																		kanbanFilter.clients.includes(
-																			c.client
-																		)
-																			? (
-																					kanbanFilter.clients as string[]
-																			  ).filter(
-																					(
-																						client
-																					) =>
-																						client !==
-																						c.client
-																			  )
-																			: [
-																					...(kanbanFilter.clients as string[]),
-																					c.client,
-																			  ],
-																}
-															);
-														}}
-													>
-														{c.client}
-													</TagButton>
-												);
-											})}
-								</TagContainer>
-							</PageBlock>
-							<PageBlock title={"Storehouses"}>
-								<TagContainer>
-									{getRetailSalesDataStorehousesQuery.data &&
-										getRetailSalesDataStorehousesQuery.data
-											.sort((a: any, b: any) =>
-												a.storehouse.localeCompare(
-													b.storehouse
-												)
-											)
-											.map((s: any) => {
-												return (
-													<TagButton
-														key={s.id}
-														selected={kanbanFilter.storehouses.includes(
-															s.storehouse
-														)}
-														onClick={() => {
-															dispatchKanbanFilter(
-																{
-																	type: "SET_STOREHOUSES",
-																	payload:
-																		kanbanFilter.storehouses.includes(
-																			s.storehouse
-																		)
-																			? (
-																					kanbanFilter.storehouses as string[]
-																			  ).filter(
-																					(
-																						storehouse
-																					) =>
-																						storehouse !==
-																						s.storehouse
-																			  )
-																			: [
-																					...(kanbanFilter.storehouses as string[]),
-																					s.storehouse,
-																			  ],
-																}
-															);
-														}}
-													>
-														{s.storehouse}
-													</TagButton>
-												);
-											})}
-								</TagContainer>
-							</PageBlock>
+							test
 						</FullModal>,
 						document.body
 					)}
@@ -428,6 +335,92 @@ export const Content = () => {
 										}}
 									>
 										{c.category}
+									</TagButton>
+								);
+							})}
+				</TagContainer>
+			</PageBlock>
+			<PageBlock title={"Receipt Types"}>
+				<TagContainer>
+					{getRetailSalesDataReceiptTypesQuery.data &&
+						getRetailSalesDataReceiptTypesQuery.data
+							.sort((a: any, b: any) =>
+								a.receiptType.localeCompare(b.receiptType)
+							)
+							.map((r: any) => {
+								return (
+									<TagButton
+										key={r.id}
+										selected={kanbanFilter.receiptTypes.includes(
+											r.receiptType
+										)}
+										onClick={() => {
+											dispatchKanbanFilter({
+												type: "SET_RECEIPT_TYPES",
+												payload:
+													kanbanFilter.receiptTypes.includes(
+														r.receiptType
+													)
+														? (
+																kanbanFilter.receiptTypes as string[]
+														  ).filter(
+																(receiptType) =>
+																	receiptType !==
+																	r.receiptType
+														  )
+														: [
+																...(kanbanFilter.receiptTypes as string[]),
+																r.receiptType,
+														  ],
+											});
+										}}
+									>
+										{r.receiptType}
+									</TagButton>
+								);
+							})}
+				</TagContainer>
+			</PageBlock>
+			<PageBlock title={"Source Attributes"}>
+				<TagContainer>
+					{getRetailSalesDataSourceAttributesQuery.data &&
+						getRetailSalesDataSourceAttributesQuery.data
+							.sort((a: any, b: any) =>
+								a.sourceAttribute.localeCompare(
+									b.sourceAttribute
+								)
+							)
+							.map((sa: any) => {
+								return (
+									<TagButton
+										key={sa.id}
+										selected={kanbanFilter.sourceAttributes.includes(
+											sa.sourceAttribute
+										)}
+										onClick={() => {
+											dispatchKanbanFilter({
+												type: "SET_SOURCE_ATTRIBUTES",
+												payload:
+													kanbanFilter.sourceAttributes.includes(
+														sa.sourceAttribute
+													)
+														? (
+																kanbanFilter.sourceAttributes as string[]
+														  ).filter(
+																(
+																	sourceAttribute
+																) =>
+																	sourceAttribute !==
+																	sa.sourceAttribute
+														  )
+														: [
+																...(kanbanFilter.sourceAttributes as string[]),
+																sa.sourceAttribute,
+														  ],
+											});
+										}}
+									>
+										{sa.sourceAttribute}
 									</TagButton>
 								);
 							})}

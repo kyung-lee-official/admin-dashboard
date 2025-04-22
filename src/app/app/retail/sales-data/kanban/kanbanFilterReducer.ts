@@ -14,6 +14,8 @@ const SharedkanbanFilterStateSchema = z.object({
 	clients: z.array(z.string()),
 	storehouses: z.array(z.string()),
 	categories: z.array(z.string()),
+	receiptTypes: z.array(z.string()),
+	sourceAttributes: z.array(z.string()),
 	skus: z.union([skuSchema, z.array(skuSchema), z.null()]),
 });
 
@@ -43,6 +45,8 @@ export type KanbanFilterAction =
 	| { type: "SET_CLIENTS"; payload: string[] }
 	| { type: "SET_STOREHOUSES"; payload: string[] }
 	| { type: "SET_CATEGORIES"; payload: string[] }
+	| { type: "SET_RECEIPT_TYPES"; payload: string[] }
+	| { type: "SET_SOURCE_ATTRIBUTES"; payload: string[] }
 	| { type: "SET_SKUS"; payload: Sku | Sku[] | null };
 
 export function kanbanFilterReducer(
@@ -58,6 +62,10 @@ export function kanbanFilterReducer(
 			return { ...state, storehouses: action.payload };
 		case "SET_CATEGORIES":
 			return { ...state, categories: action.payload };
+		case "SET_RECEIPT_TYPES":
+			return { ...state, receiptTypes: action.payload };
+		case "SET_SOURCE_ATTRIBUTES":
+			return { ...state, sourceAttributes: action.payload };
 		case "SET_SKUS":
 			return { ...state, skus: action.payload };
 		default:

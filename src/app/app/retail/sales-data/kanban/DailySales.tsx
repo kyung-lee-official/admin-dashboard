@@ -118,7 +118,7 @@ export const DailySales = (props: {
 			);
 		case false:
 			return (
-				<div className="h-[525px]">
+				<div className="h-[525px] overflow-y-auto scrollbar">
 					<Table>
 						<Thead>
 							<tr>
