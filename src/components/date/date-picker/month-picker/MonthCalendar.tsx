@@ -27,6 +27,7 @@ export const MonthCalendar = (props: CalendarProps) => {
 				bg-neutral-700"
 			>
 				<button
+					className="cursor-pointer"
 					onClick={(e) => {
 						e.preventDefault();
 						setCalendarDate(calendarDate.subtract(1, "year"));
@@ -36,6 +37,7 @@ export const MonthCalendar = (props: CalendarProps) => {
 				</button>
 				{calendarDate.format("YYYY")}
 				<button
+					className="cursor-pointer"
 					onClick={(e) => {
 						e.preventDefault();
 						setCalendarDate(calendarDate.add(1, "year"));
@@ -61,7 +63,7 @@ export const MonthCalendar = (props: CalendarProps) => {
 								className="w-10 h-10 
 								text-white
 								bg-blue-500
-								rounded-full"
+								rounded-full cursor-pointer"
 							>
 								{m.format("MMM")}
 							</button>
@@ -76,7 +78,7 @@ export const MonthCalendar = (props: CalendarProps) => {
 							}}
 							className="w-10 h-10 
 							hover:bg-blue-500/30
-							rounded-full"
+							rounded-full cursor-pointer"
 						>
 							{m.format("MMM")}
 						</button>

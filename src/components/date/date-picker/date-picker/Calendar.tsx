@@ -17,7 +17,7 @@ const Button = (props: {
 				className="w-7 h-7
 				text-white
 				bg-blue-500
-				rounded-full"
+				rounded-ful cursor-pointer"
 				onClick={onClick}
 			>
 				{children}
@@ -31,7 +31,7 @@ const Button = (props: {
 				className="w-7 h-7
 				text-white/40 hover:text-blue-500
 				hover:bg-blue-500/30
-				rounded-full"
+				rounded-full cursor-pointer"
 				onClick={onClick}
 			>
 				{children}
@@ -43,7 +43,7 @@ const Button = (props: {
 			className="w-7 h-7
 			text-white hover:text-blue-500
 			hover:bg-blue-500/30
-			rounded-full"
+			rounded-full cursor-pointer"
 			onClick={onClick}
 		>
 			{children}
@@ -92,6 +92,7 @@ export const Calendar = (props: CalendarProps) => {
 				bg-neutral-700"
 			>
 				<button
+					className="cursor-pointer"
 					onClick={(e) => {
 						e.preventDefault();
 						setCalendarDate(calendarDate.subtract(1, "month"));
@@ -101,6 +102,7 @@ export const Calendar = (props: CalendarProps) => {
 				</button>
 				{calendarDate.format("MMMM YYYY")}
 				<button
+					className="cursor-pointer"
 					onClick={(e) => {
 						e.preventDefault();
 						setCalendarDate(calendarDate.add(1, "month"));

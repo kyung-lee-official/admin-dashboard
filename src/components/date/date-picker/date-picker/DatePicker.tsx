@@ -1,12 +1,5 @@
 import dayjs from "dayjs";
-import {
-	Dispatch,
-	SetStateAction,
-	useCallback,
-	useEffect,
-	useRef,
-	useState,
-} from "react";
+import { Dispatch, SetStateAction, useRef, useState } from "react";
 import { Calendar } from "./Calendar";
 
 export type DatePickerProps = {
@@ -18,58 +11,25 @@ export const DatePicker = (props: DatePickerProps) => {
 	const { date, setDate } = props;
 
 	const [show, setShow] = useState<boolean>(false);
-
-	const entryRef = useRef<HTMLButtonElement>(null);
 	const calendarRef = useRef<HTMLDivElement>(null);
-
-	const handleClick = useCallback((e: any) => {
-		if (entryRef.current) {
-			if (
-				e.target === entryRef.current ||
-				entryRef.current.contains(e.target)
-			) {
-				/* entry clicked */
-				setShow((state) => {
-					return !state;
-				});
-			} else {
-				if (calendarRef.current) {
-					/* menu clicked */
-					if (
-						e.target === calendarRef.current ||
-						calendarRef.current.contains(e.target)
-					) {
-						/* inside clicked, do nothing or hide menu, up to you */
-						// setShow(false);
-					} else {
-						/* outside clicked */
-						setShow(false);
-					}
-				}
-			}
-		}
-	}, []);
-
-	useEffect(() => {
-		document.addEventListener("click", handleClick);
-		return () => {
-			document.removeEventListener("click", handleClick);
-		};
-	}, []);
 
 	return (
 		<div
 			className="relative
 			text-sm"
+			onClick={(e) => {
+				/* prevent clicks from propagating to parent elements */
+				e.stopPropagation();
+			}}
 		>
 			<button
-				ref={entryRef}
 				className="px-2 py-1
 				text-white/70
 				bg-neutral-700
-				rounded"
+				rounded cursor-pointer"
 				onClick={(e) => {
 					e.preventDefault();
+					setShow((prev) => !prev);
 				}}
 			>
 				{date.format("MMM DD, YYYY")}
@@ -80,9 +40,18 @@ export const DatePicker = (props: DatePickerProps) => {
 					className="absolute top-8 w-64
 					rounded overflow-hidden
 					z-10"
+					/* prevent clicks inside the calendar from closing it */
+					onClick={(e) => e.stopPropagation()}
 				>
 					<Calendar date={date} setDate={setDate} setShow={setShow} />
 				</div>
+			)}
+			{/* Close the calendar when clicking outside */}
+			{show && (
+				<div
+					className="fixed inset-0 z-0"
+					onClick={() => setShow(false)} // Close the calendar
+				></div>
 			)}
 		</div>
 	);

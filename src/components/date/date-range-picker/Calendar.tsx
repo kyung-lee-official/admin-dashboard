@@ -64,6 +64,7 @@ export const Calendar = (props: CalendarProps) => {
 				bg-neutral-700"
 			>
 				<button
+					className="cursor-pointer"
 					onClick={(e) => {
 						e.preventDefault();
 						setDisplayedMonth(displayedMonth.subtract(1, "month"));
@@ -73,6 +74,7 @@ export const Calendar = (props: CalendarProps) => {
 				</button>
 				{displayedMonth.format("MMMM YYYY")}
 				<button
+					className="cursor-pointer"
 					onClick={(e) => {
 						e.preventDefault();
 						setDisplayedMonth(displayedMonth.add(1, "month"));
@@ -163,7 +165,7 @@ export const Calendar = (props: CalendarProps) => {
 					);
 				})}
 			</div>
-			{/* <Debug calendarRange={calendarRange} /> */}
+			<Debug calendarRange={calendarRange} />
 		</div>
 	);
 };

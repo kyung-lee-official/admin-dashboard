@@ -52,7 +52,7 @@ export const Button = (props: {
 				className="w-7 h-7
 				text-white
 				bg-blue-500
-				rounded-full"
+				rounded-full cursor-pointer"
 				onClick={onClick}
 			>
 				{children}
@@ -66,7 +66,7 @@ export const Button = (props: {
 				className="w-7 h-7
 				text-blue-500
 				bg-blue-500/30
-				rounded-full"
+				rounded-full cursor-pointer"
 				onClick={onClick}
 			>
 				{children}
@@ -79,7 +79,7 @@ export const Button = (props: {
 			<button
 				className="w-7 h-7
 				text-white/40
-				rounded-full"
+				rounded-full cursor-pointer"
 				onClick={onClick}
 			>
 				{children}
@@ -91,7 +91,7 @@ export const Button = (props: {
 		<button
 			className="w-7 h-7
 			text-white
-			rounded-full"
+			rounded-full cursor-pointer"
 			onClick={onClick}
 		>
 			{children}

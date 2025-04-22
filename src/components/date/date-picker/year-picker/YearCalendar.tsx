@@ -17,7 +17,7 @@ const Button = (props: {
 				className="h-7
 				text-white
 				bg-blue-500
-				rounded"
+				rounded cursor-pointer"
 				onClick={onClick}
 			>
 				{children}
@@ -30,7 +30,7 @@ const Button = (props: {
 			className="h-7
 			text-white hover:text-blue-500
 			hover:bg-blue-500/30
-			rounded"
+			rounded cursor-pointer"
 			onClick={onClick}
 		>
 			{children}
@@ -76,6 +76,7 @@ export const YearCalendar = (props: CalendarProps) => {
 				bg-neutral-700"
 			>
 				<button
+					className="cursor-pointer"
 					onClick={(e) => {
 						e.preventDefault();
 						setPage((page) => {
@@ -91,6 +92,7 @@ export const YearCalendar = (props: CalendarProps) => {
 				</button>
 				{calendarDate.format("YYYY")}
 				<button
+					className="cursor-pointer"
 					onClick={(e) => {
 						e.preventDefault();
 						setPage((page) => {
