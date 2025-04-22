@@ -18,7 +18,7 @@ import {
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import dayjs from "dayjs";
-import { SetStateAction, useEffect, useReducer, useState } from "react";
+import { SetStateAction, useEffect, useReducer, useRef, useState } from "react";
 import {
 	kanbanFilterReducer,
 	KanbanFilterState,
@@ -26,7 +26,10 @@ import {
 } from "./kanbanFilterReducer";
 import { DailySales } from "./DailySales";
 import { Toggle } from "@/components/toggle/Toggle";
-import { GridOnOutlined, PollOutlined } from "./Icons";
+import { FilterAltOutlined, GridOnOutlined, PollOutlined } from "./Icons";
+import { motion, useInView } from "motion/react";
+import { createPortal } from "react-dom";
+import { FullModal } from "@/components/full-modal/FullModal";
 
 const TagContainer = (props: any) => {
 	const { children } = props;
@@ -138,6 +141,11 @@ export const Content = () => {
 		fetchFilteredSalesDataMutation.mutate(kanbanFilter);
 	}, [kanbanFilter]);
 
+	/* useInView */
+	const ref = useRef(null);
+	const isInView = useInView(ref);
+	const [showModel, setShowModel] = useState(false);
+
 	return (
 		<PageContainer>
 			<PageBlock title={"Kanban"}>
@@ -159,6 +167,146 @@ export const Content = () => {
 								});
 							}}
 						/>
+					)}
+					{/* scroll anchor */}
+					<motion.div ref={ref} className="w-4 h-4"></motion.div>
+					{!isInView && (
+						<motion.button
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							className="flex justify-center items-center fixed top-24 right-12 w-8 h-8
+							bg-neutral-700
+							border border-neutral-600
+							shadow rounded cursor-pointer"
+							onClick={() => {
+								setShowModel(true);
+							}}
+						>
+							<FilterAltOutlined size={18} />
+						</motion.button>
+					)}
+					{createPortal(
+						<FullModal show={showModel} setShow={setShowModel}>
+							<PageBlock title={"Kanban"}>
+								<TagContainer>
+									{kanbanFilter.dateMode === "range" && (
+										<DateRangePicker
+											range={kanbanFilter.dateRange}
+											setRange={(
+												value: SetStateAction<DateRange>
+											) => {
+												const newRange =
+													typeof value === "function"
+														? value(
+																kanbanFilter.dateRange
+														  )
+														: value;
+												dispatchKanbanFilter({
+													type: "SET_DATE_RANGE",
+													payload: {
+														start: newRange.start,
+														end: newRange.end,
+													},
+												});
+											}}
+										/>
+									)}
+								</TagContainer>
+							</PageBlock>
+							<PageBlock title={"Clients"}>
+								<TagContainer>
+									{getRetailSalesDataClientsQuery.data &&
+										getRetailSalesDataClientsQuery.data
+											.sort((a: any, b: any) =>
+												a.client.localeCompare(b.client)
+											)
+											.map((c: any) => {
+												return (
+													<TagButton
+														key={c.id}
+														selected={kanbanFilter.clients.includes(
+															c.client
+														)}
+														onClick={() => {
+															dispatchKanbanFilter(
+																{
+																	type: "SET_CLIENTS",
+																	payload:
+																		kanbanFilter.clients.includes(
+																			c.client
+																		)
+																			? (
+																					kanbanFilter.clients as string[]
+																			  ).filter(
+																					(
+																						client
+																					) =>
+																						client !==
+																						c.client
+																			  )
+																			: [
+																					...(kanbanFilter.clients as string[]),
+																					c.client,
+																			  ],
+																}
+															);
+														}}
+													>
+														{c.client}
+													</TagButton>
+												);
+											})}
+								</TagContainer>
+							</PageBlock>
+							<PageBlock title={"Storehouses"}>
+								<TagContainer>
+									{getRetailSalesDataStorehousesQuery.data &&
+										getRetailSalesDataStorehousesQuery.data
+											.sort((a: any, b: any) =>
+												a.storehouse.localeCompare(
+													b.storehouse
+												)
+											)
+											.map((s: any) => {
+												return (
+													<TagButton
+														key={s.id}
+														selected={kanbanFilter.storehouses.includes(
+															s.storehouse
+														)}
+														onClick={() => {
+															dispatchKanbanFilter(
+																{
+																	type: "SET_STOREHOUSES",
+																	payload:
+																		kanbanFilter.storehouses.includes(
+																			s.storehouse
+																		)
+																			? (
+																					kanbanFilter.storehouses as string[]
+																			  ).filter(
+																					(
+																						storehouse
+																					) =>
+																						storehouse !==
+																						s.storehouse
+																			  )
+																			: [
+																					...(kanbanFilter.storehouses as string[]),
+																					s.storehouse,
+																			  ],
+																}
+															);
+														}}
+													>
+														{s.storehouse}
+													</TagButton>
+												);
+											})}
+								</TagContainer>
+							</PageBlock>
+						</FullModal>,
+						document.body
 					)}
 				</TagContainer>
 			</PageBlock>

@@ -33,7 +33,6 @@ export const DailySales = (props: {
 		}
 		return acc;
 	}, [] as { date: string; salesVolume: number }[]);
-	console.log("reducedData", reducedData);
 
 	/* scales */
 	const dateScale = scaleBand<string>({
@@ -119,28 +118,32 @@ export const DailySales = (props: {
 			);
 		case false:
 			return (
-				<Table>
-					<Thead>
-						<tr>
-							<th className="text-left">
-								Date ({reducedData.length})
-							</th>
-							<th className="text-left">Sales Volume</th>
-						</tr>
-					</Thead>
-					<Tbody>
-						{reducedData.map((d) => {
-							return (
-								<tr key={d.date}>
-									<td>
-										{dayjs(d.date).format("MMM DD, YYYY")}
-									</td>
-									<td>{d.salesVolume}</td>
-								</tr>
-							);
-						})}
-					</Tbody>
-				</Table>
+				<div className="h-[525px]">
+					<Table>
+						<Thead>
+							<tr>
+								<th className="text-left">
+									Date ({reducedData.length})
+								</th>
+								<th className="text-left">Sales Volume</th>
+							</tr>
+						</Thead>
+						<Tbody>
+							{reducedData.map((d) => {
+								return (
+									<tr key={d.date}>
+										<td>
+											{dayjs(d.date).format(
+												"MMM DD, YYYY"
+											)}
+										</td>
+										<td>{d.salesVolume}</td>
+									</tr>
+								);
+							})}
+						</Tbody>
+					</Table>
+				</div>
 			);
 		default:
 			return null;
