@@ -114,9 +114,9 @@ export const Dropdown = <T extends Record<string, any>>({
 
 			{isOpen && (
 				<div
-					className="absolute z-10 w-full mt-1 
+					className="absolute z-10 w-full mt-1
 					bg-neutral-800 
-					border border-neutral-700 rounded-md overflow-auto"
+					border border-neutral-700 rounded-md"
 				>
 					<input
 						type="text"
@@ -132,25 +132,29 @@ export const Dropdown = <T extends Record<string, any>>({
 							Loading...
 						</div>
 					) : options.length > 0 ? (
-						options.map((option) => (
-							<div
-								key={option.id}
-								className="flex justify-between items-center px-2 py-1
-								text-neutral-400
-								hover:bg-neutral-700
-								cursor-pointer"
-								onClick={() => handleSelect(option)}
-							>
-								{renderOption ? (
-									renderOption(option)
-								) : (
-									<span>{option[labelKey]}</span>
-								)}
-								{isSelected(option) && (
-									<span className="text-green-500">✔️</span>
-								)}
-							</div>
-						))
+						<div className="max-h-[320px] overflow-auto scrollbar">
+							{options.map((option) => (
+								<div
+									key={option.id}
+									className="flex justify-between items-center px-2 py-1
+									text-neutral-400
+									hover:bg-neutral-700
+									cursor-pointer"
+									onClick={() => handleSelect(option)}
+								>
+									{renderOption ? (
+										renderOption(option)
+									) : (
+										<span>{option[labelKey]}</span>
+									)}
+									{isSelected(option) && (
+										<span className="text-green-500">
+											✔️
+										</span>
+									)}
+								</div>
+							))}
+						</div>
 					) : (
 						<div className="p-2 text-center text-white/60">
 							No options found
