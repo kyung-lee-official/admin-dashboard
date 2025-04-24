@@ -23,9 +23,11 @@ import { useRouter } from "next/navigation";
 import { PageBlock, PageContainer } from "@/components/content/PageContainer";
 import { Table, Tbody } from "@/components/content/Table";
 import { Exception } from "@/components/page-authorization/Exception";
-import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
-import { EditIcon } from "@/components/icons/Icons";
-import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
+import {
+	TitleMoreMenu,
+	TitleMoreMenuButton,
+} from "@/components/content/TitleMoreMenu";
+import { DeleteIcon, EditIcon } from "@/components/icons/Icons";
 import { useState } from "react";
 import { AxiosExceptions } from "@/components/page-authorization/AxiosExceptions";
 import {
@@ -35,6 +37,7 @@ import {
 } from "@/components/edit-panel/EditPanel";
 import { createPortal } from "react-dom";
 import Tooltip from "@/components/tooltip/Tooltip";
+import { ConfirmDialogWithButton } from "@/components/confirm-dialog/ConfirmDialogWithButton";
 
 const SectionMoreMenu = (props: { sectionId: number }) => {
 	const { sectionId } = props;
@@ -48,8 +51,6 @@ const SectionMoreMenu = (props: { sectionId: number }) => {
 			sectionId: sectionId,
 		},
 	});
-
-	const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
 	const mySectionPermissionsQuery = useQuery({
 		queryKey: [PerformanceQK.GET_MY_SECTION_PERMISSIONS],
@@ -84,33 +85,42 @@ const SectionMoreMenu = (props: { sectionId: number }) => {
 		if (
 			mySectionPermissionsQuery.data.actions["update"] === "EFFECT_ALLOW"
 		) {
-			items.push({
-				content: "Edit Section",
-				hideMenuOnClick: true,
-				icon: <EditIcon size={15} />,
-				onClick: () => {
-					setEdit({
-						show: true,
-						id: EditId.EDIT_SECTION,
-						auxData: {
-							sectionId: sectionId,
-						},
-					});
-				},
-			});
+			items.push(
+				<TitleMoreMenuButton
+					onClick={() => {
+						setEdit({
+							show: true,
+							id: EditId.EDIT_SECTION,
+							auxData: {
+								sectionId: sectionId,
+							},
+						});
+					}}
+				>
+					<EditIcon size={15} /> Edit Section
+				</TitleMoreMenuButton>
+			);
 		}
 		if (
 			mySectionPermissionsQuery.data.actions["delete"] === "EFFECT_ALLOW"
 		) {
-			items.push({
-				content: "Delete Section",
-				type: "danger" as const,
-				hideMenuOnClick: true,
-				icon: <EditIcon size={15} />,
-				onClick: () => {
-					setShowDeleteConfirmation(true);
-				},
-			});
+			items.push(
+				<ConfirmDialogWithButton
+					question={"Are you sure you want to delete this section?"}
+					description="Associated events will be deleted as well."
+					onOk={onDelete}
+				>
+					<div
+						className={`flex items-center w-full px-2 py-1.5 gap-2
+						text-red-500
+						hover:bg-white/5
+						rounded cursor-pointer whitespace-nowrap`}
+					>
+						<DeleteIcon size={15} />
+						Delete Section
+					</div>
+				</ConfirmDialogWithButton>
+			);
 		}
 		return (
 			<>
@@ -119,13 +129,6 @@ const SectionMoreMenu = (props: { sectionId: number }) => {
 					<EditPanel edit={edit} setEdit={setEdit} />,
 					document.body
 				)}
-				<ConfirmDialog
-					show={showDeleteConfirmation}
-					setShow={setShowDeleteConfirmation}
-					question={"Are you sure you want to delete this section?"}
-					description="Associated events will be deleted as well."
-					onOk={onDelete}
-				/>
 			</>
 		);
 	} else {
