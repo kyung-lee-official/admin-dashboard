@@ -1,9 +1,13 @@
 "use client";
 
 import { Button } from "@/components/button/Button";
+import { ConfirmDialogWithButton } from "@/components/confirm-dialog/ConfirmDialogWithButton";
 import { PageBlock, PageContainer } from "@/components/content/PageContainer";
 import { Table, Tbody, Thead } from "@/components/content/Table";
-import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
+import {
+	TitleMoreMenu,
+	TitleMoreMenuButton,
+} from "@/components/content/TitleMoreMenu";
 import { DeleteIcon, ExportIcon } from "@/components/icons/Icons";
 import { Indicator } from "@/components/indecator/Indicator";
 import { HorizontalProgress } from "@/components/progress/horizontal-progress/HorizontalProgress";
@@ -183,23 +187,29 @@ export const Content = (props: { taskId: number }) => {
 				moreMenu={
 					<TitleMoreMenu
 						items={[
-							{
-								content: "Export as xlsx",
-								hideMenuOnClick: true,
-								icon: <ExportIcon size={15} />,
-								onClick: () => {
+							<TitleMoreMenuButton
+								onClick={() => {
 									exportAsXlsx();
-								},
-							},
-							{
-								content: "Delete Task",
-								hideMenuOnClick: true,
-								type: "danger",
-								icon: <DeleteIcon size={15} />,
-								onClick: () => {
-									deleteTaskMutation.mutate();
-								},
-							},
+								}}
+							>
+								<ExportIcon size={15} /> Export as xlsx
+							</TitleMoreMenuButton>,
+							<ConfirmDialogWithButton
+								question={
+									"Are you sure you want to delete this task?"
+								}
+								onOk={deleteTaskMutation.mutate}
+							>
+								<div
+									className={`flex items-center w-full px-2 py-1.5 gap-2
+									text-red-500
+									hover:bg-white/5
+									rounded cursor-pointer whitespace-nowrap`}
+								>
+									<DeleteIcon size={15} />
+									Delete Task
+								</div>
+							</ConfirmDialogWithButton>,
 						]}
 					/>
 				}

@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/button/Button";
-import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
+import { ConfirmDialogWithButton } from "@/components/confirm-dialog/ConfirmDialogWithButton";
 import { PageBlock, PageContainer } from "@/components/content/PageContainer";
 import { Table, Tbody } from "@/components/content/Table";
 import { Indicator } from "@/components/indecator/Indicator";
@@ -18,12 +18,10 @@ import { AxiosError } from "axios";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 
 export const Content = () => {
 	const jwt = useAuthStore((state) => state.jwt);
 	const router = useRouter();
-	const [showStartConfirmation, setShowStartConfirmation] = useState(false);
 
 	const getFacebookGroupCrawlerTasksQuery = useQuery<any, AxiosError>({
 		queryKey: [SnsFacebookCrawlerQK.GET_FACEBOOK_GROUP_CRAWLER_TASKS],
@@ -86,29 +84,20 @@ export const Content = () => {
 						</div>
 					) : (
 						<div className="flex items-center gap-4">
-							<Button
-								size="sm"
-								onClick={() => {
-									setShowStartConfirmation(true);
+							<ConfirmDialogWithButton
+								question={"Start crawling?"}
+								onOk={() => {
+									mutation.mutate();
 								}}
 							>
-								Start
-							</Button>
+								<Button size="sm">Start</Button>
+							</ConfirmDialogWithButton>
 							<Indicator
 								isActive={false}
 								labelText="Crawler Idle"
 							/>
 						</div>
 					)}
-					<ConfirmDialog
-						show={showStartConfirmation}
-						setShow={setShowStartConfirmation}
-						question={"Start crawling?"}
-						onOk={() => {
-							mutation.mutate();
-							setShowStartConfirmation(false);
-						}}
-					/>
 				</div>
 			</PageBlock>
 			<PageBlock title="Tasks">
