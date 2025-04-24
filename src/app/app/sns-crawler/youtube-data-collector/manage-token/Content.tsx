@@ -1,10 +1,13 @@
 "use client";
 
 import { Button } from "@/components/button/Button";
-import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
+import { ConfirmDialogWithButton } from "@/components/confirm-dialog/ConfirmDialogWithButton";
 import { PageBlock, PageContainer } from "@/components/content/PageContainer";
 import { Table, Tbody, Thead } from "@/components/content/Table";
-import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
+import {
+	TitleMoreMenu,
+	TitleMoreMenuButton,
+} from "@/components/content/TitleMoreMenu";
 import {
 	EditId,
 	EditPanel,
@@ -30,8 +33,6 @@ export const Content = () => {
 		show: false,
 		id: EditId.ADD_YOUTUBE_TOKEN,
 	});
-	const [tokenToDelete, setTokenToDelete] = useState("");
-	const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
 	const jwt = useAuthStore((state) => state.jwt);
 	const getYouTubeTokensQuery = useQuery<YouTubeToken[]>({
@@ -45,7 +46,7 @@ export const Content = () => {
 	});
 
 	const mutation = useMutation({
-		mutationFn: () => {
+		mutationFn: (tokenToDelete: string) => {
 			return deleteToken(tokenToDelete, jwt);
 		},
 		onSuccess: () => {
@@ -76,17 +77,16 @@ export const Content = () => {
 					<>
 						<TitleMoreMenu
 							items={[
-								{
-									content: "Add Token",
-									hideMenuOnClick: true,
-									icon: <EditIcon size={15} />,
-									onClick: () => {
+								<TitleMoreMenuButton
+									onClick={() => {
 										setEdit({
 											show: true,
 											id: EditId.ADD_YOUTUBE_TOKEN,
 										});
-									},
-								},
+									}}
+								>
+									<EditIcon size={15} /> Add Token
+								</TitleMoreMenuButton>,
 							]}
 						/>
 						{createPortal(
@@ -140,21 +140,31 @@ export const Content = () => {
 															mark as available
 														</Button>
 													</div>
-													<button
-														className="flex justify-center items-center w-6 h-6
-														bg-white/5 hover:bg-white/15
-														rounded cursor-pointer"
-														onClick={() => {
-															setTokenToDelete(
-																t.token
-															);
-															setShowDeleteConfirmation(
-																true
+													<ConfirmDialogWithButton
+														question={
+															"Are you sure you want to delete this token?"
+														}
+														data={t.token}
+														onOk={(
+															token:
+																| string
+																| undefined
+														) => {
+															mutation.mutate(
+																token as string
 															);
 														}}
 													>
-														<DeleteIcon size={15} />
-													</button>
+														<div
+															className={`flex items-center w-full px-2 py-1.5 gap-2
+															hover:bg-white/5
+															rounded cursor-pointer whitespace-nowrap`}
+														>
+															<DeleteIcon
+																size={15}
+															/>
+														</div>
+													</ConfirmDialogWithButton>
 												</div>
 											</td>
 										</tr>
@@ -164,15 +174,6 @@ export const Content = () => {
 						</Tbody>
 					</Table>
 				)}
-				<ConfirmDialog
-					show={showDeleteConfirmation}
-					setShow={setShowDeleteConfirmation}
-					question={"Are you sure you want to delete this stat?"}
-					onOk={() => {
-						mutation.mutate();
-						setShowDeleteConfirmation(false);
-					}}
-				/>
 			</PageBlock>
 		</PageContainer>
 	);

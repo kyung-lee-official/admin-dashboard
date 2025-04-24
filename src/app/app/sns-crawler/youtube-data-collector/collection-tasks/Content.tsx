@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/button/Button";
-import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
+import { ConfirmDialogWithButton } from "@/components/confirm-dialog/ConfirmDialogWithButton";
 import { PageBlock, PageContainer } from "@/components/content/PageContainer";
 import { Table, Tbody, Thead } from "@/components/content/Table";
 import { useAuthStore } from "@/stores/auth";
@@ -28,7 +28,6 @@ export const Content = () => {
 		refetchOnWindowFocus: false,
 	});
 
-	const [showCreateConfirmation, setShowCreateConfirmation] = useState(false);
 	const mutation = useMutation({
 		mutationFn: () => {
 			return createYouTubeTask(jwt);
@@ -49,22 +48,12 @@ export const Content = () => {
 			<PageBlock
 				title="Tasks"
 				moreMenu={
-					<>
-						<Button
-							size="sm"
-							onClick={() => {
-								setShowCreateConfirmation(true);
-							}}
-						>
-							Create
-						</Button>
-						<ConfirmDialog
-							show={showCreateConfirmation}
-							setShow={setShowCreateConfirmation}
-							question={"Create a new task?"}
-							onOk={onCreate}
-						/>
-					</>
+					<ConfirmDialogWithButton
+						question={"Create a new task?"}
+						onOk={onCreate}
+					>
+						<Button size="sm">Create</Button>
+					</ConfirmDialogWithButton>
 				}
 			>
 				{getYouTubeTasksQuery.data && (

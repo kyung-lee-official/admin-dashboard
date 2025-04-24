@@ -2,7 +2,10 @@
 
 import { PageBlock, PageContainer } from "@/components/content/PageContainer";
 import { Table, Tbody, Thead } from "@/components/content/Table";
-import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
+import {
+	TitleMoreMenu,
+	TitleMoreMenuButton,
+} from "@/components/content/TitleMoreMenu";
 import {
 	EditId,
 	EditPanel,
@@ -48,17 +51,16 @@ export const Content = () => {
 					<>
 						<TitleMoreMenu
 							items={[
-								{
-									content: "Overwrite Source Data",
-									hideMenuOnClick: true,
-									icon: <EditIcon size={15} />,
-									onClick: () => {
+								<TitleMoreMenuButton
+									onClick={() => {
 										setEdit({
 											show: true,
 											id: EditId.OVERWRITE_YOUTUBE_SOURCE_DATA,
 										});
-									},
-								},
+									}}
+								>
+									<EditIcon size={15} /> Overwrite Source Data
+								</TitleMoreMenuButton>,
 							]}
 						/>
 						{createPortal(

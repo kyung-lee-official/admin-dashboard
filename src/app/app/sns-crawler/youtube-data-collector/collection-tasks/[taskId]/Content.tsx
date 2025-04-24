@@ -24,7 +24,6 @@ import {
 } from "@/utils/api/app/sns-crawler/youtube-data-collector";
 import { Indicator } from "@/components/indecator/Indicator";
 import { Button } from "@/components/button/Button";
-import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
 import { HorizontalProgress } from "@/components/progress/horizontal-progress/HorizontalProgress";
 import Link from "next/link";
 import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
@@ -33,6 +32,8 @@ import { exportAsXlsx } from "./export-as-xlsx";
 import { chunkify } from "@/utils/data/data";
 import { PageBlock, PageContainer } from "@/components/content/PageContainer";
 import { Table, Tbody, Thead } from "@/components/content/Table";
+import { DeleteIcon } from "@/components/icons/Icons";
+import { ConfirmDialogWithButton } from "@/components/confirm-dialog/ConfirmDialogWithButton";
 
 export enum TaskStatus {
 	IDLE = "idle",
@@ -140,9 +141,6 @@ export const Content = (props: { taskId: number }) => {
 		},
 		onError: () => {},
 	});
-	function onDelete() {
-		deleteTaskMutation.mutate();
-	}
 
 	const fetchChannelsMutation = useMutation({
 		mutationFn: () => {
@@ -168,23 +166,23 @@ export const Content = (props: { taskId: number }) => {
 					<>
 						<TitleMoreMenu
 							items={[
-								{
-									content: "Delete Task",
-									type: "danger",
-									hideMenuOnClick: true,
-									onClick: () => {
-										setShowDeleteConfirmation(true);
-									},
-								},
+								<ConfirmDialogWithButton
+									question={
+										"Are you sure you want to delete this task?"
+									}
+									onOk={deleteTaskMutation.mutate}
+								>
+									<div
+										className={`flex items-center w-full px-2 py-1.5 gap-2
+										text-red-500
+										hover:bg-white/5
+										rounded cursor-pointer whitespace-nowrap`}
+									>
+										<DeleteIcon size={15} />
+										Delete Task
+									</div>
+								</ConfirmDialogWithButton>,
 							]}
-						/>
-						<ConfirmDialog
-							show={showDeleteConfirmation}
-							setShow={setShowDeleteConfirmation}
-							question={
-								"Are you sure you want to delete this task?"
-							}
-							onOk={onDelete}
 						/>
 					</>
 				}
