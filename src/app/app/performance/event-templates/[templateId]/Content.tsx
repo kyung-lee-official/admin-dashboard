@@ -1,6 +1,7 @@
 "use client";
 
 import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
+import { ConfirmDialogWithButton } from "@/components/confirm-dialog/ConfirmDialogWithButton";
 import { PageBlock, PageContainer } from "@/components/content/PageContainer";
 import { Table, Tbody } from "@/components/content/Table";
 import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
@@ -21,13 +22,11 @@ import { PerformanceEventTemplateResponse } from "@/utils/types/app/performance"
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 
 export const Content = (props: { templateId: string }) => {
 	const { templateId } = props;
 
 	const jwt = useAuthStore((state) => state.jwt);
-	const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
 	const templatePermQuery = useQuery({
 		queryKey: [PerformanceQK.GET_MY_TEMPLATE_PERMISSIONS],
@@ -86,26 +85,23 @@ export const Content = (props: { templateId: string }) => {
 								<>
 									<TitleMoreMenu
 										items={[
-											{
-												content: "Delete Template",
-												type: "danger",
-												hideMenuOnClick: true,
-												icon: <DeleteIcon size={15} />,
-												onClick: () => {
-													setShowDeleteConfirmation(
-														true
-													);
-												},
-											},
+											<ConfirmDialogWithButton
+												question={
+													"Are you sure you want to delete this template?"
+												}
+												onOk={onDelete}
+											>
+												<button
+													className={`flex items-center w-full px-2 py-1.5 gap-2
+													text-red-500
+													hover:bg-white/5
+													rounded cursor-pointer whitespace-nowrap`}
+												>
+													<DeleteIcon size={15} />
+													Delete Template
+												</button>
+											</ConfirmDialogWithButton>,
 										]}
-									/>
-									<ConfirmDialog
-										show={showDeleteConfirmation}
-										setShow={setShowDeleteConfirmation}
-										question={
-											"Are you sure you want to delete this stat?"
-										}
-										onOk={onDelete}
 									/>
 								</>
 							}

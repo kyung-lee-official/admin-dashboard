@@ -8,7 +8,10 @@ import {
 	EditPanel,
 	EditProps,
 } from "@/components/edit-panel/EditPanel";
-import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
+import {
+	TitleMoreMenu,
+	TitleMoreMenuButton,
+} from "@/components/content/TitleMoreMenu";
 import { EditIcon } from "@/components/icons/Icons";
 import { createPortal } from "react-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -44,17 +47,16 @@ export const Content = () => {
 					<>
 						<TitleMoreMenu
 							items={[
-								{
-									content: "Add Template",
-									hideMenuOnClick: true,
-									icon: <EditIcon size={15} />,
-									onClick: () => {
+								<TitleMoreMenuButton
+									onClick={() => {
 										setEdit({
 											show: true,
 											id: EditId.ADD_TEMPLATE,
 										});
-									},
-								},
+									}}
+								>
+									<EditIcon size={15} /> Add Template
+								</TitleMoreMenuButton>,
 							]}
 						/>
 						{createPortal(
