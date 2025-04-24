@@ -1,6 +1,5 @@
 "use client";
 
-import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
 import { ConfirmDialogWithButton } from "@/components/confirm-dialog/ConfirmDialogWithButton";
 import { PageBlock, PageContainer } from "@/components/content/PageContainer";
 import { Table, Tbody } from "@/components/content/Table";
