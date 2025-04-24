@@ -25,14 +25,17 @@ import {
 	EditProps,
 } from "@/components/edit-panel/EditPanel";
 import { DeleteIcon, EditIcon, InfoIcon } from "@/components/icons/Icons";
-import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
-import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
+import {
+	TitleMoreMenu,
+	TitleMoreMenuButton,
+} from "@/components/content/TitleMoreMenu";
 import { createPortal } from "react-dom";
 import { PageBlock, PageContainer } from "@/components/content/PageContainer";
 import { Table, Tbody, Thead } from "@/components/content/Table";
 import Tooltip from "@/components/tooltip/Tooltip";
 import { Forbidden } from "@/components/page-authorization/Forbidden";
 import { SectionSumAdmonition } from "./SectionSumAdmonition";
+import { ConfirmDialogWithButton } from "@/components/confirm-dialog/ConfirmDialogWithButton";
 
 export const Content = (props: { statId: number }) => {
 	const { statId } = props;
@@ -43,7 +46,6 @@ export const Content = (props: { statId: number }) => {
 		show: false,
 		id: EditId.ADD_SECTION,
 	});
-	const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
 	const myStatPermissionsQuery = useQuery<any, AxiosError>({
 		queryKey: [PerformanceQK.GET_MY_STAT_PERMISSIONS, statId],
@@ -214,11 +216,8 @@ export const Content = (props: { statId: number }) => {
 									"create-section"
 								] === "EFFECT_ALLOW"
 									? [
-											{
-												content: "Add a section",
-												hideMenuOnClick: true,
-												icon: <EditIcon size={15} />,
-												onClick: () => {
+											<TitleMoreMenuButton
+												onClick={() => {
 													setEdit({
 														show: true,
 														id: EditId.ADD_SECTION,
@@ -226,28 +225,30 @@ export const Content = (props: { statId: number }) => {
 															statId: statId,
 														},
 													});
-												},
-											},
+												}}
+											>
+												<EditIcon size={15} /> Add a
+												section
+											</TitleMoreMenuButton>,
 									  ]
 									: []),
-								{
-									content: "Delete Stat",
-									type: "danger",
-									hideMenuOnClick: true,
-									icon: <DeleteIcon size={15} />,
-									onClick: () => {
-										setShowDeleteConfirmation(true);
-									},
-								},
+								<ConfirmDialogWithButton
+									question={
+										"Are you sure you want to delete this stat?"
+									}
+									onOk={onDelete}
+								>
+									<div
+										className={`flex items-center w-full px-2 py-1.5 gap-2
+										text-red-500
+										hover:bg-white/5
+										rounded cursor-pointer whitespace-nowrap`}
+									>
+										<DeleteIcon size={15} />
+										Delete Stat
+									</div>
+								</ConfirmDialogWithButton>,
 							]}
-						/>
-						<ConfirmDialog
-							show={showDeleteConfirmation}
-							setShow={setShowDeleteConfirmation}
-							question={
-								"Are you sure you want to delete this stat?"
-							}
-							onOk={onDelete}
 						/>
 						{createPortal(
 							<EditPanel edit={edit} setEdit={setEdit} />,
