@@ -1,13 +1,14 @@
-import { Dispatch, MouseEventHandler, SetStateAction } from "react";
-import { Button } from "../button/Button";
+import { Dispatch, SetStateAction } from "react";
+import { Button } from "@/components/button/Button";
 
-export const ConfirmDialog = (props: {
+export const ConfirmDialog = <T,>(props: {
 	show: boolean;
 	setShow: Dispatch<SetStateAction<boolean>>;
 	question: string;
 	description?: string;
 	confirmText?: string;
-	onOk: MouseEventHandler<HTMLButtonElement>;
+	data?: T;
+	onOk: (data: T | undefined) => void;
 }) => {
 	const {
 		show,
@@ -15,13 +16,14 @@ export const ConfirmDialog = (props: {
 		question,
 		description,
 		confirmText = "Confirm",
+		data,
 		onOk,
 	} = props;
 
 	if (show) {
 		return (
 			<div
-				className="fixed top-0 right-0 bottom-0 left-0
+				className="fixed inset-0
 				bg-black/50 flex justify-center items-center
 				z-30"
 			>
@@ -51,7 +53,13 @@ export const ConfirmDialog = (props: {
 						>
 							Cancel
 						</Button>
-						<Button size="sm" onClick={onOk}>
+						<Button
+							size="sm"
+							onClick={() => {
+								onOk(data);
+								setShow(false);
+							}}
+						>
 							{confirmText}
 						</Button>
 					</div>
