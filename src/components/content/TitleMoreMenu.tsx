@@ -1,66 +1,45 @@
-import { ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import { MouseEventHandler, ReactNode, useRef, useState } from "react";
 import { MoreIcon } from "@/components/icons/Icons";
 
-export type TitleMoreMenuItem = {
-	content: string | ReactNode;
-	type?: "danger";
-	/* hide menu after clicking on one of the items */
-	hideMenuOnClick: boolean;
-	icon?: ReactNode;
-	onClick: Function;
+export const TitleMoreMenuButton = (props: {
+	children: ReactNode;
+	onClick?: MouseEventHandler<HTMLButtonElement>;
+}) => {
+	const { children, onClick } = props;
+	return (
+		<button
+			className={`flex items-center w-full px-2 py-1.5 gap-2
+			hover:bg-white/5
+			rounded cursor-pointer whitespace-nowrap`}
+			onClick={onClick}
+		>
+			{children}
+		</button>
+	);
 };
 
-export const TitleMoreMenu = (props: { items: TitleMoreMenuItem[] }) => {
+export const TitleMoreMenu = (props: { items: (string | ReactNode)[] }) => {
 	const { items } = props;
 
 	const [show, setShow] = useState(false);
-	const entryRef = useRef<HTMLButtonElement>(null);
 	const menuRef = useRef<HTMLDivElement>(null);
-
-	const handleClick = useCallback((e: any) => {
-		if (entryRef.current) {
-			if (
-				e.target === entryRef.current ||
-				entryRef.current.contains(e.target)
-			) {
-				/* entry clicked */
-				setShow((state) => {
-					return !state;
-				});
-			} else {
-				if (menuRef.current) {
-					/* menu clicked */
-					if (
-						menuRef.current.contains(e.target) ||
-						menuRef.current.contains(e.target)
-					) {
-						/* do nothing or hide menu, up to you */
-						// setShow(false);
-					} else {
-						/* outside clicked */
-						setShow(false);
-					}
-				}
-			}
-		}
-	}, []);
-
-	useEffect(() => {
-		document.addEventListener("click", handleClick);
-		return () => {
-			document.removeEventListener("click", handleClick);
-		};
-	}, []);
 
 	return (
 		<div
 			className="relative w-fit
 			text-white/50"
+			onClick={(e) => {
+				/* prevent clicks from propagating to parent elements */
+				e.stopPropagation();
+			}}
 		>
 			<button
-				ref={entryRef}
 				className="flex justify-center items-center w-7 h-7
-				hover:bg-white/10 rounded-md"
+				hover:bg-white/10 rounded-md cursor-pointer"
+				onClick={(e) => {
+					e.preventDefault();
+					setShow((prev) => !prev);
+				}}
 			>
 				<MoreIcon size={15} />
 			</button>
@@ -73,28 +52,24 @@ export const TitleMoreMenu = (props: { items: TitleMoreMenuItem[] }) => {
 					bg-neutral-800
 					rounded-md shadow-md border-[1px] border-white/10 border-t-white/15
 					z-10"
+					/* prevent clicks inside the menu from closing it */
+					onClick={(e) => e.stopPropagation()}
 				>
 					{items.map((item, i) => {
 						return (
-							<button
-								key={i}
-								className={`flex items-center px-2 py-1.5 gap-2
-								${item.type && item.type === "danger" ? "text-red-500" : ""}
-								hover:bg-white/5
-								rounded cursor-pointer whitespace-nowrap`}
-								onClick={() => {
-									item.onClick();
-									if (item.hideMenuOnClick) {
-										setShow(false);
-									}
-								}}
-							>
-								{item.icon && <div>{item.icon}</div>}
-								<div>{item.content}</div>
-							</button>
+							<div key={i} className="fiex items-center w-full">
+								{item}
+							</div>
 						);
 					})}
 				</div>
+			)}
+			{/* Close the menu when clicking outside */}
+			{show && (
+				<div
+					className="fixed inset-0 z-0"
+					onClick={() => setShow(false)}
+				></div>
 			)}
 		</div>
 	);
