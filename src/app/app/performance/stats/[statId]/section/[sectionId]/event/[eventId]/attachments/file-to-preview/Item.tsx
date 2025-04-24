@@ -15,10 +15,10 @@ import {
 } from "../Icons";
 import { Square } from "../Square";
 import { isImageType, isVideoType } from "../types";
-import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
 import { useMutation } from "@tanstack/react-query";
 import { getAttachment } from "@/utils/api/app/performance";
 import { useAuthStore } from "@/stores/auth";
+import { ConfirmDialogWithButton } from "@/components/confirm-dialog/ConfirmDialogWithButton";
 
 type FileProps = {
 	name: string;
@@ -39,7 +39,6 @@ const ThumbnailMask = (props: {
 
 	const jwt = useAuthStore((state) => state.jwt);
 
-	const [showDelete, setShowDelete] = useState(false);
 	const [showThumbnailMask, setShowThumbnailMask] = useState(false);
 
 	const downloadMutation = useMutation({
@@ -90,24 +89,16 @@ const ThumbnailMask = (props: {
 							<DownloadIcon size={16} />
 						</button>
 					)}
-					<button
-						onClick={() => {
-							setShowDelete(true);
+					<ConfirmDialogWithButton
+						question={question}
+						onOk={() => {
+							onDelete();
 						}}
 					>
-						<DeleteIcon size={16} />
-					</button>
+						<DeleteIcon size={15} />
+					</ConfirmDialogWithButton>
 				</div>
 			)}
-			<ConfirmDialog
-				show={showDelete}
-				setShow={setShowDelete}
-				question={question}
-				onOk={() => {
-					setShowDelete(false);
-					onDelete();
-				}}
-			/>
 		</div>
 	);
 };

@@ -14,11 +14,11 @@ import {
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Edit } from "./Edit";
-import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
 import { queryClient } from "@/utils/react-query/react-query";
 import { Data } from "./Data";
 import { useRouter } from "next/navigation";
 import { PageBlock } from "@/components/content/PageContainer";
+import { ConfirmDialogWithButton } from "@/components/confirm-dialog/ConfirmDialogWithButton";
 
 export const Details = (props: {
 	statId: number;
@@ -49,9 +49,6 @@ export const Details = (props: {
 	const [score, setScore] = useState(oldData.score);
 	const [amount, setAmount] = useState(oldData.amount);
 	const [description, setDescription] = useState(oldData.description);
-
-	const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-	const [showUnsaved, setShowUnsaved] = useState(false);
 
 	const myEventPermissionsQuery = useQuery({
 		queryKey: [PerformanceQK.GET_MY_PERMISSION_OF_EVENT, event.id],
@@ -92,7 +89,6 @@ export const Details = (props: {
 			router.push(
 				`/app/performance/stats/${statId}/section/${sectionId}`
 			);
-			setShowDeleteConfirmation(true);
 		},
 		onError: () => {},
 	});
@@ -137,15 +133,6 @@ export const Details = (props: {
 		});
 	}, [score, amount, description]);
 
-	function cancel() {
-		const isDataChanged =
-			JSON.stringify(oldData) !== JSON.stringify(newData);
-		if (isDataChanged) {
-			setShowUnsaved(true);
-		} else {
-			discard();
-		}
-	}
 	function discard() {
 		setScore(oldData.score);
 		setAmount(oldData.amount);
@@ -162,14 +149,19 @@ export const Details = (props: {
 						<Button size="sm" onClick={onSave}>
 							Save
 						</Button>
-						<Button
-							size="sm"
-							onClick={() => {
-								cancel();
-							}}
-						>
-							Cancel
-						</Button>
+						{JSON.stringify(oldData) !== JSON.stringify(newData) ? (
+							<ConfirmDialogWithButton
+								question={"Are you sure you want to leave?"}
+								confirmText="Continue"
+								onOk={discard}
+							>
+								<Button size="sm">Cancel</Button>
+							</ConfirmDialogWithButton>
+						) : (
+							<Button size="sm" onClick={discard}>
+								Cancel
+							</Button>
+						)}
 					</div>
 				) : (
 					<div className="flex gap-x-2">
@@ -189,14 +181,14 @@ export const Details = (props: {
 						{myEventPermissionsQuery.data &&
 							myEventPermissionsQuery.data.actions["delete"] ===
 								"EFFECT_ALLOW" && (
-								<Button
-									size="sm"
-									onClick={() => {
-										setShowDeleteConfirmation(true);
-									}}
+								<ConfirmDialogWithButton
+									question={
+										"Are you sure you want to delete this event?"
+									}
+									onOk={onDelete}
 								>
-									Delete
-								</Button>
+									<Button size="sm">Delete Event</Button>
+								</ConfirmDialogWithButton>
 							)}
 					</div>
 				)
@@ -233,22 +225,6 @@ export const Details = (props: {
 					attachments={event.attachments}
 				/>
 			)}
-			<ConfirmDialog
-				show={showDeleteConfirmation}
-				setShow={setShowDeleteConfirmation}
-				question={"Are you sure you want to delete this event?"}
-				onOk={onDelete}
-			/>
-			<ConfirmDialog
-				show={showUnsaved}
-				setShow={setShowUnsaved}
-				question={"Are you sure you want to leave?"}
-				confirmText="Continue"
-				onOk={() => {
-					discard();
-					setShowUnsaved(false);
-				}}
-			/>
 		</PageBlock>
 	);
 };
