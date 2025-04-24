@@ -1,12 +1,12 @@
 "use client";
 
 import { Avatar } from "@/components/avatar/Avatar";
-import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
+import { ConfirmDialogWithButton } from "@/components/confirm-dialog/ConfirmDialogWithButton";
 import { PageBlock, PageContainer } from "@/components/content/PageContainer";
 import { Table, Tbody, Thead } from "@/components/content/Table";
 import {
 	TitleMoreMenu,
-	TitleMoreMenuItem,
+	TitleMoreMenuButton,
 } from "@/components/content/TitleMoreMenu";
 import {
 	EditId,
@@ -30,41 +30,53 @@ import {
 	QueryObserverPlaceholderResult,
 	QueryObserverSuccessResult,
 	useMutation,
+	UseMutationResult,
 	useQuery,
 } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import { createPortal } from "react-dom";
 
 const memberMenuItems = (
 	m: Member,
-	setMemberToDelete: Dispatch<SetStateAction<Member | null>>,
-	setShowDeleteConfirmation: Dispatch<SetStateAction<boolean>>,
+	deleteMutation: UseMutationResult<any, Error, string, unknown>,
 	memberPermQuery:
 		| QueryObserverSuccessResult<any, Error>
 		| QueryObserverPlaceholderResult<any, Error>
-): TitleMoreMenuItem[] => {
+) => {
 	return [
-		{
-			content: "Copy Member ID",
-			hideMenuOnClick: true,
-			onClick: () => {
-				navigator.clipboard.writeText(m.id);
-			},
-			icon: <CopyIcon size={15} />,
-		},
+		<TitleMoreMenuButton>
+			<button
+				className="flex items-center gap-2
+				cursor-pointer"
+				onClick={() => {
+					navigator.clipboard.writeText(m.id);
+				}}
+			>
+				<CopyIcon size={15} /> Copy Member ID
+			</button>
+		</TitleMoreMenuButton>,
 		...(memberPermQuery.data.actions["*"] === "EFFECT_ALLOW"
 			? [
-					{
-						content: "Delete Member",
-						type: "danger" as const,
-						hideMenuOnClick: true,
-						onClick: () => {
-							setMemberToDelete(m);
-							setShowDeleteConfirmation(true);
-						},
-						icon: <DeleteIcon size={15} />,
-					},
+					<ConfirmDialogWithButton
+						question={
+							"Are you sure you want to delete this member?"
+						}
+						data={m.id}
+						onOk={(id: string | undefined) => {
+							deleteMutation.mutate(id as string);
+						}}
+					>
+						<div
+							className={`flex items-center w-full px-2 py-1.5 gap-2
+							text-red-500
+							hover:bg-white/5
+							rounded cursor-pointer whitespace-nowrap`}
+						>
+							<DeleteIcon size={15} />
+							Delete Member
+						</div>
+					</ConfirmDialogWithButton>,
 			  ]
 			: []),
 	];
@@ -76,8 +88,6 @@ export const Content = () => {
 		id: EditId.ADD_MEMBER,
 	});
 
-	const [memberToDelete, setMemberToDelete] = useState<Member | null>(null);
-	const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 	const jwt = useAuthStore((state) => state.jwt);
 	const memberPermQuery = useQuery({
 		queryKey: [MembersQK.GET_MY_MEMBER_PERMISSIONS],
@@ -99,7 +109,7 @@ export const Content = () => {
 
 	const deleteMutation = useMutation({
 		mutationFn: (data: string) => {
-			return deleteMemberById(data, jwt);
+			return deleteMemberById(data as string, jwt);
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
@@ -126,16 +136,20 @@ export const Content = () => {
 									<>
 										<TitleMoreMenu
 											items={[
-												{
-													content: "Add Member",
-													hideMenuOnClick: true,
-													onClick: () => {
-														setEdit({
-															show: true,
-															id: EditId.ADD_MEMBER,
-														});
-													},
-												},
+												<TitleMoreMenuButton>
+													<button
+														className="flex items-center gap-2
+														cursor-pointer"
+														onClick={() => {
+															setEdit({
+																show: true,
+																id: EditId.ADD_MEMBER,
+															});
+														}}
+													>
+														Add Member
+													</button>
+												</TitleMoreMenuButton>,
 											]}
 										/>
 										{createPortal(
@@ -221,8 +235,7 @@ export const Content = () => {
 																<TitleMoreMenu
 																	items={memberMenuItems(
 																		m,
-																		setMemberToDelete,
-																		setShowDeleteConfirmation,
+																		deleteMutation,
 																		memberPermQuery
 																	)}
 																/>
@@ -233,19 +246,6 @@ export const Content = () => {
 											})}
 								</Tbody>
 							</Table>
-							<ConfirmDialog
-								show={showDeleteConfirmation}
-								setShow={setShowDeleteConfirmation}
-								question={
-									"Are you sure you want to delete this member?"
-								}
-								onOk={() => {
-									deleteMutation.mutate(
-										memberToDelete?.id as string
-									);
-									setShowDeleteConfirmation(false);
-								}}
-							/>
 						</PageBlock>
 					</PageContainer>
 				);

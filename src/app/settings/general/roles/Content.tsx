@@ -7,19 +7,28 @@ import {
 	EditProps,
 } from "@/components/edit-panel/EditPanel";
 import { createPortal } from "react-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { getPermissions, getRolesByIds, RolesQK } from "@/utils/api/roles";
+import {
+	deleteRoleById,
+	getPermissions,
+	getRolesByIds,
+	RolesQK,
+} from "@/utils/api/roles";
 import { useAuthStore } from "@/stores/auth";
-import { ItemMoreMenu } from "./moreMenu/ItemMoreMenu";
 import { Loading } from "@/components/page-authorization/Loading";
 import { Forbidden } from "@/components/page-authorization/Forbidden";
 import { Exception } from "@/components/page-authorization/Exception";
-import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
-import { EditIcon } from "@/components/icons/Icons";
+import {
+	TitleMoreMenu,
+	TitleMoreMenuButton,
+} from "@/components/content/TitleMoreMenu";
+import { DeleteIcon, EditIcon } from "@/components/icons/Icons";
 import { sortByProp } from "@/utils/data/data";
 import { PageBlock, PageContainer } from "@/components/content/PageContainer";
 import { Table, Tbody } from "@/components/content/Table";
+import { queryClient } from "@/utils/react-query/react-query";
+import { ConfirmDialogWithButton } from "@/components/confirm-dialog/ConfirmDialogWithButton";
 
 export const Content = () => {
 	const jwt = useAuthStore((state) => state.jwt);
@@ -47,6 +56,18 @@ export const Content = () => {
 		refetchOnWindowFocus: false,
 	});
 
+	const mutation = useMutation({
+		mutationFn: (roleId: string) => {
+			return deleteRoleById(roleId, jwt);
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: [RolesQK.GET_ROLES_BY_IDS],
+			});
+		},
+		onError: () => {},
+	});
+
 	if (rolePermQuery.isPending) {
 		return <Loading />;
 	}
@@ -66,19 +87,17 @@ export const Content = () => {
 									<>
 										<TitleMoreMenu
 											items={[
-												{
-													content: "Add a role",
-													hideMenuOnClick: true,
-													icon: (
-														<EditIcon size={15} />
-													),
-													onClick: () => {
+												<TitleMoreMenuButton
+													onClick={() => {
 														setEdit({
 															show: true,
 															id: EditId.ADD_ROLE,
 														});
-													},
-												},
+													}}
+												>
+													<EditIcon size={15} /> Add a
+													role
+												</TitleMoreMenuButton>,
 											]}
 										/>
 										{createPortal(
@@ -127,17 +146,59 @@ export const Content = () => {
 																"*"
 															] ===
 																"EFFECT_ALLOW" && (
-																<ItemMoreMenu
-																	edit={{
-																		...edit,
-																		auxData:
-																			{
-																				roleId: role.id,
-																			},
-																	}}
-																	setEdit={
-																		setEdit
-																	}
+																<TitleMoreMenu
+																	items={[
+																		<TitleMoreMenuButton
+																			onClick={() => {
+																				setEdit(
+																					{
+																						show: true,
+																						id: EditId.EDIT_ROLE,
+																						auxData:
+																							{
+																								roleId: role.id,
+																							},
+																					}
+																				);
+																			}}
+																		>
+																			<EditIcon
+																				size={
+																					15
+																				}
+																			/>
+																			Edit
+																			Role
+																		</TitleMoreMenuButton>,
+																		<ConfirmDialogWithButton
+																			question={
+																				"Are you sure you want to delete this role?"
+																			}
+																			data={
+																				role.id
+																			}
+																			onOk={() => {
+																				mutation.mutate(
+																					role.id
+																				);
+																			}}
+																		>
+																			<div
+																				className={`flex items-center w-full px-2 py-1.5 gap-2
+																					text-red-500
+																					hover:bg-white/5
+																					rounded cursor-pointer whitespace-nowrap`}
+																			>
+																				<DeleteIcon
+																					size={
+																						15
+																					}
+																				/>
+																				Delete
+																				Role
+																			</div>
+																		</ConfirmDialogWithButton>,
+																	]}
 																/>
 															)}
 														</td>
