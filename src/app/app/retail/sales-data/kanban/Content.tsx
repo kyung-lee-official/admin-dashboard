@@ -42,6 +42,7 @@ import { FullModal } from "@/components/full-modal/FullModal";
 import { OneRowSkeleton } from "@/components/skeleton/OneRowSkeleton";
 import { TimeSalesVolume } from "./filter-results/time-sales-volume/TimeSalesVolume";
 import { StorehousesSalesVolume } from "./filter-results/storehouses-sales-volume/StorehousesSalesVolume";
+import { Button } from "@/components/button/Button";
 
 const TagContainer = (props: any) => {
 	const { children } = props;
@@ -517,22 +518,45 @@ export const Content = () => {
 			<PageBlock title={"Kanban"}>
 				<TagContainer>
 					{kanbanFilter.dateMode === "range" && (
-						<DateRangePicker
-							range={kanbanFilter.dateRange}
-							setRange={(value: SetStateAction<DateRange>) => {
-								const newRange =
-									typeof value === "function"
-										? value(kanbanFilter.dateRange)
-										: value;
-								dispatchKanbanFilter({
-									type: "SET_DATE_RANGE",
-									payload: {
-										start: newRange.start,
-										end: newRange.end,
-									},
-								});
-							}}
-						/>
+						<div className="flex items-center gap-6">
+							<DateRangePicker
+								range={kanbanFilter.dateRange}
+								setRange={(
+									value: SetStateAction<DateRange>
+								) => {
+									const newRange =
+										typeof value === "function"
+											? value(kanbanFilter.dateRange)
+											: value;
+									dispatchKanbanFilter({
+										type: "SET_DATE_RANGE",
+										payload: {
+											start: newRange.start,
+											end: newRange.end,
+										},
+									});
+								}}
+							/>
+							{[7, 14, 30, 60].map((days) => (
+								<Button
+									size="sm"
+									onClick={() => {
+										dispatchKanbanFilter({
+											type: "SET_DATE_RANGE",
+											payload: {
+												start: dayjs().subtract(
+													days,
+													"day"
+												),
+												end: dayjs(),
+											},
+										});
+									}}
+								>
+									Last {days} days
+								</Button>
+							))}
+						</div>
 					)}
 					{/* scroll anchor */}
 					<motion.div ref={ref} className="w-4 h-4"></motion.div>
@@ -556,26 +580,48 @@ export const Content = () => {
 							<PageBlock title={"Kanban"}>
 								<TagContainer>
 									{kanbanFilter.dateMode === "range" && (
-										<DateRangePicker
-											range={kanbanFilter.dateRange}
-											setRange={(
-												value: SetStateAction<DateRange>
-											) => {
-												const newRange =
-													typeof value === "function"
-														? value(
-																kanbanFilter.dateRange
-														  )
-														: value;
-												dispatchKanbanFilter({
-													type: "SET_DATE_RANGE",
-													payload: {
-														start: newRange.start,
-														end: newRange.end,
-													},
-												});
-											}}
-										/>
+										<div className="flex items-center gap-6">
+											<DateRangePicker
+												range={kanbanFilter.dateRange}
+												setRange={(
+													value: SetStateAction<DateRange>
+												) => {
+													const newRange =
+														typeof value ===
+														"function"
+															? value(
+																	kanbanFilter.dateRange
+															  )
+															: value;
+													dispatchKanbanFilter({
+														type: "SET_DATE_RANGE",
+														payload: {
+															start: newRange.start,
+															end: newRange.end,
+														},
+													});
+												}}
+											/>
+											{[7, 14, 30, 60].map((days) => (
+												<Button
+													size="sm"
+													onClick={() => {
+														dispatchKanbanFilter({
+															type: "SET_DATE_RANGE",
+															payload: {
+																start: dayjs().subtract(
+																	days,
+																	"day"
+																),
+																end: dayjs(),
+															},
+														});
+													}}
+												>
+													Last {days} days
+												</Button>
+											))}
+										</div>
 									)}
 								</TagContainer>
 							</PageBlock>
