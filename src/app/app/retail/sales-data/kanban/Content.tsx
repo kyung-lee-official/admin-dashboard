@@ -45,6 +45,7 @@ import { StorehousesSalesVolume } from "./filter-results/storehouses-sales-volum
 import { Button } from "@/components/button/Button";
 import { TimeTaxInclusivePrice } from "./filter-results/time-tax-inclusive-price/TimeTaxInclusivePrice";
 import { TimePrice } from "./filter-results/time-price/TimePrice";
+import { StorehousesTaxInclusivePrice } from "./filter-results/storehouses-tax-inclusive-price/StorehousesTaxInclusivePrice";
 
 const TagContainer = (props: any) => {
 	const { children } = props;
@@ -793,6 +794,33 @@ export const Content = () => {
 			>
 				{fetchFilteredSalesDataMutation.data && (
 					<StorehousesSalesVolume
+						showChart={showChart}
+						fetchFilteredSalesData={
+							fetchFilteredSalesDataMutation.data.retailSalesData
+						}
+					/>
+				)}
+			</PageBlock>
+			<PageBlock
+				title={
+					<div className="flex items-center gap-6">
+						<div>Storehouses - Tax Inclusive Price</div>
+						<div className="flex items-center gap-2">
+							<GridOnOutlined size={16} />
+							<Toggle
+								isOn={showChart}
+								onClick={() => {
+									setShowChart(!showChart);
+								}}
+								isAllowed={true}
+							/>
+							<PollOutlined size={16} />
+						</div>
+					</div>
+				}
+			>
+				{fetchFilteredSalesDataMutation.data && (
+					<StorehousesTaxInclusivePrice
 						showChart={showChart}
 						fetchFilteredSalesData={
 							fetchFilteredSalesDataMutation.data.retailSalesData
