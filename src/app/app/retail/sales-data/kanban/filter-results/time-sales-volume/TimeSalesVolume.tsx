@@ -6,12 +6,12 @@ import { AxisLeft } from "@visx/axis";
 import dayjs from "dayjs";
 import { Table, Tbody, Thead } from "@/components/content/Table";
 import { useReducer } from "react";
-import { salesVolumeSortReducer } from "./salesVolumeSortReducer";
 import { RetailSalesDataResponse } from "../../../types";
 import { SwapVert } from "../../Icons";
 import { Button } from "@/components/button/Button";
+import { timeSalesVolumeSortReducer } from "./timeSalesVolumeSortReducer";
 
-export const SalesVolume = (props: {
+export const TimeSalesVolume = (props: {
 	showMonthly: boolean;
 	showChartDailySales: boolean;
 	fetchFilteredSalesData: RetailSalesDataResponse[];
@@ -28,7 +28,7 @@ export const SalesVolume = (props: {
 		fetchFilteredSalesData,
 	} = props;
 
-	const [sortState, dispatch] = useReducer(salesVolumeSortReducer, {
+	const [sortState, dispatch] = useReducer(timeSalesVolumeSortReducer, {
 		column: "date",
 		direction: "asc",
 	});

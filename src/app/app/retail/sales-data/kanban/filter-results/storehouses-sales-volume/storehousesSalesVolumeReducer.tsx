@@ -1,20 +1,22 @@
 type SortState = {
-	column: "date" | "salesVolume";
+	column: "storehouses" | "salesVolume";
 	direction: "asc" | "desc";
 };
 
-type Action = { type: "SORT_BY_DATE" } | { type: "SORT_BY_SALES_VOLUME" };
+type Action =
+	| { type: "SORT_BY_STOREHOUSES" }
+	| { type: "SORT_BY_SALES_VOLUME" };
 
-export const salesVolumeSortReducer = (
+export const storehousesSalesVolumeReducer = (
 	state: SortState,
 	action: Action
 ): SortState => {
 	switch (action.type) {
-		case "SORT_BY_DATE":
+		case "SORT_BY_STOREHOUSES":
 			return {
-				column: "date",
+				column: "storehouses",
 				direction:
-					state.column === "date" && state.direction === "asc"
+					state.column === "storehouses" && state.direction === "asc"
 						? "desc"
 						: "asc",
 			};

@@ -40,7 +40,8 @@ import { motion, useInView } from "motion/react";
 import { createPortal } from "react-dom";
 import { FullModal } from "@/components/full-modal/FullModal";
 import { OneRowSkeleton } from "@/components/skeleton/OneRowSkeleton";
-import { SalesVolume } from "./filter-results/sales-volume/SalesVolume";
+import { TimeSalesVolume } from "./filter-results/time-sales-volume/TimeSalesVolume";
+import { StorehousesSalesVolume } from "./filter-results/storehouses-sales-volume/StorehousesSalesVolume";
 
 const TagContainer = (props: any) => {
 	const { children } = props;
@@ -464,6 +465,8 @@ const TagFilters = (props: {
 
 export const Content = () => {
 	const [showChartSales, setShowChartSales] = useState<boolean>(false);
+	const [showChartStorehousesSales, setShowChartStorehousesSales] =
+		useState<boolean>(false);
 	const [showMonthly, setShowMonthly] = useState<boolean>(true);
 	const [kanbanFilter, dispatchKanbanFilter] = useReducer(
 		kanbanFilterReducer,
@@ -596,7 +599,7 @@ export const Content = () => {
 			<PageBlock
 				title={
 					<div className="flex items-center gap-6">
-						<div>Sales Volume</div>
+						<div>Time - Sales Volume</div>
 						<div className="flex items-center gap-2">
 							<GridOnOutlined size={16} />
 							<Toggle
@@ -627,9 +630,38 @@ export const Content = () => {
 				}
 			>
 				{fetchFilteredSalesDataMutation.data && (
-					<SalesVolume
+					<TimeSalesVolume
 						showMonthly={showMonthly}
 						showChartDailySales={showChartSales}
+						fetchFilteredSalesData={
+							fetchFilteredSalesDataMutation.data.retailSalesData
+						}
+					/>
+				)}
+			</PageBlock>
+			<PageBlock
+				title={
+					<div className="flex items-center gap-6">
+						<div>Storehouses - Sales Volume</div>
+						<div className="flex items-center gap-2">
+							<GridOnOutlined size={16} />
+							<Toggle
+								isOn={showChartStorehousesSales}
+								onClick={() => {
+									setShowChartStorehousesSales(
+										!showChartStorehousesSales
+									);
+								}}
+								isAllowed={true}
+							/>
+							<PollOutlined size={16} />
+						</div>
+					</div>
+				}
+			>
+				{fetchFilteredSalesDataMutation.data && (
+					<StorehousesSalesVolume
+						showChartStorehousesSales={showChartStorehousesSales}
 						fetchFilteredSalesData={
 							fetchFilteredSalesDataMutation.data.retailSalesData
 						}
