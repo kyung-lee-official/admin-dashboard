@@ -16,9 +16,11 @@ export const Thead = (props: { children: ReactNode }) => {
 	const { children } = props;
 	return (
 		<thead
-			className="[&_>_tr_>_th]:py-3 [&_>_tr_>_th]:px-6
+			className="sticky top-0 
+			[&_>_tr_>_th]:py-3 [&_>_tr_>_th]:px-6
 			[&_>_tr_>_th]:text-left font-semibold
-			[&_>_tr_>_th]:border-t-[1px] [&_>_tr_>_th]:border-white/10"
+			[&_>_tr_>_th]:border-t-[1px] [&_>_tr_>_th]:border-white/10
+			bg-neutral-800"
 		>
 			{children}
 		</thead>
