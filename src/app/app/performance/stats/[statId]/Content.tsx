@@ -217,6 +217,7 @@ export const Content = (props: { statId: number }) => {
 								] === "EFFECT_ALLOW"
 									? [
 											<TitleMoreMenuButton
+												key={EditId.ADD_SECTION}
 												onClick={() => {
 													setEdit({
 														show: true,
@@ -233,6 +234,7 @@ export const Content = (props: { statId: number }) => {
 									  ]
 									: []),
 								<ConfirmDialogWithButton
+									key={"delete-stat"}
 									question={
 										"Are you sure you want to delete this stat?"
 									}

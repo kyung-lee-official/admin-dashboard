@@ -64,6 +64,7 @@ export const Content = () => {
 						<TitleMoreMenu
 							items={[
 								<TitleMoreMenuButton
+									key={EditId.RETAIL_IMPORT_SALES_DATA}
 									onClick={() => {
 										setEdit({
 											show: true,

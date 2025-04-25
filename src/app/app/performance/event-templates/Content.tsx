@@ -48,6 +48,7 @@ export const Content = () => {
 						<TitleMoreMenu
 							items={[
 								<TitleMoreMenuButton
+									key={EditId.ADD_TEMPLATE}
 									onClick={() => {
 										setEdit({
 											show: true,

@@ -78,6 +78,7 @@ export const Content = () => {
 						<TitleMoreMenu
 							items={[
 								<TitleMoreMenuButton
+									key={EditId.ADD_YOUTUBE_TOKEN}
 									onClick={() => {
 										setEdit({
 											show: true,

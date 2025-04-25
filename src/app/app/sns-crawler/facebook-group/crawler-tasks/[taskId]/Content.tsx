@@ -188,6 +188,7 @@ export const Content = (props: { taskId: number }) => {
 					<TitleMoreMenu
 						items={[
 							<TitleMoreMenuButton
+								key={"export-as-xlsx"}
 								onClick={() => {
 									exportAsXlsx();
 								}}
@@ -195,6 +196,7 @@ export const Content = (props: { taskId: number }) => {
 								<ExportIcon size={15} /> Export as xlsx
 							</TitleMoreMenuButton>,
 							<ConfirmDialogWithButton
+								key={"delete-task"}
 								question={
 									"Are you sure you want to delete this task?"
 								}

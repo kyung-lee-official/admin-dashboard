@@ -88,6 +88,7 @@ export const Content = () => {
 										<TitleMoreMenu
 											items={[
 												<TitleMoreMenuButton
+													key={EditId.ADD_ROLE}
 													onClick={() => {
 														setEdit({
 															show: true,
@@ -149,6 +150,9 @@ export const Content = () => {
 																<TitleMoreMenu
 																	items={[
 																		<TitleMoreMenuButton
+																			key={
+																				EditId.EDIT_ROLE
+																			}
 																			onClick={() => {
 																				setEdit(
 																					{
@@ -171,6 +175,7 @@ export const Content = () => {
 																			Role
 																		</TitleMoreMenuButton>,
 																		<ConfirmDialogWithButton
+																			key={`delete-role-${role.id}`}
 																			question={
 																				"Are you sure you want to delete this role?"
 																			}

@@ -59,6 +59,7 @@ export const Content = () => {
 						<TitleMoreMenu
 							items={[
 								<TitleMoreMenuButton
+									key={EditId.ADD_STAT}
 									onClick={() => {
 										setEdit({
 											show: true,

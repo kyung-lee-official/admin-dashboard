@@ -85,6 +85,7 @@ export const Content = (props: { templateId: string }) => {
 									<TitleMoreMenu
 										items={[
 											<ConfirmDialogWithButton
+												key={"delete-template"}
 												question={
 													"Are you sure you want to delete this template?"
 												}

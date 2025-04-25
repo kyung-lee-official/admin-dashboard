@@ -45,20 +45,18 @@ const memberMenuItems = (
 		| QueryObserverPlaceholderResult<any, Error>
 ) => {
 	return [
-		<TitleMoreMenuButton>
-			<button
-				className="flex items-center gap-2
-				cursor-pointer"
-				onClick={() => {
-					navigator.clipboard.writeText(m.id);
-				}}
-			>
-				<CopyIcon size={15} /> Copy Member ID
-			</button>
+		<TitleMoreMenuButton
+			key={"copy-member-id-" + m.id}
+			onClick={() => {
+				navigator.clipboard.writeText(m.id);
+			}}
+		>
+			<CopyIcon size={15} /> Copy Member ID
 		</TitleMoreMenuButton>,
 		...(memberPermQuery.data.actions["*"] === "EFFECT_ALLOW"
 			? [
 					<ConfirmDialogWithButton
+						key={"delete-member-" + m.id}
 						question={
 							"Are you sure you want to delete this member?"
 						}
@@ -136,19 +134,16 @@ export const Content = () => {
 									<>
 										<TitleMoreMenu
 											items={[
-												<TitleMoreMenuButton>
-													<button
-														className="flex items-center gap-2
-														cursor-pointer"
-														onClick={() => {
-															setEdit({
-																show: true,
-																id: EditId.ADD_MEMBER,
-															});
-														}}
-													>
-														Add Member
-													</button>
+												<TitleMoreMenuButton
+													key={EditId.ADD_MEMBER}
+													onClick={() => {
+														setEdit({
+															show: true,
+															id: EditId.ADD_MEMBER,
+														});
+													}}
+												>
+													Add Member
 												</TitleMoreMenuButton>,
 											]}
 										/>

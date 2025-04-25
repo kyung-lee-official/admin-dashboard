@@ -73,7 +73,7 @@ export const EditContentImportRetailSalesData = (props: {
 			<form action={onSave} className="flex flex-col px-6 py-4 gap-6">
 				<div className="flex flex-col gap-1">
 					<Link
-						href="/template-files/applications/sns-crawler/youtube-data-collector/youtube-source-data-template.xlsx"
+						href="/template-files/applications/retail/sales-data/import-batches/销售数据样例.xlsx"
 						className="flex justify-center py-1.5 px-3 text-sm leading-4
 						text-neutral-600 dark:text-neutral-50
 						bg-neutral-300 hover:bg-neutral-300/70 dark:bg-neutral-600 dark:hover:bg-neutral-600/70
@@ -82,8 +82,8 @@ export const EditContentImportRetailSalesData = (props: {
 						Download Template
 					</Link>
 					<div className="text-sm text-white/50">
-						The source data sheet must be named "源数据" in the xlsx
-						file so that it can be imported correctly.
+						The source data sheet must be named &quot;源数据&quot;
+						in the xlsx file so that it can be imported correctly.
 					</div>
 				</div>
 				<div

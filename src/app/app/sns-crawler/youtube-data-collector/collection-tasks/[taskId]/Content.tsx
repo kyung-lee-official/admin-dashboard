@@ -167,6 +167,7 @@ export const Content = (props: { taskId: number }) => {
 						<TitleMoreMenu
 							items={[
 								<ConfirmDialogWithButton
+									key={"delete-task"}
 									question={
 										"Are you sure you want to delete this task?"
 									}
