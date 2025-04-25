@@ -9,10 +9,10 @@ import { useReducer } from "react";
 import { RetailSalesDataResponse } from "../../../types";
 import { SwapVert } from "../../Icons";
 import { Button } from "@/components/button/Button";
-import { timeTaxInclusivePriceSortReducer } from "./timeTaxInclusivePriceSortReducer";
+import { timePriceSortReducer } from "./timePriceSortReducer";
 import { convertNumberToHumanReadable } from "num-guru";
 
-export const TimeTaxInclusivePrice = (props: {
+export const TimePrice = (props: {
 	showMonthly: boolean;
 	showChartDailySales: boolean;
 	fetchFilteredSalesData: RetailSalesDataResponse[];
@@ -29,25 +29,25 @@ export const TimeTaxInclusivePrice = (props: {
 		fetchFilteredSalesData,
 	} = props;
 
-	const [sortState, dispatch] = useReducer(timeTaxInclusivePriceSortReducer, {
+	const [sortState, dispatch] = useReducer(timePriceSortReducer, {
 		column: "date",
 		direction: "asc",
 	});
 
-	type ReducedData = { date: string; taxInclusivePriceCny: number };
+	type ReducedData = { date: string; priceCny: number };
 	let reducedData: ReducedData[] = [];
 	switch (showMonthly) {
 		case false:
 			reducedData = fetchFilteredSalesData.reduce((acc, curr) => {
 				const date = dayjs(curr.date).format("YYYY-MM-DD");
-				const taxInclusivePriceCny = curr.taxInclusivePriceCny || 0;
+				const priceCny = curr.priceCny || 0;
 				const existingDate = acc.find((d) => d.date === date);
 				if (existingDate) {
-					existingDate.taxInclusivePriceCny += taxInclusivePriceCny;
+					existingDate.priceCny += priceCny;
 				} else {
 					acc.push({
 						date,
-						taxInclusivePriceCny: taxInclusivePriceCny,
+						priceCny: priceCny,
 					});
 				}
 				return acc;
@@ -56,14 +56,14 @@ export const TimeTaxInclusivePrice = (props: {
 		case true:
 			reducedData = fetchFilteredSalesData.reduce((acc, curr) => {
 				const date = dayjs(curr.date).format("YYYY-MM");
-				const taxInclusivePriceCny = curr.taxInclusivePriceCny || 0;
+				const priceCny = curr.priceCny || 0;
 				const existingDate = acc.find((d) => d.date === date);
 				if (existingDate) {
-					existingDate.taxInclusivePriceCny += taxInclusivePriceCny;
+					existingDate.priceCny += priceCny;
 				} else {
 					acc.push({
 						date,
-						taxInclusivePriceCny: taxInclusivePriceCny,
+						priceCny: priceCny,
 					});
 				}
 				return acc;
@@ -80,10 +80,10 @@ export const TimeTaxInclusivePrice = (props: {
 		domain: reducedData.map((d) => d.date),
 		padding: 0.1,
 	});
-	const taxInclusivePriceCnyScale = scaleLinear<number>({
+	const priceCnyScale = scaleLinear<number>({
 		domain: [
-			Math.min(...reducedData.map((d) => d.taxInclusivePriceCny)),
-			Math.max(...reducedData.map((d) => d.taxInclusivePriceCny)),
+			Math.min(...reducedData.map((d) => d.priceCny)),
+			Math.max(...reducedData.map((d) => d.priceCny)),
 		],
 		range: [yMax, 0],
 	});
@@ -114,11 +114,8 @@ export const TimeTaxInclusivePrice = (props: {
 						multiplier *
 						(dayjs(a.date).isBefore(dayjs(b.date)) ? -1 : 1)
 					);
-				} else if (column === "taxInclusivePriceCny") {
-					return (
-						multiplier *
-						(a.taxInclusivePriceCny - b.taxInclusivePriceCny)
-					);
+				} else if (column === "priceCny") {
+					return multiplier * (a.priceCny - b.priceCny);
 				}
 				return 0;
 			});
@@ -154,14 +151,14 @@ export const TimeTaxInclusivePrice = (props: {
 								</th>
 								<th className="text-left">
 									<div className="flex items-center gap-3">
-										Tax Inclusive Price{" "}
+										Price{" "}
 										<button
 											className="flex items-center 
 											bg-neutral-700 hover:bg-neutral-600
 											rounded cursor-pointer"
 											onClick={() => {
 												dispatch({
-													type: "SORT_BY_TAX_INCLUSIVE_PRICE_CNY",
+													type: "SORT_BY_PRICE_CNY",
 												});
 											}}
 										>
@@ -169,7 +166,7 @@ export const TimeTaxInclusivePrice = (props: {
 												size={20}
 												direction={
 													sortState.column ===
-													"taxInclusivePriceCny"
+													"priceCny"
 														? sortState.direction
 														: null
 												}
@@ -189,9 +186,8 @@ export const TimeTaxInclusivePrice = (props: {
 											)}
 										</td>
 										<td>
-											¥{" "}
-											{convertNumberToHumanReadable(
-												d.taxInclusivePriceCny,
+											¥ {convertNumberToHumanReadable(
+												d.priceCny,
 												{
 													useComma: true,
 													useSuffix: false,
