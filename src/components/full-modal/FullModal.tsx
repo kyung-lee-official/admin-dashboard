@@ -11,7 +11,7 @@ const DarkenMask = (props: {
 		<motion.div
 			initial={{ backgroundColor: "rgba(0, 0, 0, 0)" }}
 			animate={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
-			className="absolute top-0 right-0 bottom-0 left-0 z-5
+			className="absolute inset-0 z-5
 			overflow-hidden"
 			onClick={(e) => {
 				setShow(false);
@@ -28,7 +28,7 @@ const Window = (props: { children: ReactNode }) => {
 		<div
 			className="absolute top-8 right-8 bottom-8 left-8 p-6
 			bg-neutral-900 
-			rounded shadow"
+			rounded shadow overflow-y-auto scrollbar"
 			onClick={(e) => {
 				e.stopPropagation();
 			}}

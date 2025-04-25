@@ -60,9 +60,12 @@ export async function getRetailSalesDataImportBatches(
 	return res.data;
 }
 
-export async function deleteRetailSalesDataImportBatchById(jwt: string) {
+export async function deleteRetailSalesDataImportBatchById(
+	batchId: number,
+	jwt: string
+) {
 	const res = await axios.delete(
-		`internal/retail/sales-data/delete-batch-by-id`,
+		`internal/retail/sales-data/delete-batch-by-id/${batchId}`,
 		{
 			baseURL: process.env.NEXT_PUBLIC_API_HOST,
 			headers: {
@@ -74,6 +77,9 @@ export async function deleteRetailSalesDataImportBatchById(jwt: string) {
 	return res.data;
 }
 
+/**
+ * @deprecated
+ */
 export async function getRetailSalesDataClients(jwt: string) {
 	const res = await axios.get(`internal/retail/sales-data/get-clients`, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
@@ -85,6 +91,9 @@ export async function getRetailSalesDataClients(jwt: string) {
 	return res.data;
 }
 
+/**
+ * @deprecated
+ */
 export async function getRetailSalesDataStorehouses(jwt: string) {
 	const res = await axios.get(`internal/retail/sales-data/get-storehouses`, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
@@ -96,6 +105,9 @@ export async function getRetailSalesDataStorehouses(jwt: string) {
 	return res.data;
 }
 
+/**
+ * @deprecated
+ */
 export async function getRetailSalesDataCategories(jwt: string) {
 	const res = await axios.get(`internal/retail/sales-data/get-categories`, {
 		baseURL: process.env.NEXT_PUBLIC_API_HOST,
@@ -107,6 +119,9 @@ export async function getRetailSalesDataCategories(jwt: string) {
 	return res.data;
 }
 
+/**
+ * @deprecated
+ */
 export async function getRetailSalesDataReceiptTypes(jwt: string) {
 	const res = await axios.get(
 		`internal/retail/sales-data/get-receipt-types`,
@@ -121,6 +136,9 @@ export async function getRetailSalesDataReceiptTypes(jwt: string) {
 	return res.data;
 }
 
+/**
+ * @deprecated
+ */
 export async function getRetailSalesDataSourceAttributes(jwt: string) {
 	const res = await axios.get(
 		`internal/retail/sales-data/get-source-attributes`,
@@ -135,7 +153,7 @@ export async function getRetailSalesDataSourceAttributes(jwt: string) {
 	return res.data;
 }
 
-export async function getRetailSalesDataSearchSku(term: string, jwt: string) {
+export async function searchRetailSalesDataSku(term: string, jwt: string) {
 	const res = await axios.get(
 		`internal/retail/sales-data/search-sku/${term}`,
 		{

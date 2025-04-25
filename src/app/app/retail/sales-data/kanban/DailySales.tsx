@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 import { Table, Tbody, Thead } from "@/components/content/Table";
 
 export const DailySales = (props: {
+	showMonthly: boolean;
 	showChartDailySales: boolean;
 	fetchFilteredSalesData: RetailSalesDataResponse[];
 }) => {
@@ -17,22 +18,48 @@ export const DailySales = (props: {
 	const margin = { top: 20, left: 30, right: 0, bottom: 20 };
 	const xMax = width;
 	const yMax = height - margin.top - margin.bottom;
-	const { showChartDailySales, fetchFilteredSalesData } = props;
+	const {
+		showMonthly = true,
+		showChartDailySales,
+		fetchFilteredSalesData,
+	} = props;
 	/**
 	 * convert to array of date-salesVolume objects
-	 * accumulate salesVolume for each date
+	 * accumulate salesVolume as per showMonthly
 	 */
-	const reducedData = fetchFilteredSalesData.reduce((acc, curr) => {
-		const date = dayjs(curr.date).format("YYYY-MM-DD");
-		const salesVolume = curr.salesVolume;
-		const existingDate = acc.find((d) => d.date === date);
-		if (existingDate) {
-			existingDate.salesVolume += salesVolume;
-		} else {
-			acc.push({ date, salesVolume });
-		}
-		return acc;
-	}, [] as { date: string; salesVolume: number }[]);
+	type ReducedData = { date: string; salesVolume: number };
+	let reducedData: ReducedData[] = [];
+	switch (showMonthly) {
+		case false:
+			reducedData = fetchFilteredSalesData.reduce((acc, curr) => {
+				const date = dayjs(curr.date).format("YYYY-MM-DD");
+				const salesVolume = curr.salesVolume;
+				const existingDate = acc.find((d) => d.date === date);
+				if (existingDate) {
+					existingDate.salesVolume += salesVolume;
+				} else {
+					acc.push({ date, salesVolume });
+				}
+				return acc;
+			}, [] as ReducedData[]);
+			break;
+		case true:
+			reducedData = fetchFilteredSalesData.reduce((acc, curr) => {
+				const date = dayjs(curr.date).format("YYYY-MM");
+				const salesVolume = curr.salesVolume;
+				const existingDate = acc.find((d) => d.date === date);
+				if (existingDate) {
+					existingDate.salesVolume += salesVolume;
+				} else {
+					acc.push({ date, salesVolume });
+				}
+				return acc;
+			}, [] as ReducedData[]);
+			break;
+
+		default:
+			break;
+	}
 
 	/* scales */
 	const dateScale = scaleBand<string>({
@@ -51,8 +78,8 @@ export const DailySales = (props: {
 	switch (showChartDailySales) {
 		case true:
 			return (
-				<div className="relative px-6 py-3 border-t border-neutral-700">
-					<svg width={width} height={height}>
+				<div className="relative h-[525px] px-6 py-3 border-t border-neutral-700">
+					{/* <svg width={width} height={height}>
 						<rect
 							x={0}
 							y={0}
@@ -113,7 +140,18 @@ export const DailySales = (props: {
 								hideTicks={false}
 							/>
 						</Group>
-					</svg>
+					</svg> */}
+					<div className="flex flex-col justify-center items-center h-full gap-6">
+						<img
+							src="/resultPages/underConstruction.png"
+							width={350}
+							alt="Under Planning"
+							className="opacity-90"
+						/>
+						<div className="text-lg">
+							This feature is under construction...
+						</div>
+					</div>
 				</div>
 			);
 		case false:

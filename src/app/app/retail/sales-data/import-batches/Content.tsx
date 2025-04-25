@@ -1,20 +1,27 @@
 "use client";
 
+import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
+import { ConfirmDialogWithButton } from "@/components/confirm-dialog/ConfirmDialogWithButton";
 import { PageBlock, PageContainer } from "@/components/content/PageContainer";
 import { Table, Tbody, Thead } from "@/components/content/Table";
-import { TitleMoreMenu } from "@/components/content/TitleMoreMenu";
+import {
+	TitleMoreMenu,
+	TitleMoreMenuButton,
+} from "@/components/content/TitleMoreMenu";
 import {
 	EditId,
 	EditPanel,
 	EditProps,
 } from "@/components/edit-panel/EditPanel";
-import { EditIcon } from "@/components/icons/Icons";
+import { DeleteIcon, EditIcon } from "@/components/icons/Icons";
 import { useAuthStore } from "@/stores/auth";
 import {
+	deleteRetailSalesDataImportBatchById,
 	getRetailSalesDataImportBatches,
 	RetailSalesDataQK,
 } from "@/utils/api/app/retail/sales-data";
-import { useQuery } from "@tanstack/react-query";
+import { queryClient } from "@/utils/react-query/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import dayjs from "dayjs";
 import { useState } from "react";
@@ -37,6 +44,17 @@ export const Content = () => {
 		refetchOnWindowFocus: false,
 	});
 
+	const deleteBatchMutation = useMutation({
+		mutationFn: async (batchId: number | undefined) => {
+			await deleteRetailSalesDataImportBatchById(batchId as number, jwt);
+		},
+		onSuccess: () => {
+			queryClient.invalidateQueries({
+				queryKey: [RetailSalesDataQK.GET_SALES_DATA_IMPORT_BATCHES],
+			});
+		},
+	});
+
 	return (
 		<PageContainer>
 			<PageBlock
@@ -45,17 +63,16 @@ export const Content = () => {
 					<>
 						<TitleMoreMenu
 							items={[
-								{
-									content: "Import New Data",
-									hideMenuOnClick: true,
-									icon: <EditIcon size={15} />,
-									onClick: () => {
+								<TitleMoreMenuButton
+									onClick={() => {
 										setEdit({
 											show: true,
 											id: EditId.RETAIL_IMPORT_SALES_DATA,
 										});
-									},
-								},
+									}}
+								>
+									<EditIcon size={15} /> Import New Data
+								</TitleMoreMenuButton>,
 							]}
 						/>
 						{createPortal(
@@ -71,6 +88,7 @@ export const Content = () => {
 							<th>Batch Id</th>
 							<th>Batch Size</th>
 							<th>Imported At</th>
+							<th className="w-12"></th>
 						</tr>
 					</Thead>
 					<Tbody>
@@ -91,6 +109,29 @@ export const Content = () => {
 										{dayjs(batch.createdAt).format(
 											"MMM DD, YYYY HH:mm:ss"
 										)}
+									</td>
+									<td>
+										<ConfirmDialogWithButton
+											question={
+												"Are you sure you want to delete this batch?"
+											}
+											data={batch.id}
+											onOk={(
+												batchId: number | undefined
+											) => {
+												deleteBatchMutation.mutate(
+													batchId
+												);
+											}}
+										>
+											<div
+												className={`flex items-center w-full px-2 py-1.5 gap-2
+												hover:bg-white/5
+												rounded cursor-pointer whitespace-nowrap`}
+											>
+												<DeleteIcon size={15} />
+											</div>
+										</ConfirmDialogWithButton>
 									</td>
 								</tr>
 							);
