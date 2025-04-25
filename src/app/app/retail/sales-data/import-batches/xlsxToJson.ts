@@ -1,6 +1,6 @@
 import * as ExcelJS from "exceljs";
 import { ImportRetailSalesData, importRetailSalesDataSchema } from "../types";
-import { parseHumanReadableNumber } from "human-readable-to-number";
+import { parseHumanReadableNumber } from "num-guru";
 import dayjs from "dayjs";
 
 export async function xlsxToJson(file: File): Promise<ImportRetailSalesData[]> {
