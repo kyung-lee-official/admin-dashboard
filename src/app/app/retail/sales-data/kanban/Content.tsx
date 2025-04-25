@@ -30,7 +30,12 @@ import {
 	Sku,
 } from "./kanbanFilterReducer";
 import { Toggle } from "@/components/toggle/Toggle";
-import { FilterAltOutlined, GridOnOutlined, PollOutlined } from "./Icons";
+import {
+	FilterAltOffOutlined,
+	FilterAltOutlined,
+	GridOnOutlined,
+	PollOutlined,
+} from "./Icons";
 import { motion, useInView } from "motion/react";
 import { createPortal } from "react-dom";
 import { FullModal } from "@/components/full-modal/FullModal";
@@ -68,6 +73,23 @@ const TagButton = (props: {
 	);
 };
 
+const TagFilterClearButton = (props: {
+	onClick?: MouseEventHandler<HTMLButtonElement> | undefined;
+}) => {
+	const { onClick } = props;
+	return (
+		<button
+			className="p-1
+			text-neutral-400 hover:text-neutral-300
+			bg-neutral-700 hover:bg-neutral-600
+			rounded cursor-pointer"
+			onClick={onClick}
+		>
+			<FilterAltOffOutlined size={16} />
+		</button>
+	);
+};
+
 const TagFilters = (props: {
 	kanbanFilter: KanbanFilterState;
 	dispatchKanbanFilter: ActionDispatch<[action: KanbanFilterAction]>;
@@ -99,7 +121,19 @@ const TagFilters = (props: {
 
 	return (
 		<div className="flex flex-col gap-3">
-			<PageBlock title={"Clients"}>
+			<PageBlock
+				title={"Clients"}
+				moreMenu={
+					<TagFilterClearButton
+						onClick={() => {
+							dispatchKanbanFilter({
+								type: "SET_CLIENTS",
+								payload: [],
+							});
+						}}
+					/>
+				}
+			>
 				<TagContainer>
 					{fetchFilteredSalesDataMutation.data ? (
 						fetchFilteredSalesDataMutation.data.clients.allClients
@@ -142,7 +176,19 @@ const TagFilters = (props: {
 					)}
 				</TagContainer>
 			</PageBlock>
-			<PageBlock title={"Storehouses"}>
+			<PageBlock
+				title={"Storehouses"}
+				moreMenu={
+					<TagFilterClearButton
+						onClick={() => {
+							dispatchKanbanFilter({
+								type: "SET_STOREHOUSES",
+								payload: [],
+							});
+						}}
+					/>
+				}
+			>
 				<TagContainer>
 					{fetchFilteredSalesDataMutation.data ? (
 						fetchFilteredSalesDataMutation.data.storehouses.allStorehouses
@@ -185,7 +231,19 @@ const TagFilters = (props: {
 					)}
 				</TagContainer>
 			</PageBlock>
-			<PageBlock title={"Categories"}>
+			<PageBlock
+				title={"Categories"}
+				moreMenu={
+					<TagFilterClearButton
+						onClick={() => {
+							dispatchKanbanFilter({
+								type: "SET_CATEGORIES",
+								payload: [],
+							});
+						}}
+					/>
+				}
+			>
 				<TagContainer>
 					{fetchFilteredSalesDataMutation.data ? (
 						fetchFilteredSalesDataMutation.data.categories.allCategories
@@ -228,7 +286,19 @@ const TagFilters = (props: {
 					)}
 				</TagContainer>
 			</PageBlock>
-			<PageBlock title={"Receipt Types"}>
+			<PageBlock
+				title={"Receipt Types"}
+				moreMenu={
+					<TagFilterClearButton
+						onClick={() => {
+							dispatchKanbanFilter({
+								type: "SET_RECEIPT_TYPES",
+								payload: [],
+							});
+						}}
+					/>
+				}
+			>
 				<TagContainer>
 					{fetchFilteredSalesDataMutation.data ? (
 						fetchFilteredSalesDataMutation.data.receiptTypes.allReceiptTypes
@@ -272,7 +342,19 @@ const TagFilters = (props: {
 					)}
 				</TagContainer>
 			</PageBlock>
-			<PageBlock title={"Source Attributes"}>
+			<PageBlock
+				title={"Source Attributes"}
+				moreMenu={
+					<TagFilterClearButton
+						onClick={() => {
+							dispatchKanbanFilter({
+								type: "SET_SOURCE_ATTRIBUTES",
+								payload: [],
+							});
+						}}
+					/>
+				}
+			>
 				<TagContainer>
 					{fetchFilteredSalesDataMutation.data ? (
 						fetchFilteredSalesDataMutation.data.sourceAttributes.allSourceAttributes
@@ -343,6 +425,16 @@ const TagFilters = (props: {
 							)}
 						/>
 					</div>
+				}
+				moreMenu={
+					<TagFilterClearButton
+						onClick={() => {
+							dispatchKanbanFilter({
+								type: "SET_SKUS",
+								payload: [],
+							});
+						}}
+					/>
 				}
 			>
 				<TagContainer>
@@ -458,6 +550,32 @@ export const Content = () => {
 					)}
 					{createPortal(
 						<FullModal show={showModel} setShow={setShowModel}>
+							<PageBlock title={"Kanban"}>
+								<TagContainer>
+									{kanbanFilter.dateMode === "range" && (
+										<DateRangePicker
+											range={kanbanFilter.dateRange}
+											setRange={(
+												value: SetStateAction<DateRange>
+											) => {
+												const newRange =
+													typeof value === "function"
+														? value(
+																kanbanFilter.dateRange
+														  )
+														: value;
+												dispatchKanbanFilter({
+													type: "SET_DATE_RANGE",
+													payload: {
+														start: newRange.start,
+														end: newRange.end,
+													},
+												});
+											}}
+										/>
+									)}
+								</TagContainer>
+							</PageBlock>
 							<TagFilters
 								kanbanFilter={kanbanFilter}
 								dispatchKanbanFilter={dispatchKanbanFilter}
@@ -478,7 +596,7 @@ export const Content = () => {
 			<PageBlock
 				title={
 					<div className="flex items-center gap-6">
-						<div>Daily Sales</div>
+						<div>Sales Volume</div>
 						<div className="flex items-center gap-2">
 							<GridOnOutlined size={16} />
 							<Toggle
