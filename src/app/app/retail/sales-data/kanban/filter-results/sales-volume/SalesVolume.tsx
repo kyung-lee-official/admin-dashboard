@@ -1,4 +1,3 @@
-import { RetailSalesDataResponse } from "../types";
 import { scaleBand, scaleLinear } from "@visx/scale";
 import { Grid } from "@visx/grid";
 import { Group } from "@visx/group";
@@ -6,8 +5,13 @@ import { Bar } from "@visx/shape";
 import { AxisLeft } from "@visx/axis";
 import dayjs from "dayjs";
 import { Table, Tbody, Thead } from "@/components/content/Table";
+import { useReducer } from "react";
+import { salesVolumeSortReducer } from "./salesVolumeSortReducer";
+import { RetailSalesDataResponse } from "../../../types";
+import { SwapVert } from "../../Icons";
+import { Button } from "@/components/button/Button";
 
-export const DailySales = (props: {
+export const SalesVolume = (props: {
 	showMonthly: boolean;
 	showChartDailySales: boolean;
 	fetchFilteredSalesData: RetailSalesDataResponse[];
@@ -23,6 +27,12 @@ export const DailySales = (props: {
 		showChartDailySales,
 		fetchFilteredSalesData,
 	} = props;
+
+	const [sortState, dispatch] = useReducer(salesVolumeSortReducer, {
+		column: "date",
+		direction: "asc",
+	});
+
 	/**
 	 * convert to array of date-salesVolume objects
 	 * accumulate salesVolume as per showMonthly
@@ -155,19 +165,78 @@ export const DailySales = (props: {
 				</div>
 			);
 		case false:
+			const sortedData = [...reducedData].sort((a, b) => {
+				const { column, direction } = sortState;
+				const multiplier = direction === "asc" ? 1 : -1;
+				if (column === "date") {
+					return (
+						multiplier *
+						(dayjs(a.date).isBefore(dayjs(b.date)) ? -1 : 1)
+					);
+				} else if (column === "salesVolume") {
+					return multiplier * (a.salesVolume - b.salesVolume);
+				}
+				return 0;
+			});
+
 			return (
 				<div className="h-[525px] overflow-y-auto scrollbar">
 					<Table>
 						<Thead>
 							<tr>
 								<th className="text-left">
-									Date ({reducedData.length})
+									<div className="flex items-center gap-3">
+										Date ({reducedData.length}){" "}
+										<button
+											className="flex items-center 
+											bg-neutral-700 hover:bg-neutral-600
+											rounded cursor-pointer"
+											onClick={() => {
+												dispatch({
+													type: "SORT_BY_DATE",
+												});
+											}}
+										>
+											<SwapVert
+												size={20}
+												direction={
+													sortState.column === "date"
+														? sortState.direction
+														: null
+												}
+											/>
+										</button>
+									</div>
 								</th>
-								<th className="text-left">Sales Volume</th>
+								<th className="text-left">
+									<div className="flex items-center gap-3">
+										Sales Volume{" "}
+										<button
+											className="flex items-center 
+											bg-neutral-700 hover:bg-neutral-600
+											rounded cursor-pointer"
+											onClick={() => {
+												dispatch({
+													type: "SORT_BY_SALES_VOLUME",
+												});
+											}}
+										>
+											<SwapVert
+												size={20}
+												direction={
+													sortState.column ===
+													"salesVolume"
+														? sortState.direction
+														: null
+												}
+											/>
+										</button>
+									</div>
+								</th>
 							</tr>
 						</Thead>
 						<Tbody>
-							{reducedData.map((d) => {
+							{sortedData.map((d) => {
 								return (
 									<tr key={d.date}>
 										<td>

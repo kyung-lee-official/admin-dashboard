@@ -29,13 +29,13 @@ import {
 	KanbanFilterState,
 	Sku,
 } from "./kanbanFilterReducer";
-import { DailySales } from "./DailySales";
 import { Toggle } from "@/components/toggle/Toggle";
 import { FilterAltOutlined, GridOnOutlined, PollOutlined } from "./Icons";
 import { motion, useInView } from "motion/react";
 import { createPortal } from "react-dom";
 import { FullModal } from "@/components/full-modal/FullModal";
 import { OneRowSkeleton } from "@/components/skeleton/OneRowSkeleton";
+import { SalesVolume } from "./filter-results/sales-volume/SalesVolume";
 
 const TagContainer = (props: any) => {
 	const { children } = props;
@@ -509,7 +509,7 @@ export const Content = () => {
 				}
 			>
 				{fetchFilteredSalesDataMutation.data && (
-					<DailySales
+					<SalesVolume
 						showMonthly={showMonthly}
 						showChartDailySales={showChartSales}
 						fetchFilteredSalesData={
