@@ -539,6 +539,7 @@ export const Content = () => {
 							/>
 							{[7, 14, 30, 60].map((days) => (
 								<Button
+									key={days}
 									size="sm"
 									onClick={() => {
 										dispatchKanbanFilter({
@@ -604,6 +605,7 @@ export const Content = () => {
 											/>
 											{[7, 14, 30, 60].map((days) => (
 												<Button
+													key={days}
 													size="sm"
 													onClick={() => {
 														dispatchKanbanFilter({
