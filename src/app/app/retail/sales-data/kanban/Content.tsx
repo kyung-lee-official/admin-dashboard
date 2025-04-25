@@ -43,6 +43,7 @@ import { OneRowSkeleton } from "@/components/skeleton/OneRowSkeleton";
 import { TimeSalesVolume } from "./filter-results/time-sales-volume/TimeSalesVolume";
 import { StorehousesSalesVolume } from "./filter-results/storehouses-sales-volume/StorehousesSalesVolume";
 import { Button } from "@/components/button/Button";
+import { TimeTaxInclusivePrice } from "./filter-results/time-tax-inclusive-price/TimeTaxInclusivePrice";
 
 const TagContainer = (props: any) => {
 	const { children } = props;
@@ -465,9 +466,7 @@ const TagFilters = (props: {
 };
 
 export const Content = () => {
-	const [showChartSales, setShowChartSales] = useState<boolean>(false);
-	const [showChartStorehousesSales, setShowChartStorehousesSales] =
-		useState<boolean>(false);
+	const [showChart, setShowChart] = useState<boolean>(false);
 	const [showMonthly, setShowMonthly] = useState<boolean>(true);
 	const [kanbanFilter, dispatchKanbanFilter] = useReducer(
 		kanbanFilterReducer,
@@ -651,9 +650,9 @@ export const Content = () => {
 						<div className="flex items-center gap-2">
 							<GridOnOutlined size={16} />
 							<Toggle
-								isOn={showChartSales}
+								isOn={showChart}
 								onClick={() => {
-									setShowChartSales(!showChartSales);
+									setShowChart(!showChart);
 								}}
 								isAllowed={true}
 							/>
@@ -680,7 +679,50 @@ export const Content = () => {
 				{fetchFilteredSalesDataMutation.data && (
 					<TimeSalesVolume
 						showMonthly={showMonthly}
-						showChartDailySales={showChartSales}
+						showChartDailySales={showChart}
+						fetchFilteredSalesData={
+							fetchFilteredSalesDataMutation.data.retailSalesData
+						}
+					/>
+				)}
+			</PageBlock>
+			<PageBlock
+				title={
+					<div className="flex items-center gap-6">
+						<div>Time - Tax Inclusive Price</div>
+						<div className="flex items-center gap-2">
+							<GridOnOutlined size={16} />
+							<Toggle
+								isOn={showChart}
+								onClick={() => {
+									setShowChart(!showChart);
+								}}
+								isAllowed={true}
+							/>
+							<PollOutlined size={16} />
+						</div>
+						<div className="flex items-center gap-2">
+							<div className="text-sm text-neutral-400">
+								Daily
+							</div>
+							<Toggle
+								isOn={showMonthly}
+								onClick={() => {
+									setShowMonthly(!showMonthly);
+								}}
+								isAllowed={true}
+							/>
+							<div className="text-sm text-neutral-400">
+								Monthly
+							</div>
+						</div>
+					</div>
+				}
+			>
+				{fetchFilteredSalesDataMutation.data && (
+					<TimeTaxInclusivePrice
+						showMonthly={showMonthly}
+						showChartDailySales={showChart}
 						fetchFilteredSalesData={
 							fetchFilteredSalesDataMutation.data.retailSalesData
 						}
@@ -694,11 +736,9 @@ export const Content = () => {
 						<div className="flex items-center gap-2">
 							<GridOnOutlined size={16} />
 							<Toggle
-								isOn={showChartStorehousesSales}
+								isOn={showChart}
 								onClick={() => {
-									setShowChartStorehousesSales(
-										!showChartStorehousesSales
-									);
+									setShowChart(!showChart);
 								}}
 								isAllowed={true}
 							/>
@@ -709,7 +749,7 @@ export const Content = () => {
 			>
 				{fetchFilteredSalesDataMutation.data && (
 					<StorehousesSalesVolume
-						showChartStorehousesSales={showChartStorehousesSales}
+						showChart={showChart}
 						fetchFilteredSalesData={
 							fetchFilteredSalesDataMutation.data.retailSalesData
 						}

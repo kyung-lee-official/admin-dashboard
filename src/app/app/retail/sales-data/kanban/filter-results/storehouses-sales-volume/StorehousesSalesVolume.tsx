@@ -5,10 +5,10 @@ import { storehousesSalesVolumeReducer } from "./storehousesSalesVolumeReducer";
 import { SwapVert } from "../../Icons";
 
 export const StorehousesSalesVolume = (props: {
-	showChartStorehousesSales: boolean;
+	showChart: boolean;
 	fetchFilteredSalesData: RetailSalesDataResponse[];
 }) => {
-	const { showChartStorehousesSales, fetchFilteredSalesData } = props;
+	const { showChart, fetchFilteredSalesData } = props;
 
 	/**
 	 * convert to array of storehouse-salesVolume objects
@@ -36,7 +36,7 @@ export const StorehousesSalesVolume = (props: {
 		direction: "asc",
 	});
 
-	switch (showChartStorehousesSales) {
+	switch (showChart) {
 		case true:
 			return (
 				<div className="relative h-[525px] px-6 py-3 border-t border-neutral-700">
