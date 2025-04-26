@@ -71,24 +71,30 @@ export const TimeTaxInclusivePrice = (props: {
 		case true:
 			return (
 				<div className="relative h-[525px] px-6 py-3 border-t border-neutral-700">
-					<BarChart
-						data={reducedData}
-						svgWidth={width}
-						svgHeight={height}
-						margin={margin}
-						textFormatter={(v) => {
-							return `¥ ${convertNumberToHumanReadable(v, {
-								useComma: true,
-								useSuffix: false,
-							})}`;
-						}}
-						axisLeftTickFormatter={(v) => {
-							return `¥ ${convertNumberToHumanReadable(v, {
-								useComma: true,
-								useSuffix: true,
-							})}`;
-						}}
-					/>
+					{reducedData.length > 0 ? (
+						<BarChart
+							data={reducedData}
+							svgWidth={width}
+							svgHeight={height}
+							margin={margin}
+							textFormatter={(v) => {
+								return `¥ ${convertNumberToHumanReadable(v, {
+									useComma: true,
+									useSuffix: false,
+								})}`;
+							}}
+							axisLeftTickFormatter={(v) => {
+								return `¥ ${convertNumberToHumanReadable(v, {
+									useComma: true,
+									useSuffix: true,
+								})}`;
+							}}
+						/>
+					) : (
+						<div className="text-center text-white/50">
+							No data available to display.
+						</div>
+					)}
 				</div>
 			);
 		case false:
