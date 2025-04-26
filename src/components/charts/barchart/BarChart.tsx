@@ -6,6 +6,7 @@ import { Group } from "@visx/group";
 import { scaleBand, scaleLinear } from "@visx/scale";
 import { Bar } from "@visx/shape";
 import { Text } from "@visx/text";
+import { NumberValue } from "@visx/vendor/d3-scale";
 
 type BarChartProps = {
 	data: {
@@ -19,6 +20,10 @@ type BarChartProps = {
 		bottom: number;
 		left: number;
 	} /* chart margins */;
+	/* optional custom mapping functions */
+	textFormatter?: (value: number, data: any) => string;
+	axisLeftTickFormatter?: (value: number) => string;
+	axisBottomTickFormatter?: (value: string) => string;
 };
 
 export const BarChart = ({
@@ -26,6 +31,13 @@ export const BarChart = ({
 	svgWidth,
 	svgHeight,
 	margin,
+	textFormatter = (value) =>
+		value.toString() /* default to identity function */,
+	axisLeftTickFormatter = (value) => {
+		return value.toFixed(2); /* default to identity function */
+	},
+	axisBottomTickFormatter = (value) =>
+		value.toString() /* default to identity function */,
 }: BarChartProps) => {
 	/* dynamically determine the keys */
 	const [stringKey, numberKey] = Object.keys(data[0]);
@@ -115,7 +127,7 @@ export const BarChart = ({
 								/* adjust font size as needed */
 								fontSize={12}
 							>
-								{d[numberKey]}
+								{textFormatter(d[numberKey] as number, d)}
 							</Text>
 						</g>
 					);
@@ -129,7 +141,7 @@ export const BarChart = ({
 					/* tick color */
 					tickStroke="white"
 					/* format the tick values */
-					tickFormat={(d) => d.toString()}
+					tickFormat={axisLeftTickFormatter as any}
 					tickLabelProps={() => ({
 						/* tick label color */
 						fill: "white",
@@ -152,9 +164,7 @@ export const BarChart = ({
 					/* tick color */
 					tickStroke="white"
 					/* map the string key to desired format */
-					tickFormat={(d) => {
-						return d;
-					}}
+					tickFormat={axisBottomTickFormatter}
 					tickLabelProps={() => ({
 						/* tick label color */
 						fill: "white",
