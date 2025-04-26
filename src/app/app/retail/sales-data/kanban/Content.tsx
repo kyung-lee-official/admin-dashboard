@@ -694,7 +694,7 @@ export const Content = () => {
 			<PageBlock
 				title={
 					<div className="flex items-center gap-6">
-						<div>Time - Tax Inclusive Price</div>
+						<div>Time - GMV (Tax Inclusive)</div>
 						<div className="flex items-center gap-2">
 							<GridOnOutlined size={16} />
 							<Toggle
@@ -737,7 +737,7 @@ export const Content = () => {
 			<PageBlock
 				title={
 					<div className="flex items-center gap-6">
-						<div>Time - Price</div>
+						<div>Time - GMV</div>
 						<div className="flex items-center gap-2">
 							<GridOnOutlined size={16} />
 							<Toggle

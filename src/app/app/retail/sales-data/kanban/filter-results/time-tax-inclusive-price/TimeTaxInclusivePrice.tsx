@@ -1,16 +1,11 @@
-import { scaleBand, scaleLinear } from "@visx/scale";
-import { Grid } from "@visx/grid";
-import { Group } from "@visx/group";
-import { Bar } from "@visx/shape";
-import { AxisLeft } from "@visx/axis";
 import dayjs from "dayjs";
 import { Table, Tbody, Thead } from "@/components/content/Table";
 import { useReducer } from "react";
 import { RetailSalesDataResponse } from "../../../types";
 import { SwapVert } from "../../Icons";
-import { Button } from "@/components/button/Button";
 import { timeTaxInclusivePriceSortReducer } from "./timeTaxInclusivePriceSortReducer";
 import { convertNumberToHumanReadable } from "num-guru";
+import { BarChart } from "@/components/charts/barchart/BarChart";
 
 export const TimeTaxInclusivePrice = (props: {
 	showMonthly: boolean;
@@ -20,9 +15,7 @@ export const TimeTaxInclusivePrice = (props: {
 	const width = 900;
 	const height = 500;
 	const events = false;
-	const margin = { top: 20, left: 30, right: 0, bottom: 20 };
-	const xMax = width;
-	const yMax = height - margin.top - margin.bottom;
+	const margin = { top: 80, left: 80, right: 80, bottom: 80 };
 	const {
 		showMonthly = true,
 		showChartDailySales,
@@ -74,35 +67,28 @@ export const TimeTaxInclusivePrice = (props: {
 			break;
 	}
 
-	/* scales */
-	const dateScale = scaleBand<string>({
-		range: [0, xMax],
-		domain: reducedData.map((d) => d.date),
-		padding: 0.1,
-	});
-	const taxInclusivePriceCnyScale = scaleLinear<number>({
-		domain: [
-			Math.min(...reducedData.map((d) => d.taxInclusivePriceCny)),
-			Math.max(...reducedData.map((d) => d.taxInclusivePriceCny)),
-		],
-		range: [yMax, 0],
-	});
-
 	switch (showChartDailySales) {
 		case true:
 			return (
 				<div className="relative h-[525px] px-6 py-3 border-t border-neutral-700">
-					<div className="flex flex-col justify-center items-center h-full gap-6">
-						<img
-							src="/resultPages/underConstruction.png"
-							width={350}
-							alt="Under Planning"
-							className="opacity-90"
-						/>
-						<div className="text-lg">
-							This feature is under construction...
-						</div>
-					</div>
+					<BarChart
+						data={reducedData}
+						svgWidth={width}
+						svgHeight={height}
+						margin={margin}
+						textFormatter={(v) => {
+							return `¥ ${convertNumberToHumanReadable(v, {
+								useComma: true,
+								useSuffix: false,
+							})}`;
+						}}
+						axisLeftTickFormatter={(v) => {
+							return `¥ ${convertNumberToHumanReadable(v, {
+								useComma: true,
+								useSuffix: true,
+							})}`;
+						}}
+					/>
 				</div>
 			);
 		case false:
