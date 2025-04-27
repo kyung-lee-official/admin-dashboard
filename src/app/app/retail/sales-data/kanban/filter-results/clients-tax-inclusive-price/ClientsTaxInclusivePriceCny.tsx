@@ -4,12 +4,16 @@ import { useReducer } from "react";
 import { SwapVert } from "../../Icons";
 import { clientsTaxInclusivePriceCnyReducer } from "./clientsTaxInclusivePriceReducer";
 import { convertNumberToHumanReadable } from "num-guru";
+import { PieChart } from "@/components/charts/piechart/PieChart";
 
 export const ClientsTaxInclusivePriceCny = (props: {
 	showChart: boolean;
 	fetchFilteredSalesData: RetailSalesDataResponse[];
 }) => {
 	const { showChart, fetchFilteredSalesData } = props;
+	const width = 900;
+	const height = 500;
+	const margin = { top: 80, left: 100, right: 100, bottom: 80 };
 
 	/**
 	 * convert to array of clients-taxInclusivePriceCny objects
@@ -42,17 +46,19 @@ export const ClientsTaxInclusivePriceCny = (props: {
 		case true:
 			return (
 				<div className="relative h-[525px] px-6 py-3 border-t border-neutral-700">
-					<div className="flex flex-col justify-center items-center h-full gap-6">
-						<img
-							src="/resultPages/underConstruction.png"
-							width={350}
-							alt="Under Planning"
-							className="opacity-90"
-						/>
-						<div className="text-lg">
-							This feature is under construction...
-						</div>
-					</div>
+					<PieChart
+						data={reducedData}
+						svgWidth={width}
+						svgHeight={height}
+						margin={margin}
+						padAngle={0.005}
+						valueFormatter={(value, data) => {
+							return `¥ ${convertNumberToHumanReadable(value, {
+								useComma: true,
+								useSuffix: false,
+							})}`;
+						}}
+					/>
 				</div>
 			);
 		case false:

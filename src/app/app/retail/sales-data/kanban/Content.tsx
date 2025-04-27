@@ -807,7 +807,7 @@ export const Content = () => {
 			<PageBlock
 				title={
 					<div className="flex items-center gap-6">
-						<div>Storehouses - Tax Inclusive Price</div>
+						<div>Storehouses - GMV (Tax Inclusive)</div>
 						<div className="flex items-center gap-2">
 							<GridOnOutlined size={16} />
 							<Toggle
@@ -861,7 +861,7 @@ export const Content = () => {
 			<PageBlock
 				title={
 					<div className="flex items-center gap-6">
-						<div>Client - Tax Inclusive Price</div>
+						<div>Client - GMV (Tax Inclusive)</div>
 						<div className="flex items-center gap-2">
 							<GridOnOutlined size={16} />
 							<Toggle
@@ -888,7 +888,7 @@ export const Content = () => {
 			<PageBlock
 				title={
 					<div className="flex items-center gap-6">
-						<div>Client - Price</div>
+						<div>Client - GMV</div>
 						<div className="flex items-center gap-2">
 							<GridOnOutlined size={16} />
 							<Toggle

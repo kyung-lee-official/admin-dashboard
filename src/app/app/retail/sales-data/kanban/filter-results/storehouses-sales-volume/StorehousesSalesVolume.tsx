@@ -3,12 +3,16 @@ import { RetailSalesDataResponse } from "../../../types";
 import { useReducer } from "react";
 import { storehousesSalesVolumeReducer } from "./storehousesSalesVolumeReducer";
 import { SwapVert } from "../../Icons";
+import { PieChart } from "@/components/charts/piechart/PieChart";
 
 export const StorehousesSalesVolume = (props: {
 	showChart: boolean;
 	fetchFilteredSalesData: RetailSalesDataResponse[];
 }) => {
 	const { showChart, fetchFilteredSalesData } = props;
+	const width = 900;
+	const height = 500;
+	const margin = { top: 80, left: 100, right: 100, bottom: 80 };
 
 	/**
 	 * convert to array of storehouse-salesVolume objects
@@ -40,17 +44,13 @@ export const StorehousesSalesVolume = (props: {
 		case true:
 			return (
 				<div className="relative h-[525px] px-6 py-3 border-t border-neutral-700">
-					<div className="flex flex-col justify-center items-center h-full gap-6">
-						<img
-							src="/resultPages/underConstruction.png"
-							width={350}
-							alt="Under Planning"
-							className="opacity-90"
-						/>
-						<div className="text-lg">
-							This feature is under construction...
-						</div>
-					</div>
+					<PieChart
+						data={reducedData}
+						svgWidth={width}
+						svgHeight={height}
+						margin={margin}
+						padAngle={0.005}
+					/>
 				</div>
 			);
 		case false:
