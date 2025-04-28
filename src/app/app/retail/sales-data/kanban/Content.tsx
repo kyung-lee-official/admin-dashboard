@@ -11,7 +11,7 @@ import {
 	filterRetailSalesData,
 	searchRetailSalesDataSku,
 } from "@/utils/api/app/retail/sales-data";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, UseMutationResult } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import {
 	ActionDispatch,
@@ -42,13 +42,13 @@ import { FullModal } from "@/components/full-modal/FullModal";
 import { OneRowSkeleton } from "@/components/skeleton/OneRowSkeleton";
 import { TimeSalesVolume } from "./filter-results/time-sales-volume/TimeSalesVolume";
 import { StorehousesSalesVolume } from "./filter-results/storehouses-sales-volume/StorehousesSalesVolume";
-import { Button } from "@/components/button/Button";
 import { TimeTaxInclusivePrice } from "./filter-results/time-tax-inclusive-price/TimeTaxInclusivePrice";
 import { TimePrice } from "./filter-results/time-price/TimePrice";
 import { StorehousesTaxInclusivePrice } from "./filter-results/storehouses-tax-inclusive-price/StorehousesTaxInclusivePrice";
 import { ClientsSalesVolume } from "./filter-results/clients-sales-volume/ClientsSalesVolume";
 import { ClientsTaxInclusivePriceCny } from "./filter-results/clients-tax-inclusive-price/ClientsTaxInclusivePriceCny";
 import { ClientsPriceCny } from "./filter-results/clients-price/ClientsPriceCny";
+import { FilteredRetailSalesDataResponse } from "../types";
 
 const TagContainer = (props: any) => {
 	const { children } = props;
@@ -101,7 +101,12 @@ const TagFilterClearButton = (props: {
 const TagFilters = (props: {
 	kanbanFilter: KanbanFilterState;
 	dispatchKanbanFilter: ActionDispatch<[action: KanbanFilterAction]>;
-	fetchFilteredSalesDataMutation: any;
+	fetchFilteredSalesDataMutation: UseMutationResult<
+		FilteredRetailSalesDataResponse,
+		Error,
+		any,
+		unknown
+	>;
 }) => {
 	const {
 		kanbanFilter,
@@ -129,6 +134,67 @@ const TagFilters = (props: {
 
 	return (
 		<div className="flex flex-col gap-3">
+			<PageBlock title={"Kanban"}>
+				<TagContainer>
+					{kanbanFilter.dateMode === "range" && (
+						<div className="flex items-center gap-3">
+							<DateRangePicker
+								range={kanbanFilter.dateRange}
+								setRange={(
+									value: SetStateAction<DateRange>
+								) => {
+									const newRange =
+										typeof value === "function"
+											? value(kanbanFilter.dateRange)
+											: value;
+									dispatchKanbanFilter({
+										type: "SET_DATE_RANGE",
+										payload: {
+											start: newRange.start,
+											end: newRange.end,
+										},
+									});
+								}}
+							/>
+							{[7, 14, 30, 60].map((days) => {
+								const isSelected =
+									kanbanFilter.dateRange.start.isSame(
+										dayjs().subtract(days, "day"),
+										"day"
+									) &&
+									kanbanFilter.dateRange.end.isSame(
+										dayjs(),
+										"day"
+									);
+								return (
+									<button
+										key={days}
+										className={`px-2.5 py-0.5
+										text-sm
+										${isSelected ? "bg-neutral-600 text-white" : ""}
+										border border-neutral-700
+										rounded cursor-pointer`}
+										onClick={() => {
+											dispatchKanbanFilter({
+												type: "SET_DATE_RANGE",
+												payload: {
+													start: dayjs().subtract(
+														days,
+														"day"
+													),
+													end: dayjs(),
+												},
+											});
+										}}
+									>
+										Last {days} days
+									</button>
+								);
+							})}
+						</div>
+					)}
+				</TagContainer>
+			</PageBlock>
 			<PageBlock
 				title={"Clients"}
 				moreMenu={
@@ -519,130 +585,39 @@ export const Content = () => {
 
 	return (
 		<PageContainer>
-			<PageBlock title={"Kanban"}>
-				<TagContainer>
-					{kanbanFilter.dateMode === "range" && (
-						<div className="flex items-center gap-6">
-							<DateRangePicker
-								range={kanbanFilter.dateRange}
-								setRange={(
-									value: SetStateAction<DateRange>
-								) => {
-									const newRange =
-										typeof value === "function"
-											? value(kanbanFilter.dateRange)
-											: value;
-									dispatchKanbanFilter({
-										type: "SET_DATE_RANGE",
-										payload: {
-											start: newRange.start,
-											end: newRange.end,
-										},
-									});
-								}}
-							/>
-							{[7, 14, 30, 60].map((days) => (
-								<Button
-									key={days}
-									size="sm"
-									onClick={() => {
-										dispatchKanbanFilter({
-											type: "SET_DATE_RANGE",
-											payload: {
-												start: dayjs().subtract(
-													days,
-													"day"
-												),
-												end: dayjs(),
-											},
-										});
-									}}
-								>
-									Last {days} days
-								</Button>
-							))}
-						</div>
-					)}
-					{/* scroll anchor */}
-					<motion.div ref={ref} className="w-4 h-4"></motion.div>
-					{!isInView && (
-						<motion.button
-							initial={{ opacity: 0 }}
-							animate={{ opacity: 1 }}
-							className="flex justify-center items-center fixed top-24 right-12 w-8 h-8 z-5
-							bg-neutral-700
-							border border-neutral-600
-							shadow rounded cursor-pointer"
-							onClick={() => {
-								setShowModel(true);
-							}}
-						>
-							<FilterAltOutlined size={18} />
-						</motion.button>
-					)}
-					{createPortal(
-						<FullModal show={showModel} setShow={setShowModel}>
-							<PageBlock title={"Kanban"}>
-								<TagContainer>
-									{kanbanFilter.dateMode === "range" && (
-										<div className="flex items-center gap-6">
-											<DateRangePicker
-												range={kanbanFilter.dateRange}
-												setRange={(
-													value: SetStateAction<DateRange>
-												) => {
-													const newRange =
-														typeof value ===
-														"function"
-															? value(
-																	kanbanFilter.dateRange
-															  )
-															: value;
-													dispatchKanbanFilter({
-														type: "SET_DATE_RANGE",
-														payload: {
-															start: newRange.start,
-															end: newRange.end,
-														},
-													});
-												}}
-											/>
-											{[7, 14, 30, 60].map((days) => (
-												<Button
-													key={days}
-													size="sm"
-													onClick={() => {
-														dispatchKanbanFilter({
-															type: "SET_DATE_RANGE",
-															payload: {
-																start: dayjs().subtract(
-																	days,
-																	"day"
-																),
-																end: dayjs(),
-															},
-														});
-													}}
-												>
-													Last {days} days
-												</Button>
-											))}
-										</div>
-									)}
-								</TagContainer>
-							</PageBlock>
-							<TagFilters
-								kanbanFilter={kanbanFilter}
-								dispatchKanbanFilter={dispatchKanbanFilter}
-								fetchFilteredSalesDataMutation={
-									fetchFilteredSalesDataMutation
-								}
-							/>
-						</FullModal>,
-						document.body
-					)}
-				</TagContainer>
-			</PageBlock>
+			{/* scroll anchor */}
+			<motion.div
+				ref={ref}
+				className="absolute top-40 w-4 h-4"
+			></motion.div>
+			{!isInView && (
+				<motion.button
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					className="flex justify-center items-center fixed top-24 right-12 w-8 h-8 z-5
+					text-white/80
+					bg-neutral-700
+					border border-neutral-600
+					shadow rounded cursor-pointer"
+					onClick={() => {
+						setShowModel(true);
+					}}
+				>
+					<FilterAltOutlined size={18} />
+				</motion.button>
+			)}
+			{createPortal(
+				<FullModal show={showModel} setShow={setShowModel}>
+					<TagFilters
+						kanbanFilter={kanbanFilter}
+						dispatchKanbanFilter={dispatchKanbanFilter}
+						fetchFilteredSalesDataMutation={
+							fetchFilteredSalesDataMutation
+						}
+					/>
+				</FullModal>,
+				document.body
+			)}
 			<TagFilters
 				kanbanFilter={kanbanFilter}
 				dispatchKanbanFilter={dispatchKanbanFilter}

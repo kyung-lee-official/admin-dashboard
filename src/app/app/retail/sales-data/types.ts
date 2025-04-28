@@ -36,11 +36,8 @@ const retailSalesDataResponseSchema = z.object({
 	taxInclusivePriceCny: z.number().nullable(),
 	priceCny: z.number().nullable(),
 	unitPriceCny: z.number().nullable(),
-	product: z.object({
-		id: z.number(),
-		sku: z.string(),
-		nameZhCn: z.string(),
-	}),
+	productSku: z.string(),
+	productNameZhCn: z.string(),
 });
 export type RetailSalesDataResponse = z.infer<
 	typeof retailSalesDataResponseSchema

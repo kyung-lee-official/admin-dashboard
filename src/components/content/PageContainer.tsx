@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 export const PageContainer = (props: { children: ReactNode }) => {
 	const { children } = props;
 	return (
-		<div className="flex flex-col w-full max-w-[1600px] min-h-[calc(100svh-56px)] p-3 mx-auto gap-y-3">
+		<div className="relative flex flex-col w-full max-w-[1600px] min-h-[calc(100svh-56px)] p-3 mx-auto gap-y-3">
 			{children}
 		</div>
 	);
