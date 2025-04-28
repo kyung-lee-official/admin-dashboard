@@ -49,6 +49,7 @@ import { ClientsSalesVolume } from "./filter-results/clients-sales-volume/Client
 import { ClientsTaxInclusivePriceCny } from "./filter-results/clients-tax-inclusive-price/ClientsTaxInclusivePriceCny";
 import { ClientsPriceCny } from "./filter-results/clients-price/ClientsPriceCny";
 import { FilteredRetailSalesDataResponse } from "../types";
+import { ProductsSalesVolume } from "./filter-results/products-sales-volume/ProductsSalesVolume";
 
 const TagContainer = (props: any) => {
 	const { children } = props;
@@ -623,6 +624,34 @@ export const Content = () => {
 				dispatchKanbanFilter={dispatchKanbanFilter}
 				fetchFilteredSalesDataMutation={fetchFilteredSalesDataMutation}
 			/>
+			<PageBlock
+				title={
+					<div className="flex items-center gap-6">
+						<div>Products - Sales Volume</div>
+						<div className="flex items-center gap-2">
+							<GridOnOutlined size={16} />
+							<Toggle
+								isOn={showChart}
+								onClick={() => {
+									setShowChart(!showChart);
+								}}
+								isAllowed={true}
+							/>
+							<PollOutlined size={16} />
+						</div>
+					</div>
+				}
+				allowCollapse={true}
+			>
+				{fetchFilteredSalesDataMutation.data && (
+					<ProductsSalesVolume
+						showChart={showChart}
+						fetchFilteredSalesData={
+							fetchFilteredSalesDataMutation.data.retailSalesData
+						}
+					/>
+				)}
+			</PageBlock>
 			<PageBlock
 				title={
 					<div className="flex items-center gap-6">

@@ -195,7 +195,7 @@ export const PieChart = ({
 					x={svgWidth - margin.right - 200} // Position the legend
 					y={margin.top}
 					width={180} // Width of the legend
-					height={100} // Height of the legend
+					height={110} // Height of the legend
 				>
 					<div
 						className="p-3
