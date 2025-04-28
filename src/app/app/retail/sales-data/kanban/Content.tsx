@@ -31,7 +31,6 @@ import {
 } from "./kanbanFilterReducer";
 import { Toggle } from "@/components/toggle/Toggle";
 import {
-	ExpandLessOutlined,
 	FilterAltOffOutlined,
 	FilterAltOutlined,
 	GridOnOutlined,
