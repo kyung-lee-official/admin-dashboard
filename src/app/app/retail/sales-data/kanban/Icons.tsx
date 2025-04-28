@@ -85,3 +85,18 @@ export const FilterAltOffOutlined = (props: { size: number }) => {
 		</svg>
 	);
 };
+
+export const ExpandLessOutlined = (props: { size: number }) => {
+	const { size } = props;
+	return (
+		<svg
+			focusable="false"
+			viewBox="0 0 24 24"
+			width={size}
+			height={size}
+			fill="currentColor"
+		>
+			<path d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z"></path>
+		</svg>
+	);
+};

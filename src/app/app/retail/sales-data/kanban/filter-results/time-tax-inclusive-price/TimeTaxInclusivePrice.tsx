@@ -6,6 +6,7 @@ import { SwapVert } from "../../Icons";
 import { timeTaxInclusivePriceSortReducer } from "./timeTaxInclusivePriceSortReducer";
 import { convertNumberToHumanReadable } from "num-guru";
 import { BarChart } from "@/components/charts/barchart/BarChart";
+import { ResultWrapper } from "../ResultWrapper";
 
 export const TimeTaxInclusivePrice = (props: {
 	showMonthly: boolean;
@@ -116,7 +117,7 @@ export const TimeTaxInclusivePrice = (props: {
 			});
 
 			return (
-				<div className="h-[525px] overflow-y-auto scrollbar">
+				<ResultWrapper>
 					<Table>
 						<Thead>
 							<tr>
@@ -195,7 +196,7 @@ export const TimeTaxInclusivePrice = (props: {
 							})}
 						</Tbody>
 					</Table>
-				</div>
+				</ResultWrapper>
 			);
 		default:
 			return null;

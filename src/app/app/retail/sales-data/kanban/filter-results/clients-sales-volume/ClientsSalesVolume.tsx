@@ -4,6 +4,7 @@ import { useReducer } from "react";
 import { SwapVert } from "../../Icons";
 import { clientsSalesVolumeReducer } from "./clientsSalesVolumeReducer";
 import { PieChart } from "@/components/charts/piechart/PieChart";
+import { ResultWrapper } from "../ResultWrapper";
 
 export const ClientsSalesVolume = (props: {
 	showChart: boolean;
@@ -64,7 +65,7 @@ export const ClientsSalesVolume = (props: {
 			});
 
 			return (
-				<div className="h-[525px] overflow-y-auto scrollbar">
+				<ResultWrapper>
 					<Table>
 						<Thead>
 							<tr>
@@ -131,7 +132,7 @@ export const ClientsSalesVolume = (props: {
 							})}
 						</Tbody>
 					</Table>
-				</div>
+				</ResultWrapper>
 			);
 		default:
 			return null;

@@ -31,6 +31,7 @@ import {
 } from "./kanbanFilterReducer";
 import { Toggle } from "@/components/toggle/Toggle";
 import {
+	ExpandLessOutlined,
 	FilterAltOffOutlined,
 	FilterAltOutlined,
 	GridOnOutlined,
@@ -655,6 +656,7 @@ export const Content = () => {
 						</div>
 					</div>
 				}
+				allowCollapse={true}
 			>
 				{fetchFilteredSalesDataMutation.data && (
 					<TimeSalesVolume
@@ -698,6 +700,7 @@ export const Content = () => {
 						</div>
 					</div>
 				}
+				allowCollapse={true}
 			>
 				{fetchFilteredSalesDataMutation.data && (
 					<TimeTaxInclusivePrice
@@ -741,6 +744,7 @@ export const Content = () => {
 						</div>
 					</div>
 				}
+				allowCollapse={true}
 			>
 				{fetchFilteredSalesDataMutation.data && (
 					<TimePrice
@@ -769,6 +773,7 @@ export const Content = () => {
 						</div>
 					</div>
 				}
+				allowCollapse={true}
 			>
 				{fetchFilteredSalesDataMutation.data && (
 					<StorehousesSalesVolume
@@ -796,6 +801,7 @@ export const Content = () => {
 						</div>
 					</div>
 				}
+				allowCollapse={true}
 			>
 				{fetchFilteredSalesDataMutation.data && (
 					<StorehousesTaxInclusivePrice
@@ -823,6 +829,7 @@ export const Content = () => {
 						</div>
 					</div>
 				}
+				allowCollapse={true}
 			>
 				{fetchFilteredSalesDataMutation.data && (
 					<ClientsSalesVolume
@@ -850,6 +857,7 @@ export const Content = () => {
 						</div>
 					</div>
 				}
+				allowCollapse={true}
 			>
 				{fetchFilteredSalesDataMutation.data && (
 					<ClientsTaxInclusivePriceCny
@@ -877,6 +885,7 @@ export const Content = () => {
 						</div>
 					</div>
 				}
+				allowCollapse={true}
 			>
 				{fetchFilteredSalesDataMutation.data && (
 					<ClientsPriceCny

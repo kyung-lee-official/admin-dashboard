@@ -5,6 +5,7 @@ import { SwapVert } from "../../Icons";
 import { clientsPriceReducer } from "./clientsPriceReducer";
 import { convertNumberToHumanReadable } from "num-guru";
 import { PieChart } from "@/components/charts/piechart/PieChart";
+import { ResultWrapper } from "../ResultWrapper";
 
 export const ClientsPriceCny = (props: {
 	showChart: boolean;
@@ -71,7 +72,7 @@ export const ClientsPriceCny = (props: {
 			});
 
 			return (
-				<div className="h-[525px] overflow-y-auto scrollbar">
+				<ResultWrapper>
 					<Table>
 						<Thead>
 							<tr>
@@ -147,7 +148,7 @@ export const ClientsPriceCny = (props: {
 							})}
 						</Tbody>
 					</Table>
-				</div>
+				</ResultWrapper>
 			);
 		default:
 			return null;

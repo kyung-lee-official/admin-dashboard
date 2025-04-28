@@ -6,6 +6,7 @@ import { SwapVert } from "../../Icons";
 import { timeSalesVolumeSortReducer } from "./timeSalesVolumeSortReducer";
 import { BarChart } from "@/components/charts/barchart/BarChart";
 import { convertNumberToHumanReadable } from "num-guru";
+import { ResultWrapper } from "../ResultWrapper";
 
 export const TimeSalesVolume = (props: {
 	showMonthly: boolean;
@@ -104,7 +105,7 @@ export const TimeSalesVolume = (props: {
 			});
 
 			return (
-				<div className="h-[525px] overflow-y-auto scrollbar">
+				<ResultWrapper>
 					<Table>
 						<Thead>
 							<tr>
@@ -174,7 +175,7 @@ export const TimeSalesVolume = (props: {
 							})}
 						</Tbody>
 					</Table>
-				</div>
+				</ResultWrapper>
 			);
 		default:
 			return null;
