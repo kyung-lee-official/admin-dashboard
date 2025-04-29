@@ -36,6 +36,10 @@ export const StorehousesTaxInclusivePrice = (props: {
 		},
 		[] as ReducedData[]
 	);
+	const totalGmv = reducedData.reduce(
+		(acc, curr) => acc + curr.taxInclusivePriceCny,
+		0
+	);
 
 	const [sortState, dispatch] = useReducer(
 		storehousesTaxInclusivePriceReducer,
@@ -60,6 +64,13 @@ export const StorehousesTaxInclusivePrice = (props: {
 								useComma: true,
 								useSuffix: false,
 							})}`;
+						}}
+						textFormatter={(value, data) => {
+							const percentage = (
+								(Number(data.taxInclusivePriceCny) / totalGmv) *
+								100
+							).toFixed(2);
+							return `${data.storehouse}, ${percentage}%`;
 						}}
 					/>
 				</div>

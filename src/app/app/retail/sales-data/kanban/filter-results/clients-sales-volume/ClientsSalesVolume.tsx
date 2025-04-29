@@ -33,6 +33,10 @@ export const ClientsSalesVolume = (props: {
 		},
 		[] as ReducedData[]
 	);
+	const totalSalesVolume = reducedData.reduce(
+		(acc, curr) => acc + curr.salesVolume,
+		0
+	);
 
 	const [sortState, dispatch] = useReducer(clientsSalesVolumeReducer, {
 		column: "clients",
@@ -49,6 +53,13 @@ export const ClientsSalesVolume = (props: {
 						svgHeight={height}
 						margin={margin}
 						padAngle={0.005}
+						textFormatter={(value, data) => {
+							const percentage = (
+								(Number(data.salesVolume) / totalSalesVolume) *
+								100
+							).toFixed(2);
+							return `${data.client}, ${percentage}%`;
+						}}
 					/>
 				</div>
 			);

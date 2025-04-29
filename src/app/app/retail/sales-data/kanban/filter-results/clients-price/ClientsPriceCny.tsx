@@ -34,6 +34,10 @@ export const ClientsPriceCny = (props: {
 		},
 		[] as ReducedData[]
 	);
+	const totalGmv = reducedData.reduce(
+		(acc, curr) => acc + curr.priceCny,
+		0
+	);
 
 	const [sortState, dispatch] = useReducer(clientsPriceReducer, {
 		column: "clients",
@@ -55,6 +59,13 @@ export const ClientsPriceCny = (props: {
 								useComma: true,
 								useSuffix: false,
 							})}`;
+						}}
+						textFormatter={(value, data) => {
+							const percentage = (
+								(Number(data.priceCny) / totalGmv) *
+								100
+							).toFixed(2);
+							return `${data.client}, ${percentage}%`;
 						}}
 					/>
 				</div>
