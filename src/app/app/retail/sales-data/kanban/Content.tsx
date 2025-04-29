@@ -9,9 +9,16 @@ import { Dropdown as OnlineDropdown } from "@/components/input/online-dropdown/D
 import { useAuthStore } from "@/stores/auth";
 import {
 	filterRetailSalesData,
+	getAllSkus,
+	RetailSalesDataQK,
 	searchRetailSalesDataSku,
 } from "@/utils/api/app/retail/sales-data";
-import { useMutation, UseMutationResult } from "@tanstack/react-query";
+import {
+	useMutation,
+	UseMutationResult,
+	useQuery,
+	UseQueryResult,
+} from "@tanstack/react-query";
 import dayjs from "dayjs";
 import {
 	ActionDispatch,
@@ -48,7 +55,10 @@ import { StorehousesTaxInclusivePrice } from "./filter-results/storehouses-tax-i
 import { ClientsSalesVolume } from "./filter-results/clients-sales-volume/ClientsSalesVolume";
 import { ClientsTaxInclusivePriceCny } from "./filter-results/clients-tax-inclusive-price/ClientsTaxInclusivePriceCny";
 import { ClientsPriceCny } from "./filter-results/clients-price/ClientsPriceCny";
-import { FilteredRetailSalesDataResponse } from "../types";
+import {
+	FilteredRetailSalesDataResponse,
+	RetailSalesDataResponse,
+} from "../types";
 import { ProductsSalesVolume } from "./filter-results/products-sales-volume/ProductsSalesVolume";
 
 const TagContainer = (props: any) => {
@@ -75,7 +85,7 @@ const TagButton = (props: {
 			text-sm
 			${isSelected && "text-neutral-300 bg-neutral-600"}
 			border border-neutral-700
-			rounded cursor-pointer ${!isAvailable && "opacity-50"}`}
+			rounded cursor-pointer ${!isAvailable && "opacity-50 line-through"}`}
 		>
 			{children}
 		</button>
@@ -108,11 +118,13 @@ const TagFilters = (props: {
 		any,
 		unknown
 	>;
+	allSkusQuery: UseQueryResult<Sku[], Error>;
 }) => {
 	const {
 		kanbanFilter,
 		dispatchKanbanFilter,
 		fetchFilteredSalesDataMutation,
+		allSkusQuery,
 	} = props;
 
 	const jwt = useAuthStore((state) => state.jwt);
@@ -121,17 +133,6 @@ const TagFilters = (props: {
 		const sku = await searchRetailSalesDataSku(term, jwt);
 		return sku;
 	}
-	/* function to handle deselection of an sku */
-	const handleDeselect = (option: Sku) => {
-		if (kanbanFilter.skus) {
-			dispatchKanbanFilter({
-				type: "SET_SKUS",
-				payload: (kanbanFilter.skus as Sku[]).filter(
-					(s: Sku) => s.id !== option.id
-				),
-			});
-		}
-	};
 
 	return (
 		<div className="flex flex-col gap-3">
@@ -512,26 +513,63 @@ const TagFilters = (props: {
 					/>
 				}
 			>
-				<TagContainer>
-					{kanbanFilter.skus &&
-						(kanbanFilter.skus as Sku[]).map((s: Sku) => {
-							return (
-								<button
-									key={s.id}
-									onClick={() => handleDeselect(s)}
-									className="flex flex-col items-start px-1
-									text-xs text-neutral-300 hover:line-through
-									bg-neutral-600
-									border border-neutral-700 cursor-pointer rounded"
-								>
-									<span>{s.nameZhCn}</span>
-									<span className="text-neutral-400">
-										{s.sku}
-									</span>
-								</button>
-							);
-						})}
-				</TagContainer>
+				<div
+					className="flex flex-wrap max-h-[525px] px-6 py-3 gap-1.5
+					border-t border-neutral-700 overflow-y-scroll scrollbar"
+				>
+					{fetchFilteredSalesDataMutation.data &&
+					allSkusQuery.data ? (
+						allSkusQuery.data
+							.sort((a: Sku, b: Sku) =>
+								a.nameZhCn.localeCompare(b.nameZhCn)
+							)
+							.map((s) => {
+								const isSelected = kanbanFilter.skus.some(
+									(selected: Sku) => selected.id === s.id
+								);
+								const isAvailable =
+									fetchFilteredSalesDataMutation.data.retailSalesData.some(
+										(rsd: RetailSalesDataResponse) =>
+											rsd.productId === s.id
+									);
+								return (
+									<button
+										key={s.id}
+										// disabled={!isAvailable}
+										className={`flex flex-col items-start px-1
+										text-xs
+										${isSelected && "text-neutral-300 bg-neutral-600"}
+										border border-neutral-700
+										rounded cursor-pointer ${!isAvailable && "opacity-50 line-through"}`}
+										onClick={() => {
+											dispatchKanbanFilter({
+												type: "SET_SKUS",
+												payload: isSelected
+													? (
+															kanbanFilter.skus as Sku[]
+													  ).filter(
+															(selected) =>
+																selected.id !==
+																s.id
+													  )
+													: [
+															...(kanbanFilter.skus as Sku[]),
+															s,
+													  ],
+											});
+										}}
+									>
+										<span>{s.nameZhCn}</span>
+										<span className="text-neutral-400">
+											{s.sku}
+										</span>
+									</button>
+								);
+							})
+					) : (
+						<OneRowSkeleton />
+					)}
+				</div>
 			</PageBlock>
 		</div>
 	);
@@ -558,6 +596,14 @@ export const Content = () => {
 	);
 
 	const jwt = useAuthStore((state) => state.jwt);
+
+	const allSkusQuery = useQuery({
+		queryKey: [RetailSalesDataQK.GET_SALES_DATA_ALL_SKUS],
+		queryFn: async () => {
+			const response = await getAllSkus(jwt);
+			return response;
+		},
+	});
 
 	/* mutation to fetch filtered sales data */
 	const fetchFilteredSalesDataMutation = useMutation({
@@ -615,6 +661,7 @@ export const Content = () => {
 						fetchFilteredSalesDataMutation={
 							fetchFilteredSalesDataMutation
 						}
+						allSkusQuery={allSkusQuery}
 					/>
 				</FullModal>,
 				document.body
@@ -623,6 +670,7 @@ export const Content = () => {
 				kanbanFilter={kanbanFilter}
 				dispatchKanbanFilter={dispatchKanbanFilter}
 				fetchFilteredSalesDataMutation={fetchFilteredSalesDataMutation}
+				allSkusQuery={allSkusQuery}
 			/>
 			<PageBlock
 				title={

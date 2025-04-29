@@ -16,7 +16,7 @@ const SharedkanbanFilterStateSchema = z.object({
 	categories: z.array(z.string()),
 	receiptTypes: z.array(z.string()),
 	sourceAttributes: z.array(z.string()),
-	skus: z.union([skuSchema, z.array(skuSchema), z.null()]),
+	skus: z.array(skuSchema),
 });
 
 export const kanbanFilterStateSchema = z.discriminatedUnion("dateMode", [
@@ -47,7 +47,7 @@ export type KanbanFilterAction =
 	| { type: "SET_CATEGORIES"; payload: string[] }
 	| { type: "SET_RECEIPT_TYPES"; payload: string[] }
 	| { type: "SET_SOURCE_ATTRIBUTES"; payload: string[] }
-	| { type: "SET_SKUS"; payload: Sku | Sku[] | null };
+	| { type: "SET_SKUS"; payload: Sku[] };
 
 export function kanbanFilterReducer(
 	state: KanbanFilterState,

@@ -1,4 +1,7 @@
-import { KanbanFilterState } from "@/app/app/retail/sales-data/kanban/kanbanFilterReducer";
+import {
+	KanbanFilterState,
+	Sku,
+} from "@/app/app/retail/sales-data/kanban/kanbanFilterReducer";
 import {
 	ImportRetailSalesData,
 	FilteredRetailSalesDataResponse,
@@ -13,6 +16,7 @@ export enum RetailSalesDataQK {
 	GET_SALES_DATA_CATEGORIES = "get-sales-data-categories",
 	GET_SALES_DATA_RECEIPT_TYPES = "get-sales-data-receipt-types",
 	GET_SALES_DATA_SOURCE_ATTRIBUTES = "get-sales-data-source-attributes",
+	GET_SALES_DATA_ALL_SKUS = "get-sales-data-all-skus",
 }
 
 export async function importRetailSalesData(
@@ -164,6 +168,17 @@ export async function searchRetailSalesDataSku(term: string, jwt: string) {
 			},
 		}
 	);
+	return res.data;
+}
+
+export async function getAllSkus(jwt: string): Promise<Sku[]> {
+	const res = await axios.get(`internal/retail/sales-data/get-all-skus`, {
+		baseURL: process.env.NEXT_PUBLIC_API_HOST,
+		headers: {
+			Authorization: jwt,
+			"Content-Type": "application/json",
+		},
+	});
 	return res.data;
 }
 
