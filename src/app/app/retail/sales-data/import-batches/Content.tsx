@@ -1,6 +1,5 @@
 "use client";
 
-import { ConfirmDialog } from "@/components/confirm-dialog/ConfirmDialog";
 import { ConfirmDialogWithButton } from "@/components/confirm-dialog/ConfirmDialogWithButton";
 import { PageBlock, PageContainer } from "@/components/content/PageContainer";
 import { Table, Tbody, Thead } from "@/components/content/Table";
@@ -24,14 +23,72 @@ import { queryClient } from "@/utils/react-query/react-query";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { getRetailSocket } from "../../retail-socket";
+import { HorizontalProgress } from "@/components/progress/horizontal-progress/HorizontalProgress";
+
+type Progress = {
+	batchId: number;
+	percentage: number;
+};
 
 export const Content = () => {
 	const [edit, setEdit] = useState<EditProps>({
 		show: false,
 		id: EditId.RETAIL_IMPORT_SALES_DATA,
 	});
+
+	const [isConnected, setIsConnected] = useState(false);
+	const [progresses, setProgresses] = useState<Progress[]>([]);
+
+	useEffect(() => {
+		const socket = getRetailSocket();
+
+		socket.on("connect", () => {
+			setIsConnected(true);
+		});
+		socket.on("disconnect", () => {
+			setIsConnected(false);
+		});
+
+		socket.on("retail-sales-data-saving-progress", (newData: Progress) => {
+			setProgresses((prevProgresses) => {
+				/* exsisting progress */
+				if (prevProgresses.some((p) => p.batchId === newData.batchId)) {
+					if (newData.percentage === 100) {
+						/* remove progress when 100% */
+						const removed = prevProgresses.filter(
+							(p) => p.batchId !== newData.batchId
+						);
+						queryClient.invalidateQueries({
+							queryKey: [
+								RetailSalesDataQK.GET_SALES_DATA_IMPORT_BATCHES,
+							],
+						});
+						return removed;
+					} else {
+						/* update progress */
+						return prevProgresses.map((p) =>
+							p.batchId === newData.batchId
+								? { ...p, percentage: newData.percentage }
+								: p
+						);
+					}
+				} else {
+					/* new progress */
+					return [...prevProgresses, newData];
+				}
+			});
+		});
+
+		/* cleanup on component unmount */
+		return () => {
+			socket.off("connect");
+			socket.off("disconnect");
+			socket.off("retail-sales-data-saving-progress");
+		};
+	}, []);
 
 	const jwt = useAuthStore((state) => state.jwt);
 	const importBatchesQuery = useQuery<any, AxiosError>({
@@ -105,34 +162,59 @@ export const Content = () => {
 									}}
 								>
 									<td>{batch.id}</td>
-									<td>{batch._count.retailSalesData}</td>
+									<td>
+										{progresses.some((p) => {
+											return p.batchId === batch.id;
+										}) ? (
+											<HorizontalProgress
+												className="max-w-28"
+												backgroundColor="bg-white/30"
+												progress={
+													(
+														progresses.find((p) => {
+															return (
+																p.batchId ===
+																batch.id
+															);
+														}) as Progress
+													).percentage
+												}
+											/>
+										) : (
+											batch._count.retailSalesData
+										)}
+									</td>
 									<td>
 										{dayjs(batch.createdAt).format(
 											"MMM DD, YYYY HH:mm:ss"
 										)}
 									</td>
 									<td>
-										<ConfirmDialogWithButton
-											question={
-												"Are you sure you want to delete this batch?"
-											}
-											data={batch.id}
-											onOk={(
-												batchId: number | undefined
-											) => {
-												deleteBatchMutation.mutate(
-													batchId
-												);
-											}}
-										>
-											<div
-												className={`flex items-center w-full px-2 py-1.5 gap-2
+										{progresses.some((p) => {
+											return p.batchId === batch.id;
+										}) ? null : (
+											<ConfirmDialogWithButton
+												question={
+													"Are you sure you want to delete this batch?"
+												}
+												data={batch.id}
+												onOk={(
+													batchId: number | undefined
+												) => {
+													deleteBatchMutation.mutate(
+														batchId
+													);
+												}}
+											>
+												<div
+													className={`flex items-center w-full px-2 py-1.5 gap-2
 												hover:bg-white/5
 												rounded cursor-pointer whitespace-nowrap`}
-											>
-												<DeleteIcon size={15} />
-											</div>
-										</ConfirmDialogWithButton>
+												>
+													<DeleteIcon size={15} />
+												</div>
+											</ConfirmDialogWithButton>
+										)}
 									</td>
 								</tr>
 							);
