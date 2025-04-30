@@ -3,7 +3,6 @@ import { getMembers, MembersQK } from "@/utils/api/members";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useAuthStore } from "@/stores/auth";
-import { EditRoleData } from "./EditContentEditRole";
 import { Member } from "@/utils/types/internal";
 import { sortByProp } from "@/utils/data/data";
 
@@ -70,7 +69,7 @@ export const EditMembers = (props: {
 		<ul
 			className="flex flex-col justify-start items-start w-full h-fit max-h-40 gap-1.5 px-2 py-1.5
 			bg-white/10 rounded-md scrollbar
-			border-[1px] border-white/10 overscroll-y-auto"
+			border-[1px] border-white/10 overflow-y-auto"
 		>
 			{sortedAllMembers.length &&
 				sortedAllMembers.map((member: any) => {
