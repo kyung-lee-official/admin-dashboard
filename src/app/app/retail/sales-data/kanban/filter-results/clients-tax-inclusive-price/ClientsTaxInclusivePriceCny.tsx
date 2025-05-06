@@ -95,7 +95,7 @@ export const ClientsTaxInclusivePriceCny = (props: {
 							<tr>
 								<th className="text-left">
 									<div className="flex items-center gap-3">
-										Date ({reducedData.length}){" "}
+										Clients ({reducedData.length}){" "}
 										<button
 											className="flex items-center 
 											bg-neutral-700 hover:bg-neutral-600
