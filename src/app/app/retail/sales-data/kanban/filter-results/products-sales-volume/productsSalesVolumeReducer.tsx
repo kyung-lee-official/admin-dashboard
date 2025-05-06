@@ -1,32 +1,25 @@
 type SortState = {
-	column: "product" | "salesVolume";
+	column: string;
 	direction: "asc" | "desc";
 };
 
-type Action =
-	| { type: "SORT_BY_PRODUCT" }
-	| { type: "SORT_BY_SALES_VOLUME" };
+type Action = {
+	type: "SORT_BY_COLUMN";
+	payload: string; // Column name to sort by
+};
 
 export const productSalesVolumeReducer = (
 	state: SortState,
 	action: Action
 ): SortState => {
 	switch (action.type) {
-		case "SORT_BY_PRODUCT":
+		case "SORT_BY_COLUMN":
 			return {
-				column: "product",
+				column: action.payload,
 				direction:
-					state.column === "product" && state.direction === "asc"
+					state.column === action.payload && state.direction === "asc"
 						? "desc"
-						: "asc",
-			};
-		case "SORT_BY_SALES_VOLUME":
-			return {
-				column: "salesVolume",
-				direction:
-					state.column === "salesVolume" && state.direction === "asc"
-						? "desc"
-						: "asc",
+						: "asc" /* Toggle direction if the same column is clicked */,
 			};
 		default:
 			return state;

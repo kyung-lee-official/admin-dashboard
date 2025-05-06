@@ -1,6 +1,6 @@
 import { Table, Tbody, Thead } from "@/components/content/Table";
 import { RetailSalesDataResponse } from "../../../types";
-import { useReducer } from "react";
+import { useCallback, useMemo, useReducer } from "react";
 import { productSalesVolumeReducer } from "./productsSalesVolumeReducer";
 import { SwapVert } from "../../Icons";
 import { PieChart } from "@/components/charts/piechart/PieChart";
@@ -23,28 +23,86 @@ export const ProductsSalesVolume = (props: {
 		productSku: string;
 		productNameZhCn: string;
 		salesVolume: number;
+		last7Days: number;
+		last14Days: number;
+		last30Days: number;
+		last60Days: number;
 	};
-	const reducedData: ReducedData[] = fetchFilteredSalesData.reduce(
-		(acc, curr) => {
+
+	/* helper function to filter sales data by date range */
+	const filterByDateRange = useCallback(
+		(days: number) => {
+			const cutoffDate = new Date();
+			cutoffDate.setDate(cutoffDate.getDate() - days);
+			return fetchFilteredSalesData.filter(
+				(data) => new Date(data.date) >= cutoffDate
+			);
+		},
+		[fetchFilteredSalesData]
+	);
+
+	const reducedData: ReducedData[] = useMemo(() => {
+		/* precompute filtered data for each date range */
+		const last7DaysData = filterByDateRange(7);
+		const last14DaysData = filterByDateRange(14);
+		const last30DaysData = filterByDateRange(30);
+		const last60DaysData = filterByDateRange(60);
+
+		return fetchFilteredSalesData.reduce((acc, curr) => {
 			const productNameZhCn = curr.productNameZhCn;
 			const salesVolume = curr.salesVolume;
+
 			const existingProduct = acc.find(
 				(d) => d.productNameZhCn === productNameZhCn
 			);
+
 			if (existingProduct) {
 				existingProduct.salesVolume += salesVolume;
 			} else {
+				/* calculate sales volumes using precomputed data */
+				const last7Days = last7DaysData.reduce(
+					(sum, data) =>
+						data.productNameZhCn === productNameZhCn
+							? sum + data.salesVolume
+							: sum,
+					0
+				);
+				const last14Days = last14DaysData.reduce(
+					(sum, data) =>
+						data.productNameZhCn === productNameZhCn
+							? sum + data.salesVolume
+							: sum,
+					0
+				);
+				const last30Days = last30DaysData.reduce(
+					(sum, data) =>
+						data.productNameZhCn === productNameZhCn
+							? sum + data.salesVolume
+							: sum,
+					0
+				);
+				const last60Days = last60DaysData.reduce(
+					(sum, data) =>
+						data.productNameZhCn === productNameZhCn
+							? sum + data.salesVolume
+							: sum,
+					0
+				);
+
 				acc.push({
 					productId: curr.productId,
 					productSku: curr.productSku,
 					productNameZhCn,
 					salesVolume,
+					last7Days,
+					last14Days,
+					last30Days,
+					last60Days,
 				});
 			}
 			return acc;
-		},
-		[] as ReducedData[]
-	);
+		}, [] as ReducedData[]);
+	}, [fetchFilteredSalesData]);
 	const totalSalesVolume = reducedData.reduce(
 		(acc, curr) => acc + curr.salesVolume,
 		0
@@ -87,6 +145,7 @@ export const ProductsSalesVolume = (props: {
 			const sortedData = [...reducedData].sort((a, b) => {
 				const { column, direction } = sortState;
 				const multiplier = direction === "asc" ? 1 : -1;
+
 				if (column === "product") {
 					return (
 						multiplier *
@@ -94,8 +153,17 @@ export const ProductsSalesVolume = (props: {
 					);
 				} else if (column === "salesVolume") {
 					return multiplier * (a.salesVolume - b.salesVolume);
+				} else if (column === "last7Days") {
+					return multiplier * (a.last7Days - b.last7Days);
+				} else if (column === "last14Days") {
+					return multiplier * (a.last14Days - b.last14Days);
+				} else if (column === "last30Days") {
+					return multiplier * (a.last30Days - b.last30Days);
+				} else if (column === "last60Days") {
+					return multiplier * (a.last60Days - b.last60Days);
 				}
-				return 0;
+
+				return 0; // Default case
 			});
 
 			return (
@@ -105,14 +173,15 @@ export const ProductsSalesVolume = (props: {
 							<tr>
 								<th className="text-left">
 									<div className="flex items-center gap-3">
-										Date ({reducedData.length}){" "}
+										Product ({reducedData.length}){" "}
 										<button
 											className="flex items-center 
 											bg-neutral-700 hover:bg-neutral-600
 											rounded cursor-pointer"
 											onClick={() => {
 												dispatch({
-													type: "SORT_BY_PRODUCT",
+													type: "SORT_BY_COLUMN",
+													payload: "product",
 												});
 											}}
 										>
@@ -137,7 +206,8 @@ export const ProductsSalesVolume = (props: {
 											rounded cursor-pointer"
 											onClick={() => {
 												dispatch({
-													type: "SORT_BY_SALES_VOLUME",
+													type: "SORT_BY_COLUMN",
+													payload: "salesVolume",
 												});
 											}}
 										>
@@ -153,6 +223,110 @@ export const ProductsSalesVolume = (props: {
 										</button>
 									</div>
 								</th>
+								<th className="text-left">
+									<div className="flex items-center gap-3">
+										Last 7 Days{" "}
+										<button
+											className="flex items-center 
+                                            bg-neutral-700 hover:bg-neutral-600
+                                            rounded cursor-pointer"
+											onClick={() => {
+												dispatch({
+													type: "SORT_BY_COLUMN",
+													payload: "last7Days",
+												});
+											}}
+										>
+											<SwapVert
+												size={20}
+												direction={
+													sortState.column ===
+													"last7Days"
+														? sortState.direction
+														: null
+												}
+											/>
+										</button>
+									</div>
+								</th>
+								<th className="text-left">
+									<div className="flex items-center gap-3">
+										Last 14 Days{" "}
+										<button
+											className="flex items-center 
+                                            bg-neutral-700 hover:bg-neutral-600
+                                            rounded cursor-pointer"
+											onClick={() => {
+												dispatch({
+													type: "SORT_BY_COLUMN",
+													payload: "last14Days",
+												});
+											}}
+										>
+											<SwapVert
+												size={20}
+												direction={
+													sortState.column ===
+													"last14Days"
+														? sortState.direction
+														: null
+												}
+											/>
+										</button>
+									</div>
+								</th>
+								<th className="text-left">
+									<div className="flex items-center gap-3">
+										Last 30 Days{" "}
+										<button
+											className="flex items-center 
+                                            bg-neutral-700 hover:bg-neutral-600
+                                            rounded cursor-pointer"
+											onClick={() => {
+												dispatch({
+													type: "SORT_BY_COLUMN",
+													payload: "last30Days",
+												});
+											}}
+										>
+											<SwapVert
+												size={20}
+												direction={
+													sortState.column ===
+													"last30Days"
+														? sortState.direction
+														: null
+												}
+											/>
+										</button>
+									</div>
+								</th>
+								<th className="text-left">
+									<div className="flex items-center gap-3">
+										Last 60 Days{" "}
+										<button
+											className="flex items-center 
+                                            bg-neutral-700 hover:bg-neutral-600
+                                            rounded cursor-pointer"
+											onClick={() => {
+												dispatch({
+													type: "SORT_BY_COLUMN",
+													payload: "last60Days",
+												});
+											}}
+										>
+											<SwapVert
+												size={20}
+												direction={
+													sortState.column ===
+													"last60Days"
+														? sortState.direction
+														: null
+												}
+											/>
+										</button>
+									</div>
+								</th>
 							</tr>
 						</Thead>
 						<Tbody>
@@ -161,6 +335,10 @@ export const ProductsSalesVolume = (props: {
 									<tr key={d.productNameZhCn}>
 										<td>{d.productNameZhCn}</td>
 										<td>{d.salesVolume}</td>
+										<td>{d.last7Days}</td>
+										<td>{d.last14Days}</td>
+										<td>{d.last30Days}</td>
+										<td>{d.last60Days}</td>
 									</tr>
 								);
 							})}
