@@ -514,7 +514,7 @@ const TagFilters = (props: {
 				}
 			>
 				<div
-					className="flex flex-wrap max-h-[525px] px-6 py-3 gap-1.5
+					className="grid grid-cols-5 max-h-[525px] px-6 py-3 gap-2
 					border-t border-neutral-700 overflow-y-scroll scrollbar"
 				>
 					{fetchFilteredSalesDataMutation.data &&
@@ -537,8 +537,8 @@ const TagFilters = (props: {
 										key={s.id}
 										// disabled={!isAvailable}
 										className={`flex flex-col items-start px-1
-										text-xs
-										${isSelected && "text-neutral-300 bg-neutral-600"}
+										text-sm text-neutral-300 text-left
+										${isSelected && "bg-neutral-600"}
 										border border-neutral-700
 										rounded cursor-pointer ${!isAvailable && "opacity-50 line-through"}`}
 										onClick={() => {
@@ -560,7 +560,7 @@ const TagFilters = (props: {
 										}}
 									>
 										<span>{s.nameZhCn}</span>
-										<span className="text-neutral-400">
+										<span className="text-neutral-400 text-xs">
 											{s.sku}
 										</span>
 									</button>
