@@ -27,6 +27,8 @@ export const ProductsSalesVolume = (props: {
 		last14Days: number;
 		last30Days: number;
 		last60Days: number;
+		last7DaysAverage: number;
+		last30DaysAverage: number;
 	};
 
 	/* helper function to filter sales data by date range */
@@ -98,6 +100,8 @@ export const ProductsSalesVolume = (props: {
 					last14Days,
 					last30Days,
 					last60Days,
+					last7DaysAverage: last7Days / 7,
+					last30DaysAverage: last30Days / 30,
 				});
 			}
 			return acc;
@@ -151,6 +155,10 @@ export const ProductsSalesVolume = (props: {
 						multiplier *
 						a.productNameZhCn.localeCompare(b.productNameZhCn)
 					);
+				} else if (column === "productSku") {
+					return (
+						multiplier * a.productSku.localeCompare(b.productSku)
+					);
 				} else if (column === "salesVolume") {
 					return multiplier * (a.salesVolume - b.salesVolume);
 				} else if (column === "last7Days") {
@@ -161,9 +169,17 @@ export const ProductsSalesVolume = (props: {
 					return multiplier * (a.last30Days - b.last30Days);
 				} else if (column === "last60Days") {
 					return multiplier * (a.last60Days - b.last60Days);
+				} else if (column === "last7DaysAverage") {
+					return (
+						multiplier * (a.last7DaysAverage - b.last7DaysAverage)
+					);
+				} else if (column === "last30DaysAverage") {
+					return (
+						multiplier * (a.last30DaysAverage - b.last30DaysAverage)
+					);
 				}
 
-				return 0; // Default case
+				return 0; /* default case */
 			});
 
 			return (
@@ -190,6 +206,32 @@ export const ProductsSalesVolume = (props: {
 												direction={
 													sortState.column ===
 													"product"
+														? sortState.direction
+														: null
+												}
+											/>
+										</button>
+									</div>
+								</th>
+								<th className="text-left">
+									<div className="flex items-center gap-3">
+										Product SKU{" "}
+										<button
+											className="flex items-center 
+											bg-neutral-700 hover:bg-neutral-600
+											rounded cursor-pointer"
+											onClick={() => {
+												dispatch({
+													type: "SORT_BY_COLUMN",
+													payload: "productSku",
+												});
+											}}
+										>
+											<SwapVert
+												size={20}
+												direction={
+													sortState.column ===
+													"productSku"
 														? sortState.direction
 														: null
 												}
@@ -327,18 +369,77 @@ export const ProductsSalesVolume = (props: {
 										</button>
 									</div>
 								</th>
+								<th className="text-left">
+									<div className="flex items-center gap-3">
+										Last 7 Days Average{" "}
+										<button
+											className="flex items-center 
+                                            bg-neutral-700 hover:bg-neutral-600
+                                            rounded cursor-pointer"
+											onClick={() => {
+												dispatch({
+													type: "SORT_BY_COLUMN",
+													payload:
+														"last60DaysAverage",
+												});
+											}}
+										>
+											<SwapVert
+												size={20}
+												direction={
+													sortState.column ===
+													"last60DaysAverage"
+														? sortState.direction
+														: null
+												}
+											/>
+										</button>
+									</div>
+								</th>
+								<th className="text-left">
+									<div className="flex items-center gap-3">
+										Last 30 Days Average{" "}
+										<button
+											className="flex items-center 
+											bg-neutral-700 hover:bg-neutral-600
+											rounded cursor-pointer"
+											onClick={() => {
+												dispatch({
+													type: "SORT_BY_COLUMN",
+													payload:
+														"last30DaysAverage",
+												});
+											}}
+										>
+											<SwapVert
+												size={20}
+												direction={
+													sortState.column ===
+													"last30DaysAverage"
+														? sortState.direction
+														: null
+												}
+											/>
+										</button>
+									</div>
+								</th>
 							</tr>
 						</Thead>
 						<Tbody>
 							{sortedData.map((d) => {
 								return (
-									<tr key={d.productNameZhCn}>
+									<tr key={d.productSku}>
 										<td>{d.productNameZhCn}</td>
+										<td>{d.productSku}</td>
 										<td>{d.salesVolume}</td>
 										<td>{d.last7Days}</td>
 										<td>{d.last14Days}</td>
 										<td>{d.last30Days}</td>
 										<td>{d.last60Days}</td>
+										<td>{d.last7DaysAverage.toFixed(2)}</td>
+										<td>
+											{d.last30DaysAverage.toFixed(2)}
+										</td>
 									</tr>
 								);
 							})}
