@@ -26,7 +26,7 @@ export const Content = (props: {
 
 	const jwt = useAuthStore((state) => state.jwt);
 	const eventQuery = useQuery<EventResponse, AxiosError>({
-		queryKey: [PerformanceQK.GET_EVENT_BY_ID],
+		queryKey: [PerformanceQK.GET_EVENT_BY_ID, eventId],
 		queryFn: async () => {
 			const event = await getEventById(eventId, jwt);
 			return event;

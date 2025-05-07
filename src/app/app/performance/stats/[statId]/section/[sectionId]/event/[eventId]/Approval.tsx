@@ -54,7 +54,7 @@ export const Approval = (props: {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: [PerformanceQK.GET_EVENT_BY_ID],
+				queryKey: [PerformanceQK.GET_EVENT_BY_ID, event.id],
 			});
 		},
 		onError: () => {},

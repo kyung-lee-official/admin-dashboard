@@ -38,7 +38,7 @@ export const Attachments = (props: { event: EventResponse }) => {
 		refetchOnWindowFocus: false,
 	});
 	const previewQuery = useQuery<Preview[], AxiosError>({
-		queryKey: [PerformanceQK.GET_ATTACHMENT_LIST],
+		queryKey: [PerformanceQK.GET_ATTACHMENT_LIST, event.id],
 		queryFn: async () => {
 			const data = await getAttachmentListByEventId(event.id, jwt);
 			return data;
@@ -110,7 +110,7 @@ export const Attachments = (props: { event: EventResponse }) => {
 						if (file instanceof File) {
 							return (
 								<FileToUpload
-									key={file.name + i}
+									key={file.name + i + "upload"}
 									eventId={event.id}
 									file={file}
 									setUploadList={setUploadList}
@@ -119,7 +119,7 @@ export const Attachments = (props: { event: EventResponse }) => {
 						} else {
 							return (
 								<FileToPreview
-									key={file.name + i}
+									key={file.name + i + "preview"}
 									eventId={event.id}
 									preview={file}
 								/>
