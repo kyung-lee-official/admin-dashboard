@@ -258,7 +258,7 @@ export const Content = (props: { statId: number; sectionId: number }) => {
 													: 0),
 											0
 										)
-										.toFixed(0)}
+										.toFixed(2)}
 								</div>
 							</td>
 						</tr>
@@ -270,7 +270,7 @@ export const Content = (props: { statId: number; sectionId: number }) => {
 										(acc, e) => acc + e.score * e.amount,
 										0
 									)
-									.toFixed(0)}
+									.toFixed(2)}
 							</td>
 						</tr>
 					</Tbody>
