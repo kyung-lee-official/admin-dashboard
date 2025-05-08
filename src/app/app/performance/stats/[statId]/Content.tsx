@@ -343,23 +343,29 @@ export const Content = (props: { statId: number }) => {
 														0
 													)}
 												/>
-												{s.events.reduce(
-													(acc, e) =>
-														acc +
-														(e.approval ===
-														ApprovalType.APPROVED
-															? e.score * e.amount
-															: 0),
-													0
-												)}
+												{s.events
+													.reduce(
+														(acc, e) =>
+															acc +
+															(e.approval ===
+															ApprovalType.APPROVED
+																? e.score *
+																  e.amount
+																: 0),
+														0
+													)
+													.toFixed(2)}
 											</div>
 										</td>
 										<td>
-											{s.events.reduce(
-												(acc, e) =>
-													acc + e.score * e.amount,
-												0
-											)}
+											{s.events
+												.reduce(
+													(acc, e) =>
+														acc +
+														e.score * e.amount,
+													0
+												)
+												.toFixed(2)}
 										</td>
 										<td>{s.description}</td>
 									</tr>

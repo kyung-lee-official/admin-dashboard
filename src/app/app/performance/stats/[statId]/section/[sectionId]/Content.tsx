@@ -248,25 +248,29 @@ export const Content = (props: { statId: number; sectionId: number }) => {
 											100
 										)}
 									/>
-									{sectionQuery.data.events.reduce(
-										(acc, e) =>
-											acc +
-											(e.approval ===
-											ApprovalType.APPROVED
-												? e.score * e.amount
-												: 0),
-										0
-									)}
+									{sectionQuery.data.events
+										.reduce(
+											(acc, e) =>
+												acc +
+												(e.approval ===
+												ApprovalType.APPROVED
+													? e.score * e.amount
+													: 0),
+											0
+										)
+										.toFixed(0)}
 								</div>
 							</td>
 						</tr>
 						<tr>
 							<td>Submitted Score</td>
 							<td>
-								{sectionQuery.data.events.reduce(
-									(acc, e) => acc + e.score * e.amount,
-									0
-								)}
+								{sectionQuery.data.events
+									.reduce(
+										(acc, e) => acc + e.score * e.amount,
+										0
+									)
+									.toFixed(0)}
 							</td>
 						</tr>
 					</Tbody>
