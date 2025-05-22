@@ -128,6 +128,7 @@ const TagFilters = (props: {
 	} = props;
 
 	const jwt = useAuthStore((state) => state.jwt);
+	const [showAllSku, setShowAllSku] = useState(false);
 
 	async function handleSearchSku(term: string) {
 		const sku = await searchRetailSalesDataSku(term, jwt);
@@ -476,7 +477,7 @@ const TagFilters = (props: {
 			</PageBlock>
 			<PageBlock
 				title={
-					<div className="flex items-center gap-2">
+					<div className="flex items-center gap-4">
 						<div>SKU</div>
 						<OnlineDropdown<Sku>
 							placeholder="Search SKU..."
@@ -500,6 +501,16 @@ const TagFilters = (props: {
 								</div>
 							)}
 						/>
+						<div className="flex items-center gap-2">
+							<div className="text-base">Show all SKU</div>
+							<Toggle
+								isOn={showAllSku}
+								onClick={() => {
+									setShowAllSku(!showAllSku);
+								}}
+								isAllowed={true}
+							/>
+						</div>
 					</div>
 				}
 				moreMenu={
@@ -532,6 +543,9 @@ const TagFilters = (props: {
 										(rsd: RetailSalesDataResponse) =>
 											rsd.productId === s.id
 									);
+								if (!showAllSku && !isAvailable) {
+									return null;
+								}
 								return (
 									<button
 										key={s.id}
