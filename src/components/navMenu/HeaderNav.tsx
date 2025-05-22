@@ -27,7 +27,7 @@ export const HeaderNav = () => {
 		});
 		return (
 			<nav
-				className="flex-[0_0_56px] flex items-center p-3
+				className="h-[56px] flex items-center p-3
 				text-sm font-semibold dark:text-white/40
 				border-b-[1px] dark:border-white/5"
 			>

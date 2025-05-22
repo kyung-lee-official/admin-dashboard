@@ -31,6 +31,23 @@ export const ProductsSalesVolume = (props: {
 		last30DaysAverage: number;
 	};
 
+	const uniqueStorehouses = useMemo(() => {
+		return Array.from(
+			new Set(fetchFilteredSalesData.map((d) => d.storehouse))
+		).filter(Boolean);
+	}, [fetchFilteredSalesData]);
+
+	// 2. Build a map: { [productSku]: { [storehouse]: salesVolume } }
+	const storehouseSalesMap = useMemo(() => {
+		const map: Record<string, Record<string, number>> = {};
+		fetchFilteredSalesData.forEach((d) => {
+			if (!map[d.productSku]) map[d.productSku] = {};
+			map[d.productSku][d.storehouse] =
+				(map[d.productSku][d.storehouse] || 0) + d.salesVolume;
+		});
+		return map;
+	}, [fetchFilteredSalesData]);
+
 	/* helper function to filter sales data by date range */
 	const filterByDateRange = useCallback(
 		(days: number) => {
@@ -423,6 +440,14 @@ export const ProductsSalesVolume = (props: {
 										</button>
 									</div>
 								</th>
+								{uniqueStorehouses.map((storehouse) => (
+									<th
+										key={storehouse}
+										className="text-left w-fit text-nowrap"
+									>
+										{storehouse}
+									</th>
+								))}
 							</tr>
 						</Thead>
 						<Tbody>
@@ -440,6 +465,13 @@ export const ProductsSalesVolume = (props: {
 										<td>
 											{d.last30DaysAverage.toFixed(2)}
 										</td>
+										{uniqueStorehouses.map((storehouse) => (
+											<td key={storehouse}>
+												{storehouseSalesMap[
+													d.productSku
+												]?.[storehouse] || 0}
+											</td>
+										))}
 									</tr>
 								);
 							})}

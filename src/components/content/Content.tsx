@@ -7,9 +7,14 @@ export const Content = (props: { children: ReactNode }) => {
 	const { children } = props;
 
 	return (
-		<div className="flex-[1_1_100%] flex flex-col h-svh">
+		<div className="flex-[1_1_100%] h-svh min-w-0">
 			<HeaderNav />
-			<div className="scrollbar overflow-y-auto">{children}</div>
+			<div
+				className="h-[calc(100svh-56px)]
+				scrollbar overflow-y-auto"
+			>
+				{children}
+			</div>
 		</div>
 	);
 };
