@@ -59,7 +59,12 @@ import {
 	FilteredRetailSalesDataResponse,
 	RetailSalesDataResponse,
 } from "../types";
-import { ProductsSalesVolume } from "./filter-results/products-sales-volume/ProductsSalesVolume";
+import {
+	ProductsSalesVolume,
+	ProductsSalesVolumeHandle,
+} from "./filter-results/products-sales-volume/ProductsSalesVolume";
+import { Button } from "@/components/button/Button";
+import { exportAsXlsx } from "./filter-results/products-sales-volume/export-as-xlsx";
 
 const TagContainer = (props: any) => {
 	const { children } = props;
@@ -644,6 +649,12 @@ export const Content = () => {
 	const isInView = useInView(ref);
 	const [showModel, setShowModel] = useState(false);
 
+	const tableRef = useRef<ProductsSalesVolumeHandle>(null);
+	const handleExport = async () => {
+		const tableData = tableRef.current?.getTableData();
+		await exportAsXlsx(tableData);
+	};
+
 	return (
 		<PageContainer>
 			{/* scroll anchor */}
@@ -701,12 +712,16 @@ export const Content = () => {
 							/>
 							<PollOutlined size={16} />
 						</div>
+						<Button size="sm" onClick={handleExport}>
+							Export as xlsx
+						</Button>
 					</div>
 				}
 				allowCollapse={true}
 			>
 				{fetchFilteredSalesDataMutation.data && (
 					<ProductsSalesVolume
+						ref={tableRef}
 						showChart={showChart}
 						fetchFilteredSalesData={
 							fetchFilteredSalesDataMutation.data.retailSalesData

@@ -1,7 +1,12 @@
 import { Table, Tbody, Thead } from "@/components/content/Table";
 import { RetailSalesDataResponse } from "../../../types";
-import { useCallback, useMemo, useReducer, useState } from "react";
-import { productSalesVolumeReducer } from "./productsSalesVolumeReducer";
+import {
+	forwardRef,
+	useCallback,
+	useImperativeHandle,
+	useMemo,
+	useState,
+} from "react";
 import { SwapVert } from "../../Icons";
 import { PieChart } from "@/components/charts/piechart/PieChart";
 import { ResultWrapper } from "../ResultWrapper";
@@ -13,10 +18,20 @@ import {
 	SortingState,
 } from "@tanstack/react-table";
 
-export const ProductsSalesVolume = (props: {
-	showChart: boolean;
-	fetchFilteredSalesData: RetailSalesDataResponse[];
-}) => {
+export type ProductsSalesVolumeHandle = {
+	getTableData: () => {
+		columns: string[];
+		rows: any[];
+	};
+};
+
+export const ProductsSalesVolume = forwardRef<
+	ProductsSalesVolumeHandle,
+	{
+		showChart: boolean;
+		fetchFilteredSalesData: RetailSalesDataResponse[];
+	}
+>((props, ref) => {
 	const { showChart, fetchFilteredSalesData } = props;
 	const width = 900;
 	const height = 500;
@@ -224,7 +239,8 @@ export const ProductsSalesVolume = (props: {
 				id: `storehouse_${storehouse}`,
 				header: storehouse,
 				enableSorting: true,
-				accessorFn: (row: any) => storehouseSalesMap[row.productSku]?.[storehouse] ?? 0,
+				accessorFn: (row: any) =>
+					storehouseSalesMap[row.productSku]?.[storehouse] ?? 0,
 				cell: (info: any) => {
 					const sku = info.row.original.productSku;
 					return (
@@ -250,10 +266,27 @@ export const ProductsSalesVolume = (props: {
 		onSortingChange: setSorting,
 	});
 
-	const [sortState, dispatch] = useReducer(productSalesVolumeReducer, {
-		column: "product",
-		direction: "asc",
-	});
+	useImperativeHandle(
+		ref,
+		() => ({
+			getTableData: () => {
+				const columns = table
+					.getAllLeafColumns()
+					.map((col) =>
+						typeof col.columnDef.header === "string"
+							? col.columnDef.header
+							: col.id
+					);
+				const rows = table
+					.getRowModel()
+					.rows.map((row) =>
+						row.getVisibleCells().map((cell) => cell.getValue())
+					);
+				return { columns, rows };
+			},
+		}),
+		[table]
+	);
 
 	switch (showChart) {
 		case true:
@@ -380,4 +413,5 @@ export const ProductsSalesVolume = (props: {
 		default:
 			return null;
 	}
-};
+});
+ProductsSalesVolume.displayName = "ProductsSalesVolume";
