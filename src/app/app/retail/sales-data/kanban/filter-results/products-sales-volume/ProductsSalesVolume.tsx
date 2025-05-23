@@ -1,10 +1,17 @@
 import { Table, Tbody, Thead } from "@/components/content/Table";
 import { RetailSalesDataResponse } from "../../../types";
-import { useCallback, useMemo, useReducer } from "react";
+import { useCallback, useMemo, useReducer, useState } from "react";
 import { productSalesVolumeReducer } from "./productsSalesVolumeReducer";
 import { SwapVert } from "../../Icons";
 import { PieChart } from "@/components/charts/piechart/PieChart";
 import { ResultWrapper } from "../ResultWrapper";
+import {
+	useReactTable,
+	getCoreRowModel,
+	getSortedRowModel,
+	flexRender,
+	SortingState,
+} from "@tanstack/react-table";
 
 export const ProductsSalesVolume = (props: {
 	showChart: boolean;
@@ -14,6 +21,24 @@ export const ProductsSalesVolume = (props: {
 	const width = 900;
 	const height = 500;
 	const margin = { top: 80, left: 100, right: 100, bottom: 80 };
+
+	const uniqueStorehouses = useMemo(() => {
+		return Array.from(
+			new Set(fetchFilteredSalesData.map((d) => d.storehouse))
+		).filter(Boolean);
+	}, [fetchFilteredSalesData]);
+
+	/* helper function to filter sales data by date range */
+	const filterByDateRange = useCallback(
+		(days: number) => {
+			const cutoffDate = new Date();
+			cutoffDate.setDate(cutoffDate.getDate() - days);
+			return fetchFilteredSalesData.filter(
+				(data) => new Date(data.date) >= cutoffDate
+			);
+		},
+		[fetchFilteredSalesData]
+	);
 
 	/**
 	 * convert to array of product-salesVolume objects
@@ -30,35 +55,6 @@ export const ProductsSalesVolume = (props: {
 		last7DaysAverage: number;
 		last30DaysAverage: number;
 	};
-
-	const uniqueStorehouses = useMemo(() => {
-		return Array.from(
-			new Set(fetchFilteredSalesData.map((d) => d.storehouse))
-		).filter(Boolean);
-	}, [fetchFilteredSalesData]);
-
-	// 2. Build a map: { [productSku]: { [storehouse]: salesVolume } }
-	const storehouseSalesMap = useMemo(() => {
-		const map: Record<string, Record<string, number>> = {};
-		fetchFilteredSalesData.forEach((d) => {
-			if (!map[d.productSku]) map[d.productSku] = {};
-			map[d.productSku][d.storehouse] =
-				(map[d.productSku][d.storehouse] || 0) + d.salesVolume;
-		});
-		return map;
-	}, [fetchFilteredSalesData]);
-
-	/* helper function to filter sales data by date range */
-	const filterByDateRange = useCallback(
-		(days: number) => {
-			const cutoffDate = new Date();
-			cutoffDate.setDate(cutoffDate.getDate() - days);
-			return fetchFilteredSalesData.filter(
-				(data) => new Date(data.date) >= cutoffDate
-			);
-		},
-		[fetchFilteredSalesData]
-	);
 
 	const reducedData: ReducedData[] = useMemo(() => {
 		/* precompute filtered data for each date range */
@@ -129,6 +125,131 @@ export const ProductsSalesVolume = (props: {
 		0
 	);
 
+	const lastNDaysKeys = [
+		"last7Days",
+		"last14Days",
+		"last30Days",
+		"last60Days",
+	];
+	const lastNDaysMap: Record<string, number> = {
+		last7Days: 7,
+		last14Days: 14,
+		last30Days: 30,
+		last60Days: 60,
+	};
+	const [selectedDaysColumn, setSelectedDaysColumn] = useState<string | null>(
+		null
+	);
+	const filteredStorehouseData = useMemo(() => {
+		if (!selectedDaysColumn) {
+			return fetchFilteredSalesData;
+		}
+		const days = lastNDaysMap[selectedDaysColumn];
+		const cutoffDate = new Date();
+		cutoffDate.setDate(cutoffDate.getDate() - days);
+		return fetchFilteredSalesData.filter(
+			(data) => new Date(data.date) >= cutoffDate
+		);
+	}, [fetchFilteredSalesData, selectedDaysColumn]);
+
+	const storehouseSalesMap = useMemo(() => {
+		const map: Record<string, Record<string, number>> = {};
+		filteredStorehouseData.forEach((d) => {
+			if (!map[d.productSku]) map[d.productSku] = {};
+			map[d.productSku][d.storehouse] =
+				(map[d.productSku][d.storehouse] || 0) + d.salesVolume;
+		});
+		return map;
+	}, [filteredStorehouseData]);
+
+	const [sorting, setSorting] = useState<SortingState>([]);
+	/* define columns */
+	const columns = useMemo(
+		() => [
+			{
+				accessorKey: "productNameZhCn",
+				header: "Product",
+				enableSorting: true,
+				cell: (info: any) => (
+					<span className="whitespace-nowrap">{info.getValue()}</span>
+				),
+			},
+			{
+				accessorKey: "productSku",
+				header: "Product SKU",
+				enableSorting: true,
+				cell: (info: any) => (
+					<span className="whitespace-nowrap">{info.getValue()}</span>
+				),
+			},
+			{
+				accessorKey: "salesVolume",
+				header: "Sales Volume",
+				enableSorting: true,
+			},
+			{
+				accessorKey: "last7Days",
+				header: "Last 7 Days",
+				enableSorting: true,
+			},
+			{
+				accessorKey: "last14Days",
+				header: "Last 14 Days",
+				enableSorting: true,
+			},
+			{
+				accessorKey: "last30Days",
+				header: "Last 30 Days",
+				enableSorting: true,
+			},
+			{
+				accessorKey: "last60Days",
+				header: "Last 60 Days",
+				enableSorting: true,
+			},
+			{
+				accessorKey: "last7DaysAverage",
+				header: "Last 7 Days Avg",
+				enableSorting: true,
+				cell: (info: any) => Number(info.getValue()).toFixed(2),
+			},
+			{
+				accessorKey: "last30DaysAverage",
+				header: "Last 30 Days Avg",
+				enableSorting: true,
+				cell: (info: any) => Number(info.getValue()).toFixed(2),
+			},
+			/* dynamic storehouse columns */
+			...uniqueStorehouses.map((storehouse) => ({
+				id: `storehouse_${storehouse}`,
+				header: storehouse,
+				enableSorting: true,
+				accessorFn: (row: any) => storehouseSalesMap[row.productSku]?.[storehouse] ?? 0,
+				cell: (info: any) => {
+					const sku = info.row.original.productSku;
+					return (
+						<span className="whitespace-nowrap">
+							{storehouseSalesMap[sku]?.[storehouse] || 0}
+						</span>
+					);
+				},
+			})),
+		],
+		[uniqueStorehouses, storehouseSalesMap]
+	);
+
+	/* setup table instance */
+	const table = useReactTable({
+		data: reducedData,
+		columns,
+		getCoreRowModel: getCoreRowModel(),
+		getSortedRowModel: getSortedRowModel(),
+		state: {
+			sorting,
+		},
+		onSortingChange: setSorting,
+	});
+
 	const [sortState, dispatch] = useReducer(productSalesVolumeReducer, {
 		column: "product",
 		direction: "asc",
@@ -163,322 +284,99 @@ export const ProductsSalesVolume = (props: {
 				</div>
 			);
 		case false:
-			const sortedData = [...reducedData].sort((a, b) => {
-				const { column, direction } = sortState;
-				const multiplier = direction === "asc" ? 1 : -1;
-
-				if (column === "product") {
-					return (
-						multiplier *
-						a.productNameZhCn.localeCompare(b.productNameZhCn)
-					);
-				} else if (column === "productSku") {
-					return (
-						multiplier * a.productSku.localeCompare(b.productSku)
-					);
-				} else if (column === "salesVolume") {
-					return multiplier * (a.salesVolume - b.salesVolume);
-				} else if (column === "last7Days") {
-					return multiplier * (a.last7Days - b.last7Days);
-				} else if (column === "last14Days") {
-					return multiplier * (a.last14Days - b.last14Days);
-				} else if (column === "last30Days") {
-					return multiplier * (a.last30Days - b.last30Days);
-				} else if (column === "last60Days") {
-					return multiplier * (a.last60Days - b.last60Days);
-				} else if (column === "last7DaysAverage") {
-					return (
-						multiplier * (a.last7DaysAverage - b.last7DaysAverage)
-					);
-				} else if (column === "last30DaysAverage") {
-					return (
-						multiplier * (a.last30DaysAverage - b.last30DaysAverage)
-					);
-				}
-
-				return 0; /* default case */
-			});
-
 			return (
 				<ResultWrapper>
 					<Table>
 						<Thead>
-							<tr>
-								<th className="text-left">
-									<div className="flex items-center gap-3">
-										Product ({reducedData.length}){" "}
-										<button
-											className="flex items-center 
-											bg-neutral-700 hover:bg-neutral-600
-											rounded cursor-pointer"
-											onClick={() => {
-												dispatch({
-													type: "SORT_BY_COLUMN",
-													payload: "product",
-												});
-											}}
-										>
-											<SwapVert
-												size={20}
-												direction={
-													sortState.column ===
-													"product"
-														? sortState.direction
-														: null
+							{table.getHeaderGroups().map((headerGroup) => (
+								<tr key={headerGroup.id}>
+									{headerGroup.headers.map((header) => {
+										const isLastNDays =
+											lastNDaysKeys.includes(
+												header.column.id
+											);
+										return (
+											<th
+												key={header.id}
+												className={`cursor-pointer 
+													${
+														isLastNDays &&
+														selectedDaysColumn ===
+															header.column.id
+															? "bg-green-900"
+															: ""
+													}`}
+												onClick={
+													isLastNDays
+														? () =>
+																setSelectedDaysColumn(
+																	selectedDaysColumn ===
+																		header
+																			.column
+																			.id
+																		? null
+																		: header
+																				.column
+																				.id
+																)
+														: undefined
 												}
-											/>
-										</button>
-									</div>
-								</th>
-								<th className="text-left">
-									<div className="flex items-center gap-3">
-										Product SKU{" "}
-										<button
-											className="flex items-center 
-											bg-neutral-700 hover:bg-neutral-600
-											rounded cursor-pointer"
-											onClick={() => {
-												dispatch({
-													type: "SORT_BY_COLUMN",
-													payload: "productSku",
-												});
-											}}
-										>
-											<SwapVert
-												size={20}
-												direction={
-													sortState.column ===
-													"productSku"
-														? sortState.direction
-														: null
-												}
-											/>
-										</button>
-									</div>
-								</th>
-								<th className="text-left">
-									<div className="flex items-center gap-3">
-										Sales Volume{" "}
-										<button
-											className="flex items-center 
-											bg-neutral-700 hover:bg-neutral-600
-											rounded cursor-pointer"
-											onClick={() => {
-												dispatch({
-													type: "SORT_BY_COLUMN",
-													payload: "salesVolume",
-												});
-											}}
-										>
-											<SwapVert
-												size={20}
-												direction={
-													sortState.column ===
-													"salesVolume"
-														? sortState.direction
-														: null
-												}
-											/>
-										</button>
-									</div>
-								</th>
-								<th className="text-left">
-									<div className="flex items-center gap-3">
-										Last 7 Days{" "}
-										<button
-											className="flex items-center 
-                                            bg-neutral-700 hover:bg-neutral-600
-                                            rounded cursor-pointer"
-											onClick={() => {
-												dispatch({
-													type: "SORT_BY_COLUMN",
-													payload: "last7Days",
-												});
-											}}
-										>
-											<SwapVert
-												size={20}
-												direction={
-													sortState.column ===
-													"last7Days"
-														? sortState.direction
-														: null
-												}
-											/>
-										</button>
-									</div>
-								</th>
-								<th className="text-left">
-									<div className="flex items-center gap-3">
-										Last 14 Days{" "}
-										<button
-											className="flex items-center 
-                                            bg-neutral-700 hover:bg-neutral-600
-                                            rounded cursor-pointer"
-											onClick={() => {
-												dispatch({
-													type: "SORT_BY_COLUMN",
-													payload: "last14Days",
-												});
-											}}
-										>
-											<SwapVert
-												size={20}
-												direction={
-													sortState.column ===
-													"last14Days"
-														? sortState.direction
-														: null
-												}
-											/>
-										</button>
-									</div>
-								</th>
-								<th className="text-left">
-									<div className="flex items-center gap-3">
-										Last 30 Days{" "}
-										<button
-											className="flex items-center 
-                                            bg-neutral-700 hover:bg-neutral-600
-                                            rounded cursor-pointer"
-											onClick={() => {
-												dispatch({
-													type: "SORT_BY_COLUMN",
-													payload: "last30Days",
-												});
-											}}
-										>
-											<SwapVert
-												size={20}
-												direction={
-													sortState.column ===
-													"last30Days"
-														? sortState.direction
-														: null
-												}
-											/>
-										</button>
-									</div>
-								</th>
-								<th className="text-left">
-									<div className="flex items-center gap-3">
-										Last 60 Days{" "}
-										<button
-											className="flex items-center 
-                                            bg-neutral-700 hover:bg-neutral-600
-                                            rounded cursor-pointer"
-											onClick={() => {
-												dispatch({
-													type: "SORT_BY_COLUMN",
-													payload: "last60Days",
-												});
-											}}
-										>
-											<SwapVert
-												size={20}
-												direction={
-													sortState.column ===
-													"last60Days"
-														? sortState.direction
-														: null
-												}
-											/>
-										</button>
-									</div>
-								</th>
-								<th className="text-left">
-									<div className="flex items-center gap-3">
-										Last 7 Days Average{" "}
-										<button
-											className="flex items-center 
-                                            bg-neutral-700 hover:bg-neutral-600
-                                            rounded cursor-pointer"
-											onClick={() => {
-												dispatch({
-													type: "SORT_BY_COLUMN",
-													payload:
-														"last60DaysAverage",
-												});
-											}}
-										>
-											<SwapVert
-												size={20}
-												direction={
-													sortState.column ===
-													"last60DaysAverage"
-														? sortState.direction
-														: null
-												}
-											/>
-										</button>
-									</div>
-								</th>
-								<th className="text-left">
-									<div className="flex items-center gap-3">
-										Last 30 Days Average{" "}
-										<button
-											className="flex items-center 
-											bg-neutral-700 hover:bg-neutral-600
-											rounded cursor-pointer"
-											onClick={() => {
-												dispatch({
-													type: "SORT_BY_COLUMN",
-													payload:
-														"last30DaysAverage",
-												});
-											}}
-										>
-											<SwapVert
-												size={20}
-												direction={
-													sortState.column ===
-													"last30DaysAverage"
-														? sortState.direction
-														: null
-												}
-											/>
-										</button>
-									</div>
-								</th>
-								{uniqueStorehouses.map((storehouse) => (
-									<th
-										key={storehouse}
-										className="text-left w-fit text-nowrap"
-									>
-										{storehouse}
-									</th>
-								))}
-							</tr>
+											>
+												<div
+													className="flex gap-2
+													truncate"
+												>
+													{flexRender(
+														header.column.columnDef
+															.header,
+														header.getContext()
+													)}
+													<button
+														className="flex items-center 
+														bg-neutral-700 hover:bg-neutral-600
+														rounded cursor-pointer"
+														onClick={header.column.getToggleSortingHandler()}
+													>
+														<SwapVert
+															size={20}
+															direction={
+																header.column.getIsSorted() ===
+																false
+																	? null
+																	: (header.column.getIsSorted() as
+																			| "asc"
+																			| "desc")
+															}
+														/>
+													</button>
+												</div>
+											</th>
+										);
+									})}
+								</tr>
+							))}
 						</Thead>
 						<Tbody>
-							{sortedData.map((d) => {
-								return (
-									<tr key={d.productSku}>
-										<td>{d.productNameZhCn}</td>
-										<td>{d.productSku}</td>
-										<td>{d.salesVolume}</td>
-										<td>{d.last7Days}</td>
-										<td>{d.last14Days}</td>
-										<td>{d.last30Days}</td>
-										<td>{d.last60Days}</td>
-										<td>{d.last7DaysAverage.toFixed(2)}</td>
-										<td>
-											{d.last30DaysAverage.toFixed(2)}
+							{table.getRowModel().rows.map((row) => (
+								<tr key={row.id}>
+									{row.getVisibleCells().map((cell) => (
+										<td
+											key={cell.id}
+											className="whitespace-nowrap"
+										>
+											{flexRender(
+												cell.column.columnDef.cell,
+												cell.getContext()
+											)}
 										</td>
-										{uniqueStorehouses.map((storehouse) => (
-											<td key={storehouse}>
-												{storehouseSalesMap[
-													d.productSku
-												]?.[storehouse] || 0}
-											</td>
-										))}
-									</tr>
-								);
-							})}
+									))}
+								</tr>
+							))}
 						</Tbody>
 					</Table>
 				</ResultWrapper>
 			);
+
 		default:
 			return null;
 	}
