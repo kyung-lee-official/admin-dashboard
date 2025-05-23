@@ -2,7 +2,7 @@ import { Button } from "@/components/button/Button";
 import { PageBlock } from "@/components/content/PageContainer";
 import { Table, Tbody } from "@/components/content/Table";
 import { DecimalInput } from "@/components/input/decimal-input/DecimalInput";
-import { Dropdown } from "@/components/input/dropdown/Dropdown";
+import { Dropdown } from "@/components/input/dropdown-legacy/Dropdown";
 import { Toggle } from "@/components/toggle/Toggle";
 import { useAuthStore } from "@/stores/auth";
 import {

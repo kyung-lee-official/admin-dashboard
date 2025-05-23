@@ -9,7 +9,7 @@ import { MemberRole } from "@/utils/types/internal";
 import { CreatePerformanceEventTemplate } from "@/utils/types/app/performance";
 import { RolesQK, getMySubRoles } from "@/utils/api/roles";
 import { AxiosError } from "axios";
-import { Dropdown } from "@/components/input/dropdown/Dropdown";
+import { Dropdown } from "@/components/input/dropdown-legacy/Dropdown";
 import { DecimalInput } from "@/components/input/decimal-input/DecimalInput";
 
 export const EditContentAddTemplate = (props: {

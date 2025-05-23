@@ -14,7 +14,7 @@ import { EditMembers } from "./EditMembers";
 import { Member, MemberRole } from "@/utils/types/internal";
 import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
 import { sortByProp } from "@/utils/data/data";
-import { Dropdown } from "@/components/input/dropdown/Dropdown";
+import { Dropdown } from "@/components/input/dropdown-legacy/Dropdown";
 
 export type EditRoleData = {
 	id: string;

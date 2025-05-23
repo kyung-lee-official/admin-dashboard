@@ -7,7 +7,7 @@ import { createRole, getAllRoles, RolesQK } from "@/utils/api/roles";
 import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
 import { MemberRole } from "@/utils/types/internal";
 import { AxiosError } from "axios";
-import { Dropdown } from "@/components/input/dropdown/Dropdown";
+import { Dropdown } from "@/components/input/dropdown-legacy/Dropdown";
 
 export const EditContentAddRole = (props: {
 	edit: EditProps;

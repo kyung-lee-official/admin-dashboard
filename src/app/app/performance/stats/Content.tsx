@@ -20,7 +20,7 @@ import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useAuthStore } from "@/stores/auth";
 import { getMeAndMembersOfMySubRoles, MembersQK } from "@/utils/api/members";
-import { Dropdown } from "@/components/input/dropdown/Dropdown";
+import { Dropdown } from "@/components/input/dropdown-legacy/Dropdown";
 import { PageBlock, PageContainer } from "@/components/content/PageContainer";
 
 export const Content = () => {

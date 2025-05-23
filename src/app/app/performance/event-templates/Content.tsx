@@ -18,7 +18,7 @@ import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useAuthStore } from "@/stores/auth";
 import { getMyRoleAndSubRoles, RolesQK } from "@/utils/api/roles";
-import { Dropdown } from "@/components/input/dropdown/Dropdown";
+import { Dropdown } from "@/components/input/dropdown-legacy/Dropdown";
 import { PageBlock, PageContainer } from "@/components/content/PageContainer";
 
 export const Content = () => {

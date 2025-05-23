@@ -11,7 +11,7 @@ import { CreatePerformanceStatData } from "@/utils/types/app/performance";
 import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
 import { AxiosError } from "axios";
 import { getMeAndMembersOfMySubRoles, MembersQK } from "@/utils/api/members";
-import { Dropdown } from "@/components/input/dropdown/Dropdown";
+import { Dropdown } from "@/components/input/dropdown-legacy/Dropdown";
 import {
 	EditContentRegularForm,
 	EditContentRegularFormBlock,

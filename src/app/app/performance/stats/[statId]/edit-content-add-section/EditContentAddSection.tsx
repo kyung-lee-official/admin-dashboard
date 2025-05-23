@@ -11,7 +11,7 @@ import {
 import { AxiosError } from "axios";
 import { EditContentRegular } from "@/components/edit-panel/EditContentRegular";
 import { IntegerInput } from "@/components/input/integer-input/IntegerInput";
-import { Dropdown } from "@/components/input/dropdown/Dropdown";
+import { Dropdown } from "@/components/input/dropdown-legacy/Dropdown";
 import { MemberRole } from "@/utils/types/internal";
 import { getAllRoles, RolesQK } from "@/utils/api/roles";
 import {

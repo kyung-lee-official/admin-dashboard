@@ -12,7 +12,7 @@ import {
 	UpdateApprovalDto,
 } from "@/utils/types/app/performance";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Dropdown } from "@/components/input/dropdown/Dropdown";
+import { Dropdown } from "@/components/input/dropdown-legacy/Dropdown";
 import { VerifiedIcon } from "@/components/icons/Icons";
 import { PageBlock } from "@/components/content/PageContainer";
 
