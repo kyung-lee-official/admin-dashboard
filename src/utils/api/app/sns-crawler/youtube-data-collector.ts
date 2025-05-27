@@ -7,6 +7,7 @@ import {
 import axios from "axios";
 
 export enum SnsYouTubeDataQK {
+	GET_YOUTUBE_PERMISSIONS = "get-youtube-permissions",
 	GET_YOUTUBE_TOKENS = "get-youtube-tokens",
 	GET_YOUTUBE_SOURCE_DATA = "get-youtube-source-data",
 	GET_YOUTUBE_TASKS = "get-youtube-tasks",
@@ -17,6 +18,19 @@ export enum SnsYouTubeDataQK {
 	GET_YOUTUBE_CHANNELS_BY_TASK_ID = "get-youtube-channels-by-task-id",
 	GET_YOUTUBE_VIDEOS_BY_TASK_ID = "get-youtube-videos-by-task-id",
 }
+
+export const getPermissions = async (jwt: string) => {
+	const res = await axios.get(
+		"internal/applications/youtube-data-collector/permissions",
+		{
+			baseURL: process.env.NEXT_PUBLIC_API_HOST,
+			headers: {
+				Authorization: jwt,
+			},
+		}
+	);
+	return res.data;
+};
 
 export const addYouTubeToken = async (youtubeToken: string, jwt: string) => {
 	const res = await axios.post(
