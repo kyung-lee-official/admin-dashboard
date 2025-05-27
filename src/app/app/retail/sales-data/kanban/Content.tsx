@@ -10,6 +10,7 @@ import { useAuthStore } from "@/stores/auth";
 import {
 	filterRetailSalesData,
 	getAllSkus,
+	getPermissions,
 	RetailSalesDataQK,
 	searchRetailSalesDataSku,
 } from "@/utils/api/app/retail/sales-data";
@@ -65,6 +66,9 @@ import {
 } from "./filter-results/products-sales-volume/ProductsSalesVolume";
 import { Button } from "@/components/button/Button";
 import { exportAsXlsx } from "./filter-results/products-sales-volume/export-as-xlsx";
+import { Loading } from "@/components/page-authorization/Loading";
+import { Forbidden } from "@/components/page-authorization/Forbidden";
+import { Exception } from "@/components/page-authorization/Exception";
 
 const TagContainer = (props: any) => {
 	const { children } = props;
@@ -655,352 +659,386 @@ export const Content = () => {
 		await exportAsXlsx(tableData);
 	};
 
-	return (
-		<PageContainer>
-			{/* scroll anchor */}
-			<motion.div
-				ref={ref}
-				className="absolute top-40 w-4 h-4"
-			></motion.div>
-			{!isInView && (
-				<motion.button
-					initial={{ opacity: 0 }}
-					animate={{ opacity: 1 }}
-					className="flex justify-center items-center fixed top-24 right-12 w-8 h-8 z-5
-					text-white/80
-					bg-neutral-700
-					border border-neutral-600
-					shadow rounded cursor-pointer"
-					onClick={() => {
-						setShowModel(true);
-					}}
-				>
-					<FilterAltOutlined size={18} />
-				</motion.button>
-			)}
-			{createPortal(
-				<FullModal show={showModel} setShow={setShowModel}>
-					<TagFilters
-						kanbanFilter={kanbanFilter}
-						dispatchKanbanFilter={dispatchKanbanFilter}
-						fetchFilteredSalesDataMutation={
-							fetchFilteredSalesDataMutation
-						}
-						allSkusQuery={allSkusQuery}
-					/>
-				</FullModal>,
-				document.body
-			)}
-			<TagFilters
-				kanbanFilter={kanbanFilter}
-				dispatchKanbanFilter={dispatchKanbanFilter}
-				fetchFilteredSalesDataMutation={fetchFilteredSalesDataMutation}
-				allSkusQuery={allSkusQuery}
-			/>
-			<PageBlock
-				title={
-					<div className="flex items-center gap-6">
-						<div>Products - Sales Volume</div>
-						<div className="flex items-center gap-2">
-							<GridOnOutlined size={16} />
-							<Toggle
-								isOn={showChart}
+	const salesDataPermQuery = useQuery({
+		queryKey: [RetailSalesDataQK.GET_SALES_DATA_PERMISSIONS],
+		queryFn: async () => {
+			const data = await getPermissions(jwt);
+			return data;
+		},
+	});
+
+	if (salesDataPermQuery.isPending) {
+		return <Loading />;
+	}
+
+	if (salesDataPermQuery.isSuccess && salesDataPermQuery.data) {
+		switch (salesDataPermQuery.data.actions["*"]) {
+			case "EFFECT_DENY":
+				return <Forbidden />;
+			case "EFFECT_ALLOW":
+				return (
+					<PageContainer>
+						{/* scroll anchor */}
+						<motion.div
+							ref={ref}
+							className="absolute top-40 w-4 h-4"
+						></motion.div>
+						{!isInView && (
+							<motion.button
+								initial={{ opacity: 0 }}
+								animate={{ opacity: 1 }}
+								className="flex justify-center items-center fixed top-24 right-12 w-8 h-8 z-5
+								text-white/80
+								bg-neutral-700
+								border border-neutral-600
+								shadow rounded cursor-pointer"
 								onClick={() => {
-									setShowChart(!showChart);
+									setShowModel(true);
 								}}
-								isAllowed={true}
-							/>
-							<PollOutlined size={16} />
-						</div>
-						<Button size="sm" onClick={handleExport}>
-							Export as xlsx
-						</Button>
-					</div>
-				}
-				allowCollapse={true}
-			>
-				{fetchFilteredSalesDataMutation.data && (
-					<ProductsSalesVolume
-						ref={tableRef}
-						showChart={showChart}
-						fetchFilteredSalesData={
-							fetchFilteredSalesDataMutation.data.retailSalesData
-						}
-					/>
-				)}
-			</PageBlock>
-			<PageBlock
-				title={
-					<div className="flex items-center gap-6">
-						<div>Time - Sales Volume</div>
-						<div className="flex items-center gap-2">
-							<GridOnOutlined size={16} />
-							<Toggle
-								isOn={showChart}
-								onClick={() => {
-									setShowChart(!showChart);
-								}}
-								isAllowed={true}
-							/>
-							<PollOutlined size={16} />
-						</div>
-						<div className="flex items-center gap-2">
-							<div className="text-sm text-neutral-400">
-								Daily
-							</div>
-							<Toggle
-								isOn={showMonthly}
-								onClick={() => {
-									setShowMonthly(!showMonthly);
-								}}
-								isAllowed={true}
-							/>
-							<div className="text-sm text-neutral-400">
-								Monthly
-							</div>
-						</div>
-					</div>
-				}
-				allowCollapse={true}
-			>
-				{fetchFilteredSalesDataMutation.data && (
-					<TimeSalesVolume
-						showMonthly={showMonthly}
-						showChartDailySales={showChart}
-						fetchFilteredSalesData={
-							fetchFilteredSalesDataMutation.data.retailSalesData
-						}
-					/>
-				)}
-			</PageBlock>
-			<PageBlock
-				title={
-					<div className="flex items-center gap-6">
-						<div>Time - GMV (Tax Inclusive)</div>
-						<div className="flex items-center gap-2">
-							<GridOnOutlined size={16} />
-							<Toggle
-								isOn={showChart}
-								onClick={() => {
-									setShowChart(!showChart);
-								}}
-								isAllowed={true}
-							/>
-							<PollOutlined size={16} />
-						</div>
-						<div className="flex items-center gap-2">
-							<div className="text-sm text-neutral-400">
-								Daily
-							</div>
-							<Toggle
-								isOn={showMonthly}
-								onClick={() => {
-									setShowMonthly(!showMonthly);
-								}}
-								isAllowed={true}
-							/>
-							<div className="text-sm text-neutral-400">
-								Monthly
-							</div>
-						</div>
-					</div>
-				}
-				allowCollapse={true}
-			>
-				{fetchFilteredSalesDataMutation.data && (
-					<TimeTaxInclusivePrice
-						showMonthly={showMonthly}
-						showChartDailySales={showChart}
-						fetchFilteredSalesData={
-							fetchFilteredSalesDataMutation.data.retailSalesData
-						}
-					/>
-				)}
-			</PageBlock>
-			<PageBlock
-				title={
-					<div className="flex items-center gap-6">
-						<div>Time - GMV</div>
-						<div className="flex items-center gap-2">
-							<GridOnOutlined size={16} />
-							<Toggle
-								isOn={showChart}
-								onClick={() => {
-									setShowChart(!showChart);
-								}}
-								isAllowed={true}
-							/>
-							<PollOutlined size={16} />
-						</div>
-						<div className="flex items-center gap-2">
-							<div className="text-sm text-neutral-400">
-								Daily
-							</div>
-							<Toggle
-								isOn={showMonthly}
-								onClick={() => {
-									setShowMonthly(!showMonthly);
-								}}
-								isAllowed={true}
-							/>
-							<div className="text-sm text-neutral-400">
-								Monthly
-							</div>
-						</div>
-					</div>
-				}
-				allowCollapse={true}
-			>
-				{fetchFilteredSalesDataMutation.data && (
-					<TimePrice
-						showMonthly={showMonthly}
-						showChartDailySales={showChart}
-						fetchFilteredSalesData={
-							fetchFilteredSalesDataMutation.data.retailSalesData
-						}
-					/>
-				)}
-			</PageBlock>
-			<PageBlock
-				title={
-					<div className="flex items-center gap-6">
-						<div>Storehouses - Sales Volume</div>
-						<div className="flex items-center gap-2">
-							<GridOnOutlined size={16} />
-							<Toggle
-								isOn={showChart}
-								onClick={() => {
-									setShowChart(!showChart);
-								}}
-								isAllowed={true}
-							/>
-							<PollOutlined size={16} />
-						</div>
-					</div>
-				}
-				allowCollapse={true}
-			>
-				{fetchFilteredSalesDataMutation.data && (
-					<StorehousesSalesVolume
-						showChart={showChart}
-						fetchFilteredSalesData={
-							fetchFilteredSalesDataMutation.data.retailSalesData
-						}
-					/>
-				)}
-			</PageBlock>
-			<PageBlock
-				title={
-					<div className="flex items-center gap-6">
-						<div>Storehouses - GMV (Tax Inclusive)</div>
-						<div className="flex items-center gap-2">
-							<GridOnOutlined size={16} />
-							<Toggle
-								isOn={showChart}
-								onClick={() => {
-									setShowChart(!showChart);
-								}}
-								isAllowed={true}
-							/>
-							<PollOutlined size={16} />
-						</div>
-					</div>
-				}
-				allowCollapse={true}
-			>
-				{fetchFilteredSalesDataMutation.data && (
-					<StorehousesTaxInclusivePrice
-						showChart={showChart}
-						fetchFilteredSalesData={
-							fetchFilteredSalesDataMutation.data.retailSalesData
-						}
-					/>
-				)}
-			</PageBlock>
-			<PageBlock
-				title={
-					<div className="flex items-center gap-6">
-						<div>Client - Sales Volume</div>
-						<div className="flex items-center gap-2">
-							<GridOnOutlined size={16} />
-							<Toggle
-								isOn={showChart}
-								onClick={() => {
-									setShowChart(!showChart);
-								}}
-								isAllowed={true}
-							/>
-							<PollOutlined size={16} />
-						</div>
-					</div>
-				}
-				allowCollapse={true}
-			>
-				{fetchFilteredSalesDataMutation.data && (
-					<ClientsSalesVolume
-						showChart={showChart}
-						fetchFilteredSalesData={
-							fetchFilteredSalesDataMutation.data.retailSalesData
-						}
-					/>
-				)}
-			</PageBlock>
-			<PageBlock
-				title={
-					<div className="flex items-center gap-6">
-						<div>Client - GMV (Tax Inclusive)</div>
-						<div className="flex items-center gap-2">
-							<GridOnOutlined size={16} />
-							<Toggle
-								isOn={showChart}
-								onClick={() => {
-									setShowChart(!showChart);
-								}}
-								isAllowed={true}
-							/>
-							<PollOutlined size={16} />
-						</div>
-					</div>
-				}
-				allowCollapse={true}
-			>
-				{fetchFilteredSalesDataMutation.data && (
-					<ClientsTaxInclusivePriceCny
-						showChart={showChart}
-						fetchFilteredSalesData={
-							fetchFilteredSalesDataMutation.data.retailSalesData
-						}
-					/>
-				)}
-			</PageBlock>
-			<PageBlock
-				title={
-					<div className="flex items-center gap-6">
-						<div>Client - GMV</div>
-						<div className="flex items-center gap-2">
-							<GridOnOutlined size={16} />
-							<Toggle
-								isOn={showChart}
-								onClick={() => {
-									setShowChart(!showChart);
-								}}
-								isAllowed={true}
-							/>
-							<PollOutlined size={16} />
-						</div>
-					</div>
-				}
-				allowCollapse={true}
-			>
-				{fetchFilteredSalesDataMutation.data && (
-					<ClientsPriceCny
-						showChart={showChart}
-						fetchFilteredSalesData={
-							fetchFilteredSalesDataMutation.data.retailSalesData
-						}
-					/>
-				)}
-			</PageBlock>
-		</PageContainer>
-	);
+							>
+								<FilterAltOutlined size={18} />
+							</motion.button>
+						)}
+						{createPortal(
+							<FullModal show={showModel} setShow={setShowModel}>
+								<TagFilters
+									kanbanFilter={kanbanFilter}
+									dispatchKanbanFilter={dispatchKanbanFilter}
+									fetchFilteredSalesDataMutation={
+										fetchFilteredSalesDataMutation
+									}
+									allSkusQuery={allSkusQuery}
+								/>
+							</FullModal>,
+							document.body
+						)}
+						<TagFilters
+							kanbanFilter={kanbanFilter}
+							dispatchKanbanFilter={dispatchKanbanFilter}
+							fetchFilteredSalesDataMutation={
+								fetchFilteredSalesDataMutation
+							}
+							allSkusQuery={allSkusQuery}
+						/>
+						<PageBlock
+							title={
+								<div className="flex items-center gap-6">
+									<div>Products - Sales Volume</div>
+									<div className="flex items-center gap-2">
+										<GridOnOutlined size={16} />
+										<Toggle
+											isOn={showChart}
+											onClick={() => {
+												setShowChart(!showChart);
+											}}
+											isAllowed={true}
+										/>
+										<PollOutlined size={16} />
+									</div>
+									<Button size="sm" onClick={handleExport}>
+										Export as xlsx
+									</Button>
+								</div>
+							}
+							allowCollapse={true}
+						>
+							{fetchFilteredSalesDataMutation.data && (
+								<ProductsSalesVolume
+									ref={tableRef}
+									showChart={showChart}
+									fetchFilteredSalesData={
+										fetchFilteredSalesDataMutation.data
+											.retailSalesData
+									}
+								/>
+							)}
+						</PageBlock>
+						<PageBlock
+							title={
+								<div className="flex items-center gap-6">
+									<div>Time - Sales Volume</div>
+									<div className="flex items-center gap-2">
+										<GridOnOutlined size={16} />
+										<Toggle
+											isOn={showChart}
+											onClick={() => {
+												setShowChart(!showChart);
+											}}
+											isAllowed={true}
+										/>
+										<PollOutlined size={16} />
+									</div>
+									<div className="flex items-center gap-2">
+										<div className="text-sm text-neutral-400">
+											Daily
+										</div>
+										<Toggle
+											isOn={showMonthly}
+											onClick={() => {
+												setShowMonthly(!showMonthly);
+											}}
+											isAllowed={true}
+										/>
+										<div className="text-sm text-neutral-400">
+											Monthly
+										</div>
+									</div>
+								</div>
+							}
+							allowCollapse={true}
+						>
+							{fetchFilteredSalesDataMutation.data && (
+								<TimeSalesVolume
+									showMonthly={showMonthly}
+									showChartDailySales={showChart}
+									fetchFilteredSalesData={
+										fetchFilteredSalesDataMutation.data
+											.retailSalesData
+									}
+								/>
+							)}
+						</PageBlock>
+						<PageBlock
+							title={
+								<div className="flex items-center gap-6">
+									<div>Time - GMV (Tax Inclusive)</div>
+									<div className="flex items-center gap-2">
+										<GridOnOutlined size={16} />
+										<Toggle
+											isOn={showChart}
+											onClick={() => {
+												setShowChart(!showChart);
+											}}
+											isAllowed={true}
+										/>
+										<PollOutlined size={16} />
+									</div>
+									<div className="flex items-center gap-2">
+										<div className="text-sm text-neutral-400">
+											Daily
+										</div>
+										<Toggle
+											isOn={showMonthly}
+											onClick={() => {
+												setShowMonthly(!showMonthly);
+											}}
+											isAllowed={true}
+										/>
+										<div className="text-sm text-neutral-400">
+											Monthly
+										</div>
+									</div>
+								</div>
+							}
+							allowCollapse={true}
+						>
+							{fetchFilteredSalesDataMutation.data && (
+								<TimeTaxInclusivePrice
+									showMonthly={showMonthly}
+									showChartDailySales={showChart}
+									fetchFilteredSalesData={
+										fetchFilteredSalesDataMutation.data
+											.retailSalesData
+									}
+								/>
+							)}
+						</PageBlock>
+						<PageBlock
+							title={
+								<div className="flex items-center gap-6">
+									<div>Time - GMV</div>
+									<div className="flex items-center gap-2">
+										<GridOnOutlined size={16} />
+										<Toggle
+											isOn={showChart}
+											onClick={() => {
+												setShowChart(!showChart);
+											}}
+											isAllowed={true}
+										/>
+										<PollOutlined size={16} />
+									</div>
+									<div className="flex items-center gap-2">
+										<div className="text-sm text-neutral-400">
+											Daily
+										</div>
+										<Toggle
+											isOn={showMonthly}
+											onClick={() => {
+												setShowMonthly(!showMonthly);
+											}}
+											isAllowed={true}
+										/>
+										<div className="text-sm text-neutral-400">
+											Monthly
+										</div>
+									</div>
+								</div>
+							}
+							allowCollapse={true}
+						>
+							{fetchFilteredSalesDataMutation.data && (
+								<TimePrice
+									showMonthly={showMonthly}
+									showChartDailySales={showChart}
+									fetchFilteredSalesData={
+										fetchFilteredSalesDataMutation.data
+											.retailSalesData
+									}
+								/>
+							)}
+						</PageBlock>
+						<PageBlock
+							title={
+								<div className="flex items-center gap-6">
+									<div>Storehouses - Sales Volume</div>
+									<div className="flex items-center gap-2">
+										<GridOnOutlined size={16} />
+										<Toggle
+											isOn={showChart}
+											onClick={() => {
+												setShowChart(!showChart);
+											}}
+											isAllowed={true}
+										/>
+										<PollOutlined size={16} />
+									</div>
+								</div>
+							}
+							allowCollapse={true}
+						>
+							{fetchFilteredSalesDataMutation.data && (
+								<StorehousesSalesVolume
+									showChart={showChart}
+									fetchFilteredSalesData={
+										fetchFilteredSalesDataMutation.data
+											.retailSalesData
+									}
+								/>
+							)}
+						</PageBlock>
+						<PageBlock
+							title={
+								<div className="flex items-center gap-6">
+									<div>Storehouses - GMV (Tax Inclusive)</div>
+									<div className="flex items-center gap-2">
+										<GridOnOutlined size={16} />
+										<Toggle
+											isOn={showChart}
+											onClick={() => {
+												setShowChart(!showChart);
+											}}
+											isAllowed={true}
+										/>
+										<PollOutlined size={16} />
+									</div>
+								</div>
+							}
+							allowCollapse={true}
+						>
+							{fetchFilteredSalesDataMutation.data && (
+								<StorehousesTaxInclusivePrice
+									showChart={showChart}
+									fetchFilteredSalesData={
+										fetchFilteredSalesDataMutation.data
+											.retailSalesData
+									}
+								/>
+							)}
+						</PageBlock>
+						<PageBlock
+							title={
+								<div className="flex items-center gap-6">
+									<div>Client - Sales Volume</div>
+									<div className="flex items-center gap-2">
+										<GridOnOutlined size={16} />
+										<Toggle
+											isOn={showChart}
+											onClick={() => {
+												setShowChart(!showChart);
+											}}
+											isAllowed={true}
+										/>
+										<PollOutlined size={16} />
+									</div>
+								</div>
+							}
+							allowCollapse={true}
+						>
+							{fetchFilteredSalesDataMutation.data && (
+								<ClientsSalesVolume
+									showChart={showChart}
+									fetchFilteredSalesData={
+										fetchFilteredSalesDataMutation.data
+											.retailSalesData
+									}
+								/>
+							)}
+						</PageBlock>
+						<PageBlock
+							title={
+								<div className="flex items-center gap-6">
+									<div>Client - GMV (Tax Inclusive)</div>
+									<div className="flex items-center gap-2">
+										<GridOnOutlined size={16} />
+										<Toggle
+											isOn={showChart}
+											onClick={() => {
+												setShowChart(!showChart);
+											}}
+											isAllowed={true}
+										/>
+										<PollOutlined size={16} />
+									</div>
+								</div>
+							}
+							allowCollapse={true}
+						>
+							{fetchFilteredSalesDataMutation.data && (
+								<ClientsTaxInclusivePriceCny
+									showChart={showChart}
+									fetchFilteredSalesData={
+										fetchFilteredSalesDataMutation.data
+											.retailSalesData
+									}
+								/>
+							)}
+						</PageBlock>
+						<PageBlock
+							title={
+								<div className="flex items-center gap-6">
+									<div>Client - GMV</div>
+									<div className="flex items-center gap-2">
+										<GridOnOutlined size={16} />
+										<Toggle
+											isOn={showChart}
+											onClick={() => {
+												setShowChart(!showChart);
+											}}
+											isAllowed={true}
+										/>
+										<PollOutlined size={16} />
+									</div>
+								</div>
+							}
+							allowCollapse={true}
+						>
+							{fetchFilteredSalesDataMutation.data && (
+								<ClientsPriceCny
+									showChart={showChart}
+									fetchFilteredSalesData={
+										fetchFilteredSalesDataMutation.data
+											.retailSalesData
+									}
+								/>
+							)}
+						</PageBlock>
+					</PageContainer>
+				);
+			default:
+				return <Exception />;
+		}
+	} else {
+		return <Exception />;
+	}
 };
