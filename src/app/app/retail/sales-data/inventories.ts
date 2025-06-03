@@ -34,9 +34,8 @@ export const fourpxInventoryMap = new Map([
 
 export const internalInventoryTo4pxMap = new Map([
 	["英国海外仓", ["GBLTNA", "GBLONA"]],
-	["比利时海外仓", ["BELGGB", "BELGGA"]],
 	[
-		"美国海外仓",
+		"USA海外仓",
 		[
 			"USLAXA",
 			"USLAXB",
@@ -50,13 +49,7 @@ export const internalInventoryTo4pxMap = new Map([
 		],
 	],
 	["澳洲海外仓", ["AUSYDA", "AUMELB"]],
-	["德国海外仓", ["DEFRAA", "DEFRAB", "DEFRAC", "DEFRAD", "DEBREA"]],
-	["波兰海外仓", ["PLSLBB", "PLROKB", "PLROKC"]],
-	["捷克海外仓", ["CZPRGA"]],
-	["香港海外仓", ["CNHKGB"]],
+	["DE海外仓", ["DEFRAA", "DEFRAB", "DEFRAC", "DEFRAD", "DEBREA"]],
 	["加拿大海外仓", ["CAMSGA"]],
-	["日本海外仓", ["JPOSAA"]],
-	["法国海外仓", ["FRCDGA", "FRCDGB"]],
-	["西班牙海外仓", ["ESMADA"]],
-	["墨西哥海外仓云仓", ["MXTEPA"]],
+	["墨西哥海外仓", ["MXTEPA"]],
 ]);
