@@ -254,10 +254,7 @@ export const ProductsSalesVolume = forwardRef<
 								? parseInt(inventoryData[0].available_stock)
 								: 0;
 							mergedData.onwayStock += inventoryData.length
-								? parseInt(
-										inventoryRes.data.data.data[0]
-											.onway_stock
-								  )
+								? parseInt(inventoryData[0].onway_stock)
 								: 0;
 							mergedData.inventoryAge = inventoryAgeData.length
 								? Math.max(
