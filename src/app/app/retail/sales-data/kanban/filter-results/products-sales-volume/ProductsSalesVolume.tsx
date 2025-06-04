@@ -3,6 +3,7 @@ import { RetailSalesDataResponse } from "../../../types";
 import {
 	forwardRef,
 	useCallback,
+	useEffect,
 	useImperativeHandle,
 	useMemo,
 	useState,
@@ -17,6 +18,10 @@ import {
 	flexRender,
 	SortingState,
 } from "@tanstack/react-table";
+import { useQuery } from "@tanstack/react-query";
+import { useAuthStore } from "@/stores/auth";
+import axios from "axios";
+import { internalInventoryTo4pxMap } from "../../../inventories";
 
 export type ProductsSalesVolumeHandle = {
 	getTableData: () => {
@@ -24,6 +29,13 @@ export type ProductsSalesVolumeHandle = {
 		rows: any[];
 	};
 };
+
+type StorehouseExtraInfo = {
+	availableStock: number;
+	onwayStock: number;
+	inventoryAge: number;
+};
+type StorehouseExtraMap = Record<string, Record<string, StorehouseExtraInfo>>;
 
 export const ProductsSalesVolume = forwardRef<
 	ProductsSalesVolumeHandle,
@@ -54,6 +66,17 @@ export const ProductsSalesVolume = forwardRef<
 		},
 		[fetchFilteredSalesData]
 	);
+
+	const jwt = useAuthStore((state) => state.jwt);
+	// const mySubRolesQuery = useQuery({
+	// 	queryKey: [RolesQK.GET_MY_SUB_ROLES],
+	// 	queryFn: async () => {
+	// 		const roles = await getMySubRoles(jwt);
+	// 		return roles;
+	// 	},
+	// 	retry: false,
+	// 	refetchOnWindowFocus: false,
+	// });
 
 	/**
 	 * convert to array of product-salesVolume objects
@@ -135,6 +158,7 @@ export const ProductsSalesVolume = forwardRef<
 			return acc;
 		}, [] as ReducedData[]);
 	}, [fetchFilteredSalesData]);
+
 	const totalSalesVolume = reducedData.reduce(
 		(acc, curr) => acc + curr.salesVolume,
 		0
@@ -176,6 +200,90 @@ export const ProductsSalesVolume = forwardRef<
 		});
 		return map;
 	}, [filteredStorehouseData]);
+
+	const [storehouseExtraMap, setStorehouseExtraMap] =
+		useState<StorehouseExtraMap>({});
+
+	useEffect(() => {
+		async function fetchInventory() {
+			const newMap: StorehouseExtraMap = {};
+			/* For each product/storehouse, call your API */
+			for (const product of reducedData) {
+				const sku = product.productSku;
+				newMap[sku] = newMap[sku] || {};
+				for (const storehouse of uniqueStorehouses) {
+					const invs = internalInventoryTo4pxMap.get(storehouse);
+					/* skip if storehouse not found */
+					if (!invs) continue;
+					const mergedData = {
+						availableStock: 0,
+						onwayStock: 0,
+						inventoryAge: 0,
+					};
+					for (const inv of invs) {
+						if (
+							[
+								"FAA001000521",
+								"CAD001000002",
+								"EDB000000329",
+							].includes(sku)
+						) {
+							console.log(sku, inv);
+
+							const inventoryRes = await axios.post(
+								"/api/retail/sales-data/kanban/filter-results/products-sales-volume/inventory-query",
+								{
+									lstsku: [sku],
+									warehouse_code: inv,
+									page_no: 1,
+									page_size: 10,
+								}
+							);
+							const inventoryData = inventoryRes.data.data.data;
+
+							const inventoryAgeRes = await axios.post(
+								"/api/retail/sales-data/kanban/filter-results/products-sales-volume/inventory-age",
+								{
+									lstsku: [sku],
+									warehouse_code: inv,
+								}
+							);
+							const inventoryAgeData = inventoryAgeRes.data.data;
+
+							mergedData.availableStock += inventoryData.length
+								? parseInt(inventoryData[0].available_stock)
+								: 0;
+							mergedData.onwayStock += inventoryData.length
+								? parseInt(
+										inventoryRes.data.data.data[0]
+											.onway_stock
+								  )
+								: 0;
+							mergedData.inventoryAge = inventoryAgeData.length
+								? Math.max(
+										mergedData.inventoryAge,
+										parseInt(
+											inventoryAgeData[0].inventory_age
+										)
+								  )
+								: mergedData.inventoryAge;
+							console.log("mergedData", mergedData);
+						}
+					}
+
+					newMap[sku][storehouse] = {
+						availableStock: mergedData.availableStock,
+						onwayStock: mergedData.onwayStock,
+						inventoryAge: mergedData.inventoryAge,
+					};
+				}
+			}
+			setStorehouseExtraMap(newMap);
+		}
+		if (reducedData.length && uniqueStorehouses.length) {
+			fetchInventory();
+		}
+	}, [reducedData, uniqueStorehouses]);
 
 	const [sorting, setSorting] = useState<SortingState>([]);
 	/* define columns */
