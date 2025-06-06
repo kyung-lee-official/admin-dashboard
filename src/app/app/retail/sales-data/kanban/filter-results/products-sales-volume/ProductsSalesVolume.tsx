@@ -1,11 +1,11 @@
-import { Table, Tbody, Thead } from "@/components/content/Table";
+import { useVirtualizer } from "@tanstack/react-virtual";
 import { RetailSalesDataResponse } from "../../../types";
 import {
 	forwardRef,
 	useCallback,
-	useEffect,
 	useImperativeHandle,
 	useMemo,
+	useRef,
 	useState,
 } from "react";
 import { SwapVert } from "../../Icons";
@@ -18,10 +18,8 @@ import {
 	flexRender,
 	SortingState,
 } from "@tanstack/react-table";
-import { useQuery } from "@tanstack/react-query";
-import { useAuthStore } from "@/stores/auth";
-import axios from "axios";
 import { internalInventoryTo4pxMap } from "../../../inventories";
+import { StorehouseExtraCell } from "./StorehouseExtraCell";
 
 export type ProductsSalesVolumeHandle = {
 	getTableData: () => {
@@ -66,17 +64,6 @@ export const ProductsSalesVolume = forwardRef<
 		},
 		[fetchFilteredSalesData]
 	);
-
-	const jwt = useAuthStore((state) => state.jwt);
-	// const mySubRolesQuery = useQuery({
-	// 	queryKey: [RolesQK.GET_MY_SUB_ROLES],
-	// 	queryFn: async () => {
-	// 		const roles = await getMySubRoles(jwt);
-	// 		return roles;
-	// 	},
-	// 	retry: false,
-	// 	refetchOnWindowFocus: false,
-	// });
 
 	/**
 	 * convert to array of product-salesVolume objects
@@ -201,87 +188,6 @@ export const ProductsSalesVolume = forwardRef<
 		return map;
 	}, [filteredStorehouseData]);
 
-	const [storehouseExtraMap, setStorehouseExtraMap] =
-		useState<StorehouseExtraMap>({});
-
-	useEffect(() => {
-		async function fetchInventory() {
-			const newMap: StorehouseExtraMap = {};
-			/* For each product/storehouse, call your API */
-			for (const product of reducedData) {
-				const sku = product.productSku;
-				newMap[sku] = newMap[sku] || {};
-				for (const storehouse of uniqueStorehouses) {
-					const invs = internalInventoryTo4pxMap.get(storehouse);
-					/* skip if storehouse not found */
-					if (!invs) continue;
-					const mergedData = {
-						availableStock: 0,
-						onwayStock: 0,
-						inventoryAge: 0,
-					};
-					for (const inv of invs) {
-						if (
-							[
-								"FAA001000521",
-								"CAD001000002",
-								"EDB000000329",
-							].includes(sku)
-						) {
-							console.log(sku, inv);
-
-							const inventoryRes = await axios.post(
-								"/api/retail/sales-data/kanban/filter-results/products-sales-volume/inventory-query",
-								{
-									lstsku: [sku],
-									warehouse_code: inv,
-									page_no: 1,
-									page_size: 10,
-								}
-							);
-							const inventoryData = inventoryRes.data.data.data;
-
-							const inventoryAgeRes = await axios.post(
-								"/api/retail/sales-data/kanban/filter-results/products-sales-volume/inventory-age",
-								{
-									lstsku: [sku],
-									warehouse_code: inv,
-								}
-							);
-							const inventoryAgeData = inventoryAgeRes.data.data;
-
-							mergedData.availableStock += inventoryData.length
-								? parseInt(inventoryData[0].available_stock)
-								: 0;
-							mergedData.onwayStock += inventoryData.length
-								? parseInt(inventoryData[0].onway_stock)
-								: 0;
-							mergedData.inventoryAge = inventoryAgeData.length
-								? Math.max(
-										mergedData.inventoryAge,
-										parseInt(
-											inventoryAgeData[0].inventory_age
-										)
-								  )
-								: mergedData.inventoryAge;
-							console.log("mergedData", mergedData);
-						}
-					}
-
-					newMap[sku][storehouse] = {
-						availableStock: mergedData.availableStock,
-						onwayStock: mergedData.onwayStock,
-						inventoryAge: mergedData.inventoryAge,
-					};
-				}
-			}
-			setStorehouseExtraMap(newMap);
-		}
-		if (reducedData.length && uniqueStorehouses.length) {
-			fetchInventory();
-		}
-	}, [reducedData, uniqueStorehouses]);
-
 	const [sorting, setSorting] = useState<SortingState>([]);
 	/* define columns */
 	const columns = useMemo(
@@ -340,21 +246,71 @@ export const ProductsSalesVolume = forwardRef<
 				cell: (info: any) => Number(info.getValue()).toFixed(2),
 			},
 			/* dynamic storehouse columns */
-			...uniqueStorehouses.map((storehouse) => ({
-				id: `storehouse_${storehouse}`,
-				header: storehouse,
-				enableSorting: true,
-				accessorFn: (row: any) =>
-					storehouseSalesMap[row.productSku]?.[storehouse] ?? 0,
-				cell: (info: any) => {
-					const sku = info.row.original.productSku;
-					return (
-						<span className="whitespace-nowrap">
-							{storehouseSalesMap[sku]?.[storehouse] || 0}
-						</span>
-					);
+			...uniqueStorehouses.flatMap((storehouse, storehouseIndex) => [
+				{
+					id: `storehouse_${storehouse}`,
+					header: storehouse,
+					enableSorting: true,
+					accessorFn: (row: any) =>
+						storehouseSalesMap[row.productSku]?.[storehouse] ?? 0,
+					cell: (info: any) => {
+						const sku = info.row.original.productSku;
+						return (
+							<span className="whitespace-nowrap">
+								{storehouseSalesMap[sku]?.[storehouse] || 0}
+							</span>
+						);
+					},
 				},
-			})),
+				{
+					id: `availableStock_${storehouse}`,
+					header: `${storehouse} Available Stock`,
+					cell: (info: any) => (
+						<StorehouseExtraCell
+							sku={info.row.original.productSku}
+							storehouse={storehouse}
+							type="availableStock"
+							enabled={!!reducedData.length}
+							staggerIndex={
+								info.row.index * uniqueStorehouses.length +
+								storehouseIndex
+							}
+						/>
+					),
+				},
+				{
+					id: `onwayStock_${storehouse}`,
+					header: `${storehouse} Onway Stock`,
+					cell: (info: any) => (
+						<StorehouseExtraCell
+							sku={info.row.original.productSku}
+							storehouse={storehouse}
+							type="onwayStock"
+							enabled={!!reducedData.length}
+							staggerIndex={
+								info.row.index * uniqueStorehouses.length +
+								storehouseIndex
+							}
+						/>
+					),
+				},
+				{
+					id: `inventoryAge_${storehouse}`,
+					header: `${storehouse} Inventory Age`,
+					cell: (info: any) => (
+						<StorehouseExtraCell
+							sku={info.row.original.productSku}
+							storehouse={storehouse}
+							type="inventoryAge"
+							enabled={!!reducedData.length}
+							staggerIndex={
+								info.row.index * uniqueStorehouses.length +
+								storehouseIndex
+							}
+						/>
+					),
+				},
+			]),
 		],
 		[uniqueStorehouses, storehouseSalesMap]
 	);
@@ -422,96 +378,163 @@ export const ProductsSalesVolume = forwardRef<
 				</div>
 			);
 		case false:
+			const parentRef = useRef<HTMLTableSectionElement>(null);
+			const rows = table.getRowModel().rows;
+
+			const rowVirtualizer = useVirtualizer({
+				count: rows.length,
+				getScrollElement: () => parentRef.current,
+				/* Adjust row height as needed */
+				estimateSize: () => 48,
+				overscan: 10,
+			});
+
+			const gridTemplateColumns = useMemo(() => {
+				return columns.map((col) => `${250}px`).join(" ");
+				// return columns.map((col) => `${col.size || 0}px`).join(" ");
+			}, [columns]);
+
 			return (
 				<ResultWrapper>
-					<Table>
-						<Thead>
-							{table.getHeaderGroups().map((headerGroup) => (
-								<tr key={headerGroup.id}>
-									{headerGroup.headers.map((header) => {
-										const isLastNDays =
-											lastNDaysKeys.includes(
-												header.column.id
-											);
-										return (
-											<th
-												key={header.id}
-												className={`cursor-pointer 
-													${
-														isLastNDays &&
-														selectedDaysColumn ===
+					<div className="relative overflow-auto">
+						<table className="w-full text-sm text-white/50">
+							<thead
+								className="sticky top-0
+								bg-neutral-800
+								z-10"
+							>
+								{table.getHeaderGroups().map((headerGroup) => {
+									return (
+										<tr
+											key={headerGroup.id}
+											className="grid"
+											style={{
+												gridTemplateColumns,
+											}}
+										>
+											{headerGroup.headers.map(
+												(header) => {
+													const isLastNDays =
+														lastNDaysKeys.includes(
 															header.column.id
-															? "bg-green-900"
-															: ""
-													}`}
-												onClick={
-													isLastNDays
-														? () =>
-																setSelectedDaysColumn(
-																	selectedDaysColumn ===
-																		header
-																			.column
-																			.id
-																		? null
-																		: header
-																				.column
-																				.id
-																)
-														: undefined
-												}
-											>
-												<div
-													className="flex gap-2
-													truncate"
-												>
-													{flexRender(
-														header.column.columnDef
-															.header,
-														header.getContext()
-													)}
-													<button
-														className="flex items-center 
-														bg-neutral-700 hover:bg-neutral-600
-														rounded cursor-pointer"
-														onClick={header.column.getToggleSortingHandler()}
-													>
-														<SwapVert
-															size={20}
-															direction={
-																header.column.getIsSorted() ===
-																false
-																	? null
-																	: (header.column.getIsSorted() as
-																			| "asc"
-																			| "desc")
+														);
+													return (
+														<th
+															key={header.id}
+															className={`py-3 px-6 text-left font-semibold border-t border-white/10 cursor-pointer ${
+																isLastNDays &&
+																selectedDaysColumn ===
+																	header
+																		.column
+																		.id
+																	? "bg-green-900"
+																	: ""
+															}`}
+															onClick={
+																isLastNDays
+																	? () =>
+																			setSelectedDaysColumn(
+																				selectedDaysColumn ===
+																					header
+																						.column
+																						.id
+																					? null
+																					: header
+																							.column
+																							.id
+																			)
+																	: undefined
 															}
-														/>
-													</button>
-												</div>
-											</th>
+														>
+															<div className="flex gap-2 truncate">
+																{flexRender(
+																	header
+																		.column
+																		.columnDef
+																		.header,
+																	header.getContext()
+																)}
+																<button
+																	className="flex items-center bg-neutral-700 hover:bg-neutral-600 rounded cursor-pointer"
+																	onClick={header.column.getToggleSortingHandler()}
+																>
+																	<SwapVert
+																		size={
+																			20
+																		}
+																		direction={
+																			header.column.getIsSorted() ===
+																			false
+																				? null
+																				: (header.column.getIsSorted() as
+																						| "asc"
+																						| "desc")
+																		}
+																	/>
+																</button>
+															</div>
+														</th>
+													);
+												}
+											)}
+										</tr>
+									);
+								})}
+							</thead>
+							<tbody
+								ref={parentRef}
+								style={{
+									display: "block",
+									maxHeight: "500px",
+									overflowY: "auto",
+									position: "relative",
+								}}
+								className="[&_>_tr_>_td]:py-3 [&_>_tr_>_td]:px-6 [&_>_tr_>_td]:border-t [&_>_tr_>_td]:border-white/10 [&_>_tr]:hover:bg-white/5"
+							>
+								<tr
+									style={{
+										height: `${rowVirtualizer.getTotalSize()}px`,
+										display: "block",
+									}}
+								/>
+								{rowVirtualizer
+									.getVirtualItems()
+									.map((virtualRow) => {
+										const row = rows[virtualRow.index];
+										return (
+											<tr
+												key={row.id}
+												style={{
+													position: "absolute",
+													top: 0,
+													left: 0,
+													transform: `translateY(${virtualRow.start}px)`,
+													width: "100%",
+													display: "table",
+													tableLayout: "fixed",
+												}}
+											>
+												{row
+													.getVisibleCells()
+													.map((cell) => (
+														<td
+															key={cell.id}
+															className="whitespace-nowrap py-3 px-6 border-t border-white/10"
+														>
+															{flexRender(
+																cell.column
+																	.columnDef
+																	.cell,
+																cell.getContext()
+															)}
+														</td>
+													))}
+											</tr>
 										);
 									})}
-								</tr>
-							))}
-						</Thead>
-						<Tbody>
-							{table.getRowModel().rows.map((row) => (
-								<tr key={row.id}>
-									{row.getVisibleCells().map((cell) => (
-										<td
-											key={cell.id}
-											className="whitespace-nowrap"
-										>
-											{flexRender(
-												cell.column.columnDef.cell,
-												cell.getContext()
-											)}
-										</td>
-									))}
-								</tr>
-							))}
-						</Tbody>
-					</Table>
+							</tbody>
+						</table>
+					</div>
 				</ResultWrapper>
 			);
 
