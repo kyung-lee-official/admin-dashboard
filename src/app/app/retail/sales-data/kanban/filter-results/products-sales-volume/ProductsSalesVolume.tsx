@@ -195,14 +195,18 @@ export const ProductsSalesVolume = forwardRef<
 			{
 				accessorKey: "productNameZhCn",
 				header: "Product",
+				size: 350,
 				enableSorting: true,
 				cell: (info: any) => (
-					<span className="whitespace-nowrap">{info.getValue()}</span>
+					<span className="block truncate" title={info.getValue()}>
+						{info.getValue()}
+					</span>
 				),
 			},
 			{
 				accessorKey: "productSku",
 				header: "Product SKU",
+				size: 170,
 				enableSorting: true,
 				cell: (info: any) => (
 					<span className="whitespace-nowrap">{info.getValue()}</span>
@@ -211,37 +215,44 @@ export const ProductsSalesVolume = forwardRef<
 			{
 				accessorKey: "salesVolume",
 				header: "Sales Volume",
+				size: 170,
 				enableSorting: true,
 			},
 			{
 				accessorKey: "last7Days",
 				header: "Last 7 Days",
+				size: 170,
 				enableSorting: true,
 			},
 			{
 				accessorKey: "last14Days",
 				header: "Last 14 Days",
+				size: 170,
 				enableSorting: true,
 			},
 			{
 				accessorKey: "last30Days",
 				header: "Last 30 Days",
+				size: 170,
 				enableSorting: true,
 			},
 			{
 				accessorKey: "last60Days",
 				header: "Last 60 Days",
+				size: 170,
 				enableSorting: true,
 			},
 			{
 				accessorKey: "last7DaysAverage",
 				header: "Last 7 Days Avg",
+				size: 200,
 				enableSorting: true,
 				cell: (info: any) => Number(info.getValue()).toFixed(2),
 			},
 			{
 				accessorKey: "last30DaysAverage",
 				header: "Last 30 Days Avg",
+				size: 200,
 				enableSorting: true,
 				cell: (info: any) => Number(info.getValue()).toFixed(2),
 			},
@@ -250,6 +261,7 @@ export const ProductsSalesVolume = forwardRef<
 				{
 					id: `storehouse_${storehouse}`,
 					header: storehouse,
+					size: 200,
 					enableSorting: true,
 					accessorFn: (row: any) =>
 						storehouseSalesMap[row.productSku]?.[storehouse] ?? 0,
@@ -265,6 +277,7 @@ export const ProductsSalesVolume = forwardRef<
 				{
 					id: `availableStock_${storehouse}`,
 					header: `${storehouse} Available Stock`,
+					size: 200,
 					cell: (info: any) => (
 						<StorehouseExtraCell
 							sku={info.row.original.productSku}
@@ -281,6 +294,7 @@ export const ProductsSalesVolume = forwardRef<
 				{
 					id: `onwayStock_${storehouse}`,
 					header: `${storehouse} Onway Stock`,
+					size: 200,
 					cell: (info: any) => (
 						<StorehouseExtraCell
 							sku={info.row.original.productSku}
@@ -297,6 +311,7 @@ export const ProductsSalesVolume = forwardRef<
 				{
 					id: `inventoryAge_${storehouse}`,
 					header: `${storehouse} Inventory Age`,
+					size: 200,
 					cell: (info: any) => (
 						<StorehouseExtraCell
 							sku={info.row.original.productSku}
@@ -389,153 +404,134 @@ export const ProductsSalesVolume = forwardRef<
 				overscan: 10,
 			});
 
+			const virtualRows = rowVirtualizer.getVirtualItems();
+			const totalSize = rowVirtualizer.getTotalSize();
+
 			const gridTemplateColumns = useMemo(() => {
-				return columns.map((col) => `${250}px`).join(" ");
-				// return columns.map((col) => `${col.size || 0}px`).join(" ");
+				if (columns.length === 0) return "";
+				const minLastColWidth = 350; // set your desired min width here
+				return (
+					columns
+						.slice(0, -1)
+						.map((col) => `${col.size || 0}px`)
+						.join(" ") + ` minmax(${minLastColWidth}px, 1fr)`
+				);
 			}, [columns]);
 
 			return (
-				<ResultWrapper>
-					<div className="relative overflow-auto">
-						<table className="w-full text-sm text-white/50">
-							<thead
-								className="sticky top-0
-								bg-neutral-800
-								z-10"
-							>
-								{table.getHeaderGroups().map((headerGroup) => {
+				<div className="max-w-full">
+					<div
+						ref={parentRef}
+						className="relative overflow-auto h-[85svh]"
+					>
+						{/* Header */}
+						<div
+							className="sticky top-0 z-10 grid"
+							style={{ gridTemplateColumns }}
+							role="row"
+						>
+							{table.getHeaderGroups().map((headerGroup) =>
+								headerGroup.headers.map((header) => {
+									const isLastNDays = lastNDaysKeys.includes(
+										header.column.id
+									);
 									return (
-										<tr
-											key={headerGroup.id}
-											className="grid"
-											style={{
-												gridTemplateColumns,
-											}}
-										>
-											{headerGroup.headers.map(
-												(header) => {
-													const isLastNDays =
-														lastNDaysKeys.includes(
-															header.column.id
-														);
-													return (
-														<th
-															key={header.id}
-															className={`py-3 px-6 text-left font-semibold border-t border-white/10 cursor-pointer ${
-																isLastNDays &&
+										<div
+											key={header.id}
+											className={`py-3 px-6
+											text-left text-white font-semibold
+											bg-neutral-800
+											border-t border-white/10 cursor-pointer ${
+												isLastNDays &&
+												selectedDaysColumn ===
+													header.column.id
+													? "bg-green-900"
+													: ""
+											}`}
+											onClick={
+												isLastNDays
+													? () =>
+															setSelectedDaysColumn(
 																selectedDaysColumn ===
 																	header
 																		.column
 																		.id
-																	? "bg-green-900"
-																	: ""
-															}`}
-															onClick={
-																isLastNDays
-																	? () =>
-																			setSelectedDaysColumn(
-																				selectedDaysColumn ===
-																					header
-																						.column
-																						.id
-																					? null
-																					: header
-																							.column
-																							.id
-																			)
-																	: undefined
-															}
-														>
-															<div className="flex gap-2 truncate">
-																{flexRender(
-																	header
-																		.column
-																		.columnDef
-																		.header,
-																	header.getContext()
-																)}
-																<button
-																	className="flex items-center bg-neutral-700 hover:bg-neutral-600 rounded cursor-pointer"
-																	onClick={header.column.getToggleSortingHandler()}
-																>
-																	<SwapVert
-																		size={
-																			20
-																		}
-																		direction={
-																			header.column.getIsSorted() ===
-																			false
-																				? null
-																				: (header.column.getIsSorted() as
-																						| "asc"
-																						| "desc")
-																		}
-																	/>
-																</button>
-															</div>
-														</th>
-													);
-												}
-											)}
-										</tr>
+																	? null
+																	: header
+																			.column
+																			.id
+															)
+													: undefined
+											}
+										>
+											<div className="flex gap-2 truncate">
+												{flexRender(
+													header.column.columnDef
+														.header,
+													header.getContext()
+												)}
+												<button
+													className="flex items-center bg-neutral-700 hover:bg-neutral-600 rounded cursor-pointer"
+													onClick={header.column.getToggleSortingHandler()}
+												>
+													<SwapVert
+														size={20}
+														direction={
+															header.column.getIsSorted() ===
+															false
+																? null
+																: (header.column.getIsSorted() as
+																		| "asc"
+																		| "desc")
+														}
+													/>
+												</button>
+											</div>
+										</div>
 									);
-								})}
-							</thead>
-							<tbody
-								ref={parentRef}
-								style={{
-									display: "block",
-									maxHeight: "500px",
-									overflowY: "auto",
-									position: "relative",
-								}}
-								className="[&_>_tr_>_td]:py-3 [&_>_tr_>_td]:px-6 [&_>_tr_>_td]:border-t [&_>_tr_>_td]:border-white/10 [&_>_tr]:hover:bg-white/5"
-							>
-								<tr
-									style={{
-										height: `${rowVirtualizer.getTotalSize()}px`,
-										display: "block",
-									}}
-								/>
-								{rowVirtualizer
-									.getVirtualItems()
-									.map((virtualRow) => {
-										const row = rows[virtualRow.index];
-										return (
-											<tr
-												key={row.id}
-												style={{
-													position: "absolute",
-													top: 0,
-													left: 0,
-													transform: `translateY(${virtualRow.start}px)`,
-													width: "100%",
-													display: "table",
-													tableLayout: "fixed",
-												}}
+								})
+							)}
+						</div>
+						{/* Body */}
+						<div
+							className="relative"
+							style={{ height: totalSize }}
+							role="rowgroup"
+						>
+							{virtualRows.map((virtualRow) => {
+								const row = rows[virtualRow.index];
+								return (
+									<div
+										key={row.id}
+										data-index={virtualRow.index}
+										ref={(node) =>
+											rowVirtualizer.measureElement(node)
+										}
+										className="absolute w-full grid"
+										style={{
+											transform: `translateY(${virtualRow.start}px)`,
+											gridTemplateColumns,
+											minWidth: "fit-content",
+										}}
+										role="row"
+									>
+										{row.getVisibleCells().map((cell) => (
+											<div
+												key={cell.id}
+												className="whitespace-nowrap py-3 px-6 border-t border-white/10"
 											>
-												{row
-													.getVisibleCells()
-													.map((cell) => (
-														<td
-															key={cell.id}
-															className="whitespace-nowrap py-3 px-6 border-t border-white/10"
-														>
-															{flexRender(
-																cell.column
-																	.columnDef
-																	.cell,
-																cell.getContext()
-															)}
-														</td>
-													))}
-											</tr>
-										);
-									})}
-							</tbody>
-						</table>
+												{flexRender(
+													cell.column.columnDef.cell,
+													cell.getContext()
+												)}
+											</div>
+										))}
+									</div>
+								);
+							})}
+						</div>
 					</div>
-				</ResultWrapper>
+				</div>
 			);
 
 		default:
