@@ -209,7 +209,7 @@ export const ProductsSalesVolume = forwardRef<
 				size: 170,
 				enableSorting: true,
 				cell: (info: any) => (
-					<span className="whitespace-nowrap">{info.getValue()}</span>
+					<span className="block truncate">{info.getValue()}</span>
 				),
 			},
 			{
@@ -276,7 +276,7 @@ export const ProductsSalesVolume = forwardRef<
 				},
 				{
 					id: `availableStock_${storehouse}`,
-					header: `${storehouse} Available Stock`,
+					header: `Available Stock`,
 					size: 200,
 					cell: (info: any) => (
 						<StorehouseExtraCell
@@ -293,7 +293,7 @@ export const ProductsSalesVolume = forwardRef<
 				},
 				{
 					id: `onwayStock_${storehouse}`,
-					header: `${storehouse} Onway Stock`,
+					header: `Onway Stock`,
 					size: 200,
 					cell: (info: any) => (
 						<StorehouseExtraCell
@@ -310,7 +310,7 @@ export const ProductsSalesVolume = forwardRef<
 				},
 				{
 					id: `inventoryAge_${storehouse}`,
-					header: `${storehouse} Inventory Age`,
+					header: `Inventory Age`,
 					size: 200,
 					cell: (info: any) => (
 						<StorehouseExtraCell
@@ -464,12 +464,25 @@ export const ProductsSalesVolume = forwardRef<
 													: undefined
 											}
 										>
-											<div className="flex gap-2 truncate">
-												{flexRender(
-													header.column.columnDef
-														.header,
-													header.getContext()
-												)}
+											<div className="flex items-center gap-2">
+												<span
+													className="flex-1 min-w-0 truncate overflow-hidden"
+													title={
+														typeof header.column
+															.columnDef
+															.header === "string"
+															? header.column
+																	.columnDef
+																	.header
+															: undefined
+													}
+												>
+													{flexRender(
+														header.column.columnDef
+															.header,
+														header.getContext()
+													)}
+												</span>
 												<button
 													className="flex items-center bg-neutral-700 hover:bg-neutral-600 rounded cursor-pointer"
 													onClick={header.column.getToggleSortingHandler()}
