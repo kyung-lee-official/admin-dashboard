@@ -10,21 +10,41 @@ export async function exportAsXlsx(
 ) {
 	if (!tableData) return;
 
+	/* filter out extra columns by name */
+	const isExtraColumn = (col: string) =>
+		col === "Available Stock" ||
+		col === "Onway Stock" ||
+		col === "Inventory Age" ||
+		/Available Stock$/i.test(col) ||
+		/Onway Stock$/i.test(col) ||
+		/Inventory Age$/i.test(col);
+
+	const exportColumnIndexes = tableData.columns
+		.map((col, idx) => (!isExtraColumn(col) ? idx : -1))
+		.filter((idx) => idx !== -1);
+
+	const exportColumns = exportColumnIndexes.map(
+		(idx) => tableData.columns[idx]
+	);
+	const exportRows = tableData.rows.map((row) =>
+		exportColumnIndexes.map((idx) => row[idx])
+	);
+
 	const workbook = new ExcelJS.Workbook();
 	const worksheet = workbook.addWorksheet("Sheet1");
-	
+
 	/* set column widths */
 	worksheet.columns = [
 		{ width: 30 }, // first column
 		{ width: 20 }, // second column
-		...tableData.columns.slice(2).map(() => ({ width: 15 })), // default width for others
+		...exportColumns.slice(2).map(() => ({ width: 15 })), // default width for others
 	];
 
 	/* add header row */
-	worksheet.addRow(tableData.columns);
+	worksheet.addRow(exportColumns);
 
 	/* add data rows */
-	tableData.rows.forEach((row) => {
+	exportRows.forEach((row) => {
 		worksheet.addRow(row);
 	});
 

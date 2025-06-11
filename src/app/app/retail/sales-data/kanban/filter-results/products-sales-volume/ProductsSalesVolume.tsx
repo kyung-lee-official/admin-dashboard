@@ -278,6 +278,7 @@ export const ProductsSalesVolume = forwardRef<
 					id: `availableStock_${storehouse}`,
 					header: `Available Stock`,
 					size: 200,
+					enableSorting: false,
 					cell: (info: any) => (
 						<StorehouseExtraCell
 							sku={info.row.original.productSku}
@@ -295,6 +296,7 @@ export const ProductsSalesVolume = forwardRef<
 					id: `onwayStock_${storehouse}`,
 					header: `Onway Stock`,
 					size: 200,
+					enableSorting: false,
 					cell: (info: any) => (
 						<StorehouseExtraCell
 							sku={info.row.original.productSku}
@@ -312,6 +314,7 @@ export const ProductsSalesVolume = forwardRef<
 					id: `inventoryAge_${storehouse}`,
 					header: `Inventory Age`,
 					size: 200,
+					enableSorting: false,
 					cell: (info: any) => (
 						<StorehouseExtraCell
 							sku={info.row.original.productSku}
@@ -422,7 +425,7 @@ export const ProductsSalesVolume = forwardRef<
 				<div className="max-w-full">
 					<div
 						ref={parentRef}
-						className="relative overflow-auto h-[85svh]"
+						className="relative overflow-auto h-[85svh] scrollbar"
 					>
 						{/* Header */}
 						<div
@@ -483,22 +486,25 @@ export const ProductsSalesVolume = forwardRef<
 														header.getContext()
 													)}
 												</span>
-												<button
-													className="flex items-center bg-neutral-700 hover:bg-neutral-600 rounded cursor-pointer"
-													onClick={header.column.getToggleSortingHandler()}
-												>
-													<SwapVert
-														size={20}
-														direction={
-															header.column.getIsSorted() ===
-															false
-																? null
-																: (header.column.getIsSorted() as
-																		| "asc"
-																		| "desc")
-														}
-													/>
-												</button>
+												{header.column.columnDef
+													.enableSorting && (
+													<button
+														className="flex items-center bg-neutral-700 hover:bg-neutral-600 rounded cursor-pointer"
+														onClick={header.column.getToggleSortingHandler()}
+													>
+														<SwapVert
+															size={20}
+															direction={
+																header.column.getIsSorted() ===
+																false
+																	? null
+																	: (header.column.getIsSorted() as
+																			| "asc"
+																			| "desc")
+															}
+														/>
+													</button>
+												)}
 											</div>
 										</div>
 									);
