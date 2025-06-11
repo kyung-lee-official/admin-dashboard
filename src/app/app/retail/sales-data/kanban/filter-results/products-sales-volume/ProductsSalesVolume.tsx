@@ -367,6 +367,26 @@ export const ProductsSalesVolume = forwardRef<
 		[table]
 	);
 
+	const parentRef = useRef<HTMLTableSectionElement>(null);
+	const rows = table.getRowModel().rows;
+	const rowVirtualizer = useVirtualizer({
+		count: rows.length,
+		getScrollElement: () => parentRef.current,
+		/* Adjust row height as needed */
+		estimateSize: () => 48,
+		overscan: 10,
+	});
+	const gridTemplateColumns = useMemo(() => {
+		if (columns.length === 0) return "";
+		const minLastColWidth = 350; // set your desired min width here
+		return (
+			columns
+				.slice(0, -1)
+				.map((col) => `${col.size || 0}px`)
+				.join(" ") + ` minmax(${minLastColWidth}px, 1fr)`
+		);
+	}, [columns]);
+
 	switch (showChart) {
 		case true:
 			return (
@@ -396,30 +416,8 @@ export const ProductsSalesVolume = forwardRef<
 				</div>
 			);
 		case false:
-			const parentRef = useRef<HTMLTableSectionElement>(null);
-			const rows = table.getRowModel().rows;
-
-			const rowVirtualizer = useVirtualizer({
-				count: rows.length,
-				getScrollElement: () => parentRef.current,
-				/* Adjust row height as needed */
-				estimateSize: () => 48,
-				overscan: 10,
-			});
-
 			const virtualRows = rowVirtualizer.getVirtualItems();
 			const totalSize = rowVirtualizer.getTotalSize();
-
-			const gridTemplateColumns = useMemo(() => {
-				if (columns.length === 0) return "";
-				const minLastColWidth = 350; // set your desired min width here
-				return (
-					columns
-						.slice(0, -1)
-						.map((col) => `${col.size || 0}px`)
-						.join(" ") + ` minmax(${minLastColWidth}px, 1fr)`
-				);
-			}, [columns]);
 
 			return (
 				<div className="max-w-full">
