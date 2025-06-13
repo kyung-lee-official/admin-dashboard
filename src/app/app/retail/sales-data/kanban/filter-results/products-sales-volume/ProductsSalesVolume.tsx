@@ -10,7 +10,6 @@ import {
 } from "react";
 import { SwapVert } from "../../Icons";
 import { PieChart } from "@/components/charts/piechart/PieChart";
-import { ResultWrapper } from "../ResultWrapper";
 import {
 	useReactTable,
 	getCoreRowModel,
@@ -18,7 +17,6 @@ import {
 	flexRender,
 	SortingState,
 } from "@tanstack/react-table";
-import { internalInventoryTo4pxMap } from "../../../inventories";
 import { StorehouseExtraCell } from "./StorehouseExtraCell";
 
 export type ProductsSalesVolumeHandle = {
@@ -419,6 +417,21 @@ export const ProductsSalesVolume = forwardRef<
 			const virtualRows = rowVirtualizer.getVirtualItems();
 			const totalSize = rowVirtualizer.getTotalSize();
 
+			// Helper for sticky/frozen columns
+			const getHeaderClass = (colIdx: number) => {
+				if (colIdx === 0) return "sticky left-0 z-30 bg-neutral-800";
+				if (colIdx === 1)
+					return "sticky left-[350px] z-20 bg-neutral-800 border-r border-neutral-100";
+				return "";
+			};
+			const getCellClass = (colIdx: number) => {
+				if (colIdx === 0)
+					return "sticky left-0 z-20 bg-neutral-800 border-r border-neutral-100";
+				if (colIdx === 1)
+					return "sticky left-[350px] z-10 bg-neutral-800 border-r border-neutral-100";
+				return "";
+			};
+
 			return (
 				<div className="max-w-full">
 					<div
@@ -427,22 +440,26 @@ export const ProductsSalesVolume = forwardRef<
 					>
 						{/* Header */}
 						<div
-							className="sticky top-0 z-10 grid"
+							className="grid sticky min-w-max top-0 z-10"
 							style={{ gridTemplateColumns }}
 							role="row"
 						>
 							{table.getHeaderGroups().map((headerGroup) =>
-								headerGroup.headers.map((header) => {
+								headerGroup.headers.map((header, colIdx) => {
 									const isLastNDays = lastNDaysKeys.includes(
 										header.column.id
 									);
+									const isSticky =
+										colIdx === 0 || colIdx === 1;
 									return (
 										<div
 											key={header.id}
 											className={`py-3 px-6
 											text-left text-white font-semibold
-											bg-neutral-800
-											border-t border-white/10 cursor-pointer ${
+											border-t border-white/10 cursor-pointer 
+											${isSticky ? getHeaderClass(colIdx) : ""}
+											${colIdx === 0 ? "z-20" : colIdx === 1 ? "z-10" : ""}
+											${
 												isLastNDays &&
 												selectedDaysColumn ===
 													header.column.id
@@ -524,7 +541,7 @@ export const ProductsSalesVolume = forwardRef<
 										ref={(node) =>
 											rowVirtualizer.measureElement(node)
 										}
-										className="absolute w-full grid"
+										className="absolute w-full grid min-w-max"
 										style={{
 											transform: `translateY(${virtualRow.start}px)`,
 											gridTemplateColumns,
@@ -532,17 +549,24 @@ export const ProductsSalesVolume = forwardRef<
 										}}
 										role="row"
 									>
-										{row.getVisibleCells().map((cell) => (
-											<div
-												key={cell.id}
-												className="whitespace-nowrap py-3 px-6 border-t border-white/10"
-											>
-												{flexRender(
-													cell.column.columnDef.cell,
-													cell.getContext()
-												)}
-											</div>
-										))}
+										{row
+											.getVisibleCells()
+											.map((cell, colIdx) => (
+												<div
+													key={cell.id}
+													className={`py-3 px-6
+													truncate
+													border-t border-white/10
+													${getCellClass(colIdx)}`}
+													role="cell"
+												>
+													{flexRender(
+														cell.column.columnDef
+															.cell,
+														cell.getContext()
+													)}
+												</div>
+											))}
 									</div>
 								);
 							})}
